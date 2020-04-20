@@ -9,7 +9,7 @@
 
 *Viewer*
 
-**NOT PUBLICALLY RELEASED YET**
+**NOT READY FOR RELEASE YET**
 
 *Questions*
 

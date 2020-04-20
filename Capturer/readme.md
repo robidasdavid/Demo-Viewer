@@ -1,1 +1,0 @@
-*EchoVR Game Capturer

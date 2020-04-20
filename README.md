@@ -32,6 +32,6 @@ Controls:
 *Mouse Wheel* - adjust camera movement speed 
 
 
-**Questions**
+**QUESTIONS**
 
-If you have questions, DM *sneakyevil#1967* on discord.
+If you have questions, DM **sneakyevil#1967** on discord.

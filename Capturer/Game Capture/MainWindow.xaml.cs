@@ -45,6 +45,7 @@ namespace Game_Capture
             stopButton.IsEnabled = false;
         }
 
+        //Check if file directory selection is valid.
         public bool isFileSet()
         {
             Console.WriteLine(!fileName.Text.Equals("Type file name..."));
@@ -56,6 +57,7 @@ namespace Game_Capture
         {
             DebugLog.Text = "";
             failed = "";
+            //Capture arguments from textboxes and check validity
             String[] captureArguments = { framerateTB.Text, concurrencyTB.Text, minSaveTimeTB.Text };
             foreach (string argument in captureArguments)
             {
@@ -65,6 +67,8 @@ namespace Game_Capture
             }
             if (!isFileSet())
                 failed = "File directory invalid";
+
+            //If all checks out -> start capture
             if (failed.Equals(""))
             {
                 captureRunning = true;
@@ -76,6 +80,7 @@ namespace Game_Capture
                 int concurrency = int.Parse(captureArguments[1]);
                 int minsave = int.Parse(captureArguments[2]);
 
+                //Capture important numbers for tracking stats
                 float cfg_min_elapsed = 1.0f / framerate;
                 float greed = cfg_min_elapsed / 10.0f;
                 float min_elapsed = cfg_min_elapsed - greed;
@@ -86,6 +91,7 @@ namespace Game_Capture
                 DebugLog.Text += (string.Format("Min frame time: {0:0.##} sec\n", min_elapsed));
                 DebugLog.Text += (string.Format("Min save time: {0:0.##} sec\n", minsave));
                 DebugLog.Text += (string.Format("Concurrency: {0} req\n", concurrency));
+                //Start capture loop
                 while (true && captureRunning)
                 {
                     EchoCapturer currcap = new EchoCapturer(
@@ -101,7 +107,7 @@ namespace Game_Capture
                         await currcap.capture();
                         //await currcap.capture();
                     }
-                    catch (HttpRequestException)
+                    catch (HttpRequestException) 
                     {
                         await currcap.check_save();
                         stopButtonClick(this, new RoutedEventArgs());
@@ -135,6 +141,7 @@ namespace Game_Capture
 
         }
 
+        //Handle stop button
         private void stopButtonClick(object sender, RoutedEventArgs e)
         {
             captureRunning = false;
@@ -144,16 +151,20 @@ namespace Game_Capture
             DebugLog.Text = "";
         }
 
+        //Handle start button
         public void setStartButton(bool value)
         {
             this.startButton.IsEnabled = value;
             DebugLog.Text = "";
         }
+
+        //Set stop button when not exactly clicking it
         public void setStopButton(bool value)
         {
             this.stopButton.IsEnabled = value;
         }
 
+        //Handle and drive directory selection
         private void fileButtonClick(object sender, RoutedEventArgs e)
         {
             using (var fbd = new FolderBrowserDialog())
@@ -168,6 +179,7 @@ namespace Game_Capture
             }
         }
 
+        //Handle help button for arguments
         private void helpButtonClick(object sender, RoutedEventArgs e)
         {
             string message = "Framerate:\n" +
@@ -182,6 +194,7 @@ namespace Game_Capture
             MessageBox.Show(message, "Argument Help");
         }
 
+        //Handle about button
         private void aboutClick(object sender, RoutedEventArgs e)
         {
             string message = "EchoVR Game Capturer V1.0\n" +
@@ -191,6 +204,7 @@ namespace Game_Capture
         }
     }
 
+    
     class EchoCapturer
     {
         public string[] recordstates = { "playing", "score", "round_start", "round_over", "pre_match" };
@@ -218,7 +232,7 @@ namespace Game_Capture
             this.tb = fc;
             this.statusText = statusText;
         }
-
+        //Stream out json file
         public async Task<String> save_game()
         {
             string fname = MainWindow.fName += ".json";
@@ -238,7 +252,7 @@ namespace Game_Capture
             return fname;
 
         }
-
+        //Check if save is valid (frametime > minsavetime etc...)
         public async Task check_save()
         {
             Console.WriteLine(totalframetime.ToString());
@@ -258,9 +272,10 @@ namespace Game_Capture
                 tb.Text = string.Format("Skipping save, less than {0} seconds of data.\n", this.minsavetime);
             }
         }
-
+        //Capture frame
         public async Task rx_frame()
         {
+            //Connect to API and get resp
             HttpResponseMessage resp = await session.GetAsync("/session");
             string responseBody = await resp.Content.ReadAsStringAsync();
             JObject joResp = JObject.Parse(responseBody);
@@ -296,6 +311,7 @@ namespace Game_Capture
 
                     double avg_ft = this.totalframetime / (this.frames.Count + 1);
                     this.frames.Add(frame);
+                    //UI Text per frame%3
                     if (this.frames.Count % 3 == 0)
                     {
                         tb.Text = (string.Format("Captured frame {0} ({1:1.##} avg fps ({2:2.######} curr), min {3:3.####}, cfg {4:4.####})\n",
@@ -308,15 +324,16 @@ namespace Game_Capture
                 }
             }
         }
+        //First function for capture class
         public async Task capture()
         {
             session = new HttpClient();
             session.BaseAddress = new Uri("http://127.0.0.1");
             session.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+            //Exit condition
             while (this.state != "post_match" && MainWindow.captureRunning)
             {
-                
+                //Foreach concurrency, run a capture thread
                 for (int _ = 0; _ < this.concurrency; _++)
                 {
                     await rx_frame();

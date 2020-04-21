@@ -38,4 +38,5 @@ If you have questions, DM **sneakyevil#1967** on discord.
 
 Current Versions:
 Capturer - 1.0
+
 Viewer - 1.0

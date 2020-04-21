@@ -31,12 +31,15 @@ Controls:
 
 *Mouse Wheel* - adjust camera movement speed 
 
+**NOTES**
+
+Current Versions:
+Capturer - 1.0
+Viewer - 1.0
+
+Some files intentionally omitted from viewer source for space concerns.
+
 
 **QUESTIONS**
 
 If you have questions, DM **sneakyevil#1967** on discord.
-
-Current Versions:
-Capturer - 1.0
-
-Viewer - 1.0

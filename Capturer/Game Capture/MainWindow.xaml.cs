@@ -243,7 +243,7 @@ namespace Game_Capture
                 new JProperty("nframes", this.frames.Count),
                 new JProperty("frames", this.frames));
 
-            using (StreamWriter file = File.CreateText(@"D:/Echo Programs/Capture Outputs/" + fname))
+            using (StreamWriter file = File.CreateText(MainWindow.filePath + fname))
             using (JsonTextWriter writer = new JsonTextWriter(file))
             {
                 outfile.WriteTo(writer);

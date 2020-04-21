@@ -34,7 +34,7 @@ Controls:
 **NOTES**
 
 Current Versions:
-Capturer - 1.0
+Capturer - 1.1
 Viewer - 1.0
 
 Some files intentionally omitted from viewer source for space concerns.

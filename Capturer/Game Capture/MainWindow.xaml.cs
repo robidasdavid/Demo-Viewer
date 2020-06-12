@@ -84,6 +84,7 @@ namespace Game_Capture
                 float cfg_min_elapsed = 1.0f / framerate;
                 float greed = cfg_min_elapsed / 10.0f;
                 float min_elapsed = cfg_min_elapsed - greed;
+                
                 DebugLog.Text += "~~~~~ STARTING CAPTURE ~~~~~\n\n";
                 DebugLog.Text += "~~~~~ ARGUMENTS ~~~~~\n";
                 DebugLog.Text += (string.Format("Capture rate: {0}fps\n", framerate));
@@ -249,6 +250,8 @@ namespace Game_Capture
                 outfile.WriteTo(writer);
             }
 
+            JsonTextWriter w = new JsonTextWriter(File.CreateText(MainWindow.filePath + fname));
+
             return fname;
 
         }
@@ -328,7 +331,7 @@ namespace Game_Capture
         public async Task capture()
         {
             session = new HttpClient();
-            session.BaseAddress = new Uri("http://127.0.0.1");
+            session.BaseAddress = new Uri("http://127.0.0.1:6721");
             session.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //Exit condition
             while (this.state != "post_match" && MainWindow.captureRunning)

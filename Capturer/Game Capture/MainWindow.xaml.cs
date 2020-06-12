@@ -51,7 +51,7 @@ namespace Game_Capture
             Console.WriteLine(!fileName.Text.Equals("Type file name..."));
             return Directory.Exists(fileDirectory.Text) && !fileName.Text.Equals("Type file name...");
         }
-        
+
         //Handle starting capture
         private async void startButtonClick(object sender, RoutedEventArgs e)
         {
@@ -75,16 +75,28 @@ namespace Game_Capture
                 setStartButton(false);
                 setStopButton(true);
                 fileName.IsEnabled = false;
-                MainWindow.fName = fileName.Text;
+
                 int framerate = int.Parse(captureArguments[0]);
                 int concurrency = int.Parse(captureArguments[1]);
                 int minsave = int.Parse(captureArguments[2]);
+                if (File.Exists(MainWindow.filePath + fileName.Text + ".json"))
+                {
+                    //stopButtonClick(this, new RoutedEventArgs());
+                    DebugLog.Text = "\nFile already exists!";
+
+                    fileName.Text = fileName.Text + DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+                }
+                MainWindow.fName = fileName.Text;
+                using (StreamWriter sw = File.AppendText(MainWindow.filePath + fileName.Text + ".json"))
+                {
+                    sw.Write("{\"frames\": [");
+                }
 
                 //Capture important numbers for tracking stats
                 float cfg_min_elapsed = 1.0f / framerate;
                 float greed = cfg_min_elapsed / 10.0f;
                 float min_elapsed = cfg_min_elapsed - greed;
-                
+
                 DebugLog.Text += "~~~~~ STARTING CAPTURE ~~~~~\n\n";
                 DebugLog.Text += "~~~~~ ARGUMENTS ~~~~~\n";
                 DebugLog.Text += (string.Format("Capture rate: {0}fps\n", framerate));
@@ -106,9 +118,8 @@ namespace Game_Capture
                     try
                     {
                         await currcap.capture();
-                        //await currcap.capture();
                     }
-                    catch (HttpRequestException) 
+                    catch (HttpRequestException)
                     {
                         await currcap.check_save();
                         stopButtonClick(this, new RoutedEventArgs());
@@ -122,7 +133,7 @@ namespace Game_Capture
                         DebugLog.Text = "New Error\nReport to sneakyevil#1967 on discord\n" + h;
                     }
 
-                    if (currcap.frames.Count > 0)
+                    if (currcap.totalFrameCount > 0)
                     {
                         try
                         {
@@ -135,7 +146,8 @@ namespace Game_Capture
                         }
                     }
                 }
-            } else
+            }
+            else
             {
                 DebugLog.Text = failed;
             }
@@ -205,7 +217,7 @@ namespace Game_Capture
         }
     }
 
-    
+
     class EchoCapturer
     {
         public string[] recordstates = { "playing", "score", "round_start", "round_over", "pre_match" };
@@ -214,7 +226,9 @@ namespace Game_Capture
         private float greed;
         private int minsavetime;
 
-        public ArrayList frames = new ArrayList();
+        public List<string> sFrames = new List<string>();
+        const int _frameBufferCount = 1000;
+        public long totalFrameCount = 0;
         private string laststate = "none";
         private string state = "none";
         private double lastclock = 0.0f;
@@ -233,24 +247,26 @@ namespace Game_Capture
             this.tb = fc;
             this.statusText = statusText;
         }
-        //Stream out json file
+        //Finalize the save of the capture, must be done for the JSON to be valid
         public async Task<String> save_game()
         {
-            string fname = MainWindow.fName += ".json";
-            double actual_caprate = 1.0 / (this.totalframetime / (this.frames.Count + 1));
+            string fname = MainWindow.fName + ".json";
+            double actual_caprate = 1.0 / (this.totalframetime / (this.totalFrameCount + 1));
 
-            JObject outfile = new JObject(
-                new JProperty("caprate", actual_caprate),
-                new JProperty("nframes", this.frames.Count),
-                new JProperty("frames", this.frames));
-
-            using (StreamWriter file = File.CreateText(MainWindow.filePath + fname))
-            using (JsonTextWriter writer = new JsonTextWriter(file))
+            using (StreamWriter sw = File.AppendText(MainWindow.filePath + fname))
             {
-                outfile.WriteTo(writer);
+                string lastFrame = this.sFrames.Last();
+                foreach (var line in this.sFrames)
+                {
+                    sw.Write(line);
+                    if (line != lastFrame)
+                    {
+                        sw.WriteLine(",");
+                    }
+                }
+                sw.WriteLine("],");
+                sw.Write(string.Format("\"caprate\":{0},\"nframes\":{1} }}", actual_caprate, this.totalFrameCount));
             }
-
-            JsonTextWriter w = new JsonTextWriter(File.CreateText(MainWindow.filePath + fname));
 
             return fname;
 
@@ -260,17 +276,22 @@ namespace Game_Capture
         {
             Console.WriteLine(totalframetime.ToString());
             bool save = this.totalframetime >= this.minsavetime;
+            string fname = MainWindow.fName + ".json";
             if (save)
             {
                 Console.WriteLine("\nSaving game...\n");
                 tb.Text = "Saving game...";
-                String fname = await save_game();
+                fname = await save_game();
                 Console.WriteLine("Done\n");
-                Console.WriteLine(string.Format("Saved {0} frames to {1}\n", this.frames.Count.ToString(), MainWindow.filePath + fname));
-                tb.Text = string.Format("Saved {0} frames to {1}\n", this.frames.Count.ToString(), MainWindow.filePath + fname);
+                Console.WriteLine(string.Format("Saved {0} frames to {1}\n", this.totalFrameCount.ToString(), MainWindow.filePath + fname));
+                tb.Text = string.Format("Saved {0} frames to {1}\n", this.totalFrameCount.ToString(), MainWindow.filePath + fname);
             }
             else
             {
+                if (File.Exists(MainWindow.filePath + fname))
+                {
+                    File.Delete(MainWindow.filePath + fname);
+                }
                 Console.WriteLine(string.Format("Skipping save, less than {0} seconds of data.\n", this.minsavetime));
                 tb.Text = string.Format("Skipping save, less than {0} seconds of data.\n", this.minsavetime);
             }
@@ -281,26 +302,24 @@ namespace Game_Capture
             //Connect to API and get resp
             HttpResponseMessage resp = await session.GetAsync("/session");
             string responseBody = await resp.Content.ReadAsStringAsync();
+            sFrames.Add(responseBody);
+            totalFrameCount++;
+
             JObject joResp = JObject.Parse(responseBody);
             JObject frame = (JObject)joResp;
             this.laststate = this.state;
             this.state = frame["game_status"].ToString();
 
-            if (this.state != this.laststate && !(this.state.Equals("post_match") && this.frames.Count == 0))
+            if (this.state != this.laststate && !(this.state.Equals("post_match") && totalFrameCount == 0))
             {
                 statusText.Text = (string.Format("{0} -> {1}\n", this.laststate, this.state));
             }
 
-            if (this.state.Equals("post_match"))
-            {
-                return;
-            }
-
-            if (this.recordstates.Any(this.state.Contains))
+            if (this.state != "post_match" && this.recordstates.Any(s => s == this.state))
             {
                 TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
                 double currtime = (double)t.TotalSeconds;
-                if (!this.recordstates.Any(this.laststate.Contains))
+                if (!this.recordstates.Any(s => s == this.laststate))
                 {
                     this.lastclock = currtime - (1.0 / this.caprate);
                 }
@@ -312,13 +331,12 @@ namespace Game_Capture
                     this.lastclock = currtime;
                     this.totalframetime += elapsed;
 
-                    double avg_ft = this.totalframetime / (this.frames.Count + 1);
-                    this.frames.Add(frame);
+                    double avg_ft = this.totalframetime / (totalFrameCount + 1);
                     //UI Text per frame%3
-                    if (this.frames.Count % 3 == 0)
+                    if (totalFrameCount % 3 == 0)
                     {
                         tb.Text = (string.Format("Captured frame {0} ({1:1.##} avg fps ({2:2.######} curr), min {3:3.####}, cfg {4:4.####})\n",
-                            this.frames.Count,
+                            totalFrameCount,
                             1.0 / avg_ft,
                             1.0 / elapsed,
                             min_elapsed,
@@ -326,7 +344,22 @@ namespace Game_Capture
                     }
                 }
             }
+
         }
+
+        public void WriteCurrentFrames(List<string> frames)
+        {
+            string fname = MainWindow.fName + ".json";
+            using (StreamWriter sw = File.AppendText(MainWindow.filePath + fname))
+            {
+                foreach (var line in frames)
+                {
+                    sw.Write(line);
+                    sw.WriteLine(",");
+                }
+            }
+        }
+
         //First function for capture class
         public async Task capture()
         {
@@ -336,6 +369,13 @@ namespace Game_Capture
             //Exit condition
             while (this.state != "post_match" && MainWindow.captureRunning)
             {
+                // Every X Frames, append the frames to the current file and clear them out of RAM
+                if (sFrames.Count > _frameBufferCount)
+                {
+                    List<string> writeFrames = sFrames;
+                    sFrames = new List<string>();
+                    await Task.Run(() => WriteCurrentFrames(writeFrames));
+                }
                 //Foreach concurrency, run a capture thread
                 for (int _ = 0; _ < this.concurrency; _++)
                 {

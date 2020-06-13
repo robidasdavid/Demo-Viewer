@@ -34,10 +34,12 @@ Controls:
 **NOTES**
 
 Current Versions:
-Capturer - 1.1
-Viewer - 1.0
+Capturer - 2
+Viewer - 1.3
 
 Some files intentionally omitted from viewer source for space concerns.
+
+**SOURCE FOR THE VIEWER IS NOT UPDATED AS OF LIKE MAY | BUILDS ARE UPDATED THOUGH**
 
 
 **QUESTIONS**

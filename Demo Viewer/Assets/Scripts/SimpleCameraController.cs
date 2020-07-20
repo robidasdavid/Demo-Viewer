@@ -25,7 +25,7 @@ namespace UnityTemplateProjects
 
             public void Translate(Vector3 translation)
             {
-                Vector3 rotatedTranslation = Quaternion.Euler(pitch, yaw, roll) * translation;
+                Vector3 rotatedTranslation = Quaternion.Euler(0, yaw, roll) * translation;
 
                 x += rotatedTranslation.x;
                 y += rotatedTranslation.y;
@@ -103,6 +103,14 @@ namespace UnityTemplateProjects
             {
                 direction += Vector3.up;
             }
+            if(Input.GetButton("LeftBumper")){
+                direction += Vector3.down;
+            }
+            if(Input.GetButton("RightBumper")){
+                direction += Vector3.up;
+            }
+            direction.x += Input.GetAxis("LeftX") * 2.5f;
+            direction.z += Input.GetAxis("LeftY") * -2.5f;
             return direction;
         }
         
@@ -141,7 +149,10 @@ namespace UnityTemplateProjects
                 m_TargetCameraState.yaw += mouseMovement.x * mouseSensitivityFactor;
                 m_TargetCameraState.pitch += mouseMovement.y * mouseSensitivityFactor;
             }
-            
+
+            Vector2 controllerRightStick = new Vector2(Input.GetAxis("RightX"), Input.GetAxis("RightY"));
+            m_TargetCameraState.yaw += controllerRightStick.x * 1.25f;
+            m_TargetCameraState.pitch += controllerRightStick.y * 1.25f;
             // Translation
             var translation = GetInputTranslationDirection() * Time.deltaTime;
 

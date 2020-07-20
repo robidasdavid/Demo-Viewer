@@ -160,7 +160,9 @@ public class DemoStart : MonoBehaviour
     public float maxGameTime;
     public GameObject joustReadout;
     public GameObject lastGoalStats;
-    public static bool showingGoalStats;
+    public bool showingGoalStats = false;
+
+    public bool showGoalAnim = false;
 
     public GameObject goalEventObject;
     public Text blueGoals;
@@ -204,6 +206,12 @@ public class DemoStart : MonoBehaviour
     private bool wasPlaying = false;
     float timeDelay = 0f;
     public bool isPlaying = false;
+    public bool wasDPADXReleased = true;
+
+    public bool isReverse = false;
+    public bool wasPlayingBeforeScrub = false;
+    public bool isScrubbing = false;
+    public float playbackMultiplier = 1f;
 
     ArrayList blueTeam = new ArrayList();
     ArrayList orangeTeam = new ArrayList();
@@ -231,8 +239,8 @@ public class DemoStart : MonoBehaviour
     bool ready = false;
 
     protected bool ISWEBGL = false;
-    protected string IP = "http://69.30.197.26";
-
+    protected string IP = "http://69.30.197.26:5000";
+    
     IEnumerator GetText(string fn, Action doLast)
     {
         UnityWebRequest req = new UnityWebRequest();
@@ -240,137 +248,128 @@ public class DemoStart : MonoBehaviour
         yield return req.SendWebRequest();
 
         DownloadHandler dh = req.downloadHandler;
-
+        
         //this.jsonStr = dh.text;
-        StreamReader read = new StreamReader(new MemoryStream(dh.data));
+        StreamReader read = new StreamReader( new MemoryStream(dh.data));
         loadNewStyle(read);
         doLast();
     }
 
-    private static StreamReader OpenOrExtract(StreamReader reader)
-    {
-        char[] buffer = new char[2];
-        reader.Read(buffer, 0, buffer.Length);
-        reader.DiscardBufferedData();
-        reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-        if (buffer[0] == 'P' && buffer[1] == 'K')
-        {
-            ZipArchive archive = new ZipArchive(reader.BaseStream);
-            StreamReader ret = new StreamReader(archive.Entries[0].Open());
-            //reader.Close();
-            return ret;
-        }
-        return reader;
-    }
+private static StreamReader OpenOrExtract(StreamReader reader)
+		{
+            char[] buffer = new char[2];
+            reader.Read(buffer, 0, buffer.Length);
+            reader.DiscardBufferedData();
+            reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin); 
+            if(buffer[0] == 'P' && buffer[1] == 'K'){                
+                ZipArchive archive = new ZipArchive(reader.BaseStream);
+                StreamReader ret = new StreamReader(archive.Entries[0].Open());
+                //reader.Close();
+                return ret;
+            }
+			return reader;
+		}
+    
 
-
-    Game loadNewStyle(StreamReader fileReader)
-    {
+    Game loadNewStyle(StreamReader fileReader){
         bool fileFinishedReading = false;
         List<Frame> readFrames = new List<Frame>();
         Game readGame = new Game();
         readGame.caprate = 60;
 
         DateTime? currentLoadDateTimeFrame = null;
-        //filesInFolder = Directory.GetFiles(readFromFolder, "*.zip").ToList();
-        //filesInFolder.Sort();
-        using (fileReader = OpenOrExtract(fileReader))
-        {
+				//filesInFolder = Directory.GetFiles(readFromFolder, "*.zip").ToList();
+				//filesInFolder.Sort();
+                using(fileReader = OpenOrExtract(fileReader)){
 
-            while (!fileFinishedReading)
-            {
-                if (fileReader != null)
-                {
-                    string rawJSON = fileReader.ReadLine();
-                    if (rawJSON == null)
-                    {
-                        fileFinishedReading = true;
-                        fileReader.Close();
-                        // if (readFromFolderIndex >= filesInFolder.Count)
-                        // {
-                        // 	fileFinishedReading = true;
-                        // }
-                        // else
-                        // {
-                        // 	fileReader = ExtractFile(fileReader, filesInFolder[readFromFolderIndex++]);
-                        // }
-                    }
-                    else
-                    {
-                        string[] splitJSON = rawJSON.Split('\t');
-                        string onlyJSON, onlyTime;
-                        double frameTimeOffset = 0;
-                        if (splitJSON.Length > 1)
-                        {
-                            onlyJSON = splitJSON[1];
-                            onlyTime = splitJSON[0];
-                        }
-                        else
-                        {
-                            onlyJSON = splitJSON[0];
-                            onlyTime = currentLoadDateTimeFrame.ToString();
-                            // onlyTime = fileName.Substring(4, fileName.Length - 8);
-                        }
-                        DateTime frameTime = DateTime.Parse(onlyTime);
-                        if (currentLoadDateTimeFrame != null)
-                        {
-                            TimeSpan frameOffsetTS = frameTime - currentLoadDateTimeFrame.Value;
-                            frameTimeOffset = frameOffsetTS.TotalMilliseconds;
-                        }
-                        currentLoadDateTimeFrame = frameTime;
+			while (!fileFinishedReading)
+			{
+					if (fileReader != null)
+					{
+						string rawJSON = fileReader.ReadLine();
+						if (rawJSON == null)
+						{
+                            fileFinishedReading = true;
+							fileReader.Close();
+							// if (readFromFolderIndex >= filesInFolder.Count)
+							// {
+							// 	fileFinishedReading = true;
+							// }
+							// else
+							// {
+							// 	fileReader = ExtractFile(fileReader, filesInFolder[readFromFolderIndex++]);
+							// }
+						}
+						else
+						{
+							string[] splitJSON = rawJSON.Split('\t');
+							string onlyJSON, onlyTime;
+                            double frameTimeOffset = 0;
+							if (splitJSON.Length > 1)
+							{
+								onlyJSON = splitJSON[1];
+								onlyTime = splitJSON[0];
+							}
+							else
+							{
+								onlyJSON = splitJSON[0];
+                                onlyTime = currentLoadDateTimeFrame.ToString();
+								// onlyTime = fileName.Substring(4, fileName.Length - 8);
+							}
+                            DateTime frameTime = DateTime.Parse(onlyTime);
+                            if(currentLoadDateTimeFrame != null){
+                                TimeSpan frameOffsetTS = frameTime - currentLoadDateTimeFrame.Value;
+                                frameTimeOffset = frameOffsetTS.TotalMilliseconds;
+                            }
+                            currentLoadDateTimeFrame = frameTime;
 
-                        Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
-                        foundFrame.frameTimeOffset = frameTimeOffset;
-                        readFrames.Add(foundFrame);
+                            Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
+                            foundFrame.frameTimeOffset = frameTimeOffset;
+                            readFrames.Add(foundFrame);
 
-                        // if (readIntoQueue)
-                        // {
-                        // 	lastJSONQueue.Enqueue(onlyJSON);
-                        // 	frameTimeOffset.Enqueue(frameTimeOffset);
-                        // }
-                        // else
-                        // {
-                        // 	lock (lastJSONLock)
-                        // 	{
-                        // 		lastDateTimeString = onlyTime;
-                        // 		lastJSON = onlyJSON;
-                        // 		lastJSONUsed = false;
-                        // 	}
-                        // }
-                    }
+							// if (readIntoQueue)
+							// {
+							// 	lastJSONQueue.Enqueue(onlyJSON);
+							// 	frameTimeOffset.Enqueue(frameTimeOffset);
+							// }
+							// else
+							// {
+							// 	lock (lastJSONLock)
+							// 	{
+							// 		lastDateTimeString = onlyTime;
+							// 		lastJSON = onlyJSON;
+							// 		lastJSONUsed = false;
+							// 	}
+							// }
+						}
+					}
+				}
                 }
-            }
-        }
-        readGame.frames = readFrames.ToArray();
-        readGame.nframes = readGame.frames.Length;
-        return readGame;
+                readGame.frames = readFrames.ToArray();
+                readGame.nframes = readGame.frames.Length;
+                return readGame;
     }
 
-    void DoLast()
-    {
-        DoLast("");
-    }
+void DoLast(){
+    DoLast("");
+}
     void DoLast(string demoFile)
     {
         //Debug.Log(this.jsonStr);
-        if (demoFile.Contains(".echoreplayold"))
-        {
+        if(demoFile.Contains(".echoreplayold")){
             jsonStr = File.ReadAllText(demoFile);
             loadedDemo = JsonUtility.FromJson<Game>(this.jsonStr);
             loadedDemo.isNewstyle = false;
             sendConsoleMessage("Finished Serializing.");
-        }
-        else if (demoFile == "")
-        {
+        }else if(demoFile == ""){
             loadedDemo.isNewstyle = true;
         }
-        else
-        {
+        else{
             StreamReader reader = new StreamReader(demoFile);
             loadedDemo = loadNewStyle(reader);
             loadedDemo.isNewstyle = true;
         }
-
+        
 
 
         numFrames = loadedDemo.frames.Length;
@@ -411,7 +410,7 @@ public class DemoStart : MonoBehaviour
         //Set timing
         // Time.fixedDeltaTime = 1f / (demoFramerate*3.5f);
         Application.targetFrameRate = 300;
-        Time.fixedDeltaTime = 1f / (demoFramerate * 1f);
+        Time.fixedDeltaTime = 1f / (demoFramerate*1f);
         timeDelay = 1f / (60f);
 
         ready = true;
@@ -426,7 +425,7 @@ public class DemoStart : MonoBehaviour
         {
             sendConsoleMessage("Loading Demo.");
             string demoFile = PlayerPrefs.GetString("fileDirector");
-
+            
             DoLast(PlayerPrefs.GetString("fileDirector"));
         }
         else
@@ -440,7 +439,7 @@ public class DemoStart : MonoBehaviour
             sendConsoleMessage("Loading: " + getFileName);
 
             StartCoroutine(GetText(getFileName, DoLast));
-        }
+        }       
     }
 
     // Update is called once per frame
@@ -449,30 +448,43 @@ public class DemoStart : MonoBehaviour
 
         if (ready)
         {
-            if (isPlaying)
-            {
+            if(isPlaying){
                 timer += Time.deltaTime;
                 //Playback speed controls
-                if (currentSliderFrame == numFrames - 1)
+                if (!isReverse && currentSliderFrame == numFrames - 1 || isReverse && currentSliderFrame == 0)
                 {
                     setPlaying(false);
-                }
-                else
+                } else
                 {
-                    if (timer > ((float)(nextFrame.frameTimeOffset - 4) / 1000f))
-                    {
+                    if(timer > ((float)((nextFrame.frameTimeOffset-4)*playbackMultiplier)/1000f)){
+                        int incrementFrameCount = 0;
+                        double totalFrameTimeOffset = nextFrame.frameTimeOffset - 3;
+                        while(timer > ((float)((totalFrameTimeOffset)*playbackMultiplier)/1000f)){
+                            incrementFrameCount ++;
+                            if(isReverse){
+                                if(currentFrame - incrementFrameCount == 0){
+                                    break;
+                                }
+                                totalFrameTimeOffset += loadedDemo.frames[currentFrame - incrementFrameCount + 1].frameTimeOffset - 3;
+                            }else{
+                                if(currentFrame + incrementFrameCount == numFrames - 1){
+                                    break;
+                                }
+                                totalFrameTimeOffset += loadedDemo.frames[currentFrame + incrementFrameCount + 1].frameTimeOffset - 3;
+                            }
+                        }
+                        if(isReverse){
+                            currentSliderFrame = currentSliderFrame - incrementFrameCount;
+                        }else{
+                            currentSliderFrame = currentSliderFrame + incrementFrameCount;
+                        }
                         timer = 0.0f;
-                        currentSliderFrame++;
                     }
                 }
             }
-
+            
             //update previous frame
-            if (currentFrame != 0)
-                previousFrame = loadedDemo.frames[currentFrame - 1];
-
-            if (loadedDemo.isNewstyle && currentFrame != numFrames - 1)
-                nextFrame = loadedDemo.frames[currentFrame + 1];
+            
             //Find and declare what frame the slider is on.
             if (isPlaying)
                 playbackSlider.value = currentSliderFrame;
@@ -487,6 +499,19 @@ public class DemoStart : MonoBehaviour
             //Only render the next frame if it differs from the last (optimization)
             if (currentSliderFrame != currentFrame)
             {
+                if (currentFrame != 0){
+                    if(isReverse){
+                        previousFrame = loadedDemo.frames[currentFrame + 1];
+                    }else{
+                        previousFrame = loadedDemo.frames[currentFrame - 1];
+                    }
+                }
+
+                if (!isReverse && currentFrame != numFrames - 1){
+                    nextFrame = loadedDemo.frames[currentFrame + 1];
+                }else if(isReverse && currentFrame != 0){
+                    nextFrame = loadedDemo.frames[currentFrame];
+                }
                 //Grab frame
                 Frame viewingFrame = loadedDemo.frames[currentSliderFrame];
                 //Joust Readout
@@ -511,7 +536,7 @@ public class DemoStart : MonoBehaviour
                 else if (!showingGoalStats && lastGoalStats.activeSelf)
                 {
                     lastGoalStats.SetActive(false);
-                    if (viewingFrame.game_status == "score")
+                    if (viewingFrame.game_status == "score" && showGoalAnim)
                     {
                         goalEventObject.SetActive(true);
                     }
@@ -542,20 +567,103 @@ public class DemoStart : MonoBehaviour
 
     public void checkKeys()
     {
+        sendConsoleMessage(Input.GetAxis("RightTrig").ToString());
+        sendConsoleMessage(Input.GetAxis("LeftTrig").ToString());
+        float rightTrig = Input.GetAxis("RightTrig") * 1.75f;
+        float leftTrig = Input.GetAxis("LeftTrig") * 1.75f;
+        float combinedTrigs = rightTrig - leftTrig;
+        if(combinedTrigs == 0){
+            if(isScrubbing){
+                isScrubbing = false;
+                isPlaying = wasPlayingBeforeScrub;
+                isReverse = false;
+                playbackMultiplier = 1f;
+            }
+        }else if(combinedTrigs < 0){
+            if(!isScrubbing){
+                wasPlayingBeforeScrub = isPlaying;
+            }
+            isPlaying = true;
+            playbackMultiplier = 1f / (combinedTrigs * -1f);
+            isReverse = true;
+            isScrubbing = true;
+        }else{
+            if(!isScrubbing){
+                wasPlayingBeforeScrub = isPlaying;
+            }
+            isPlaying = true;
+            playbackMultiplier = 1f / combinedTrigs;
+            isReverse = false;
+            isScrubbing = true;
+
+        }
         if (Input.GetKeyDown(KeyCode.H))
             controlsOverlay.SetActive(true);
 
         if (Input.GetKeyUp(KeyCode.H))
             controlsOverlay.SetActive(false);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            setPlaying(!isPlaying);
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("XboxA")){
+            if(isScrubbing){
+                wasPlayingBeforeScrub = !wasPlayingBeforeScrub;
+            }
+            if(playbackMultiplier != 1f && isPlaying || isReverse){
+                isReverse = false;
+                playbackMultiplier = 1f;
+            }
+            else{
+                setPlaying(!isPlaying);
+            }
+        }
+        if(Input.GetButtonDown("XboxSelect")){
+            showGoalAnim = !showGoalAnim;
+        }
+
+        if(Input.GetButtonDown("XboxY")){
+            showingGoalStats = !showingGoalStats;
+        }
+        if(Input.GetButtonDown("XboxStart")){
+            GUIUtility.systemCopyBuffer = currentFrame.ToString();
+        }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
             speedSlider.value += .2f;
+        
+        float dpadX = Input.GetAxis("XboxDpadX");
+        if(!wasDPADXReleased && dpadX == 0){
+            wasDPADXReleased = true;
+        }else if(wasDPADXReleased && dpadX == -1){
+            wasDPADXReleased = false;
+            isPlaying = true;
+            if(isReverse == true){
+                if(playbackMultiplier > 1/10f){
+                    playbackMultiplier = playbackMultiplier / 2f;
+                }
+            }else{
+                isReverse = true;
+                playbackMultiplier = 1f;
+            }
+
+        }else if(wasDPADXReleased && dpadX == 1){
+            wasDPADXReleased = false;
+            isPlaying = true;
+            if(isReverse == false){
+                if(playbackMultiplier >= 1/10f){
+                    playbackMultiplier = playbackMultiplier / 2f;
+                }
+            }else{
+                isReverse = false;
+                playbackMultiplier = 1f;
+            }
+        }
+
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
             speedSlider.value -= .2f;
+
+        if(Input.GetKeyDown(KeyCode.Backspace)){
+            SceneManager.LoadScene(0);
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -590,13 +698,13 @@ public class DemoStart : MonoBehaviour
     //Handle instantiation of effects while playing versus not playing to minimize effects while scrubbing
     public void FXInstantiate(GameObject fx, Vector3 position, Vector3 rotation)
     {
-        if (isPlaying)
+        if(isPlaying)
             Instantiate(fx, position, Quaternion.Euler(rotation));
     }
 
     //public void soundHandler(SoundPlayer s, float vol, string sound)
     //{
-    //todo
+        //todo
     //}
 
     //Handle goal stats GUI
@@ -612,8 +720,7 @@ public class DemoStart : MonoBehaviour
         {
             lastGoalStats.transform.GetChild(3).GetComponent<Text>().text = "";
             lastGoalStats.transform.GetChild(7).GetComponent<Text>().text = "";
-        }
-        else
+        } else
         {
             lastGoalStats.transform.GetChild(3).GetComponent<Text>().text = ls.assist_scored;
         }
@@ -635,7 +742,7 @@ public class DemoStart : MonoBehaviour
             isScored = false;
             goalEventObject.SetActive(false);
         }
-        if (viewingFrame.game_status == "score" && !isScored)
+        if (viewingFrame.game_status == "score" && !isScored && showGoalAnim)
         {
             goalEventObject.SetActive(true);
             isScored = true;
@@ -654,13 +761,13 @@ public class DemoStart : MonoBehaviour
             discTrail.enabled = false;
         }
 
-
+        
 
         discTrailMat.color = viewingFrame.teams[0].possession ? new Color(0f, 0.647f, 0.847f, 0.8f) : new Color(1, 1, 1, 0.8f);
         discLight.color = viewingFrame.teams[0].possession ? new Color(0f, 0.647f, 0.847f, 0.8f) : new Color(1, 1, 1, 0.8f);
         autograbColor = viewingFrame.teams[0].possession ? new Color(0f, 0.647f, 0.847f, 0.08f) : new Color(1, 1, 1, 0.08f);
         autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
+        
 
 
 
@@ -713,8 +820,7 @@ public class DemoStart : MonoBehaviour
             if (!discTrail.enabled)
                 discTrail.Clear();
             discTrail.enabled = true;
-        }
-        else
+        } else
         {
             discTrail.enabled = false;
         }
@@ -725,7 +831,7 @@ public class DemoStart : MonoBehaviour
             isScored = false;
             goalEventObject.SetActive(false);
         }
-        if (viewingFrame.game_status == "score" && !isScored)
+        if (viewingFrame.game_status == "score" && !isScored && showGoalAnim)
         {
             goalEventObject.SetActive(true);
             isScored = true;
@@ -739,13 +845,13 @@ public class DemoStart : MonoBehaviour
             }
         }
 
-        if (viewingFrame.teams[0].possession)
+        if (viewingFrame.teams[0].possession) 
         {
             discTrailMat.color = new Color(0f, 0.647f, 0.847f, 0.8f);
             discLight.color = new Color(0f, 0.647f, 0.847f, 0.8f);
             autograbColor = new Color(0f, 0.647f, 0.847f, 0.08f);
             autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
+            
         }
         else if (viewingFrame.teams[1].possession)
         {
@@ -753,7 +859,7 @@ public class DemoStart : MonoBehaviour
             discLight.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
             autograbColor = new Color(0.8235f, 0.4313f, 0.1764f, 0.08f);
             autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
+            
         }
         else
         {
@@ -761,14 +867,14 @@ public class DemoStart : MonoBehaviour
             discLight.color = new Color(1f, 1f, 1f, 0.8f);
             autograbColor = new Color(1f, 1f, 1f, 0.08f);
             autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
+            
         }
 
-        blueGoals.text = viewingFrame.teams[0].stats.points.ToString();
-        orangeGoals.text = viewingFrame.teams[1].stats.points.ToString();
+        blueGoals.text = viewingFrame.blue_points.ToString();
+        orangeGoals.text = viewingFrame.orange_points.ToString();
         //set in game scoreboard elements
-        scoreBoardController.blueScore = viewingFrame.teams[0].stats.points;
-        scoreBoardController.orangeScore = viewingFrame.teams[1].stats.points;
+        scoreBoardController.blueScore = viewingFrame.blue_points;
+        scoreBoardController.orangeScore = viewingFrame.orange_points;
         scoreBoardController.gameTime = viewingFrame.game_clock_display;
 
         for (int j = 0; j < 2; j++)
@@ -860,8 +966,7 @@ public class DemoStart : MonoBehaviour
         if (viewingFrame.teams[j].players[i].blocking)
         {
             blockingEffect.gameObject.SetActive(true);
-        }
-        else
+        } else
         {
             blockingEffect.gameObject.SetActive(false);
         }
@@ -874,19 +979,15 @@ public class DemoStart : MonoBehaviour
         if (viewingFrame.teams.Length > 1 && viewingFrame.teams[0].players != null && viewingFrame.teams[1].players != null)
         {
             renderFrame(viewingFrame);
-        }
-        else
+        } else
         {
             renderFrameOneTeam(viewingFrame);
         }
-        if (loadedDemo.isNewstyle && ((float)nextFrame.frameTimeOffset / 1000f) > (timeDelay * 1.8))
-        {
-            //yield return new WaitForSeconds(((float)nextFrame.frameTimeOffset/1000f));
-        }
-        else
-        {
+        // if(loadedDemo.isNewstyle && ((float)nextFrame.frameTimeOffset /1000f) > (timeDelay*1.8)){
+        //     //yield return new WaitForSeconds(((float)nextFrame.frameTimeOffset/1000f));
+        // }else{
             yield return 0;
-        }
+        // }
     }
     public ArrayList isBeingHeld(Frame viewingFrame, bool oneTeam)
     {
@@ -914,7 +1015,7 @@ public class DemoStart : MonoBehaviour
                     {
                         returnArray.Add(true);
                         returnArray.Add(true);
-                        returnArray.Add(new int[2] { j, i });
+                        returnArray.Add(new int[2]{ j, i });
                         return returnArray;
                     }
                     if (lHandDis < 0.2f)
@@ -960,13 +1061,16 @@ public class DemoStart : MonoBehaviour
         returnArray.Add(new int[2] { -1, -1 });
         return returnArray;
     }
-
+  
     //Function to set playing variable to start and stop auto-play of demo.
     public void setPlaying(bool value)
     {
+        isReverse = false;
         isPlaying = value;
-        if (value && currentSliderFrame != numFrames - 1)
+        if (value && currentSliderFrame != numFrames - 1) {
+            playbackMultiplier = 1f;
             currentSliderFrame++;
+        }
     }
     //Handles new demo button (opens menu scene)
     public void openNewDemo()
@@ -976,19 +1080,19 @@ public class DemoStart : MonoBehaviour
 
     public void useSlider()
     {
-
+        
         sendConsoleMessage(isPlaying.ToString());
         wasPlaying = isPlaying;
         setPlaying(false);
-
+        
     }
 
     public void unUseSlider()
     {
-
+        
         setPlaying(false);
         setPlaying(wasPlaying);
-
+        
     }
 
     public void playbackValueChanged()

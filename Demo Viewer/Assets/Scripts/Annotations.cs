@@ -58,7 +58,7 @@ public class Annotations : MonoBehaviour
             //focus off of trail when you let go of mouse
             trailTransform = null;
         }
-        if(Input.GetMouseButtonDown(2))
+        if(Input.GetMouseButtonDown(2) || Input.GetButtonDown("XboxB"))
         {
             
             foreach(GameObject trail in allTrails)

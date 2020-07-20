@@ -23,13 +23,11 @@ public class MenuScript : MonoBehaviour
 
     void Start()
     {
-        string[] args = System.Environment.GetCommandLineArgs();
+        string[] args = System.Environment.GetCommandLineArgs ();
         loadingScreen.SetActive(false);
-        for (int i = 0; i < args.Length; i++)
-        {
-            Debug.Log("ARG " + i + ": " + args[i]);
-            if (args[i].Contains(".json") || args[i].Contains(".echoreplay"))
-            {
+        for (int i = 0; i < args.Length; i++) {
+            Debug.Log ("ARG " + i + ": " + args [i]);
+            if(args[i].Contains(".json")|| args[i].Contains(".echoreplay")){
                 fileInput.text = args[i];
                 StartButtonClick();
                 break;

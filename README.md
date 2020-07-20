@@ -31,6 +31,29 @@ Controls:
 
 *Mouse Wheel* - adjust camera movement speed 
 
+XBOX Controller Controls:
+*Left Stick* - camera forward/back movement
+
+*Right Stick* - camera pitch/yaw
+
+*Left Bumper/Right Bumper* - descend/ascend
+
+*A Button* - Play/Pause, resets back to 1x play if rewinding/fast forwarding
+
+*B Button* - Clear drawings on screen
+
+*Y Button* - Show last score details
+
+*Select/Left Action Button* - Enable/disable goal animations (default is enabled)
+
+*DPad Left* - Rewind (1x - 10x)
+
+*DPad Right* - Fast forward (1x - 10x)
+
+*Left Trigger* - Quick Scrub/Slow-Mo backwards, analog controlled on the trigger to adjust speed (less trigger pull = slower, full pull = 1.5x). Will revert to playing if replay was playing before trigger was used, can toggle whether to play or pause while scrubbing/slow-mo playing with *A*
+
+*Right Trigger* - Quick Scrub/Slow-Mo forwards, analog controlled on the trigger to adjust speed (less trigger pull = slower, full pull = 1.5x). Will revert to playing if replay was playing before trigger was used, can toggle whether to play or pause while scrubbing/slow-mo playing with *A*
+
 **NOTES**
 
 Current Versions:

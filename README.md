@@ -15,11 +15,16 @@ Capturer
 Viewer
 
 <ol>
-  <li> Download the Echo-Game-Viewer.zip in builds/ to your computer and unzip to a folder. </li>
+  <li> Download the latest ReplayViewer.zip from Releases to your computer and unzip to a folder. </li>
   <li> Load a replay file generated from the Echo Game Capturer. </li>
 </ol>
 
 **USAGE**
+File Association:
+
+File association is supported with the replay viewer, to make it easier for you to switch between files, you can associate .echoreplay files with ReplayViewer.exe by double clicking a .echoreplay file. When Windows brings up the "How do you want to .echoreplay files from now on?" window, click "more apps", scroll down and select "look for another app on this pc". Navigate to where you unzipped the application, and select "ReplayViewer.exe". Once you have done this, you can open replay files just by opening a file directly from file explorer.
+
+If you do not do this, you will have to copy the entire file location and file name of the file you want to view, and paste it into the field after launching the app (this will be improved in later versions).
 
 Controls:
 

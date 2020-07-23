@@ -20,6 +20,7 @@ Viewer
 </ol>
 
 **USAGE**
+
 File Association:
 
 File association is supported with the replay viewer, to make it easier for you to switch between files, you can associate .echoreplay files with ReplayViewer.exe by double clicking a .echoreplay file. When Windows brings up the "How do you want to .echoreplay files from now on?" window, click "more apps", scroll down and select "look for another app on this pc". Navigate to where you unzipped the application, and select "ReplayViewer.exe". Once you have done this, you can open replay files just by opening a file directly from file explorer.

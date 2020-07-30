@@ -13,7 +13,10 @@ public class GameManager : MonoBehaviour
 
 	private void Awake()
 	{
-		RefreshVRObjectsVisibility(GetPresence());
+		if (gameObject.activeSelf)
+		{
+			RefreshVRObjectsVisibility(GetPresence());
+		}
 	}
 
 
@@ -40,6 +43,7 @@ public class GameManager : MonoBehaviour
 
 	private void RefreshVRObjectsVisibility(bool present)
 	{
+		Debug.Log("RefreshVRObjectsVisibility");
 		if (present)
 		{
 			foreach (var thing in vrOnlyThings)

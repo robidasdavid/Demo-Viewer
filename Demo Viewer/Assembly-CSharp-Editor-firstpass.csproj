@@ -70,6 +70,9 @@
     <Reference Include="UnityEngine.TestRunner">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
+    <Reference Include="FranzCo.unityutilities">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/FranzCo.unityutilities.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.XR.Management">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Management.dll</HintPath>
     </Reference>
@@ -93,6 +96,9 @@
     </Reference>
     <Reference Include="Unity.ProBuilder">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.ProBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="FranzCo.unityutilities.Editor">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/FranzCo.unityutilities.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
@@ -150,6 +156,9 @@
     </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="FranzCo.unityutilities.VRInteraction">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/FranzCo.unityutilities.VRInteraction.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
@@ -756,18 +765,6 @@
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{CBF9ABFB-DA3F-1276-BAC2-D479B5B9A9BF}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
-    </ProjectReference>
-    <ProjectReference Include="FranzCo.unityutilities.csproj">
-      <Project>{59C8A409-AFD5-2107-A34E-46A6495F7BBA}</Project>
-      <Name>FranzCo.unityutilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="FranzCo.unityutilities.Editor.csproj">
-      <Project>{D64B59C5-317D-ACD6-1FF4-E49ECD15C467}</Project>
-      <Name>FranzCo.unityutilities.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="FranzCo.unityutilities.VRInteraction.csproj">
-      <Project>{885E8674-9727-B5CE-FCE2-2EC58B36EF3C}</Project>
-      <Name>FranzCo.unityutilities.VRInteraction</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

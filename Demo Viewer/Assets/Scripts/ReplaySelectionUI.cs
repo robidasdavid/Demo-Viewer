@@ -25,8 +25,14 @@ public class ReplaysListData
 	}
 }
 
+
+/// <summary>
+/// UI Controller for the replay browser menu
+/// Prefab defaults are set up for vr, then modified for the 2d interface
+/// </summary>
 public class ReplaySelectionUI : MonoBehaviour
 {
+	public bool isVR;
 	public Transform mainMenu;
 	public GameObject playerButtonPrefab;
 	public Transform playersList;
@@ -40,8 +46,13 @@ public class ReplaySelectionUI : MonoBehaviour
 	public string replayFileURL = "https://ignitevr.gg/cgi-bin/EchoStats.cgi/echoreplays/";
 	public string apiKey;
 
+	public Transform panel;
+
+	private bool showing = true;
+
 	void Start()
 	{
+		showing = panel.gameObject.activeSelf;
 		StartCoroutine(GetReplaysWeb());
 	}
 
@@ -119,6 +130,23 @@ public class ReplaySelectionUI : MonoBehaviour
 
 			}
 		}
+	}
+
+	/// <summary>
+	/// Shows or hides this menu
+	/// </summary>
+	/// <param name="show"></param>
+	public void ShowToggle()
+	{
+		if (showing)
+		{
+			panel.gameObject.SetActive(false);
+		}
+		else
+		{
+			panel.gameObject.SetActive(true);
+		}
+		showing = !showing;
 	}
 
 }

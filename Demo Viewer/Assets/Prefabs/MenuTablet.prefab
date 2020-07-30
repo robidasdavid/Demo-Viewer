@@ -556,6 +556,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3834589050964297097}
+  - {fileID: 3834589049881301481}
+  - {fileID: 3834589050171794139}
   m_Father: {fileID: 3834589050602238612}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -820,15 +822,15 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3834589049881301486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3259917302186737373}
   - {fileID: 3834589050536572712}
   - {fileID: 3834589050711332194}
   - {fileID: 3834589051155113050}
-  m_Father: {fileID: 3834589050602238612}
+  m_Father: {fileID: 3834589049739962155}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -968,7 +970,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3834589050821813014}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999952
+  m_Size: 0.9998898
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -996,12 +998,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3834589050171794136}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000004088703}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3834589049570221537}
-  m_Father: {fileID: 3834589050602238612}
+  m_Father: {fileID: 3834589049739962155}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1141,6 +1143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c438a2d1bdefad24ba04acf209ac2f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isVR: 1
   mainMenu: {fileID: 0}
   playerButtonPrefab: {fileID: 0}
   playersList: {fileID: 0}
@@ -1161,6 +1164,7 @@ MonoBehaviour:
   replayGetURL: https://ignitevr.gg/cgi-bin/EchoStats.cgi/get_replays
   replayFileURL: https://ignitevr.gg/cgi-bin/EchoStats.cgi/echoreplays/
   apiKey: 973ee88b-c280-4d6d-8f23-f29616a4d60d
+  panel: {fileID: 3834589049739962155}
 --- !u!1 &3834589050536572713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,8 +1351,6 @@ RectTransform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 3834589049739962155}
-  - {fileID: 3834589049881301481}
-  - {fileID: 3834589050171794139}
   m_Father: {fileID: 3834589050350493745}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1753,7 +1755,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0001617882}
+  m_AnchoredPosition: {x: 0, y: 0.000041150106}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3834589051233332790

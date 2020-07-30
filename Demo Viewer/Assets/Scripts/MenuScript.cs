@@ -4,8 +4,6 @@
  * Purpose: Drive menu interactability
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -27,7 +25,7 @@ public class MenuScript : MonoBehaviour
         loadingScreen.SetActive(false);
         for (int i = 0; i < args.Length; i++) {
             Debug.Log ("ARG " + i + ": " + args [i]);
-            if(args[i].Contains(".json")|| args[i].Contains(".echoreplay")){
+            if(args[i].Contains(".json") || args[i].Contains(".echoreplay")){
                 fileInput.text = args[i];
                 StartButtonClick();
                 break;

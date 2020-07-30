@@ -13,12 +13,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using System.IO.Compression;
-using System.Text;
 using System;
+using TMPro;
 //using System.Media;
 
 //Serializable classes for JSON serializing from the API output.
-[System.Serializable]
+[Serializable]
 public class Game
 {
     public bool isNewstyle;
@@ -26,7 +26,7 @@ public class Game
     public long nframes;
     public Frame[] frames;
 }
-[System.Serializable]
+[Serializable]
 public class Stats
 {
     public int possession_time;
@@ -42,7 +42,7 @@ public class Stats
     public int assists;
     public int shots_taken;
 }
-[System.Serializable]
+[Serializable]
 public class Last_Score
 {
     public float disc_speed;
@@ -53,7 +53,7 @@ public class Last_Score
     public string person_scored;
     public string assist_scored;
 }
-[System.Serializable]
+[Serializable]
 public class Frame
 {
     public Disc disc;
@@ -79,14 +79,14 @@ public class Frame
 
 
 }
-[System.Serializable]
+[Serializable]
 public class Disc
 {
     public float[] position;
     public float[] velocity;
     public int bounce_count;
 }
-[System.Serializable]
+[Serializable]
 public class Team
 {
     public Player[] players;
@@ -95,7 +95,7 @@ public class Team
     public Stats stats;
 
 }
-[System.Serializable]
+[Serializable]
 public class Player
 {
     public string name;
@@ -238,9 +238,13 @@ public class DemoStart : MonoBehaviour
     private string jsonStr;
     bool ready = false;
 
+    public bool showDebugLogs;
+
     protected bool ISWEBGL = false;
     protected string IP = "http://69.30.197.26:5000";
-    
+
+    public TextMeshProUGUI replayFileNameText;
+
     IEnumerator GetText(string fn, Action doLast)
     {
         UnityWebRequest req = new UnityWebRequest();
@@ -255,8 +259,8 @@ public class DemoStart : MonoBehaviour
         doLast();
     }
 
-private static StreamReader OpenOrExtract(StreamReader reader)
-		{
+    private static StreamReader OpenOrExtract(StreamReader reader)
+        {
             char[] buffer = new char[2];
             reader.Read(buffer, 0, buffer.Length);
             reader.DiscardBufferedData();
@@ -267,8 +271,8 @@ private static StreamReader OpenOrExtract(StreamReader reader)
                 //reader.Close();
                 return ret;
             }
-			return reader;
-		}
+            return reader;
+        }
     
 
     Game loadNewStyle(StreamReader fileReader){
@@ -278,44 +282,44 @@ private static StreamReader OpenOrExtract(StreamReader reader)
         readGame.caprate = 60;
 
         DateTime? currentLoadDateTimeFrame = null;
-				//filesInFolder = Directory.GetFiles(readFromFolder, "*.zip").ToList();
-				//filesInFolder.Sort();
+                //filesInFolder = Directory.GetFiles(readFromFolder, "*.zip").ToList();
+                //filesInFolder.Sort();
                 using(fileReader = OpenOrExtract(fileReader)){
 
-			while (!fileFinishedReading)
-			{
-					if (fileReader != null)
-					{
-						string rawJSON = fileReader.ReadLine();
-						if (rawJSON == null)
-						{
+            while (!fileFinishedReading)
+            {
+                    if (fileReader != null)
+                    {
+                        string rawJSON = fileReader.ReadLine();
+                        if (rawJSON == null)
+                        {
                             fileFinishedReading = true;
-							fileReader.Close();
-							// if (readFromFolderIndex >= filesInFolder.Count)
-							// {
-							// 	fileFinishedReading = true;
-							// }
-							// else
-							// {
-							// 	fileReader = ExtractFile(fileReader, filesInFolder[readFromFolderIndex++]);
-							// }
-						}
-						else
-						{
-							string[] splitJSON = rawJSON.Split('\t');
-							string onlyJSON, onlyTime;
+                            fileReader.Close();
+                            // if (readFromFolderIndex >= filesInFolder.Count)
+                            // {
+                            // 	fileFinishedReading = true;
+                            // }
+                            // else
+                            // {
+                            // 	fileReader = ExtractFile(fileReader, filesInFolder[readFromFolderIndex++]);
+                            // }
+                        }
+                        else
+                        {
+                            string[] splitJSON = rawJSON.Split('\t');
+                            string onlyJSON, onlyTime;
                             double frameTimeOffset = 0;
-							if (splitJSON.Length > 1)
-							{
-								onlyJSON = splitJSON[1];
-								onlyTime = splitJSON[0];
-							}
-							else
-							{
-								onlyJSON = splitJSON[0];
+                            if (splitJSON.Length > 1)
+                            {
+                                onlyJSON = splitJSON[1];
+                                onlyTime = splitJSON[0];
+                            }
+                            else
+                            {
+                                onlyJSON = splitJSON[0];
                                 onlyTime = currentLoadDateTimeFrame.ToString();
-								// onlyTime = fileName.Substring(4, fileName.Length - 8);
-							}
+                                // onlyTime = fileName.Substring(4, fileName.Length - 8);
+                            }
                             DateTime frameTime = DateTime.Parse(onlyTime);
                             if(currentLoadDateTimeFrame != null){
                                 TimeSpan frameOffsetTS = frameTime - currentLoadDateTimeFrame.Value;
@@ -327,32 +331,33 @@ private static StreamReader OpenOrExtract(StreamReader reader)
                             foundFrame.frameTimeOffset = frameTimeOffset;
                             readFrames.Add(foundFrame);
 
-							// if (readIntoQueue)
-							// {
-							// 	lastJSONQueue.Enqueue(onlyJSON);
-							// 	frameTimeOffset.Enqueue(frameTimeOffset);
-							// }
-							// else
-							// {
-							// 	lock (lastJSONLock)
-							// 	{
-							// 		lastDateTimeString = onlyTime;
-							// 		lastJSON = onlyJSON;
-							// 		lastJSONUsed = false;
-							// 	}
-							// }
-						}
-					}
-				}
+                            // if (readIntoQueue)
+                            // {
+                            // 	lastJSONQueue.Enqueue(onlyJSON);
+                            // 	frameTimeOffset.Enqueue(frameTimeOffset);
+                            // }
+                            // else
+                            // {
+                            // 	lock (lastJSONLock)
+                            // 	{
+                            // 		lastDateTimeString = onlyTime;
+                            // 		lastJSON = onlyJSON;
+                            // 		lastJSONUsed = false;
+                            // 	}
+                            // }
+                        }
+                    }
+                }
                 }
                 readGame.frames = readFrames.ToArray();
                 readGame.nframes = readGame.frames.Length;
                 return readGame;
     }
 
-void DoLast(){
-    DoLast("");
-}
+    void DoLast(){
+        DoLast("");
+    }
+
     void DoLast(string demoFile)
     {
         //Debug.Log(this.jsonStr);
@@ -365,6 +370,7 @@ void DoLast(){
             loadedDemo.isNewstyle = true;
         }
         else{
+            Debug.Log("Reading file: " + demoFile);
             StreamReader reader = new StreamReader(demoFile);
             loadedDemo = loadNewStyle(reader);
             loadedDemo.isNewstyle = true;
@@ -416,6 +422,14 @@ void DoLast(){
         ready = true;
     }
 
+    /// <summary>
+    /// Loads the currently set file (set in playerprefs beforehand)
+    /// </summary>
+    public void ReloadFile()
+    {
+
+    }
+
     void Start()
     {
         //Ahh yes welcome to the code
@@ -423,10 +437,11 @@ void DoLast(){
         //Load and serialize demo file
         if (!ISWEBGL)
         {
-            sendConsoleMessage("Loading Demo.");
             string demoFile = PlayerPrefs.GetString("fileDirector");
+            replayFileNameText.text = Path.GetFileName(demoFile);
+            sendConsoleMessage("Loading Demo: " + demoFile);
             
-            DoLast(PlayerPrefs.GetString("fileDirector"));
+            DoLast(demoFile);
         }
         else
         {
@@ -521,7 +536,7 @@ void DoLast(){
                 {
                     maxGameTime = loadedDemo.frames[0].game_clock;
                     float currentTime = loadedDemo.frames[currentSliderFrame].game_clock;
-                    joustReadout.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
+                    joustReadout.transform.GetChild(0).GetComponent<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
                     IEnumerator coroutine = FlashInOut(joustReadout, 3);
                     StartCoroutine(coroutine);
                 }
@@ -1102,8 +1117,11 @@ void DoLast(){
 
     public void sendConsoleMessage(string msg)
     {
-        float currentRuntime = Time.time;
-        Debug.Log(string.Format("Time: {0:0.#} -- {1}", currentRuntime, msg));
+        if (showDebugLogs)
+        {
+            float currentRuntime = Time.time;
+            Debug.Log(string.Format("Time: {0:0.#} -- {1}", currentRuntime, msg));
+        }
     }
 
     public void settingController(bool value)

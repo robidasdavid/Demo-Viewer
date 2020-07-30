@@ -4,8 +4,6 @@
  * Purpose: Destroy or deactivate objects
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TimedDestroy : MonoBehaviour

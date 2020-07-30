@@ -4,8 +4,6 @@
  * Purpose: Orient nametags over player objects
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Billboard : MonoBehaviour

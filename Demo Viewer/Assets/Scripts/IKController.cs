@@ -3,8 +3,6 @@
  * Date: 16 April 2020
  * Purpose: Control IK of an individual player
  */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IKController : MonoBehaviour

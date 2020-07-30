@@ -4,8 +4,6 @@
  * Purpose: Control Disc position and rotation
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DiscController : MonoBehaviour

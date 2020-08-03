@@ -64,9 +64,9 @@ public class Annotations : MonoBehaviour
 		}
 		//Debug.Log("Amount: " + allTrails.Length.ToString() + ". And: " + (allTrails.Length > this.maxTrailsTest) + " and maxTrails = " + this.maxTrailsTest.ToString() );
 
-		if (allTrails.Length > this.maxTrailsTest)
+		if (allTrails.Length > maxTrailsTest)
 		{
-			for (int i = 0; i < allTrails.Length - this.maxTrailsTest; i++)
+			for (int i = 0; i < allTrails.Length - maxTrailsTest; i++)
 			{
 				Destroy(allTrails[0]);
 				allTrails = allTrails.Skip(1).ToArray();

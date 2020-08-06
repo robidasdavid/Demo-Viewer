@@ -333,9 +333,16 @@ public class DemoStart : MonoBehaviour
 
 						if (onlyJSON.Length > 300)
 						{
-							Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
-							foundFrame.frameTimeOffset = frameTimeOffset;
-							readFrames.Add(foundFrame);
+							try
+							{
+								Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
+								foundFrame.frameTimeOffset = frameTimeOffset;
+								readFrames.Add(foundFrame);
+							}
+							catch (Exception e)
+							{
+								Debug.LogError("Couldn't read frame. File is corrupted.");
+							}
 						}
 					}
 				}

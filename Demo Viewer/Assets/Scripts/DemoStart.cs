@@ -728,11 +728,6 @@ public class DemoStart : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.DownArrow))
 			speedSlider.value -= .2f;
 
-		if (Input.GetKeyDown(KeyCode.Backspace))
-		{
-			SceneManager.LoadScene(0);
-		}
-
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			int newFrameNumber = Mathf.FloorToInt(playbackSlider.value) - (Mathf.FloorToInt(demoFramerate) * 5);
@@ -800,6 +795,8 @@ public class DemoStart : MonoBehaviour
 
 	public void renderFrameOneTeam(Frame viewingFrame)
 	{
+		if (viewingFrame.teams == null || viewingFrame.teams[0].players == null) return;
+
 		int numBluePlayers = viewingFrame.teams[0].players.Length;
 
 		gameTimeText.text = viewingFrame.game_clock_display;
@@ -875,6 +872,7 @@ public class DemoStart : MonoBehaviour
     */
 	public void renderFrame(Frame viewingFrame)
 	{
+		if (viewingFrame.teams == null || viewingFrame.teams[0].players == null || viewingFrame.teams[1].players == null) return;
 
 		int numBluePlayers = viewingFrame.teams[0].players.Length;
 		int numOrangePlayers = viewingFrame.teams[1].players.Length;
@@ -985,8 +983,18 @@ public class DemoStart : MonoBehaviour
             disc.GetComponent<DiscController>().playerHolding = playerObject;
         }*/
 
+		if (viewingFrame == null || viewingFrame.teams.Length <= j || viewingFrame.teams[j].players.Length <= i)
+		{
+			return;
+		}
+
 		//Set names above player heads
 		((Text)((ArrayList)teamsText[j])[i]).text = viewingFrame.teams[j].players[i].name;
+
+		if (previousFrame == null || previousFrame.teams.Length <= j || previousFrame.teams[j].players.Length <= i)
+		{
+			return;
+		}
 
 		//Get player transform values of current iteration
 		float[] playerPosition = viewingFrame.teams[j].players[i].position;

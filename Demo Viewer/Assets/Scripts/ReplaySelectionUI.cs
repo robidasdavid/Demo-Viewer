@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -37,7 +38,11 @@ public class ReplaySelectionUI : MonoBehaviour
 	public GameObject playerButtonPrefab;
 	public Transform playersList;
 	public GameObject replayDataRowPrefab;
+	public TMP_InputField manualInputText;
+	public TextMeshProUGUI folderSrcText;
 	public Transform onlineReplaysList;
+	public Transform localReplaysList;
+	public ScrollRect scrollView;
 	public Transform[] allVisualizations;
 
 	public ViewReplayUIController viewReplayUIController;
@@ -50,10 +55,47 @@ public class ReplaySelectionUI : MonoBehaviour
 
 	private bool showing = true;
 
+	public enum ReplaySources
+	{
+		Local,
+		Online
+	}
+	private ReplaySources replaysSource;
+	public ReplaySources ReplaysSource {
+		get => replaysSource;
+		set {
+			if (value == ReplaySources.Local)
+			{
+				localReplaysList.gameObject.SetActive(true);
+				onlineReplaysList.gameObject.SetActive(false);
+				scrollView.content = localReplaysList.GetComponent<RectTransform>();
+
+				StartCoroutine(GetReplaysLocal());
+			}
+			else if (value == ReplaySources.Online)
+			{
+				localReplaysList.gameObject.SetActive(false);
+				onlineReplaysList.gameObject.SetActive(true);
+				scrollView.content = onlineReplaysList.GetComponent<RectTransform>();
+
+				StartCoroutine(GetReplaysWeb());
+			}
+
+			replaysSource = value;
+		}
+	}
+
+
 	void Start()
 	{
 		showing = panel.gameObject.activeSelf;
-		StartCoroutine(GetReplaysWeb());
+
+		manualInputText.text = PlayerPrefs.GetString("fileDirector");
+		folderSrcText.text = "Files in " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "IgniteBot\\replays");
+
+
+		// refresh the list
+		ReplaysSource = ReplaysSource;
 	}
 
 	IEnumerator GetReplaysWeb()
@@ -90,6 +132,48 @@ public class ReplaySelectionUI : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public IEnumerator GetReplaysLocal()
+	{
+		string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "IgniteBot\\replays");
+
+		// get list of files in the current folder
+		string[] files = Directory.GetFiles(PlayerPrefs.GetString("currentReplayFolder", defaultPath));
+
+		// get list of folders in the current folder
+		string[] folders = Directory.GetDirectories(PlayerPrefs.GetString("currentReplayFolder", defaultPath));
+
+
+		// add the new ones
+		foreach (var file in files)
+		{
+			if (Path.GetExtension(file) == ".echoreplay")
+			{
+
+				GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
+				var replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();
+				replayFileInfo.OriginalFilename = Path.GetFileNameWithoutExtension(file);
+				replayFileInfo.CreatedBy = "Local";
+				replayFileInfo.Notes = "";
+
+				button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(file); });
+			}
+
+			// this is not necessary, but it'll create a slight animation
+			yield return null;
+		}
+	}
+
+	public void LoadLocalReplay(string filename)
+	{
+		PlayerPrefs.SetString("fileDirector", filename);
+
+		// only way to load a new replay file is to reload the scene
+		SceneManager.LoadSceneAsync("Game Scene");
+
+		viewReplayUIController.ReplayName = filename;
+		viewReplayUIController.Loading = true;
 	}
 
 	public void DownloadReplay(string server_filename, string original_filename)
@@ -129,6 +213,22 @@ public class ReplaySelectionUI : MonoBehaviour
 				viewReplayUIController.Loading = true;
 
 			}
+		}
+	}
+
+	/// <summary>
+	/// Loads the file specified in the manual input bar
+	/// </summary>
+	public void LoadLocalReplay()
+	{
+		string text = manualInputText.text;
+		if (File.Exists(text))
+		{
+			LoadLocalReplay(text);
+		}
+		else
+		{
+			Debug.LogError("File doesn't exist: " + text);
 		}
 	}
 

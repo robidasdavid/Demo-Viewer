@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0.7342434, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1653,7 +1654,7 @@ GameObject:
   - component: {fileID: 4530796996353476890}
   - component: {fileID: 5602485326468197822}
   m_Layer: 0
-  m_Name: NewBlue
+  m_Name: PlayerCharacter (Blue)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1744,6 +1745,8 @@ MonoBehaviour:
   lftForearm: {fileID: 1968309863103036657}
   rtForearm: {fileID: 5350640003970478356}
   stunnedInitiated: 0
+  playerName: {fileID: 8149150796952024894}
+  ikController: {fileID: 4530796996353476889}
 --- !u!1 &4530796996428147090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,6 +2715,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0.72214794, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

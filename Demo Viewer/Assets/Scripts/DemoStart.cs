@@ -15,107 +15,9 @@ using UnityEngine.Networking;
 using System.IO.Compression;
 using System;
 using TMPro;
-//using System.Media;
 
 //Serializable classes for JSON serializing from the API output.
-[Serializable]
-public class Game
-{
-	public bool isNewstyle;
-	public float caprate;
-	public long nframes;
-	public Frame[] frames;
-}
-[Serializable]
-public class Stats
-{
-	public int possession_time;
-	public int points;
-	public int goals;
-	public int saves;
-	public int stuns;
-	public int interceptions;
-	public int blocks;
-	public int passes;
-	public int catches;
-	public int steals;
-	public int assists;
-	public int shots_taken;
-}
-[Serializable]
-public class Last_Score
-{
-	public float disc_speed;
-	public string team;
-	public string goal_type;
-	public int point_amount;
-	public float distance_thrown;
-	public string person_scored;
-	public string assist_scored;
-}
-[Serializable]
-public class Frame
-{
-	public Disc disc;
-	public double frameTimeOffset;
 
-	public string sessionid;
-	public int orange_points;
-	public bool private_match;
-	public string client_name;
-	public string game_clock_display;
-	public string game_status;
-	public float game_clock;
-	public string match_type;
-
-	public Team[] teams;
-
-	public string map_name;
-	public int[] possession;
-	public bool tournament_match;
-	public int blue_points;
-
-	public Last_Score last_score;
-
-
-}
-[Serializable]
-public class Disc
-{
-	public float[] position;
-	public float[] velocity;
-	public int bounce_count;
-}
-[Serializable]
-public class Team
-{
-	public Player[] players;
-	public string team;
-	public bool possession;
-	public Stats stats;
-
-}
-[Serializable]
-public class Player
-{
-	public string name;
-	public float[] rhand;
-	public int playerid;
-	public float[] position;
-	public float[] lhand;
-	public long userid;
-	public Stats stats;
-	public int number;
-	public int level;
-	public bool possession;
-	public float[] left;
-	public bool invulnerable;
-	public float[] up;
-	public float[] forward;
-	public bool stunned;
-	public float[] velocity;
-	public bool blocking;
-}
 
 public class PlayerStats : Stats
 {
@@ -179,23 +81,9 @@ public class DemoStart : MonoBehaviour
 
 	public Text playbackFramerate;
 
-	public GameObject blue1;
-	public Text blue1text;
-	public GameObject blue2;
-	public Text blue2text;
-	public GameObject blue3;
-	public Text blue3text;
-	public GameObject blue4;
-	public Text blue4text;
-
-	public GameObject orange1;
-	public Text orange1text;
-	public GameObject orange2;
-	public Text orange2text;
-	public GameObject orange3;
-	public Text orange3text;
-	public GameObject orange4;
-	public Text orange4text;
+	public Transform playerObjsParent;
+	public GameObject bluePlayerPrefab;
+	public GameObject orangePlayerPrefab;
 
 	public GameObject disc;
 	public Material autograbBubble;
@@ -213,13 +101,10 @@ public class DemoStart : MonoBehaviour
 	public bool isScrubbing = false;
 	public float playbackMultiplier = 1f;
 
-	ArrayList blueTeam = new ArrayList();
-	ArrayList orangeTeam = new ArrayList();
-	ArrayList Teams = new ArrayList();
-	ArrayList blueTeamText = new ArrayList();
-	ArrayList orangeTeamText = new ArrayList();
-	ArrayList teamsText = new ArrayList();
-	ArrayList movedObjects = new ArrayList();
+	/// <summary>
+	/// player ign, player character obj
+	/// </summary>
+	Dictionary<string, PlayerCharacter> playerObjects = new Dictionary<string, PlayerCharacter>();
 
 
 	public int currentFrame = 0;
@@ -391,21 +276,6 @@ public class DemoStart : MonoBehaviour
 		//set slider values
 		playbackSlider.maxValue = numFrames - 1;
 
-		//create arraylists for player objects and their nametags
-		for (int i = 1; i < 5; i++)
-		{
-			blueTeam.Add(GetType().GetField(string.Format("blue{0}", i)).GetValue(this));
-			blueTeamText.Add(GetType().GetField(string.Format("blue{0}text", i)).GetValue(this));
-			orangeTeam.Add(GetType().GetField(string.Format("orange{0}", i)).GetValue(this));
-			orangeTeamText.Add(GetType().GetField(string.Format("orange{0}text", i)).GetValue(this));
-		}
-
-		teamsText.Add(blueTeamText);
-		teamsText.Add(orangeTeamText);
-
-		Teams.Add(blueTeam);
-		Teams.Add(orangeTeam);
-
 		//HUD initialization
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
@@ -464,13 +334,15 @@ public class DemoStart : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-
 		if (ready)
 		{
 			if (isPlaying)
 			{
 				timer += Time.deltaTime;
-				//Playback speed controls
+
+				// Playback speed controls
+
+				// if the playhead is on the last frame (beginning or end depending on reverse)
 				if (!isReverse && currentSliderFrame == numFrames - 1 || isReverse && currentSliderFrame == 0)
 				{
 					setPlaying(false);
@@ -503,31 +375,30 @@ public class DemoStart : MonoBehaviour
 						}
 						if (isReverse)
 						{
-							currentSliderFrame = currentSliderFrame - incrementFrameCount;
+							currentSliderFrame -= incrementFrameCount;
 						}
 						else
 						{
-							currentSliderFrame = currentSliderFrame + incrementFrameCount;
+							currentSliderFrame += incrementFrameCount;
 						}
-						timer = 0.0f;
+						timer = 0f;
 					}
 				}
 			}
 
-			//update previous frame
-
-			//Find and declare what frame the slider is on.
+			// Find and declare what frame the slider is on.
 			if (isPlaying)
 				playbackSlider.value = currentSliderFrame;
 			else
 				currentSliderFrame = (int)playbackSlider.value;
 
-			checkKeys();
+			// process input
+			CheckKeys();
 
 			frameText.text = string.Format("Frame {0} of {1}", (currentSliderFrame + 1), numFrames);
 			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
 
-			//Only render the next frame if it differs from the last (optimization)
+			// Only render the next frame if it differs from the last (optimization)
 			if (currentSliderFrame != currentFrame)
 			{
 				if (currentFrame != 0)
@@ -550,27 +421,27 @@ public class DemoStart : MonoBehaviour
 				{
 					nextFrame = loadedDemo.frames[currentFrame];
 				}
-				//Grab frame
+
+				// Grab frame
 				Frame viewingFrame = loadedDemo.frames[currentSliderFrame];
 
-				//Joust Readout
-				Vector3 currectDiscPosition = new Vector3(viewingFrame.disc.position[2], viewingFrame.disc.position[1], viewingFrame.disc.position[0]);
-				Vector3 lastDiscPosition = new Vector3(previousFrame.disc.position[2], previousFrame.disc.position[1], previousFrame.disc.position[0]);
+				// Joust Readout
+				Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
+				Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
 				if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && isPlaying)
 				{
 					maxGameTime = loadedDemo.frames[0].game_clock;
 					float currentTime = loadedDemo.frames[currentSliderFrame].game_clock;
-					joustReadout.transform.GetChild(0).GetComponent<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
-					IEnumerator coroutine = FlashInOut(joustReadout, 3);
-					StartCoroutine(coroutine);
+					joustReadout.GetComponentInChildren<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
+					StartCoroutine(FlashInOut(joustReadout, 3));
 				}
 
-				//Handle goal stat visibility
+				// Handle goal stat visibility
 				if (showingGoalStats)
 				{
 					goalEventObject.SetActive(false);
 					lastGoalStats.SetActive(true);
-					renderGoalStats(viewingFrame);
+					RenderGoalStats(viewingFrame.last_score);
 				}
 				else if (!showingGoalStats && lastGoalStats.activeSelf)
 				{
@@ -580,31 +451,20 @@ public class DemoStart : MonoBehaviour
 						goalEventObject.SetActive(true);
 					}
 				}
-				//Playing or paused? 
-				if (isPlaying)
-				{
-					//Start coroutine on framerate tick
-					currentFrame = currentSliderFrame;
-					IEnumerator coroutine = startPlayback(viewingFrame);
-					StartCoroutine(coroutine);
-				}
-				else
-				{
-					//if not playing continue with single-frame rendering                 
-					if (viewingFrame.teams.Length > 1 && viewingFrame.teams[0].players != null && viewingFrame.teams[1].players != null)
-					{
-						renderFrame(viewingFrame);
-					}
-					else
-					{
-						renderFrameOneTeam(viewingFrame);
-					}
-				}
+
+				currentFrame = currentSliderFrame;
+
+				// Render this frame
+				RenderFrame(viewingFrame);
 			}
 		}
 	}
 
-	public void checkKeys()
+
+	/// <summary>
+	/// Does input processing for keyboard and controller
+	/// </summary>
+	public void CheckKeys()
 	{
 		sendConsoleMessage(Input.GetAxis("RightTrig").ToString());
 		sendConsoleMessage(Input.GetAxis("LeftTrig").ToString());
@@ -770,10 +630,12 @@ public class DemoStart : MonoBehaviour
 	//todo
 	//}
 
-	//Handle goal stats GUI
-	public void renderGoalStats(Frame viewingFrame)
+	/// <summary>
+	/// Handle goal stats GUI
+	/// </summary>
+	/// <param name="ls">Data about the last score from the API</param>
+	public void RenderGoalStats(Last_Score ls)
 	{
-		Last_Score ls = viewingFrame.last_score;
 		goalEventObject.SetActive(false);
 		//Debug.Log(ls.disc_speed.ToString());
 		lastGoalStats.transform.GetChild(1).GetComponent<Text>().text = ls.goal_type + string.Format(" : {0} PTS", ls.point_amount);
@@ -793,96 +655,19 @@ public class DemoStart : MonoBehaviour
 		lastGoalStats.transform.GetChild(5).GetComponent<Text>().text = string.Format("{0:0m}", ls.distance_thrown);
 	}
 
-	public void renderFrameOneTeam(Frame viewingFrame)
+	public void RenderFrame(Frame viewingFrame)
 	{
-		if (viewingFrame.teams == null || viewingFrame.teams[0].players == null) return;
-
-		int numBluePlayers = viewingFrame.teams[0].players.Length;
-
-		gameTimeText.text = viewingFrame.game_clock_display;
-
-		movedObjects.Clear();
-
-		if (viewingFrame.game_status != "score")
-		{
-			isScored = false;
-			goalEventObject.SetActive(false);
-		}
-		if (viewingFrame.game_status == "score" && !isScored && showGoalAnim)
-		{
-			goalEventObject.SetActive(true);
-			isScored = true;
-			//Why tf is this here
-			//FXInstantiate(blueScoreEffects, new Vector3(0.75f, 0, 0), new Vector3(0, 180, 0));
-		}
-
-		if (!(bool)isBeingHeld(viewingFrame, true)[0])
-		{
-			if (!discTrail.enabled)
-				discTrail.Clear();
-			discTrail.enabled = true;
-		}
-		else
-		{
-			discTrail.enabled = false;
-		}
-
-
-
-		discTrailMat.color = viewingFrame.teams[0].possession ? new Color(0f, 0.647f, 0.847f, 0.8f) : new Color(1, 1, 1, 0.8f);
-		discLight.color = viewingFrame.teams[0].possession ? new Color(0f, 0.647f, 0.847f, 0.8f) : new Color(1, 1, 1, 0.8f);
-		autograbColor = viewingFrame.teams[0].possession ? new Color(0f, 0.647f, 0.847f, 0.08f) : new Color(1, 1, 1, 0.08f);
-		autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
-
-
-
-		blueGoals.text = viewingFrame.teams[0].stats.points.ToString();
-		orangeGoals.text = "0";
-
-		for (int i = 0; i < viewingFrame.teams[0].players.Length; i++)
-		{
-			renderPlayer(0, i, viewingFrame);
-		}
-		foreach (GameObject b in blueTeam)
-		{
-			if (!movedObjects.Contains(b))
-			{
-				b.transform.position = new Vector3(100, 100, 100);
-			}
-		}
-		foreach (GameObject o in orangeTeam)
-		{
-			if (!movedObjects.Contains(o))
-			{
-				o.transform.position = new Vector3(100, 100, 100);
-			}
-		}
-	}
-	/*
-    public void openGoalStats()
-    {
-        showingGoalStats = true;
-    }
-
-    public void closeGoalStats()
-    {
-        showingGoalStats = false;  
-    }
-    */
-	public void renderFrame(Frame viewingFrame)
-	{
-		if (viewingFrame.teams == null || viewingFrame.teams[0].players == null || viewingFrame.teams[1].players == null) return;
-
-		int numBluePlayers = viewingFrame.teams[0].players.Length;
-		int numOrangePlayers = viewingFrame.teams[1].players.Length;
+		//if (viewingFrame.teams == null ||
+		//	viewingFrame.teams[0].players == null ||
+		//	viewingFrame.teams[1].players == null)
+		//{
+		//	return;
+		//}
 
 		string gameTime = viewingFrame.game_clock_display;
 		gameTimeText.text = gameTime;
 
-		movedObjects.Clear();
-
-		if (!(bool)isBeingHeld(viewingFrame, false)[0])
+		if (!IsBeingHeld(viewingFrame).Item1)
 		{
 			if (!discTrail.enabled)
 				discTrail.Clear();
@@ -913,135 +698,175 @@ public class DemoStart : MonoBehaviour
 			}
 		}
 
+		// blue team possession effects
 		if (viewingFrame.teams[0].possession)
 		{
 			discTrailMat.color = new Color(0f, 0.647f, 0.847f, 0.8f);
 			discLight.color = new Color(0f, 0.647f, 0.847f, 0.8f);
 			autograbColor = new Color(0f, 0.647f, 0.847f, 0.08f);
 			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
 		}
+		// orange team possession effects
 		else if (viewingFrame.teams[1].possession)
 		{
 			discTrailMat.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
 			discLight.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
 			autograbColor = new Color(0.8235f, 0.4313f, 0.1764f, 0.08f);
 			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
 		}
+		// no team possession effects
 		else
 		{
 			discTrailMat.color = new Color(1f, 1f, 1f, 0.8f);
 			discLight.color = new Color(1f, 1f, 1f, 0.8f);
 			autograbColor = new Color(1f, 1f, 1f, 0.08f);
 			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
-
 		}
 
+		// set 2d score board
 		blueGoals.text = viewingFrame.blue_points.ToString();
 		orangeGoals.text = viewingFrame.orange_points.ToString();
-		//set in game scoreboard elements
+
+		// set in game scoreboard elements
 		scoreBoardController.blueScore = viewingFrame.blue_points;
 		scoreBoardController.orangeScore = viewingFrame.orange_points;
 		scoreBoardController.gameTime = viewingFrame.game_clock_display;
 
-		for (int j = 0; j < 2; j++)
+		var movedObjects = new List<PlayerCharacter>();
+
+		// Update the players
+		for (int i = 0; i < viewingFrame.teams.Length; i++)
 		{
-			for (int i = 0; i < viewingFrame.teams[j].players.Length; i++)
+			if (viewingFrame.teams[i].players != null)
 			{
-				renderPlayer(j, i, viewingFrame);
+				foreach (var player in viewingFrame.teams[i].players)
+				{
+					// get the matching player from the previous frame.
+					// Searching through all the players is the only way, since they may have 
+					// switched teams or been reorganized in the list when another player joins
+					Player previousPlayer = FindPlayerOnTeam(previousFrame.teams[i], player.name);
+
+					// if the player was on the other team last frame, remove it
+					if (previousPlayer == null && playerObjects.ContainsKey(player.name))
+					{
+						Destroy(playerObjects[player.name].gameObject);
+						playerObjects.Remove(player.name);
+					}
+
+					RenderPlayer(player, previousPlayer, i);
+
+					movedObjects.Add(playerObjects[player.name]);
+				}
 			}
 		}
-		foreach (GameObject b in blueTeam)
+
+		// remove players that weren't accessed this frame
+		List<string> playersToRemove = new List<string>();
+		foreach (var playerName in playerObjects.Keys)
 		{
-			if (!movedObjects.Contains(b))
+			if (!movedObjects.Contains(playerObjects[playerName]))
 			{
-				b.transform.position = new Vector3(100, 100, 100);
+				Destroy(playerObjects[playerName].gameObject);
+				playersToRemove.Add(playerName);
 			}
 		}
-		foreach (GameObject o in orangeTeam)
+		foreach (var p in playersToRemove)
 		{
-			if (!movedObjects.Contains(o))
-			{
-				o.transform.position = new Vector3(100, 100, 100);
-			}
+			playerObjects.Remove(p);
 		}
+
 		DiscController discScript = disc.GetComponent<DiscController>();
 		discScript.discVelocity = new Vector3(viewingFrame.disc.velocity[2], viewingFrame.disc.velocity[1], viewingFrame.disc.velocity[0]);
 		discScript.discPosition = new Vector3(viewingFrame.disc.position[2], viewingFrame.disc.position[1], viewingFrame.disc.position[0]);
 		//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
 	}
 
-	public void renderPlayer(int j, int i, Frame viewingFrame)
+	private Player FindPlayerOnTeam(Team team, string name)
 	{
-		//Create temp gameObject "playerObject" to set transform of later.
-		GameObject playerObject = (GameObject)(((ArrayList)Teams[j])[i]);
-		int[] temp = new int[2] { j, i };
-		/*Debug.Log(temp);
-        if(temp == (int[])isBeingHeld(viewingFrame, false)[2])
-        {
-            disc.GetComponent<DiscController>().playerHolding = playerObject;
-        }*/
+		if (team == null || team.players == null) return null;
 
-		if (viewingFrame == null || viewingFrame.teams.Length <= j || viewingFrame.teams[j].players.Length <= i)
+		foreach (var player in team.players)
 		{
-			return;
+			if (player.name == name)
+			{
+				return player;
+			}
 		}
 
-		//Set names above player heads
-		((Text)((ArrayList)teamsText[j])[i]).text = viewingFrame.teams[j].players[i].name;
+		return null;
+	}
 
-		if (previousFrame == null || previousFrame.teams.Length <= j || previousFrame.teams[j].players.Length <= i)
+	private Player FindPlayerInFrame(Frame frame, string name)
+	{
+		foreach (var team in frame.teams)
 		{
-			return;
+			foreach (var player in team.players)
+			{
+				if (player.name == name)
+				{
+					return player;
+				}
+			}
 		}
+
+		return null;
+	}
+
+	public void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex)
+	{
+		// if this player doesn't exist in the scene yet
+		if (!playerObjects.ContainsKey(player.name))
+		{
+			// instantiate it
+			playerObjects.Add(player.name, Instantiate(teamIndex == 0 ? bluePlayerPrefab : orangePlayerPrefab, playerObjsParent).GetComponent<PlayerCharacter>());
+		}
+
+		PlayerCharacter p = playerObjects[player.name];
+
+		// Set names above player heads
+		p.playerName.text = player.name;
 
 		//Get player transform values of current iteration
-		float[] playerPosition = viewingFrame.teams[j].players[i].position;
-		float[] playerHeadForward = viewingFrame.teams[j].players[i].forward;
-		float[] playerHeadUp = viewingFrame.teams[j].players[i].up;
-		float[] rHandPosition = viewingFrame.teams[j].players[i].rhand;
-		float[] lHandPosition = viewingFrame.teams[j].players[i].lhand;
-		float[] playerVelocity = viewingFrame.teams[j].players[i].velocity;
-		float[] previousVelocity = previousFrame.teams[j].players[i].velocity;
-		Vector3 playerVelocityVector = new Vector3(playerVelocity[2], playerVelocity[1], playerVelocity[0]);
-		Vector3 previousVelocityVector = new Vector3(previousVelocity[2], previousVelocity[1], previousVelocity[0]);
+		Vector3 playerVelocityVector = player.velocity.ToVector3();
+		Vector3 previousVelocityVector = Vector3.zero;
+		if (lastFramePlayer != null)
+		{
+			previousVelocityVector = lastFramePlayer.velocity.ToVector3();
+		}
 
 		//Set playerObject's transform values to those stored
-		playerObject.transform.position = new Vector3(playerPosition[2], playerPosition[1], playerPosition[0]);
+		p.transform.position = player.position.ToVector3();
 		//Old method that rotates entire player
 		//playerObject.transform.rotation = Quaternion.LookRotation(new Vector3(playerHeadForward[0], playerHeadForward[1], playerHeadForward[2]));
-		IKController playerIK = playerObject.GetComponent<IKController>();
+		IKController playerIK = p.ikController;
 		//Send Head and Hand transforms to IK script
-		playerIK.headForward = new Vector3(playerHeadForward[2], playerHeadForward[1], playerHeadForward[0]);
+		playerIK.headForward = player.forward.ToVector3();
 		//playerIK.headForward = new Vector3(playerHeadForward[0], playerHeadForward[1], playerHeadForward[2]);
 
-		playerIK.headUp = new Vector3(playerHeadUp[2], playerHeadUp[1], playerHeadUp[0]);
-		playerIK.rHandPosition = new Vector3(rHandPosition[2], rHandPosition[1], rHandPosition[0]);
-		playerIK.lHandPosition = new Vector3(lHandPosition[2], lHandPosition[1], lHandPosition[0]);
+		playerIK.headUp = player.up.ToVector3();
+		playerIK.rHandPosition = player.rhand.ToVector3();
+		playerIK.lHandPosition = player.lhand.ToVector3();
 		//Send Velocity to IK script
 		playerIK.playerVelocity = playerVelocityVector;
-		//assign playerVariables so you dont have to getcomponent multiple times because getcomponent is expensive SNEAKY (it could still be more efficient but that would be a lot of work)
-		playerVariables playerVariablesComponent = playerObject.GetComponent<playerVariables>();
 
-		if (viewingFrame.teams[j].players[i].stunned && !playerObject.GetComponent<playerVariables>().stunnedInitiated)
+		if (player.stunned && !p.stunnedInitiated)
 		{
-			FXInstantiate(punchParticle, playerObject.transform.position, Vector3.zero);
-			playerVariablesComponent.stunnedInitiated = true;
+			FXInstantiate(punchParticle, p.transform.position, Vector3.zero);
+			p.stunnedInitiated = true;
 		}
-		if (!viewingFrame.teams[j].players[i].stunned && playerObject.GetComponent<playerVariables>().stunnedInitiated)
-			playerVariablesComponent.stunnedInitiated = false;
+		if (!player.stunned && p.stunnedInitiated)
+			p.stunnedInitiated = false;
 
 		//kinda jank but it works (back thruster)
 		if (playerVelocityVector.magnitude - previousVelocityVector.magnitude > 1)
 		{
-			playerVariablesComponent.boost.SetActive(false);
-			playerVariablesComponent.boost.SetActive(true);
+			p.boost.SetActive(false);
+			p.boost.SetActive(true);
 		}
 
 		//Player Blocking
-		GameObject blockingEffect = playerVariablesComponent.playerShield;
-		if (viewingFrame.teams[j].players[i].blocking)
+		GameObject blockingEffect = p.playerShield;
+		if (player.blocking)
 		{
 			blockingEffect.gameObject.SetActive(true);
 		}
@@ -1049,39 +874,18 @@ public class DemoStart : MonoBehaviour
 		{
 			blockingEffect.gameObject.SetActive(false);
 		}
+	}
 
-		movedObjects.Add(playerObject);
-	}
-	//Same as rendering above, just in a coroutine.
-	private IEnumerator startPlayback(Frame viewingFrame)
+	/// <summary>
+	/// Index 1 (bool): isBeingHeld
+	/// Index 2 (bool): is it right hand?
+	/// Index 3 (int[2]): index 1=j index 2=i ... this is the player index
+	/// </summary>
+	public (bool, bool, int[]) IsBeingHeld(Frame viewingFrame)
 	{
-		if (viewingFrame.teams.Length > 1 && viewingFrame.teams[0].players != null && viewingFrame.teams[1].players != null)
+		for (int j = 0; j < viewingFrame.teams.Length; j++)
 		{
-			renderFrame(viewingFrame);
-		}
-		else
-		{
-			renderFrameOneTeam(viewingFrame);
-		}
-		// if(loadedDemo.isNewstyle && ((float)nextFrame.frameTimeOffset /1000f) > (timeDelay*1.8)){
-		//     //yield return new WaitForSeconds(((float)nextFrame.frameTimeOffset/1000f));
-		// }else{
-		yield return 0;
-		// }
-	}
-	public ArrayList isBeingHeld(Frame viewingFrame, bool oneTeam)
-	{
-		/*
-         * Returns arraylist
-         * Index 1 (bool): isBeingHeld
-         * Index 2 (bool): is it right hand?
-         * Index 3 (int[2]): index 1=j index 2=i ... this is the player index
-         */
-		ArrayList returnArray = new ArrayList();
-		//bool[] returnArray = new bool[2]{ false, false };
-		if (!oneTeam)
-		{
-			for (int j = 0; j < 2; j++)
+			if (viewingFrame.teams[j].players != null)
 			{
 				for (int i = 0; i < viewingFrame.teams[j].players.Length; i++)
 				{
@@ -1093,53 +897,16 @@ public class DemoStart : MonoBehaviour
 					float lHandDis = Vector3.Distance(discPosition, lHand);
 					if (rHandDis < 0.2f)
 					{
-						returnArray.Add(true);
-						returnArray.Add(true);
-						returnArray.Add(new int[2] { j, i });
-						return returnArray;
+						return (true, true, new int[2] { j, i });
 					}
 					if (lHandDis < 0.2f)
 					{
-						returnArray.Add(true);
-						returnArray.Add(false);
-						returnArray.Add(new int[2] { j, i });
-						return returnArray;
+						return (true, false, new int[2] { j, i });
 					}
 				}
 			}
-
 		}
-		if (oneTeam)
-		{
-			for (int i = 0; i < viewingFrame.teams[0].players.Length; i++)
-			{
-				Player p = viewingFrame.teams[0].players[i];
-				Vector3 discPosition = new Vector3(viewingFrame.disc.position[0], viewingFrame.disc.position[1], viewingFrame.disc.position[2]);
-				Vector3 rHand = new Vector3(p.rhand[0], p.rhand[1], p.rhand[2]);
-				Vector3 lHand = new Vector3(p.lhand[0], p.lhand[1], p.lhand[2]);
-				float rHandDis = Vector3.Distance(discPosition, rHand);
-				float lHandDis = Vector3.Distance(discPosition, lHand);
-
-				if (rHandDis < 0.2f)
-				{
-					returnArray.Add(true);
-					returnArray.Add(true);
-					returnArray.Add(new int[2] { 0, i });
-					return returnArray;
-				}
-				if (lHandDis < 0.2f)
-				{
-					returnArray.Add(true);
-					returnArray.Add(false);
-					returnArray.Add(new int[2] { 0, i });
-					return returnArray;
-				}
-			}
-		}
-		returnArray.Add(false);
-		returnArray.Add(false);
-		returnArray.Add(new int[2] { -1, -1 });
-		return returnArray;
+		return (false, false, new int[2] { -1, -1 });
 	}
 
 	//Function to set playing variable to start and stop auto-play of demo.
@@ -1152,11 +919,6 @@ public class DemoStart : MonoBehaviour
 			playbackMultiplier = 1f;
 			currentSliderFrame++;
 		}
-	}
-	//Handles new demo button (opens menu scene)
-	public void openNewDemo()
-	{
-		SceneManager.LoadScene(0);
 	}
 
 	public void useSlider()

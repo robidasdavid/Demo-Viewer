@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Management;
 using unityutilities;
 
 public class GameManager : MonoBehaviour
@@ -17,21 +18,39 @@ public class GameManager : MonoBehaviour
 		{
 			RefreshVRObjectsVisibility(GetPresence());
 		}
-	}
 
-
-
-	// Update is called once per frame
-	void Update()
-	{
-		bool isPresent = GetPresence();
-
-		if (lastFrameUserPresent != isPresent)
+		string[] args = System.Environment.GetCommandLineArgs();
+		for (int i = 0; i < args.Length; i++)
 		{
-			RefreshVRObjectsVisibility(isPresent);
+			Debug.Log("ARG " + i + ": " + args[i]);
+			if (args[i].Contains(".json") || args[i].Contains(".echoreplay"))
+			{
+				PlayerPrefs.SetString("fileDirector", args[i]);
+				break;
+			}
+
+			if (args[i] == "-useVR")
+			{
+				RefreshVRObjectsVisibility(true);
+				XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
+				XRGeneralSettings.Instance.Manager.StartSubsystems();
+			}
 		}
-		lastFrameUserPresent = isPresent;
 	}
+
+
+
+	//// Update is called once per frame
+	//void Update()
+	//{
+	//	bool isPresent = GetPresence();
+
+	//	if (lastFrameUserPresent != isPresent)
+	//	{
+	//		RefreshVRObjectsVisibility(isPresent);
+	//	}
+	//	lastFrameUserPresent = isPresent;
+	//}
 
 	private static bool GetPresence()
 	{

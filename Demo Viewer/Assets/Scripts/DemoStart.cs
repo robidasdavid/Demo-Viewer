@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using System.IO.Compression;
 using System;
 using TMPro;
+using System.Threading;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -42,7 +42,7 @@ public class PlayerStats : Stats
 
 public class DemoStart : MonoBehaviour
 {
-	private float timer = 0.0f;
+	#region Variables
 	public GameObject orangeScoreEffects;
 	public GameObject blueScoreEffects;
 
@@ -50,7 +50,6 @@ public class DemoStart : MonoBehaviour
 	public Text gameTimeText;
 	public Slider playbackSlider;
 	public Slider speedSlider;
-	public int numFrames;
 	public Game loadedDemo;
 	public GameObject controlsOverlay;
 	public static string lastDateTimeString;
@@ -77,8 +76,6 @@ public class DemoStart : MonoBehaviour
 
 	public Material discTrailMat;
 
-	public float demoFramerate;
-
 	public Text playbackFramerate;
 
 	public Transform playerObjsParent;
@@ -91,15 +88,7 @@ public class DemoStart : MonoBehaviour
 
 	private bool isScored = false;
 
-	private bool wasPlaying = false;
-	float timeDelay = 0f;
-	public bool isPlaying = false;
 	public bool wasDPADXReleased = true;
-
-	public bool isReverse = false;
-	public bool wasPlayingBeforeScrub = false;
-	public bool isScrubbing = false;
-	public float playbackMultiplier = 1f;
 
 	/// <summary>
 	/// player ign, player character obj
@@ -107,17 +96,13 @@ public class DemoStart : MonoBehaviour
 	Dictionary<string, PlayerCharacter> playerObjects = new Dictionary<string, PlayerCharacter>();
 
 
-	public int currentFrame = 0;
-	public int currentSliderFrame = 0;
+	public Playhead playhead;
 
 	public static Color blueTeamColor = new Color(0, 165, 216);
 	public static Color orangeTeamColor = new Color(210, 110, 45);
 
-	Shader standard;
 	public Shader discThroughWall;
 
-	private Frame previousFrame;
-	private Frame nextFrame;
 	public ScoreBoardController scoreBoardController;
 
 	private string jsonStr;
@@ -125,201 +110,24 @@ public class DemoStart : MonoBehaviour
 
 	public bool showDebugLogs;
 
-	protected bool ISWEBGL = false;
 	protected string IP = "http://69.30.197.26:5000";
 
 	public TextMeshProUGUI replayFileNameText;
-
-	IEnumerator GetText(string fn, Action doLast)
-	{
-		UnityWebRequest req = new UnityWebRequest();
-		req = UnityWebRequest.Get(string.Format("{0}/file?name={1}", IP, fn));
-		yield return req.SendWebRequest();
-
-		DownloadHandler dh = req.downloadHandler;
-
-		//this.jsonStr = dh.text;
-		StreamReader read = new StreamReader(new MemoryStream(dh.data));
-		loadNewStyle(read);
-		doLast();
-	}
-
-	private static StreamReader OpenOrExtract(StreamReader reader)
-	{
-		char[] buffer = new char[2];
-		reader.Read(buffer, 0, buffer.Length);
-		reader.DiscardBufferedData();
-		reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-		if (buffer[0] == 'P' && buffer[1] == 'K')
-		{
-			ZipArchive archive = new ZipArchive(reader.BaseStream);
-			StreamReader ret = new StreamReader(archive.Entries[0].Open());
-			//reader.Close();
-			return ret;
-		}
-		return reader;
-	}
-
-
-	Game loadNewStyle(StreamReader fileReader)
-	{
-		bool fileFinishedReading = false;
-		List<Frame> readFrames = new List<Frame>();
-		Game readGame = new Game();
-		readGame.caprate = 60;
-
-		DateTime? currentLoadDateTimeFrame = null;
-		//filesInFolder = Directory.GetFiles(readFromFolder, "*.zip").ToList();
-		//filesInFolder.Sort();
-		using (fileReader = OpenOrExtract(fileReader))
-		{
-
-			while (!fileFinishedReading)
-			{
-				if (fileReader != null)
-				{
-					string rawJSON = fileReader.ReadLine();
-					if (rawJSON == null)
-					{
-						fileFinishedReading = true;
-						fileReader.Close();
-						// if (readFromFolderIndex >= filesInFolder.Count)
-						// {
-						// 	fileFinishedReading = true;
-						// }
-						// else
-						// {
-						// 	fileReader = ExtractFile(fileReader, filesInFolder[readFromFolderIndex++]);
-						// }
-					}
-					else
-					{
-						string[] splitJSON = rawJSON.Split('\t');
-						string onlyJSON, onlyTime;
-						double frameTimeOffset = 0;
-						if (splitJSON.Length > 1)
-						{
-							onlyJSON = splitJSON[1];
-							onlyTime = splitJSON[0];
-						}
-						else
-						{
-							onlyJSON = splitJSON[0];
-							onlyTime = currentLoadDateTimeFrame.ToString();
-							// onlyTime = fileName.Substring(4, fileName.Length - 8);
-						}
-						DateTime frameTime = DateTime.Parse(onlyTime);
-						if (currentLoadDateTimeFrame != null)
-						{
-							TimeSpan frameOffsetTS = frameTime - currentLoadDateTimeFrame.Value;
-							frameTimeOffset = frameOffsetTS.TotalMilliseconds;
-						}
-						currentLoadDateTimeFrame = frameTime;
-
-						if (onlyJSON.Length > 300)
-						{
-							try
-							{
-								Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
-								foundFrame.frameTimeOffset = frameTimeOffset;
-								readFrames.Add(foundFrame);
-							}
-							catch (Exception e)
-							{
-								Debug.LogError("Couldn't read frame. File is corrupted.");
-							}
-						}
-					}
-				}
-			}
-		}
-		readGame.frames = readFrames.ToArray();
-		readGame.nframes = readGame.frames.Length;
-		return readGame;
-	}
-
-	void DoLast()
-	{
-		DoLast("");
-	}
-
-	void DoLast(string demoFile)
-	{
-		//Debug.Log(this.jsonStr);
-		if (demoFile.Contains(".echoreplayold"))
-		{
-			jsonStr = File.ReadAllText(demoFile);
-			loadedDemo = JsonUtility.FromJson<Game>(jsonStr);
-			loadedDemo.isNewstyle = false;
-			sendConsoleMessage("Finished Serializing.");
-		}
-		else if (demoFile == "")
-		{
-			loadedDemo.isNewstyle = true;
-		}
-		else
-		{
-			Debug.Log("Reading file: " + demoFile);
-			StreamReader reader = new StreamReader(demoFile);
-			loadedDemo = loadNewStyle(reader);
-			loadedDemo.isNewstyle = true;
-		}
-
-
-
-		numFrames = loadedDemo.frames.Length;
-		frameText.text = string.Format("Frame 0 of {0}", numFrames);
-		demoFramerate = loadedDemo.caprate;// * 2.6f;
-
-		standard = Shader.Find("standard");
-
-		//set slider values
-		playbackSlider.maxValue = numFrames - 1;
-
-		//HUD initialization
-		goalEventObject.SetActive(false);
-		lastGoalStats.SetActive(false);
-
-		//Set replay settings
-		discTrail.enabled = true;
-
-		//Make the previous frame a thing
-		previousFrame = loadedDemo.frames[0];
-		nextFrame = loadedDemo.frames[2];
-
-		//Set timing
-		// Time.fixedDeltaTime = 1f / (demoFramerate*3.5f);
-		Application.targetFrameRate = 300;
-		Time.fixedDeltaTime = 1f / (demoFramerate * 1f);
-		timeDelay = 1f / (60f);
-
-		ready = true;
-	}
-
-	/// <summary>
-	/// Loads the currently set file (set in playerprefs beforehand)
-	/// </summary>
-	public void ReloadFile()
-	{
-
-	}
+	#endregion
 
 	void Start()
 	{
-		//Ahh yes welcome to the code
+		// Ahh yes welcome to the code
 
-		//Load and serialize demo file
-		if (!ISWEBGL)
-		{
-			string demoFile = PlayerPrefs.GetString("fileDirector");
-			replayFileNameText.text = Path.GetFileName(demoFile);
-			sendConsoleMessage("Loading Demo: " + demoFile);
+		// Load and serialize demo file
+#if !UNITY_WEBGL
+		string demoFile = PlayerPrefs.GetString("fileDirector");
+		replayFileNameText.text = Path.GetFileName(demoFile);
+		SendConsoleMessage("Loading Demo: " + demoFile);
 
-			DoLast(demoFile);
-		}
-		else
-		{
-			string getFileName = "";
+		StartCoroutine(DoLast(demoFile));
+#else
+		string getFileName = "";
 			int pm = Application.absoluteURL.IndexOf("=");
 			if (pm != -1)
 			{
@@ -328,7 +136,7 @@ public class DemoStart : MonoBehaviour
 			sendConsoleMessage("Loading: " + getFileName);
 
 			StartCoroutine(GetText(getFileName, DoLast));
-		}
+#endif
 	}
 
 	// Update is called once per frame
@@ -336,102 +144,37 @@ public class DemoStart : MonoBehaviour
 	{
 		if (ready)
 		{
-			if (isPlaying)
+			if (playhead.isPlaying)
 			{
-				timer += Time.deltaTime;
-
-				// Playback speed controls
-
-				// if the playhead is on the last frame (beginning or end depending on reverse)
-				if (!isReverse && currentSliderFrame == numFrames - 1 || isReverse && currentSliderFrame == 0)
-				{
-					setPlaying(false);
-				}
-				else
-				{
-					if (timer > ((float)((nextFrame.frameTimeOffset - 4) * playbackMultiplier) / 1000f))
-					{
-						int incrementFrameCount = 0;
-						double totalFrameTimeOffset = nextFrame.frameTimeOffset - 3;
-						while (timer > ((float)((totalFrameTimeOffset) * playbackMultiplier) / 1000f))
-						{
-							incrementFrameCount++;
-							if (isReverse)
-							{
-								if (currentFrame - incrementFrameCount == 0)
-								{
-									break;
-								}
-								totalFrameTimeOffset += loadedDemo.frames[currentFrame - incrementFrameCount + 1].frameTimeOffset - 3;
-							}
-							else
-							{
-								if (currentFrame + incrementFrameCount == numFrames - 1)
-								{
-									break;
-								}
-								totalFrameTimeOffset += loadedDemo.frames[currentFrame + incrementFrameCount + 1].frameTimeOffset - 3;
-							}
-						}
-						if (isReverse)
-						{
-							currentSliderFrame -= incrementFrameCount;
-						}
-						else
-						{
-							currentSliderFrame += incrementFrameCount;
-						}
-						timer = 0f;
-					}
-				}
+				playhead.IncrementPlayhead(Time.deltaTime);
 			}
 
 			// Find and declare what frame the slider is on.
-			if (isPlaying)
-				playbackSlider.value = currentSliderFrame;
+			if (playhead.isPlaying)
+				playbackSlider.value = playhead.CurrentFrameIndex;
 			else
-				currentSliderFrame = (int)playbackSlider.value;
+				playhead.CurrentFrameIndex = (int)playbackSlider.value;
 
 			// process input
 			CheckKeys();
 
-			frameText.text = string.Format("Frame {0} of {1}", (currentSliderFrame + 1), numFrames);
+			frameText.text = string.Format("Frame {0} of {1}", (playhead.CurrentFrameIndex + 1), playhead.FrameCount);
 			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
 
 			// Only render the next frame if it differs from the last (optimization)
-			if (currentSliderFrame != currentFrame)
+			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying)
 			{
-				if (currentFrame != 0)
-				{
-					if (isReverse)
-					{
-						previousFrame = loadedDemo.frames[currentFrame + 1];
-					}
-					else
-					{
-						previousFrame = loadedDemo.frames[currentFrame - 1];
-					}
-				}
-
-				if (!isReverse && currentFrame != numFrames - 1)
-				{
-					nextFrame = loadedDemo.frames[currentFrame + 1];
-				}
-				else if (isReverse && currentFrame != 0)
-				{
-					nextFrame = loadedDemo.frames[currentFrame];
-				}
-
 				// Grab frame
-				Frame viewingFrame = loadedDemo.frames[currentSliderFrame];
+				Frame viewingFrame = playhead.GetFrame();
+				Frame previousFrame = playhead.GetPreviousFrame();
 
 				// Joust Readout
 				Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
 				Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
-				if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && isPlaying)
+				if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
 				{
-					maxGameTime = loadedDemo.frames[0].game_clock;
-					float currentTime = loadedDemo.frames[currentSliderFrame].game_clock;
+					maxGameTime = loadedDemo.frames[0].game_clock;  // TODO this may not be correct if the recording starts midgame
+					float currentTime = viewingFrame.game_clock;
 					joustReadout.GetComponentInChildren<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
 					StartCoroutine(FlashInOut(joustReadout, 3));
 				}
@@ -452,12 +195,150 @@ public class DemoStart : MonoBehaviour
 					}
 				}
 
-				currentFrame = currentSliderFrame;
-
 				// Render this frame
-				RenderFrame(viewingFrame);
+				RenderFrame(viewingFrame, previousFrame);
 			}
 		}
+	}
+
+
+	/// <summary>
+	/// Used in webgl mode. idk why I haven't looked. Maybe consolidate this with other webrequest file loading?
+	/// </summary>
+	IEnumerator GetText(string fn, Action doLast)
+	{
+		UnityWebRequest req = new UnityWebRequest();
+		req = UnityWebRequest.Get(string.Format("{0}/file?name={1}", IP, fn));
+		yield return req.SendWebRequest();
+
+		DownloadHandler dh = req.downloadHandler;
+
+		//this.jsonStr = dh.text;
+		StreamReader read = new StreamReader(new MemoryStream(dh.data));
+		ReadReplayFile(read);
+		doLast();
+	}
+
+	private static StreamReader OpenOrExtract(StreamReader reader)
+	{
+		char[] buffer = new char[2];
+		reader.Read(buffer, 0, buffer.Length);
+		reader.DiscardBufferedData();
+		reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+		if (buffer[0] == 'P' && buffer[1] == 'K')
+		{
+			ZipArchive archive = new ZipArchive(reader.BaseStream);
+			StreamReader ret = new StreamReader(archive.Entries[0].Open());
+			//reader.Close();
+			return ret;
+		}
+		return reader;
+	}
+
+
+	Game ReadReplayFile(StreamReader fileReader)
+	{
+		bool fileFinishedReading = false;
+		List<Frame> readFrames = new List<Frame>();
+		Game readGame = new Game();
+
+		using (fileReader = OpenOrExtract(fileReader))
+		{
+
+			while (!fileFinishedReading)
+			{
+				if (fileReader != null)
+				{
+					string rawJSON = fileReader.ReadLine();
+					if (rawJSON == null)
+					{
+						fileFinishedReading = true;
+						fileReader.Close();
+					}
+					else
+					{
+						string[] splitJSON = rawJSON.Split('\t');
+						string onlyJSON, onlyTime;
+						if (splitJSON.Length == 2)
+						{
+							onlyJSON = splitJSON[1];
+							onlyTime = splitJSON[0];
+						}
+						else
+						{
+							Debug.LogError("Row doesn't include both a time and API JSON");
+							continue;
+						}
+						DateTime frameTime = DateTime.Parse(onlyTime);
+
+						// if this is actually valid arena data
+						if (onlyJSON.Length > 300)
+						{
+							try
+							{
+								Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
+								foundFrame.frameTime = frameTime;
+								readFrames.Add(foundFrame);
+							}
+							catch (Exception)
+							{
+								Debug.LogError("Couldn't read frame. File is corrupted.");
+							}
+						}
+					}
+				}
+			}
+		}
+		readGame.frames = readFrames.ToArray();
+		readGame.nframes = readGame.frames.Length;
+		return readGame;
+	}
+
+	/// <summary>
+	/// Part of the process for reading the file
+	/// </summary>
+	/// <param name="demoFile">The filename of the replay file</param>
+	IEnumerator DoLast(string demoFile = "")
+	{
+		if (!string.IsNullOrEmpty(demoFile))
+		{
+			Debug.Log("Reading file: " + demoFile);
+			StreamReader reader = new StreamReader(demoFile);
+
+			loadedDemo = ReadReplayFile(reader);
+			Thread loadThread = new Thread(() => ReadReplayFile(reader));
+			loadThread.Start();
+			while (loadThread.IsAlive)
+			{
+				// maybe put a progress bar here
+				yield return null;
+			}
+		}
+
+		playhead = new Playhead(loadedDemo);
+
+		frameText.text = string.Format("Frame 0 of {0}", playhead.FrameCount);
+
+		//set slider values
+		playbackSlider.maxValue = playhead.FrameCount - 1;
+
+		//HUD initialization
+		goalEventObject.SetActive(false);
+		lastGoalStats.SetActive(false);
+
+		//Set replay settings
+		discTrail.enabled = true;
+
+		ready = true;
+	}
+
+	/// <summary>
+	/// Loads the currently set file (set in playerprefs beforehand)
+	/// Something should be put here so files can be changed without reloading the scene
+	/// </summary>
+	public void ReloadFile()
+	{
+
 	}
 
 
@@ -466,42 +347,42 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	public void CheckKeys()
 	{
-		sendConsoleMessage(Input.GetAxis("RightTrig").ToString());
-		sendConsoleMessage(Input.GetAxis("LeftTrig").ToString());
+		SendConsoleMessage(Input.GetAxis("RightTrig").ToString());
+		SendConsoleMessage(Input.GetAxis("LeftTrig").ToString());
 		float rightTrig = Input.GetAxis("RightTrig") * 1.75f;
 		float leftTrig = Input.GetAxis("LeftTrig") * 1.75f;
 		float combinedTrigs = rightTrig - leftTrig;
 		if (combinedTrigs == 0)
 		{
-			if (isScrubbing)
+			if (playhead.isScrubbing)
 			{
-				isScrubbing = false;
-				isPlaying = wasPlayingBeforeScrub;
-				isReverse = false;
-				playbackMultiplier = 1f;
+				playhead.isScrubbing = false;
+				playhead.isPlaying = playhead.wasPlayingBeforeScrub;
+				playhead.isReverse = false;
+				playhead.playbackMultiplier = 1f;
 			}
 		}
 		else if (combinedTrigs < 0)
 		{
-			if (!isScrubbing)
+			if (!playhead.isScrubbing)
 			{
-				wasPlayingBeforeScrub = isPlaying;
+				playhead.wasPlayingBeforeScrub = playhead.isPlaying;
 			}
-			isPlaying = true;
-			playbackMultiplier = 1f / (combinedTrigs * -1f);
-			isReverse = true;
-			isScrubbing = true;
+			playhead.isPlaying = true;
+			playhead.playbackMultiplier = 1f / (combinedTrigs * -1f);
+			playhead.isReverse = true;
+			playhead.isScrubbing = true;
 		}
 		else
 		{
-			if (!isScrubbing)
+			if (!playhead.isScrubbing)
 			{
-				wasPlayingBeforeScrub = isPlaying;
+				playhead.wasPlayingBeforeScrub = playhead.isPlaying;
 			}
-			isPlaying = true;
-			playbackMultiplier = 1f / combinedTrigs;
-			isReverse = false;
-			isScrubbing = true;
+			playhead.isPlaying = true;
+			playhead.playbackMultiplier = 1f / combinedTrigs;
+			playhead.isReverse = false;
+			playhead.isScrubbing = true;
 
 		}
 		if (Input.GetKeyDown(KeyCode.H))
@@ -512,18 +393,19 @@ public class DemoStart : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("XboxA"))
 		{
-			if (isScrubbing)
+			if (playhead.isScrubbing)
 			{
-				wasPlayingBeforeScrub = !wasPlayingBeforeScrub;
+				playhead.wasPlayingBeforeScrub = !playhead.wasPlayingBeforeScrub;
 			}
-			if (playbackMultiplier != 1f && isPlaying || isReverse)
+			if (playhead.playbackMultiplier != 1f && playhead.isPlaying || playhead.isReverse)
 			{
-				isReverse = false;
-				playbackMultiplier = 1f;
+				playhead.isReverse = false;
+				playhead.playbackMultiplier = 1f;
 			}
 			else
 			{
-				setPlaying(!isPlaying);
+				playhead.SetPlaying(!playhead.isPlaying);
+				playhead.playbackMultiplier = 1f;
 			}
 		}
 		if (Input.GetButtonDown("XboxSelect"))
@@ -537,7 +419,7 @@ public class DemoStart : MonoBehaviour
 		}
 		if (Input.GetButtonDown("XboxStart"))
 		{
-			GUIUtility.systemCopyBuffer = currentFrame.ToString();
+			GUIUtility.systemCopyBuffer = playhead.CurrentFrameIndex.ToString();    // TODO set this to the current frame JSON?
 		}
 
 		if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -551,56 +433,58 @@ public class DemoStart : MonoBehaviour
 		else if (wasDPADXReleased && dpadX == -1)
 		{
 			wasDPADXReleased = false;
-			isPlaying = true;
-			if (isReverse == true)
+			playhead.isPlaying = true;
+			if (playhead.isReverse == true)
 			{
-				if (playbackMultiplier > 1 / 10f)
+				if (playhead.playbackMultiplier > 1 / 10f)
 				{
-					playbackMultiplier = playbackMultiplier / 2f;
+					playhead.playbackMultiplier /= 2f;
 				}
 			}
 			else
 			{
-				isReverse = true;
-				playbackMultiplier = 1f;
+				playhead.isReverse = true;
+				playhead.playbackMultiplier = 1f;
 			}
 
 		}
 		else if (wasDPADXReleased && dpadX == 1)
 		{
 			wasDPADXReleased = false;
-			isPlaying = true;
-			if (isReverse == false)
+			playhead.isPlaying = true;
+			if (playhead.isReverse == false)
 			{
-				if (playbackMultiplier >= 1 / 10f)
+				if (playhead.playbackMultiplier >= 1 / 10f)
 				{
-					playbackMultiplier = playbackMultiplier / 2f;
+					playhead.playbackMultiplier /= 2f;
 				}
 			}
 			else
 			{
-				isReverse = false;
-				playbackMultiplier = 1f;
+				playhead.isReverse = false;
+				playhead.playbackMultiplier = 1f;
 			}
 		}
 
 
 		if (Input.GetKeyDown(KeyCode.DownArrow))
+		{
 			speedSlider.value -= .2f;
+			playhead.playbackMultiplier = Mathf.Clamp(playhead.playbackMultiplier - .2f, .01f, 8);
+		}
 
+		// skip backwards 1 second
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
-			int newFrameNumber = Mathf.FloorToInt(playbackSlider.value) - (Mathf.FloorToInt(demoFramerate) * 5);
-			currentSliderFrame = newFrameNumber < 0 ? 0 : newFrameNumber;
-
-			playbackSlider.value = currentSliderFrame;
+			playhead.IncrementPlayhead(-1);
+			playbackSlider.value = playhead.CurrentFrameIndex;
 		}
+
+		// skip forwards 1 second
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			int newFrameNumber = Mathf.FloorToInt(playbackSlider.value) + (Mathf.FloorToInt(demoFramerate) * 5);
-			currentSliderFrame = newFrameNumber > numFrames ? numFrames : newFrameNumber;
-
-			playbackSlider.value = currentSliderFrame;
+			playhead.IncrementPlayhead(1);
+			playbackSlider.value = playhead.CurrentFrameIndex;
 		}
 	}
 
@@ -611,17 +495,17 @@ public class DemoStart : MonoBehaviour
 		flashObject.SetActive(false);
 	}
 	/* 
-    public bool isDiscVisible()
-    {
-        RaycastHit ObstacleHit;
-        return (Physics.Raycast(Camera.main.transform.position, disc.transform.position - Camera.main.transform.position, out ObstacleHit, Mathf.Infinity) && ObstacleHit.transform != Camera.main && ObstacleHit.transform == disc);
-    }
-    */
+	public bool isDiscVisible()
+	{
+		RaycastHit ObstacleHit;
+		return (Physics.Raycast(Camera.main.transform.position, disc.transform.position - Camera.main.transform.position, out ObstacleHit, Mathf.Infinity) && ObstacleHit.transform != Camera.main && ObstacleHit.transform == disc);
+	}
+	*/
 
 	//Handle instantiation of effects while playing versus not playing to minimize effects while scrubbing
 	public void FXInstantiate(GameObject fx, Vector3 position, Vector3 rotation)
 	{
-		if (isPlaying)
+		if (playhead.isPlaying)
 			Instantiate(fx, position, Quaternion.Euler(rotation));
 	}
 
@@ -655,7 +539,7 @@ public class DemoStart : MonoBehaviour
 		lastGoalStats.transform.GetChild(5).GetComponent<Text>().text = string.Format("{0:0m}", ls.distance_thrown);
 	}
 
-	public void RenderFrame(Frame viewingFrame)
+	public void RenderFrame(Frame viewingFrame, Frame previousFrame)
 	{
 		//if (viewingFrame.teams == null ||
 		//	viewingFrame.teams[0].players == null ||
@@ -776,8 +660,8 @@ public class DemoStart : MonoBehaviour
 		}
 
 		DiscController discScript = disc.GetComponent<DiscController>();
-		discScript.discVelocity = new Vector3(viewingFrame.disc.velocity[2], viewingFrame.disc.velocity[1], viewingFrame.disc.velocity[0]);
-		discScript.discPosition = new Vector3(viewingFrame.disc.position[2], viewingFrame.disc.position[1], viewingFrame.disc.position[0]);
+		discScript.discVelocity = viewingFrame.disc.velocity.ToVector3();
+		discScript.discPosition = viewingFrame.disc.position.ToVector3();
 		//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
 	}
 
@@ -890,9 +774,9 @@ public class DemoStart : MonoBehaviour
 				for (int i = 0; i < viewingFrame.teams[j].players.Length; i++)
 				{
 					Player p = viewingFrame.teams[j].players[i];
-					Vector3 discPosition = new Vector3(viewingFrame.disc.position[0], viewingFrame.disc.position[1], viewingFrame.disc.position[2]);
-					Vector3 rHand = new Vector3(p.rhand[0], p.rhand[1], p.rhand[2]);
-					Vector3 lHand = new Vector3(p.lhand[0], p.lhand[1], p.lhand[2]);
+					Vector3 discPosition = viewingFrame.disc.position.ToVector3Backwards();
+					Vector3 rHand = p.rhand.ToVector3Backwards();
+					Vector3 lHand = p.lhand.ToVector3Backwards();
 					float rHandDis = Vector3.Distance(discPosition, rHand);
 					float lHandDis = Vector3.Distance(discPosition, lHand);
 					if (rHandDis < 0.2f)
@@ -909,41 +793,25 @@ public class DemoStart : MonoBehaviour
 		return (false, false, new int[2] { -1, -1 });
 	}
 
-	//Function to set playing variable to start and stop auto-play of demo.
-	public void setPlaying(bool value)
-	{
-		isReverse = false;
-		isPlaying = value;
-		if (value && currentSliderFrame != numFrames - 1)
-		{
-			playbackMultiplier = 1f;
-			currentSliderFrame++;
-		}
-	}
-
 	public void useSlider()
 	{
-
-		sendConsoleMessage(isPlaying.ToString());
-		wasPlaying = isPlaying;
-		setPlaying(false);
-
+		SendConsoleMessage(playhead.isPlaying.ToString());
+		playhead.wasPlaying = playhead.isPlaying;
+		playhead.SetPlaying(false);
 	}
 
 	public void unUseSlider()
 	{
-
-		setPlaying(false);
-		setPlaying(wasPlaying);
-
+		playhead.SetPlaying(false);
+		playhead.SetPlaying(playhead.wasPlaying);
 	}
 
 	public void playbackValueChanged()
 	{
-		currentSliderFrame = isPlaying ? Mathf.FloorToInt(playbackSlider.value) : (int)playbackSlider.value;
+		//playhead.CurrentFrameIndex = playhead.isPlaying ? Mathf.FloorToInt(playbackSlider.value) : (int)playbackSlider.value;
 	}
 
-	public void sendConsoleMessage(string msg)
+	public void SendConsoleMessage(string msg)
 	{
 		if (showDebugLogs)
 		{

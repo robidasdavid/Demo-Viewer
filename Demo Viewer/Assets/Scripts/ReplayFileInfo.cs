@@ -43,4 +43,15 @@ public class ReplayFileInfo : MonoBehaviour
 	}
 	[SerializeField]
 	private TextMeshProUGUI notesText;
+
+	private string size;
+	public string Size {
+		get => size;
+		set {
+			size = value;
+			sizeText.text = value;
+		}
+	}
+	[SerializeField]
+	private TextMeshProUGUI sizeText;
 }

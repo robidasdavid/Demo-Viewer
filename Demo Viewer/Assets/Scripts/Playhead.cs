@@ -45,7 +45,7 @@ public class Playhead
 	{
 		deltaTime *= playbackMultiplier;
 
-		playheadLocation += TimeSpan.FromSeconds(deltaTime);
+		playheadLocation += TimeSpan.FromSeconds(deltaTime * (isReverse ? -1 : 1));
 
 		FindCurrentFrameLocation();
 	}
@@ -104,15 +104,17 @@ public class Playhead
 
 
 			// if beyond start or end, stop playing
-			if (currentFrameIndex == FrameCount - 1 && !isReverse)
+			if (currentFrameIndex >= FrameCount - 1)
 			{
 				isPlaying = false;
 				CurrentFrameIndex = FrameCount - 1;
+				return;
 			}
-			else if (currentFrameIndex == 0 && isReverse)
+			else if (currentFrameIndex <= 0)
 			{
 				isPlaying = false;
 				CurrentFrameIndex = 0;
+				return;
 			}
 		}
 	}

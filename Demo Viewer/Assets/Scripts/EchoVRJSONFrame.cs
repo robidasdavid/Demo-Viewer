@@ -202,28 +202,38 @@ public class Team
 
 		};
 
-		// TODO make sure the players are in the same order. This should only be a problem when players join/leave
-		int numPlayers = Math.Max(from.players.Length, to.players.Length);
-
-		newTeam.players = new Player[numPlayers];
-
-		for (int i = 0; i < numPlayers; i++)
+		if (from.players == null)
 		{
-			if (from.players.Length <= i &&
-				to.players.Length > i)
+			newTeam.players = null;
+		}else if (to.players == null)
+		{
+			newTeam.players = from.players;
+		}
+		else
+		{
+			// TODO make sure the players are in the same order. This should only be a problem when players join/leave
+			int numPlayers = Math.Max(from.players.Length, to.players.Length);
+
+			newTeam.players = new Player[numPlayers];
+
+			for (int i = 0; i < numPlayers; i++)
 			{
-				newTeam.players[i] = to.players[i];
-			}
-			else if (to.players.Length <= i &&
-			  from.players.Length > i)
-			{
-				newTeam.players[i] = from.players[i];
-			}
-			else if (from.players.Length > i &&
-			  to.players.Length > i)
-			{
-				// actually lerp the team
-				newTeam.players[i] = Player.Lerp(from.players[i], to.players[i], t);
+				if (from.players.Length <= i &&
+					to.players.Length > i)
+				{
+					newTeam.players[i] = to.players[i];
+				}
+				else if (to.players.Length <= i &&
+				  from.players.Length > i)
+				{
+					newTeam.players[i] = from.players[i];
+				}
+				else if (from.players.Length > i &&
+				  to.players.Length > i)
+				{
+					// actually lerp the team
+					newTeam.players[i] = Player.Lerp(from.players[i], to.players[i], t);
+				}
 			}
 		}
 

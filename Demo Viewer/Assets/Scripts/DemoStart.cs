@@ -50,6 +50,14 @@ public class DemoStart : MonoBehaviour
 	public Text gameTimeText;
 	public Slider playbackSlider;
 	public Slider speedSlider;
+	public float playbackSpeed {
+		get => playhead.playbackMultiplier;
+		set {
+			playhead.playbackMultiplier = value;
+			UpdateSpeedSlider();
+		}
+	}
+	public Text speedMultiplierText;
 	public Game loadedDemo;
 	public GameObject controlsOverlay;
 	public static string lastDateTimeString;
@@ -89,6 +97,7 @@ public class DemoStart : MonoBehaviour
 	private bool isScored = false;
 
 	public bool wasDPADXReleased = true;
+	private bool wasDPADYPressed = false;
 
 	/// <summary>
 	/// player ign, player character obj
@@ -152,8 +161,6 @@ public class DemoStart : MonoBehaviour
 			// Find and declare what frame the slider is on.
 			if (playhead.isPlaying)
 				playbackSlider.value = playhead.CurrentFrameIndex;
-			else
-				playhead.CurrentFrameIndex = (int)playbackSlider.value;
 
 			// process input
 			CheckKeys();
@@ -347,21 +354,25 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	public void CheckKeys()
 	{
+		float triggerLinearity = 4;
+		float maxScrubSpeed = 1.75f;
 		SendConsoleMessage(Input.GetAxis("RightTrig").ToString());
 		SendConsoleMessage(Input.GetAxis("LeftTrig").ToString());
-		float rightTrig = Input.GetAxis("RightTrig") * 1.75f;
-		float leftTrig = Input.GetAxis("LeftTrig") * 1.75f;
+		float rightTrig = Input.GetAxis("RightTrig");
+		float leftTrig = Input.GetAxis("LeftTrig");
 		float combinedTrigs = rightTrig - leftTrig;
 		if (combinedTrigs == 0)
 		{
+			// stop scrubbing
 			if (playhead.isScrubbing)
 			{
 				playhead.isScrubbing = false;
 				playhead.isPlaying = playhead.wasPlayingBeforeScrub;
 				playhead.isReverse = false;
-				playhead.playbackMultiplier = 1f;
+				playbackSpeed = 1f;
 			}
 		}
+		// scrubbing backwards ⏪
 		else if (combinedTrigs < 0)
 		{
 			if (!playhead.isScrubbing)
@@ -369,10 +380,11 @@ public class DemoStart : MonoBehaviour
 				playhead.wasPlayingBeforeScrub = playhead.isPlaying;
 			}
 			playhead.isPlaying = true;
-			playhead.playbackMultiplier = 1f / (combinedTrigs * -1f);
+			playbackSpeed = Mathf.Pow(2, -(1 - Mathf.Abs(combinedTrigs)) * triggerLinearity) * maxScrubSpeed;
 			playhead.isReverse = true;
 			playhead.isScrubbing = true;
 		}
+		// scrubbing forwards ⏩
 		else
 		{
 			if (!playhead.isScrubbing)
@@ -380,39 +392,38 @@ public class DemoStart : MonoBehaviour
 				playhead.wasPlayingBeforeScrub = playhead.isPlaying;
 			}
 			playhead.isPlaying = true;
-			playhead.playbackMultiplier = 1f / combinedTrigs;
+			playbackSpeed = Mathf.Pow(2, -(1 - Mathf.Abs(combinedTrigs)) * triggerLinearity) * maxScrubSpeed;
 			playhead.isReverse = false;
 			playhead.isScrubbing = true;
-
 		}
+
+		// controls help
 		if (Input.GetKeyDown(KeyCode.H))
 			controlsOverlay.SetActive(true);
-
 		if (Input.GetKeyUp(KeyCode.H))
 			controlsOverlay.SetActive(false);
 
+		// play/pause ⏯
 		if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("XboxA"))
 		{
 			if (playhead.isScrubbing)
 			{
 				playhead.wasPlayingBeforeScrub = !playhead.wasPlayingBeforeScrub;
 			}
-			if (playhead.playbackMultiplier != 1f && playhead.isPlaying || playhead.isReverse)
+			if (playhead.isReverse)
 			{
 				playhead.isReverse = false;
-				playhead.playbackMultiplier = 1f;
 			}
 			else
 			{
 				playhead.SetPlaying(!playhead.isPlaying);
-				playhead.playbackMultiplier = 1f;
 			}
 		}
 		if (Input.GetButtonDown("XboxSelect"))
 		{
 			// showGoalAnim = !showGoalAnim;
 
-			GUIUtility.systemCopyBuffer = currentFrame.ToString();
+			GUIUtility.systemCopyBuffer = playhead.CurrentFrameIndex.ToString();
 		}
 
 		if (Input.GetButtonDown("XboxY"))
@@ -423,10 +434,6 @@ public class DemoStart : MonoBehaviour
 		{
 			// handled in ReplaySelectionUI
 		}
-
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-			speedSlider.value += .2f;
-
 		float dpadX = Input.GetAxis("XboxDpadX");
 		if (!wasDPADXReleased && dpadX == 0)
 		{
@@ -438,15 +445,12 @@ public class DemoStart : MonoBehaviour
 			playhead.isPlaying = true;
 			if (playhead.isReverse == true)
 			{
-				if (playhead.playbackMultiplier > 1 / 10f)
-				{
-					playhead.playbackMultiplier /= 2f;
-				}
+				playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 32f);
 			}
 			else
 			{
 				playhead.isReverse = true;
-				playhead.playbackMultiplier = 1f;
+				playbackSpeed = 1f;
 			}
 
 		}
@@ -456,23 +460,25 @@ public class DemoStart : MonoBehaviour
 			playhead.isPlaying = true;
 			if (playhead.isReverse == false)
 			{
-				if (playhead.playbackMultiplier >= 1 / 10f)
-				{
-					playhead.playbackMultiplier /= 2f;
-				}
+				playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 32f);
 			}
 			else
 			{
 				playhead.isReverse = false;
-				playhead.playbackMultiplier = 1f;
+				playbackSpeed = 1f;
 			}
 		}
 
 
+
+		if (Input.GetKeyDown(KeyCode.UpArrow))
+		{
+			playbackSpeed = Mathf.Clamp(playbackSpeed * 2, 0.03125f, 32f);
+		}
+
 		if (Input.GetKeyDown(KeyCode.DownArrow))
 		{
-			speedSlider.value -= .2f;
-			playhead.playbackMultiplier = Mathf.Clamp(playhead.playbackMultiplier - .2f, .01f, 8);
+			playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 16f);
 		}
 
 		// skip backwards 1 second
@@ -488,6 +494,33 @@ public class DemoStart : MonoBehaviour
 			playhead.IncrementPlayhead(1);
 			playbackSlider.value = playhead.CurrentFrameIndex;
 		}
+
+		// skip backwards one frame
+		if (Input.GetKeyDown(KeyCode.Comma) ||
+			(Input.GetAxis("XboxDpadY") == -1 && !wasDPADYPressed))
+		{
+			playhead.CurrentFrameIndex--;
+			wasDPADYPressed = true;
+		}
+
+		// skip forwards one frame
+		if (Input.GetKeyDown(KeyCode.Period) ||
+			(Input.GetAxis("XboxDpadY") == 1 && !wasDPADYPressed))
+		{
+			playhead.CurrentFrameIndex++;
+			wasDPADYPressed = true;
+		}
+
+		if (Input.GetAxis("XboxDpadY") == 0)
+		{
+			wasDPADYPressed = false;
+		}
+	}
+
+	private void UpdateSpeedSlider()
+	{
+		speedSlider.value = Mathf.Log(playbackSpeed, 2);
+		speedMultiplierText.text = playbackSpeed.ToString("0.####") + "x";
 	}
 
 	public IEnumerator FlashInOut(GameObject flashObject, float time)
@@ -795,6 +828,12 @@ public class DemoStart : MonoBehaviour
 		return (false, false, new int[2] { -1, -1 });
 	}
 
+	public void PlaybackSpeedMultiplierSliderChanged()
+	{
+		playhead.playbackMultiplier = Mathf.Pow(2, speedSlider.value);
+		speedMultiplierText.text = playbackSpeed.ToString("0.#####") + "x";
+	}
+
 	public void useSlider()
 	{
 		SendConsoleMessage(playhead.isPlaying.ToString());
@@ -810,7 +849,20 @@ public class DemoStart : MonoBehaviour
 
 	public void playbackValueChanged()
 	{
-		//playhead.CurrentFrameIndex = playhead.isPlaying ? Mathf.FloorToInt(playbackSlider.value) : (int)playbackSlider.value;
+		// if is scrubbing with the slider
+		if (!playhead.isPlaying)
+		{
+			playhead.CurrentFrameIndex = (int)playbackSlider.value;
+		}
+	}
+
+	/// <summary>
+	/// Only use from UI buttons
+	/// </summary>
+	/// <param name="value"></param>
+	public void setPlaying(bool value)
+	{
+		playhead.SetPlaying(value);
 	}
 
 	public void SendConsoleMessage(string msg)

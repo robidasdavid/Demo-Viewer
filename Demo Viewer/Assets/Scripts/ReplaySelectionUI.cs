@@ -101,7 +101,8 @@ public class ReplaySelectionUI : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("XboxStart"))
+		if (Input.GetKeyDown(KeyCode.BackQuote) ||
+			Input.GetButtonDown("XboxStart"))
 		{
 			ShowToggle();
 		}
@@ -160,11 +161,11 @@ public class ReplaySelectionUI : MonoBehaviour
 		{
 			if (Path.GetExtension(file) == ".echoreplay")
 			{
-
 				GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
 				var replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();
 				replayFileInfo.OriginalFilename = Path.GetFileNameWithoutExtension(file);
 				replayFileInfo.CreatedBy = "Local";
+				replayFileInfo.Size = new FileInfo(file).Length / 1000f + " KB";
 				replayFileInfo.Notes = "";
 
 				button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(file); });

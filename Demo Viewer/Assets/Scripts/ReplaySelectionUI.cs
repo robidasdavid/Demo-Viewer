@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -98,6 +99,14 @@ public class ReplaySelectionUI : MonoBehaviour
 		ReplaysSource = ReplaysSource;
 	}
 
+	private void Update()
+	{
+		if (Input.GetButtonDown("XboxStart"))
+		{
+			ShowToggle();
+		}
+	}
+
 	IEnumerator GetReplaysWeb()
 	{
 		// get the json data about what replays are available
@@ -144,6 +153,7 @@ public class ReplaySelectionUI : MonoBehaviour
 		// get list of folders in the current folder
 		string[] folders = Directory.GetDirectories(PlayerPrefs.GetString("currentReplayFolder", defaultPath));
 
+		Array.Reverse(files);
 
 		// add the new ones
 		foreach (var file in files)

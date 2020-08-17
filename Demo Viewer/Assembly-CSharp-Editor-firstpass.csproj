@@ -259,6 +259,12 @@
     <Reference Include="UnityEditor.WebGL.Extensions">
       <HintPath>F:/Program Files/Unity Editors/2019.4.4f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.OSXStandalone.Extensions">
+      <HintPath>F:/Program Files/Unity Editors/2019.4.4f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+      <HintPath>F:/Program Files/Unity Editors/2019.4.4f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Android.Extensions">
       <HintPath>F:/Program Files/Unity Editors/2019.4.4f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
     </Reference>
@@ -664,6 +670,12 @@
     <Reference Include="Unity.ProBuilder">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.ProBuilder.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.XR.ARSubsystems">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.ARSubsystems.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.ARSubsystems.Editor">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.ARSubsystems.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Burst.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
     </Reference>
@@ -678,6 +690,9 @@
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.InteractionSubsystems">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.InteractionSubsystems.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.Oculus">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Oculus.dll</HintPath>
@@ -751,29 +766,20 @@
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.XR.WindowsMixedReality.Editor">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.WindowsMixedReality.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.WindowsMixedReality">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.WindowsMixedReality.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.ARSubsystems">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.ARSubsystems.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.ARSubsystems.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.ARSubsystems.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.InteractionSubsystems">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.InteractionSubsystems.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.WindowsMixedReality.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.WindowsMixedReality.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.WindowsMixedReality">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.WindowsMixedReality.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

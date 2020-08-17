@@ -528,7 +528,9 @@ public class DemoStart : MonoBehaviour
 		}
 		if (Input.GetButtonDown("XboxSelect"))
 		{
-			showGoalAnim = !showGoalAnim;
+			// showGoalAnim = !showGoalAnim;
+
+			GUIUtility.systemCopyBuffer = currentFrame.ToString();
 		}
 
 		if (Input.GetButtonDown("XboxY"))
@@ -537,7 +539,7 @@ public class DemoStart : MonoBehaviour
 		}
 		if (Input.GetButtonDown("XboxStart"))
 		{
-			GUIUtility.systemCopyBuffer = currentFrame.ToString();
+			// handled in ReplaySelectionUI
 		}
 
 		if (Input.GetKeyDown(KeyCode.UpArrow))

@@ -19,10 +19,11 @@ public class GameManager : MonoBehaviour
 			RefreshVRObjectsVisibility(GetPresence());
 		}
 
+		bool printArgs = false;
 		string[] args = System.Environment.GetCommandLineArgs();
 		for (int i = 0; i < args.Length; i++)
 		{
-			Debug.Log("ARG " + i + ": " + args[i]);
+			if (printArgs) Debug.Log("ARG " + i + ": " + args[i]);
 			if (args[i].Contains(".json") || args[i].Contains(".echoreplay"))
 			{
 				PlayerPrefs.SetString("fileDirector", args[i]);

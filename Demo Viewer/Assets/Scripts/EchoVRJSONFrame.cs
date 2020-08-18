@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using UnityEngine;
 
 [Serializable]
@@ -23,6 +24,26 @@ public class Stats
 	public int steals;
 	public int assists;
 	public int shots_taken;
+
+	public override string ToString()
+	{
+		StringBuilder s = new StringBuilder();
+		s.Append("Possession Time: ");
+		s.Append(possession_time);
+		s.Append("\nPoints: ");
+		s.Append(points);
+		s.Append("\nGoals: ");
+		s.Append(goals);
+		s.Append("\nSaves: ");
+		s.Append(saves);
+		s.Append("\nStuns: ");
+		s.Append(stuns);
+		s.Append("\nAssists: ");
+		s.Append(assists);
+		s.Append("\nShots Taken: ");
+		s.Append(shots_taken);
+		return s.ToString();
+	}
 }
 [Serializable]
 public class Last_Score
@@ -205,7 +226,8 @@ public class Team
 		if (from.players == null)
 		{
 			newTeam.players = null;
-		}else if (to.players == null)
+		}
+		else if (to.players == null)
 		{
 			newTeam.players = from.players;
 		}

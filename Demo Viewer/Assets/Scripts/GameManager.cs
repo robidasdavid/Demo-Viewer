@@ -7,17 +7,27 @@ using unityutilities;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager instance;
 	public Transform[] vrOnlyThings;
 	public Transform[] flatOnlyThings;
 	[ReadOnly]
 	public bool lastFrameUserPresent;
+	[ReadOnly]
+	public bool usingVR = false;
+	public Rig vrRig;
+	public Camera vrCamera;
+	public Camera flatCamera;
+	public Camera camera {
+		get {
+			return usingVR ? vrCamera : flatCamera;
+		}
+	}
 
 	private void Awake()
 	{
-		if (gameObject.activeSelf)
-		{
-			RefreshVRObjectsVisibility(GetPresence());
-		}
+		instance = this;
+
+		RefreshVRObjectsVisibility(false);
 
 		bool printArgs = false;
 		string[] args = System.Environment.GetCommandLineArgs();
@@ -32,6 +42,7 @@ public class GameManager : MonoBehaviour
 
 			if (args[i] == "-useVR")
 			{
+				usingVR = true;
 				RefreshVRObjectsVisibility(true);
 				XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
 				XRGeneralSettings.Instance.Manager.StartSubsystems();

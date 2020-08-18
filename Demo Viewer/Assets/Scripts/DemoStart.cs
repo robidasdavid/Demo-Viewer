@@ -135,7 +135,6 @@ public class DemoStart : MonoBehaviour
 		string demoFile = PlayerPrefs.GetString("fileDirector");
 		replayFileNameText.text = Path.GetFileName(demoFile);
 		SendConsoleMessage("Loading Demo: " + demoFile);
-		Debug.LogError("HERE");
 		StartCoroutine(DoLast(demoFile));
 #else
 		string getFileName = "";
@@ -207,6 +206,18 @@ public class DemoStart : MonoBehaviour
 				// Render this frame
 				RenderFrame(viewingFrame, previousFrame);
 			}
+
+
+			// hover over players to get stats
+			if (Physics.Raycast(GameManager.instance.camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000f, LayerMask.GetMask("players")))
+			{
+				PlayerStatsHover psh = hit.collider.GetComponent<PlayerStatsHover>();
+				if (psh)
+				{
+					psh.Visible = true;
+				}
+			}
+
 		}
 		else
 		{
@@ -799,6 +810,11 @@ public class DemoStart : MonoBehaviour
 		{
 			blockingEffect.gameObject.SetActive(false);
 		}
+
+
+		// show player stats on player stats board 🧮
+		p.hoverStats.Stats = player.stats;
+		p.hoverStats.Speed = player.velocity.ToVector3().magnitude;
 	}
 
 	/// <summary>

@@ -13,6 +13,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	public Text playerName;
 	public IKController ikController;
+	public PlayerStatsHover hoverStats;
 
 	void Start()
 	{

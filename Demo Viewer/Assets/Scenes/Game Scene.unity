@@ -100,7 +100,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: a530d7df96fd6064695938479becb73a,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1649,7 +1649,7 @@ RectTransform:
   m_Father: {fileID: 717745826}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.00000011920929, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -7539,7 +7539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.45490196}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -13177,9 +13177,9 @@ MonoBehaviour:
     Middle
     Click - Clear Drawings
 
-    WASD - Move camera
+    WASDQE - Move camera
 
-    Shift +WASD - Move faster
+    Shift +WASDQE - Move faster
 
     Up/Down
     - Playback speed
@@ -17143,7 +17143,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479293116}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -18313,8 +18313,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 120466920}
   m_HandleRect: {fileID: 120466919}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -29769,7 +29769,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 479293117}
   m_HorizontalScrollbar: {fileID: 545977841}
   m_VerticalScrollbar: {fileID: 1441371069}
@@ -39824,7 +39824,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -1, y: 1}
+  m_AnchoredPosition: {x: -6.5999756, y: 27.400024}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1090308290
@@ -39859,7 +39859,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: H
+  m_Text: H - Controls
 --- !u!222 &1090308291
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45694,8 +45694,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1971431030}
   m_HandleRect: {fileID: 1971431029}
   m_Direction: 2
-  m_Value: 1.0000005
-  m_Size: 0.7582816
+  m_Value: 0.9999991
+  m_Size: 0.7582815
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -55672,6 +55672,7 @@ MonoBehaviour:
   playbackSlider: {fileID: 7593353449931525774}
   speedSlider: {fileID: 7593353449704137830}
   speedMultiplierText: {fileID: 1310047537}
+  fileReadProgress: 0
   loadedDemo:
     isNewstyle: 0
     nframes: 0
@@ -58321,8 +58322,8 @@ RectTransform:
   m_Father: {fileID: 765142539}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.24171841}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.24171825}
+  m_AnchorMax: {x: 1, y: 0.99999976}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -62562,7 +62563,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 1
+  m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:

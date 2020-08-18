@@ -58,6 +58,8 @@ public class DemoStart : MonoBehaviour
 		}
 	}
 	public Text speedMultiplierText;
+	[Range(0, 1)]
+	public float fileReadProgress;
 	public Game loadedDemo;
 	public GameObject controlsOverlay;
 	public static string lastDateTimeString;
@@ -133,7 +135,7 @@ public class DemoStart : MonoBehaviour
 		string demoFile = PlayerPrefs.GetString("fileDirector");
 		replayFileNameText.text = Path.GetFileName(demoFile);
 		SendConsoleMessage("Loading Demo: " + demoFile);
-
+		Debug.LogError("HERE");
 		StartCoroutine(DoLast(demoFile));
 #else
 		string getFileName = "";
@@ -206,6 +208,10 @@ public class DemoStart : MonoBehaviour
 				RenderFrame(viewingFrame, previousFrame);
 			}
 		}
+		else
+		{
+			playbackSlider.value = fileReadProgress;
+		}
 	}
 
 
@@ -242,55 +248,52 @@ public class DemoStart : MonoBehaviour
 		return reader;
 	}
 
-
-	Game ReadReplayFile(StreamReader fileReader)
+	/// <summary>
+	/// Actually reads the replay file into memory
+	/// This is a thread on desktop versions
+	/// </summary>
+	void ReadReplayFile(StreamReader fileReader)
 	{
-		bool fileFinishedReading = false;
 		List<Frame> readFrames = new List<Frame>();
 		Game readGame = new Game();
 
 		using (fileReader = OpenOrExtract(fileReader))
 		{
+			string[] allLines = fileReader.ReadToEnd().Split('\n');
+			fileReadProgress = 0;
 
-			while (!fileFinishedReading)
+			for (int i = 0; i < allLines.Length; i++)
 			{
-				if (fileReader != null)
+				fileReadProgress = (float)i / allLines.Length;
+				var line = allLines[i];
+				if (!string.IsNullOrEmpty(line))
 				{
-					string rawJSON = fileReader.ReadLine();
-					if (rawJSON == null)
+					string[] splitJSON = line.Split('\t');
+					string onlyJSON, onlyTime;
+					if (splitJSON.Length == 2)
 					{
-						fileFinishedReading = true;
-						fileReader.Close();
+						onlyJSON = splitJSON[1];
+						onlyTime = splitJSON[0];
 					}
 					else
 					{
-						string[] splitJSON = rawJSON.Split('\t');
-						string onlyJSON, onlyTime;
-						if (splitJSON.Length == 2)
-						{
-							onlyJSON = splitJSON[1];
-							onlyTime = splitJSON[0];
-						}
-						else
-						{
-							Debug.LogError("Row doesn't include both a time and API JSON");
-							continue;
-						}
-						DateTime frameTime = DateTime.Parse(onlyTime);
+						Debug.LogError("Row doesn't include both a time and API JSON");
+						continue;
+					}
+					DateTime frameTime = DateTime.Parse(onlyTime);
 
-						// if this is actually valid arena data
-						if (onlyJSON.Length > 300)
+					// if this is actually valid arena data
+					if (onlyJSON.Length > 300)
+					{
+						try
 						{
-							try
-							{
-								Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
-								foundFrame.frameTime = frameTime;
-								readFrames.Add(foundFrame);
-							}
-							catch (Exception)
-							{
-								Debug.LogError("Couldn't read frame. File is corrupted.");
-							}
+							Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
+							foundFrame.frameTime = frameTime;
+							readFrames.Add(foundFrame);
+						}
+						catch (Exception e)
+						{
+							Debug.LogError("Couldn't read frame. File is corrupted. " + e);
 						}
 					}
 				}
@@ -298,7 +301,11 @@ public class DemoStart : MonoBehaviour
 		}
 		readGame.frames = readFrames.ToArray();
 		readGame.nframes = readGame.frames.Length;
-		return readGame;
+
+		lock (loadedDemo)
+		{
+			loadedDemo = readGame;
+		}
 	}
 
 	/// <summary>
@@ -312,7 +319,6 @@ public class DemoStart : MonoBehaviour
 			Debug.Log("Reading file: " + demoFile);
 			StreamReader reader = new StreamReader(demoFile);
 
-			loadedDemo = ReadReplayFile(reader);
 			Thread loadThread = new Thread(() => ReadReplayFile(reader));
 			loadThread.Start();
 			while (loadThread.IsAlive)
@@ -850,7 +856,7 @@ public class DemoStart : MonoBehaviour
 	public void playbackValueChanged()
 	{
 		// if is scrubbing with the slider
-		if (!playhead.isPlaying)
+		if (ready && !playhead.isPlaying)
 		{
 			playhead.CurrentFrameIndex = (int)playbackSlider.value;
 		}

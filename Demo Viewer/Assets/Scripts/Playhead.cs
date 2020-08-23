@@ -52,7 +52,7 @@ public class Playhead
 
 
 	/// <summary>
-	/// Set playing variable to start and stop auto-play of demo.
+	/// ⏯ Set playing variable to start and stop auto-play of demo.
 	/// </summary>
 	/// <param name="value">True to play, False to pause</param>
 	public void SetPlaying(bool value)
@@ -106,13 +106,13 @@ public class Playhead
 			// if beyond start or end, stop playing
 			if (currentFrameIndex >= FrameCount - 1)
 			{
-				isPlaying = false;
+				isPlaying &= isReverse; // if we are trying to play backwards, just keep playing
 				CurrentFrameIndex = FrameCount - 1;
 				return;
 			}
 			else if (currentFrameIndex <= 0)
 			{
-				isPlaying = false;
+				isPlaying &= !isReverse;    // if we are trying to play forwards, just keep playing
 				CurrentFrameIndex = 0;
 				return;
 			}

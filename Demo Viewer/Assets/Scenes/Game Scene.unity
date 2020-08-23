@@ -13263,7 +13263,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 347023615}
-    characterCount: 276
+    characterCount: 280
     spriteCount: 0
     spaceCount: 52
     wordCount: 53
@@ -27057,7 +27057,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &735583093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27125,13 +27125,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735583092}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -16.71}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_Children:
   - {fileID: 2003311650}
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_Father: {fileID: 2113297654}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -33291,7 +33291,7 @@ PrefabInstance:
     - target: {fileID: 3834589050350493745, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3834589050350493745, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
@@ -53069,7 +53069,7 @@ PrefabInstance:
     - target: {fileID: 6777277523045891329, guid: eed74f4c73a6dc746b57b96162137a8e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6777277523045891329, guid: eed74f4c73a6dc746b57b96162137a8e,
         type: 3}
@@ -60273,27 +60273,27 @@ PrefabInstance:
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -34
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1192
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049917985984, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
@@ -60428,7 +60428,7 @@ PrefabInstance:
     - target: {fileID: 3834589050350493745, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3834589050350493745, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
@@ -61350,6 +61350,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1763957595}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2113297653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2113297654}
+  m_Layer: 0
+  m_Name: VR UI Elements
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2113297654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113297653}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 735583096}
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2127842500
 GameObject:
   m_ObjectHideFlags: 0
@@ -63339,7 +63370,7 @@ MonoBehaviour:
   vrOnlyThings:
   - {fileID: 1269802420}
   - {fileID: 1720072419}
-  - {fileID: 735583096}
+  - {fileID: 2113297654}
   flatOnlyThings:
   - {fileID: 911330301}
   - {fileID: 282840814}

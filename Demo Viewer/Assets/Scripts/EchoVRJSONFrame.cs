@@ -93,6 +93,8 @@ public class Frame
 	/// <returns>A mix of the two frames</returns>
 	internal static Frame Lerp(Frame from, Frame to, DateTime t)
 	{
+		if (from == null) return to;
+		if (to == null) return from;
 		if (from.frameTime == to.frameTime)
 		{
 			return from;

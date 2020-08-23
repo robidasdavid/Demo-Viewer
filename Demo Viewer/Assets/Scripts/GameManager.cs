@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance;
 	public Transform[] vrOnlyThings;
 	public Transform[] flatOnlyThings;
+	public Transform[] uiHiddenOnLive;
+	public Transform[] uiShownOnLive;
 	[ReadOnly]
 	public bool lastFrameUserPresent;
 	[ReadOnly]

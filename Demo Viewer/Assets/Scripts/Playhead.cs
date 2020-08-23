@@ -43,11 +43,18 @@ public class Playhead
 
 	public void IncrementPlayhead(float deltaTime)
 	{
-		deltaTime *= playbackMultiplier;
+		if (LiveFrameProvider.isLive)
+		{
+			playheadLocation += TimeSpan.FromSeconds(deltaTime);
+		}
+		else
+		{
+			deltaTime *= playbackMultiplier;
 
-		playheadLocation += TimeSpan.FromSeconds(deltaTime * (isReverse ? -1 : 1));
+			playheadLocation += TimeSpan.FromSeconds(deltaTime * (isReverse ? -1 : 1));
 
-		FindCurrentFrameLocation();
+			FindCurrentFrameLocation();
+		}
 	}
 
 
@@ -63,8 +70,15 @@ public class Playhead
 
 	public Frame GetFrame()
 	{
-		LastFrameIndex = currentFrameIndex;
-		return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
+		if (LiveFrameProvider.isLive)
+		{
+			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
+		}
+		else
+		{
+			LastFrameIndex = currentFrameIndex;
+			return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
+		}
 	}
 
 	public Frame GetNearestFrame()
@@ -74,7 +88,14 @@ public class Playhead
 
 	public Frame GetPreviousFrame()
 	{
-		return game.frames[Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1)];
+		if (LiveFrameProvider.isLive)
+		{
+			return LiveFrameProvider.lastFrame;
+		}
+		else
+		{
+			return game.frames[Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1)];
+		}
 	}
 
 	private Frame GetNextFrame()

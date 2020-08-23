@@ -107,7 +107,7 @@ public class DemoStart : MonoBehaviour
 	Dictionary<string, PlayerCharacter> playerObjects = new Dictionary<string, PlayerCharacter>();
 
 
-	public Playhead playhead;
+	public static Playhead playhead;
 
 	public static Color blueTeamColor = new Color(0, 165, 216);
 	public static Color orangeTeamColor = new Color(210, 110, 45);
@@ -176,35 +176,38 @@ public class DemoStart : MonoBehaviour
 				Frame viewingFrame = playhead.GetFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
 
-				// Joust Readout
-				Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
-				Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
-				if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
+				if (viewingFrame != null && previousFrame != null)
 				{
-					maxGameTime = loadedDemo.frames[0].game_clock;  // TODO this may not be correct if the recording starts midgame
-					float currentTime = viewingFrame.game_clock;
-					joustReadout.GetComponentInChildren<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
-					StartCoroutine(FlashInOut(joustReadout, 3));
-				}
-
-				// Handle goal stat visibility
-				if (showingGoalStats)
-				{
-					goalEventObject.SetActive(false);
-					lastGoalStats.SetActive(true);
-					RenderGoalStats(viewingFrame.last_score);
-				}
-				else if (!showingGoalStats && lastGoalStats.activeSelf)
-				{
-					lastGoalStats.SetActive(false);
-					if (viewingFrame.game_status == "score" && showGoalAnim)
+					// Joust Readout
+					Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
+					Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
+					if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
 					{
-						goalEventObject.SetActive(true);
+						maxGameTime = loadedDemo.frames[0].game_clock;  // TODO this may not be correct if the recording starts midgame
+						float currentTime = viewingFrame.game_clock;
+						joustReadout.GetComponentInChildren<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
+						StartCoroutine(FlashInOut(joustReadout, 3));
 					}
-				}
 
-				// Render this frame
-				RenderFrame(viewingFrame, previousFrame);
+					// Handle goal stat visibility
+					if (showingGoalStats)
+					{
+						goalEventObject.SetActive(false);
+						lastGoalStats.SetActive(true);
+						RenderGoalStats(viewingFrame.last_score);
+					}
+					else if (!showingGoalStats && lastGoalStats.activeSelf)
+					{
+						lastGoalStats.SetActive(false);
+						if (viewingFrame.game_status == "score" && showGoalAnim)
+						{
+							goalEventObject.SetActive(true);
+						}
+					}
+
+					// Render this frame
+					RenderFrame(viewingFrame, previousFrame);
+				}
 			}
 
 

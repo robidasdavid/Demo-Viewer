@@ -260,4 +260,25 @@ public class ReplaySelectionUI : MonoBehaviour
 		showing = !showing;
 	}
 
+	/// <summary>
+	/// Whether to get data live from a local game session or not
+	/// </summary>
+	/// <param name="live">True to use live source</param>
+	public void LiveToggle(bool live)
+	{
+		LiveFrameProvider.isLive = live;
+		if (DemoStart.playhead != null)
+		{
+			DemoStart.playhead.SetPlaying(live);
+			foreach (var item in GameManager.instance.uiHiddenOnLive)
+			{
+				item.gameObject.SetActive(!live);
+			}
+			foreach (var item in GameManager.instance.uiShownOnLive)
+			{
+				item.gameObject.SetActive(live);
+			}
+		}
+	}
+
 }

@@ -29873,7 +29873,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localAvatarPrefab: {fileID: 11437430, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 3}
   remoteAvatarPrefab: {fileID: 11464902, guid: 90bf33f968e6bb44ea0208fc82c90a44, type: 3}
-  playerObject: {fileID: 59091856}
 --- !u!4 &866283930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 3510f8e2bbef0374abc8a8c326cb773b,
@@ -60627,27 +60626,27 @@ PrefabInstance:
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -34
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049579403291, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1192
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3834589049776651066, guid: 4f1ae45346039d24d8d0ad81215fd830,
         type: 3}

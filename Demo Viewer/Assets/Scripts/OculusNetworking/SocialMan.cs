@@ -1,12 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 using AOT;
 using System.Collections.Generic;
 using Oculus.Platform;
 using Oculus.Platform.Models;
 
-
-// This class coordinates communication with the Oculus Platform
-// Service running in your device.
+/// <summary>
+/// 🙍‍🙍‍🙎‍🙎‍ This class coordinates communication with the 
+/// Oculus Platform Service running in your device.
+/// </summary>
 public class SocialMan : MonoBehaviour
 {
 
@@ -19,14 +20,14 @@ public class SocialMan : MonoBehaviour
 	public OvrAvatar remoteAvatarPrefab;
 
 	protected OvrAvatar localAvatar;
-	public GameObject playerObject;
+	private GameObject playerObject;
 
 	// Remote players
 	protected Dictionary<ulong, RemotePlayer> remoteUsers = new Dictionary<ulong, RemotePlayer>();
 
 	protected State currentState;
 
-	protected static SocialMan s_instance = null;
+	protected static SocialMan instance = null;
 	protected RoomMan roomManager;
 	protected P2PMan p2pManager;
 	protected VoipMan voipManager;
@@ -54,6 +55,7 @@ public class SocialMan : MonoBehaviour
 				if (kvp.Value.RemoteAvatar.MouthAnchor != null)
 				{
 					kvp.Value.voipSource = kvp.Value.RemoteAvatar.MouthAnchor.AddComponent<VoipAudioSourceHiLevel>();
+					if (kvp.Value.remoteUserID == null) Debug.LogError("HERE");
 					kvp.Value.voipSource.senderID = kvp.Value.remoteUserID;
 				}
 			}
@@ -80,13 +82,13 @@ public class SocialMan : MonoBehaviour
 		LogOutputLine("Start Log.");
 
 		// make sure only one instance of this manager ever exists
-		if (s_instance != null)
+		if (instance != null)
 		{
 			Destroy(gameObject);
 			return;
 		}
 
-		s_instance = this;
+		instance = this;
 		DontDestroyOnLoad(gameObject);
 
 		TransitionToState(State.INITIALIZING);
@@ -148,8 +150,9 @@ public class SocialMan : MonoBehaviour
 		playerObject = GameManager.instance.usingVR ? GameManager.instance.vrRig.gameObject : GameManager.instance.flatCamera.gameObject;
 
 		localAvatar.transform.SetParent(playerObject.transform, false);
-		localAvatar.transform.localPosition = new Vector3(0, 0, 0);
+		localAvatar.transform.localPosition = Vector3.zero;
 		localAvatar.transform.localRotation = Quaternion.identity;
+		localAvatar.transform.localScale = Vector3.one;
 
 		localAvatar.oculusUserID = myID.ToString();
 		localAvatar.RecordPackets = true;
@@ -243,7 +246,7 @@ public class SocialMan : MonoBehaviour
 	// sense if the user is disconnected.
 	public static void TerminateWithError(Message msg)
 	{
-		s_instance.LogOutputLine("Error: " + msg.GetError().Message);
+		instance.LogOutputLine("Error: " + msg.GetError().Message);
 		UnityEngine.Application.Quit();
 	}
 
@@ -253,15 +256,15 @@ public class SocialMan : MonoBehaviour
 
 	public static State CurrentState {
 		get {
-			return s_instance.currentState;
+			return instance.currentState;
 		}
 	}
 
 	public static ulong MyID {
 		get {
-			if (s_instance != null)
+			if (instance != null)
 			{
-				return s_instance.myID;
+				return instance.myID;
 			}
 			else
 			{
@@ -272,9 +275,9 @@ public class SocialMan : MonoBehaviour
 
 	public static string MyOculusID {
 		get {
-			if (s_instance != null && s_instance.myOculusID != null)
+			if (instance != null && instance.myOculusID != null)
 			{
-				return s_instance.myOculusID;
+				return instance.myOculusID;
 			}
 			else
 			{
@@ -318,20 +321,20 @@ public class SocialMan : MonoBehaviour
 
 	public static void TransitionToState(State newState)
 	{
-		if (s_instance)
+		if (instance)
 		{
-			s_instance.LogOutputLine("State " + s_instance.currentState + " -> " + newState);
+			instance.LogOutputLine("State " + instance.currentState + " -> " + newState);
 		}
 
-		if (s_instance && s_instance.currentState != newState)
+		if (instance && instance.currentState != newState)
 		{
-			s_instance.currentState = newState;
+			instance.currentState = newState;
 
 			// state transition logic
 			switch (newState)
 			{
 				case State.SHUTDOWN:
-					s_instance.OnApplicationQuit();
+					instance.OnApplicationQuit();
 					break;
 
 				default:
@@ -342,7 +345,7 @@ public class SocialMan : MonoBehaviour
 
 	public static void MarkAllRemoteUsersAsNotInRoom()
 	{
-		foreach (KeyValuePair<ulong, RemotePlayer> kvp in s_instance.remoteUsers)
+		foreach (KeyValuePair<ulong, RemotePlayer> kvp in instance.remoteUsers)
 		{
 			kvp.Value.stillInRoom = false;
 		}
@@ -352,7 +355,7 @@ public class SocialMan : MonoBehaviour
 	{
 		RemotePlayer remoteUser = new RemotePlayer();
 
-		if (s_instance.remoteUsers.TryGetValue(userID, out remoteUser))
+		if (instance.remoteUsers.TryGetValue(userID, out remoteUser))
 		{
 			remoteUser.stillInRoom = true;
 		}
@@ -362,7 +365,7 @@ public class SocialMan : MonoBehaviour
 	{
 		List<ulong> toPurge = new List<ulong>();
 
-		foreach (KeyValuePair<ulong, RemotePlayer> kvp in s_instance.remoteUsers)
+		foreach (KeyValuePair<ulong, RemotePlayer> kvp in instance.remoteUsers)
 		{
 			if (kvp.Value.stillInRoom == false)
 			{
@@ -378,19 +381,19 @@ public class SocialMan : MonoBehaviour
 
 	public static void LogOutput(string line)
 	{
-		s_instance.LogOutputLine(Time.time + ": " + line);
+		instance.LogOutputLine(Time.time + ": " + line);
 	}
 
 	public static bool IsUserInRoom(ulong userID)
 	{
-		return s_instance.remoteUsers.ContainsKey(userID);
+		return instance.remoteUsers.ContainsKey(userID);
 	}
 
 	public static void AddRemoteUser(ulong userID)
 	{
 		RemotePlayer remoteUser = new RemotePlayer();
 
-		remoteUser.RemoteAvatar = Instantiate(s_instance.remoteAvatarPrefab);
+		remoteUser.RemoteAvatar = Instantiate(instance.remoteAvatarPrefab);
 		remoteUser.RemoteAvatar.oculusUserID = userID.ToString();
 		remoteUser.RemoteAvatar.ShowThirdPerson = true;
 		remoteUser.RemoteAvatar.EnableMouthVertexAnimation = true;
@@ -399,24 +402,24 @@ public class SocialMan : MonoBehaviour
 		remoteUser.stillInRoom = true;
 		remoteUser.remoteUserID = userID;
 
-		s_instance.AddUser(userID, ref remoteUser);
-		s_instance.p2pManager.ConnectTo(userID);
-		s_instance.voipManager.ConnectTo(userID);
+		instance.AddUser(userID, ref remoteUser);
+		instance.p2pManager.ConnectTo(userID);
+		instance.voipManager.ConnectTo(userID);
 
-		s_instance.LogOutputLine("Adding User " + userID);
+		instance.LogOutputLine("Adding User " + userID);
 	}
 
 	public static void RemoveRemoteUser(ulong userID)
 	{
 		RemotePlayer remoteUser = new RemotePlayer();
 
-		if (s_instance.remoteUsers.TryGetValue(userID, out remoteUser))
+		if (instance.remoteUsers.TryGetValue(userID, out remoteUser))
 		{
 			Destroy(remoteUser.RemoteAvatar.MouthAnchor.GetComponent<VoipAudioSourceHiLevel>(), 0);
 			Destroy(remoteUser.RemoteAvatar.gameObject, 0);
-			s_instance.remoteUsers.Remove(userID);
+			instance.remoteUsers.Remove(userID);
 
-			s_instance.LogOutputLine("Removing User " + userID);
+			instance.LogOutputLine("Removing User " + userID);
 		}
 	}
 
@@ -443,7 +446,7 @@ public class SocialMan : MonoBehaviour
 	[MonoPInvokeCallback(typeof(Oculus.Platform.CAPI.FilterCallback))]
 	public static void MicFilter(short[] pcmData, System.UIntPtr pcmDataLength, int frequency, int numChannels)
 	{
-		s_instance.UpdateVoiceData(pcmData, numChannels);
+		instance.UpdateVoiceData(pcmData, numChannels);
 	}
 
 
@@ -451,7 +454,7 @@ public class SocialMan : MonoBehaviour
 	{
 		RemotePlayer remoteUser = new RemotePlayer();
 
-		if (s_instance.remoteUsers.TryGetValue(userID, out remoteUser))
+		if (instance.remoteUsers.TryGetValue(userID, out remoteUser))
 		{
 			return remoteUser;
 		}

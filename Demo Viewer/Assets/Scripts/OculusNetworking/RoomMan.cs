@@ -1,13 +1,16 @@
-using System;
+﻿using System;
 using Oculus.Platform;
 using Oculus.Platform.Models;
 
-// Helper class to manage Room creation, membership and invites.
-// Rooms are a mechanism to help Oculus users create a shared experience.
-// Users can only be in one Room at a time.  If the Owner of a room
-// leaves, then ownership is transferred to some other member.
-// Here we use rooms to create the notion of a 'call' to help us
-// invite a Friend and establish a VOIP and P2P connection.
+
+/// <summary>
+/// 🏠 Helper class to manage Room creation, membership and invites.
+/// Rooms are a mechanism to help Oculus users create a shared experience.
+/// Users can only be in one Room at a time.  If the Owner of a room
+/// leaves, then ownership is transferred to some other member.
+/// Here we use rooms to create the notion of a 'call' to help us
+/// invite a Friend and establish a VOIP and P2P connection.
+/// </summary>
 public class RoomMan
 {
 	// the ID of the Room that I'm in

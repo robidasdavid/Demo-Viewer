@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +21,6 @@ public class LiveFrameProvider : MonoBehaviour
 
 	// fps of fetching
 	float updateRate = 1;
-
-	// Start is called before the first frame update
-	void Start()
-	{
-
-	}
 
 	// Update is called once per frame
 	void Update()
@@ -59,7 +54,7 @@ public class LiveFrameProvider : MonoBehaviour
 			lastFrame = frame;
 			try
 			{
-				frame = JsonUtility.FromJson<Frame>(request.downloadHandler.text);
+				frame = JsonConvert.DeserializeObject<Frame>(request.downloadHandler.text);
 				frame.frameTime = DateTime.Now;
 				if (lastFrame != null)
 				{

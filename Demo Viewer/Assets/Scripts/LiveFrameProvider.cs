@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -13,7 +12,7 @@ public class LiveFrameProvider : MonoBehaviour
 	public static Frame lastFrame;
 
 	public bool local;
-	string localAPIURL = "http://127.0.0.1:6721/session";
+	public string localAPIURL = "http://127.0.0.1:6721/session";
 	public string networkAPIURL = "localhost:5005/live_replay/";
 	public string session_id;
 
@@ -25,10 +24,13 @@ public class LiveFrameProvider : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Time.time - lastFrameTime > (1 / updateRate))
+		if (isLive)
 		{
-			StartCoroutine(GetNewFrame());
-			lastFrameTime = Time.time;
+			if (Time.time - lastFrameTime > (1 / updateRate))
+			{
+				StartCoroutine(GetNewFrame());
+				lastFrameTime = Time.time;
+			}
 		}
 	}
 

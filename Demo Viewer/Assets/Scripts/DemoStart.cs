@@ -253,7 +253,7 @@ public class DemoStart : MonoBehaviour
 		char[] buffer = new char[2];
 		reader.Read(buffer, 0, buffer.Length);
 		reader.DiscardBufferedData();
-		reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+		reader.BaseStream.Seek(0, SeekOrigin.Begin);
 		if (buffer[0] == 'P' && buffer[1] == 'K')
 		{
 			ZipArchive archive = new ZipArchive(reader.BaseStream);
@@ -275,7 +275,8 @@ public class DemoStart : MonoBehaviour
 
 		using (fileReader = OpenOrExtract(fileReader))
 		{
-			string[] allLines = fileReader.ReadToEnd().Split('\n');
+			string fileData = fileReader.ReadToEnd();
+			string[] allLines = fileData.Split('\n');
 			fileReadProgress = 0;
 
 			for (int i = 0; i < allLines.Length; i++)

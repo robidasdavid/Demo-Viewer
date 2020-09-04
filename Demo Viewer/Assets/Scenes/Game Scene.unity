@@ -56044,10 +56044,6 @@ MonoBehaviour:
   speedSlider: {fileID: 7593353449704137830}
   speedMultiplierText: {fileID: 1310047537}
   fileReadProgress: 0
-  loadedDemo:
-    isNewstyle: 0
-    nframes: 0
-    frames: []
   controlsOverlay: {fileID: 722729578}
   settingsScreen: {fileID: 997523753}
   masterSoundToggle: {fileID: 0}
@@ -63764,5 +63760,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   local: 0
+  localAPIURL: http://127.0.0.1:6721/session
   networkAPIURL: localhost:5005/live_replay/
   session_id: 

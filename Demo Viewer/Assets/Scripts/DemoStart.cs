@@ -15,6 +15,7 @@ using System.IO.Compression;
 using System;
 using TMPro;
 using System.Threading;
+using Newtonsoft.Json;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -60,6 +61,7 @@ public class DemoStart : MonoBehaviour
 	public Text speedMultiplierText;
 	[Range(0, 1)]
 	public float fileReadProgress;
+	public object loadedDemoLock = new object();
 	public Game loadedDemo;
 	public GameObject controlsOverlay;
 	public static string lastDateTimeString;
@@ -251,7 +253,7 @@ public class DemoStart : MonoBehaviour
 		char[] buffer = new char[2];
 		reader.Read(buffer, 0, buffer.Length);
 		reader.DiscardBufferedData();
-		reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+		reader.BaseStream.Seek(0, SeekOrigin.Begin);
 		if (buffer[0] == 'P' && buffer[1] == 'K')
 		{
 			ZipArchive archive = new ZipArchive(reader.BaseStream);
@@ -269,11 +271,12 @@ public class DemoStart : MonoBehaviour
 	void ReadReplayFile(StreamReader fileReader)
 	{
 		List<Frame> readFrames = new List<Frame>();
-		Game readGame = new Game();
+		Game readGame;
 
 		using (fileReader = OpenOrExtract(fileReader))
 		{
-			string[] allLines = fileReader.ReadToEnd().Split('\n');
+			string fileData = fileReader.ReadToEnd();
+			string[] allLines = fileData.Split('\n');
 			fileReadProgress = 0;
 
 			for (int i = 0; i < allLines.Length; i++)
@@ -299,24 +302,33 @@ public class DemoStart : MonoBehaviour
 					// if this is actually valid arena data
 					if (onlyJSON.Length > 300)
 					{
-						try
-						{
-							Frame foundFrame = JsonUtility.FromJson<Frame>(onlyJSON);
+						//try
+						//{
+							Frame foundFrame = JsonConvert.DeserializeObject<Frame>(onlyJSON);
+
 							foundFrame.frameTime = frameTime;
 							readFrames.Add(foundFrame);
-						}
-						catch (Exception e)
-						{
-							Debug.LogError("Couldn't read frame. File is corrupted. " + e);
-						}
+						//}
+						//catch (Exception e)
+						//{
+						//	Debug.LogError("Couldn't read frame. File is corrupted. " + e);
+						//}
 					}
 				}
 			}
 		}
+		//if (readFrames.Count > 0 && readFrames[0] is Frame_v1)
+		//{
+		//	readGame = new Game_v1();
+		//}
+		//else
+		//{
+		readGame = new Game();
+		//}
 		readGame.frames = readFrames.ToArray();
 		readGame.nframes = readGame.frames.Length;
 
-		lock (loadedDemo)
+		lock (loadedDemoLock)
 		{
 			loadedDemo = readGame;
 		}
@@ -774,17 +786,17 @@ public class DemoStart : MonoBehaviour
 		}
 
 		//Set playerObject's transform values to those stored
-		p.transform.position = player.position.ToVector3();
+		p.transform.position = player.Position;
 		//Old method that rotates entire player
 		//playerObject.transform.rotation = Quaternion.LookRotation(new Vector3(playerHeadForward[0], playerHeadForward[1], playerHeadForward[2]));
 		IKController playerIK = p.ikController;
 		//Send Head and Hand transforms to IK script
-		playerIK.headForward = player.forward.ToVector3();
+		playerIK.headForward = player.Head.forward.ToVector3();
 		//playerIK.headForward = new Vector3(playerHeadForward[0], playerHeadForward[1], playerHeadForward[2]);
 
-		playerIK.headUp = player.up.ToVector3();
-		playerIK.rHandPosition = player.rhand.ToVector3();
-		playerIK.lHandPosition = player.lhand.ToVector3();
+		playerIK.headUp = player.Head.up.ToVector3();
+		playerIK.rHandPosition = player.rightHand.Position;
+		playerIK.lHandPosition = player.leftHand.Position;
 		//Send Velocity to IK script
 		playerIK.playerVelocity = playerVelocityVector;
 
@@ -834,9 +846,9 @@ public class DemoStart : MonoBehaviour
 				for (int i = 0; i < viewingFrame.teams[j].players.Length; i++)
 				{
 					Player p = viewingFrame.teams[j].players[i];
-					Vector3 discPosition = viewingFrame.disc.position.ToVector3Backwards();
-					Vector3 rHand = p.rhand.ToVector3Backwards();
-					Vector3 lHand = p.lhand.ToVector3Backwards();
+					Vector3 discPosition = viewingFrame.disc.position.ToVector3();
+					Vector3 rHand = p.rightHand.Position;
+					Vector3 lHand = p.leftHand.Position;
 					float rHandDis = Vector3.Distance(discPosition, rHand);
 					float lHandDis = Vector3.Distance(discPosition, lHand);
 					if (rHandDis < 0.2f)

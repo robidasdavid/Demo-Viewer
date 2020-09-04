@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using UnityEngine;
 /// <summary>
 /// Utility class for controlling playback of the game frames
@@ -54,6 +55,14 @@ public class Playhead
 			playheadLocation += TimeSpan.FromSeconds(deltaTime * (isReverse ? -1 : 1));
 
 			FindCurrentFrameLocation();
+
+			// if the current playhead and the next recorded frame time are 1 second apart, just skip to the next frame
+			Frame nextFrame = isReverse ? GetPreviousFrame() : GetNextFrame();
+			float diff = (float)Math.Abs((nextFrame.frameTime - playheadLocation).TotalSeconds);
+			if (diff > 1)
+			{
+				playheadLocation = nextFrame.frameTime;
+			}
 		}
 	}
 

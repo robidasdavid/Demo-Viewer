@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -126,7 +127,7 @@ public class ReplaySelectionUI : MonoBehaviour
 			{
 				string jsontext = Regex.Unescape(webRequest.downloadHandler.text);
 
-				ReplaysListData replays = JsonUtility.FromJson<ReplaysListData>(jsontext);
+				ReplaysListData replays = JsonConvert.DeserializeObject<ReplaysListData>(jsontext);
 
 				// add the new ones
 				foreach (var replay in replays.replays)

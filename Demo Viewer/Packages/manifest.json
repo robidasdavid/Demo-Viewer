@@ -1,4 +1,13 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "Packages from jillejr",
+      "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity/",
+      "scopes": [
+        "jillejr"
+      ]
+    }
+  ],
   "dependencies": {
     "com.franzco.unityutilities": "https://AntonFranzluebbers@bitbucket.org/AntonFranzluebbers/unityutilities.git",
     "com.unity.2d.sprite": "1.0.0",
@@ -17,6 +26,7 @@
     "com.unity.xr.management": "3.2.13",
     "com.unity.xr.oculus": "1.4.3",
     "com.unity.xr.windowsmr": "2.2.0",
+    "jillejr.newtonsoft.json-for-unity": "12.0.301",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

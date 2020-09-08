@@ -79,14 +79,22 @@ public class Playhead
 
 	public Frame GetFrame()
 	{
-		if (LiveFrameProvider.isLive)
+		// if we are host of the room (or not in shared space)
+		if (SocialMan.instance.roomManager.amIServer)
 		{
-			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
+			if (LiveFrameProvider.isLive)
+			{
+				return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
+			}
+			else
+			{
+				LastFrameIndex = currentFrameIndex;
+				return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
+			}
 		}
 		else
 		{
-			LastFrameIndex = currentFrameIndex;
-			return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
+			return SocialMan.instance.p2pManager.lastReceivedFrame;
 		}
 	}
 

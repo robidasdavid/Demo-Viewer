@@ -3,6 +3,9 @@ using AOT;
 using System.Collections.Generic;
 using Oculus.Platform;
 using Oculus.Platform.Models;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Text;
 
 /// <summary>
 /// 🙍‍🙍‍🙎‍🙎‍ This class coordinates communication with the 
@@ -27,10 +30,10 @@ public class SocialMan : MonoBehaviour
 
 	protected State currentState;
 
-	protected static SocialMan instance = null;
-	protected RoomMan roomManager;
-	protected P2PMan p2pManager;
-	protected VoipMan voipManager;
+	public static SocialMan instance = null;
+	public RoomMan roomManager;
+	public P2PMan p2pManager;
+	//protected VoipMan voipManager;
 
 	// my Application-scoped Oculus ID
 	protected ulong myID;
@@ -42,37 +45,53 @@ public class SocialMan : MonoBehaviour
 	// animating the mouth for voip
 	public static readonly float VOIP_SCALE = 2f;
 
+	public string currentRoomState;
+
 	public virtual void Update()
 	{
 		// Look for updates from remote users
 		p2pManager.GetRemotePackets();
 
 		// update avatar mouths to match voip volume
-		foreach (KeyValuePair<ulong, RemotePlayer> kvp in remoteUsers)
-		{
-			if (kvp.Value.voipSource == null)
-			{
-				if (kvp.Value.RemoteAvatar.MouthAnchor != null)
-				{
-					kvp.Value.voipSource = kvp.Value.RemoteAvatar.MouthAnchor.AddComponent<VoipAudioSourceHiLevel>();
-					if (kvp.Value.remoteUserID == null) Debug.LogError("HERE");
-					kvp.Value.voipSource.senderID = kvp.Value.remoteUserID;
-				}
-			}
+		//foreach (KeyValuePair<ulong, RemotePlayer> kvp in remoteUsers)
+		//{
+		//	if (kvp.Value.voipSource == null)
+		//	{
+		//		if (kvp.Value.RemoteAvatar.MouthAnchor != null)
+		//		{
+		//			//kvp.Value.voipSource = kvp.Value.RemoteAvatar.MouthAnchor.AddComponent<VoipAudioSourceHiLevel>();
+		//			if (kvp.Value.voipSource == null) Debug.LogError("HERE");
+		//			//kvp.Value.voipSource.senderID = kvp.Value.remoteUserID;
+		//		}
+		//	}
 
-			if (kvp.Value.voipSource != null)
-			{
-				float remoteVoiceCurrent = Mathf.Clamp(kvp.Value.voipSource.peakAmplitude * VOIP_SCALE, 0f, 1f);
-				kvp.Value.RemoteAvatar.VoiceAmplitude = remoteVoiceCurrent;
-			}
-		}
+		//	if (kvp.Value.voipSource != null)
+		//	{
+		//		float remoteVoiceCurrent = Mathf.Clamp(kvp.Value.voipSource.peakAmplitude * VOIP_SCALE, 0f, 1f);
+		//		kvp.Value.RemoteAvatar.VoiceAmplitude = remoteVoiceCurrent;
+		//	}
+		//}
 
-		if (localAvatar != null)
-		{
-			localAvatar.VoiceAmplitude = Mathf.Clamp(voiceCurrent * VOIP_SCALE, 0f, 1f);
-		}
+		//if (localAvatar != null)
+		//{
+		//	localAvatar.VoiceAmplitude = Mathf.Clamp(voiceCurrent * VOIP_SCALE, 0f, 1f);
+		//}
+
+		// send info about 2d player position
+		Send2DPlayerUpdate();
 
 		Request.RunCallbacks();
+
+		currentRoomState = roomManager?.roomID.ToString();
+
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			CheckRoom();
+		}
+		if (Input.GetKeyDown(KeyCode.I))
+		{
+			Invite();
+		}
 	}
 
 	#region Initialization and Shutdown
@@ -97,7 +116,7 @@ public class SocialMan : MonoBehaviour
 
 		roomManager = new RoomMan();
 		p2pManager = new P2PMan();
-		voipManager = new VoipMan();
+		//voipManager = new VoipMan();
 	}
 
 	void InitCallback(Message<PlatformInitialize> msg)
@@ -143,6 +162,7 @@ public class SocialMan : MonoBehaviour
 
 		myID = msg.Data.ID;
 		myOculusID = msg.Data.OculusID;
+		Debug.LogError(myOculusID);
 
 		localAvatar = Instantiate(localAvatarPrefab);
 		localAvatar.CanOwnMicrophone = false;
@@ -170,10 +190,32 @@ public class SocialMan : MonoBehaviour
 		if (!roomManager.CheckForInvite())
 		{
 			LogOutput("No invite on launch, looking for a friend to join.");
-			Users.GetLoggedInUserFriendsAndRooms()
-				.OnComplete(GetLoggedInUserFriendsAndRoomsCallback);
+			Users.GetLoggedInUserFriendsAndRooms().OnComplete(GetLoggedInUserFriendsAndRoomsCallback);
+			Users.GetLoggedInUserFriends().OnComplete((usersMsg) =>
+			{
+				foreach (User user in usersMsg.Data)
+				{
+					Debug.Log(user.DisplayName);
+					Debug.Log(user.PresenceStatus);
+				}
+			});
+			CheckRoom();
+
 		}
-		Voip.SetMicrophoneFilterCallback(MicFilter);
+		//Voip.SetMicrophoneFilterCallback(MicFilter);
+	}
+
+	private static void CheckRoom()
+	{
+		Rooms.GetCurrent().OnComplete((room) =>
+		{
+			Debug.Log(room.Data.UsersOptional.Count + "/" + room.Data.MaxUsers);
+		});
+	}
+
+	private void Invite()
+	{
+		Rooms.LaunchInvitableUserFlow(roomManager.roomID);
 	}
 
 	void GetLoggedInUserFriendsAndRoomsCallback(Message<UserAndRoomList> msg)
@@ -203,6 +245,18 @@ public class SocialMan : MonoBehaviour
 		TransitionToState(State.CREATING_A_ROOM);
 	}
 
+	public void Send2DPlayerUpdate()
+	{
+		byte[] toSend = new byte[3 * sizeof(float)];
+		int offset = 0;
+		p2pManager.PackVector3(Camera.main.transform.position, toSend, ref offset);
+
+		foreach (KeyValuePair<ulong, RemotePlayer> kvp in remoteUsers)
+		{
+			p2pManager.SendBytes(kvp.Key, P2PMan.MessageType.Update2D, toSend);
+		}
+	}
+
 	public void OnLocalAvatarPacketRecorded(object sender, OvrAvatar.PacketEventArgs args)
 	{
 		var size = Oculus.Avatar.CAPI.ovrAvatarPacket_GetSize(args.Packet.ovrNativePacket);
@@ -220,6 +274,16 @@ public class SocialMan : MonoBehaviour
 		packetSequence++;
 	}
 
+	public void SendFrameUpdate(int frameId, string frameJSON)
+	{
+		byte[] toSend = Encoding.ASCII.GetBytes(frameJSON);
+
+		foreach (KeyValuePair<ulong, RemotePlayer> kvp in remoteUsers)
+		{
+			p2pManager.SendBytes(kvp.Key, P2PMan.MessageType.Frame, toSend);
+		}
+	}
+
 	public void OnApplicationQuit()
 	{
 		roomManager.LeaveCurrentRoom();
@@ -227,7 +291,7 @@ public class SocialMan : MonoBehaviour
 		foreach (KeyValuePair<ulong, RemotePlayer> kvp in remoteUsers)
 		{
 			p2pManager.Disconnect(kvp.Key);
-			voipManager.Disconnect(kvp.Key);
+			//voipManager.Disconnect(kvp.Key);
 		}
 		LogOutputLine("End Log.");
 	}
@@ -247,7 +311,7 @@ public class SocialMan : MonoBehaviour
 	public static void TerminateWithError(Message msg)
 	{
 		instance.LogOutputLine("Error: " + msg.GetError().Message);
-		UnityEngine.Application.Quit();
+		//UnityEngine.Application.Quit();
 	}
 
 	#endregion
@@ -404,16 +468,14 @@ public class SocialMan : MonoBehaviour
 
 		instance.AddUser(userID, ref remoteUser);
 		instance.p2pManager.ConnectTo(userID);
-		instance.voipManager.ConnectTo(userID);
+		//instance.voipManager.ConnectTo(userID);
 
 		instance.LogOutputLine("Adding User " + userID);
 	}
 
 	public static void RemoveRemoteUser(ulong userID)
 	{
-		RemotePlayer remoteUser = new RemotePlayer();
-
-		if (instance.remoteUsers.TryGetValue(userID, out remoteUser))
+		if (instance.remoteUsers.TryGetValue(userID, out RemotePlayer remoteUser))
 		{
 			Destroy(remoteUser.RemoteAvatar.MouthAnchor.GetComponent<VoipAudioSourceHiLevel>(), 0);
 			Destroy(remoteUser.RemoteAvatar.gameObject, 0);
@@ -443,7 +505,7 @@ public class SocialMan : MonoBehaviour
 		voiceCurrent = voiceMax;
 	}
 
-	[MonoPInvokeCallback(typeof(Oculus.Platform.CAPI.FilterCallback))]
+	[MonoPInvokeCallback(typeof(CAPI.FilterCallback))]
 	public static void MicFilter(short[] pcmData, System.UIntPtr pcmDataLength, int frequency, int numChannels)
 	{
 		instance.UpdateVoiceData(pcmData, numChannels);
@@ -452,9 +514,7 @@ public class SocialMan : MonoBehaviour
 
 	public static RemotePlayer GetRemoteUser(ulong userID)
 	{
-		RemotePlayer remoteUser = new RemotePlayer();
-
-		if (instance.remoteUsers.TryGetValue(userID, out remoteUser))
+		if (instance.remoteUsers.TryGetValue(userID, out RemotePlayer remoteUser))
 		{
 			return remoteUser;
 		}

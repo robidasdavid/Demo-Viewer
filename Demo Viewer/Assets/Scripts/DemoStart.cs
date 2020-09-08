@@ -172,11 +172,17 @@ public class DemoStart : MonoBehaviour
 			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
 
 			// Only render the next frame if it differs from the last (optimization)
-			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying)
+			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !SocialMan.instance.roomManager.amIServer)
 			{
 				// Grab frame
 				Frame viewingFrame = playhead.GetFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
+
+				if (SocialMan.instance.roomManager.amIServer)
+				{
+					// send playhead info to other players ⬆
+					SocialMan.instance.SendFrameUpdate(playhead.CurrentFrameIndex, playhead.GetNearestFrame().originalJSON);
+				}
 
 				if (viewingFrame != null && previousFrame != null)
 				{
@@ -304,10 +310,7 @@ public class DemoStart : MonoBehaviour
 					{
 						//try
 						//{
-							Frame foundFrame = JsonConvert.DeserializeObject<Frame>(onlyJSON);
-
-							foundFrame.frameTime = frameTime;
-							readFrames.Add(foundFrame);
+						readFrames.Add(Frame.FromJSON(frameTime, onlyJSON));
 						//}
 						//catch (Exception e)
 						//{
@@ -323,8 +326,8 @@ public class DemoStart : MonoBehaviour
 		//}
 		//else
 		//{
-		readGame = new Game();
 		//}
+		readGame = new Game();
 		readGame.frames = readFrames.ToArray();
 		readGame.nframes = readGame.frames.Length;
 

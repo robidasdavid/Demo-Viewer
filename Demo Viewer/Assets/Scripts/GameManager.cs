@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 using unityutilities;
@@ -12,10 +11,14 @@ public class GameManager : MonoBehaviour
 	public Transform[] flatOnlyThings;
 	public Transform[] uiHiddenOnLive;
 	public Transform[] uiShownOnLive;
+	public Text dataSource;
+	[ReadOnly]
+	public bool lastFrameWasOwner = true;
 	[ReadOnly]
 	public bool lastFrameUserPresent;
 	[ReadOnly]
 	public bool usingVR = false;
+	public bool enableVR = false;
 	public Rig vrRig;
 	public Camera vrCamera;
 	public Camera flatCamera;
@@ -24,12 +27,14 @@ public class GameManager : MonoBehaviour
 			return usingVR ? vrCamera : flatCamera;
 		}
 	}
+	public DemoStart demoStart;
 
 	private void Awake()
 	{
 		instance = this;
 
 		RefreshVRObjectsVisibility(false);
+		lastFrameWasOwner = true;
 
 		bool printArgs = false;
 		string[] args = System.Environment.GetCommandLineArgs();
@@ -42,29 +47,49 @@ public class GameManager : MonoBehaviour
 				break;
 			}
 
-			if (args[i] == "-useVR")
+			if (enableVR || args[i] == "-useVR")
 			{
-				usingVR = true;
-				RefreshVRObjectsVisibility(true);
+				enableVR = true;
+				RefreshVRObjectsVisibility(GetPresence());
 				XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
 				XRGeneralSettings.Instance.Manager.StartSubsystems();
 			}
 		}
+
+		SocialMan.instance.roomManager.OwnerChanged += (newName) =>
+		{
+			dataSource.text = newName;
+		};
 	}
 
 
 
-	//// Update is called once per frame
-	//void Update()
-	//{
-	//	bool isPresent = GetPresence();
+	// Update is called once per frame
+	void Update()
+	{
+		// check if headset is worn
+		bool isPresent = GetPresence();
+		if (lastFrameUserPresent != isPresent)
+		{
+			RefreshVRObjectsVisibility(isPresent);
+		}
+		lastFrameUserPresent = isPresent;
 
-	//	if (lastFrameUserPresent != isPresent)
-	//	{
-	//		RefreshVRObjectsVisibility(isPresent);
-	//	}
-	//	lastFrameUserPresent = isPresent;
-	//}
+		// hide UI when connected to another user
+		bool isServer = SocialMan.instance.roomManager.amIServer;
+		if (lastFrameWasOwner != isServer)
+		{
+			foreach (var item in instance.uiHiddenOnLive)
+			{
+				item.gameObject.SetActive(isServer);
+			}
+			foreach (var item in instance.uiShownOnLive)
+			{
+				item.gameObject.SetActive(!isServer);
+			}
+		}
+		lastFrameWasOwner = isServer;
+	}
 
 	private static bool GetPresence()
 	{
@@ -76,7 +101,8 @@ public class GameManager : MonoBehaviour
 
 	private void RefreshVRObjectsVisibility(bool present)
 	{
-		Debug.Log("RefreshVRObjectsVisibility");
+		Debug.Log("RefreshVRObjectsVisibility: " + present);
+		usingVR = present;
 		if (present)
 		{
 			foreach (var thing in vrOnlyThings)

@@ -20,7 +20,11 @@ public class RoomMan
 	private ulong invitedRoomID;
 
 	// Am I the server?
-	private bool amIServer;
+	public bool amIServer;
+
+	// The current owner name
+	public string roomOwnerName;
+	public Action<string> OwnerChanged;
 
 	// Have we already gone through the startup?
 	private bool startupDone;
@@ -28,6 +32,7 @@ public class RoomMan
 	public RoomMan()
 	{
 		amIServer = false;
+		roomOwnerName = "";
 		startupDone = false;
 		Rooms.SetRoomInviteAcceptedNotificationCallback(AcceptingInviteCallback);
 		Rooms.SetUpdateNotificationCallback(RoomUpdateCallback);
@@ -77,7 +82,7 @@ public class RoomMan
 
 	public void CreateRoom()
 	{
-		Rooms.CreateAndJoinPrivate(RoomJoinPolicy.FriendsOfOwner, 4, true)
+		Rooms.CreateAndJoinPrivate(RoomJoinPolicy.Everyone, 4, true)
 			 .OnComplete(CreateAndJoinPrivateRoomCallback);
 	}
 
@@ -90,6 +95,8 @@ public class RoomMan
 		}
 
 		roomID = msg.Data.ID;
+		if (roomOwnerName != msg.Data.OwnerOptional.OculusID) OwnerChanged?.Invoke(msg.Data.OwnerOptional.OculusID);
+		roomOwnerName = msg.Data.OwnerOptional.OculusID;
 
 		if (msg.Data.OwnerOptional != null && msg.Data.OwnerOptional.ID == SocialMan.MyID)
 		{
@@ -122,7 +129,7 @@ public class RoomMan
 		Rooms.Join(roomID, true).OnComplete(JoinRoomCallback);
 	}
 
-	void JoinRoomCallback(Message<Oculus.Platform.Models.Room> msg)
+	void JoinRoomCallback(Message<Room> msg)
 	{
 		if (msg.IsError)
 		{
@@ -133,6 +140,8 @@ public class RoomMan
 		var ownerOculusId = msg.Data.OwnerOptional != null ? msg.Data.OwnerOptional.OculusID : "null";
 		var userCount = msg.Data.UsersOptional != null ? msg.Data.UsersOptional.Count : 0;
 
+		if (roomOwnerName != msg.Data.OwnerOptional.OculusID) OwnerChanged?.Invoke(msg.Data.OwnerOptional.OculusID);
+		roomOwnerName = msg.Data.OwnerOptional.OculusID;
 		SocialMan.LogOutput("Joined Room " + msg.Data.ID + " owner: " + ownerOculusId + " count: " + userCount);
 		roomID = msg.Data.ID;
 		ProcessRoomData(msg);
@@ -142,7 +151,7 @@ public class RoomMan
 
 	#region Room Updates
 
-	void RoomUpdateCallback(Message<Oculus.Platform.Models.Room> msg)
+	void RoomUpdateCallback(Message<Room> msg)
 	{
 		if (msg.IsError)
 		{
@@ -150,9 +159,11 @@ public class RoomMan
 			return;
 		}
 
-		var ownerOculusId = msg.Data.OwnerOptional != null ? msg.Data.OwnerOptional.OculusID : "null";
-		var userCount = msg.Data.UsersOptional != null ? msg.Data.UsersOptional.Count : 0;
+		string ownerOculusId = msg.Data.OwnerOptional != null ? msg.Data.OwnerOptional.OculusID : "null";
+		int userCount = msg.Data.UsersOptional != null ? msg.Data.UsersOptional.Count : 0;
 
+		if (roomOwnerName != msg.Data.OwnerOptional.OculusID) OwnerChanged?.Invoke(msg.Data.OwnerOptional.OculusID);
+		roomOwnerName = msg.Data.OwnerOptional.OculusID;
 		SocialMan.LogOutput("Room Update " + msg.Data.ID + " owner: " + ownerOculusId + " count: " + userCount);
 		ProcessRoomData(msg);
 	}
@@ -175,8 +186,10 @@ public class RoomMan
 
 	#region Process Room Data
 
-	void ProcessRoomData(Message<Oculus.Platform.Models.Room> msg)
+	void ProcessRoomData(Message<Room> msg)
 	{
+		if (roomOwnerName != msg.Data.OwnerOptional.OculusID) OwnerChanged?.Invoke(msg.Data.OwnerOptional.OculusID);
+		roomOwnerName = msg.Data.OwnerOptional.OculusID;
 		if (msg.Data.OwnerOptional != null && msg.Data.OwnerOptional.ID == SocialMan.MyID)
 		{
 			amIServer = true;

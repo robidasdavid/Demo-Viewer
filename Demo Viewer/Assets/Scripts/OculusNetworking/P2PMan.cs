@@ -2,6 +2,9 @@ using UnityEngine;
 using System;
 using Oculus.Platform;
 using Oculus.Platform.Models;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 // Helper class to manage a Peer-to-Peer connection to the other user.
 // The connection is used to send and received the Transforms for the
@@ -9,10 +12,14 @@ using Oculus.Platform.Models;
 // frequency.
 public class P2PMan
 {
+	public Frame lastReceivedFrame;
+
 	// packet header is a message type byte
-	private enum MessageType : byte
+	public enum MessageType : byte
 	{
 		Update = 1,
+		Frame = 2,
+		Update2D = 3
 	};
 
 	public P2PMan()
@@ -83,7 +90,7 @@ public class P2PMan
 
 	#region Message Sending
 
-	public void SendAvatarUpdate(ulong userID, Transform rootTransform, UInt32 sequence, byte[] avatarPacket)
+	public void SendAvatarUpdate(ulong userID, Transform rootTransform, uint sequence, byte[] avatarPacket)
 	{
 		const int UPDATE_DATA_LENGTH = 41;
 		byte[] sendBuffer = new byte[avatarPacket.Length + UPDATE_DATA_LENGTH];
@@ -103,6 +110,25 @@ public class P2PMan
 		Buffer.BlockCopy(avatarPacket, 0, sendBuffer, offset, avatarPacket.Length);
 		Net.SendPacket(userID, sendBuffer, SendPolicy.Unreliable);
 	}
+
+	/// <summary>
+	/// Adds the necessary headers and sends the byte array over the network
+	/// </summary>
+	/// <param name="userID"></param>
+	/// <param name="messageType"></param>
+	/// <param name="data"></param>
+	public void SendBytes(ulong userID, MessageType messageType, byte[] data)
+	{
+		byte[] sendBuffer = new byte[data.Length + sizeof(byte) + sizeof(ulong)];
+
+		int offset = 0;
+		PackByte((byte)messageType, sendBuffer, ref offset);
+
+		PackULong(SocialMan.MyID, sendBuffer, ref offset);
+		Buffer.BlockCopy(data, 0, sendBuffer, offset, data.Length);
+		Net.SendPacket(userID, sendBuffer, SendPolicy.Unreliable);
+	}
+
 	#endregion
 
 	#region Message Receiving
@@ -130,6 +156,14 @@ public class P2PMan
 			if (messageType == MessageType.Update)
 			{
 				processAvatarPacket(remote, ref receiveBuffer, ref offset);
+			}
+			else if (messageType == MessageType.Frame)
+			{
+				lastReceivedFrame = Frame.FromJSON(DateTime.Now, Encoding.ASCII.GetString(receiveBuffer, offset, receiveBuffer.Length - offset));
+			}
+			else if (messageType == MessageType.Update2D)
+			{
+				// TODO
 			}
 			else
 			{
@@ -169,6 +203,30 @@ public class P2PMan
 
 	#region Serialization
 
+	// Convert an object to a byte array
+	public static byte[] ObjectToByteArray(object obj)
+	{
+		BinaryFormatter bf = new BinaryFormatter();
+		using (var ms = new MemoryStream())
+		{
+			bf.Serialize(ms, obj);
+			return ms.ToArray();
+		}
+	}
+
+	// Convert a byte array to an Object
+	public static object ByteArrayToObject(ref byte[] arrBytes, ref int offset)
+	{
+		using (var memStream = new MemoryStream())
+		{
+			var binForm = new BinaryFormatter();
+			memStream.Write(arrBytes, offset, arrBytes.Length);
+			memStream.Seek(0, SeekOrigin.Begin);
+			var obj = binForm.Deserialize(memStream);
+			return obj;
+		}
+	}
+
 	void PackByte(byte b, byte[] buf, ref int offset)
 	{
 		buf[offset] = b;
@@ -198,7 +256,7 @@ public class P2PMan
 			ReadFloat(buf, ref offset));
 	}
 
-	void PackVector3(Vector3 v, byte[] buf, ref int offset)
+	public void PackVector3(Vector3 v, byte[] buf, ref int offset)
 	{
 		PackFloat(v.x, buf, ref offset);
 		PackFloat(v.y, buf, ref offset);

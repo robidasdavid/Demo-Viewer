@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using UnityEngine;
 
-
+[Serializable]
 public class Game
 {
 	public bool isNewstyle;
@@ -13,7 +13,7 @@ public class Game
 }
 
 
-
+[Serializable]
 public class Stats
 {
 	public float possession_time;
@@ -51,7 +51,7 @@ public class Stats
 }
 
 
-
+[Serializable]
 public class Last_Score
 {
 	public float disc_speed;
@@ -64,12 +64,20 @@ public class Last_Score
 }
 
 
+
+[Serializable]
 public class Frame
 {
+
 	/// <summary>
 	/// Time of this frame as saved in the replay file
 	/// </summary>
 	public DateTime frameTime;
+
+	/// <summary>
+	/// The original JSON string for network transfer
+	/// </summary>
+	public string originalJSON;
 
 	public Disc disc;
 	public string sessionid;
@@ -110,6 +118,20 @@ public class Frame
 	/// </summary>
 	public Last_Score last_score;
 	public Team[] teams;
+
+	/// <summary>
+	/// Creates a frame from json and a timestamp
+	/// </summary>
+	/// <param name="time">The time the frame was recorded</param>
+	/// <param name="json">The json for the frame</param>
+	/// <returns>A Frame object</returns>
+	public static Frame FromJSON(DateTime time, string json)
+	{
+		Frame frame = JsonConvert.DeserializeObject<Frame>(json);
+		frame.frameTime = time;
+		frame.originalJSON = json;
+		return frame;
+	}
 
 	/// <summary>
 	/// ↔ Mixes the two frames with a linear interpolation based on t
@@ -200,7 +222,7 @@ public class Frame
 	}
 }
 
-
+[Serializable]
 public class Disc
 {
 	public float[] position;
@@ -234,7 +256,7 @@ public class Disc
 	}
 }
 
-
+[Serializable]
 public class Team
 {
 	public Player[] players;
@@ -303,7 +325,7 @@ public class Team
 
 }
 
-
+[Serializable]
 public class Player
 {
 	public EchoTransform rightHand { get => new EchoTransform(rhand); }
@@ -399,7 +421,7 @@ public class Player
 
 
 
-
+[Serializable]
 public class Playspace
 {
 
@@ -435,7 +457,7 @@ public class Playspace
 /// <summary>
 /// Object for position and rotation
 /// </summary>
-
+[Serializable]
 public class EchoTransform
 {
 	public EchoTransform() { }

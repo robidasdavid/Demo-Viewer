@@ -268,6 +268,7 @@ public class ReplaySelectionUI : MonoBehaviour
 	public void LiveToggle(bool live)
 	{
 		LiveFrameProvider.isLive = live;
+
 		if (DemoStart.playhead != null)
 		{
 			DemoStart.playhead.SetPlaying(live);

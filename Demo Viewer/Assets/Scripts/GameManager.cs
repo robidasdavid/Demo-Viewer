@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 using unityutilities;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
 	public static GameManager instance;
 	public Transform[] vrOnlyThings;
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
 	public Rig vrRig;
 	public Camera vrCamera;
 	public Camera flatCamera;
-	public Camera camera {
+	public new Camera camera {
 		get {
 			return usingVR ? vrCamera : flatCamera;
 		}
@@ -56,10 +57,11 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		SocialMan.instance.roomManager.OwnerChanged += (newName) =>
-		{
-			dataSource.text = newName;
-		};
+		// TODO add back
+		//SocialMan.instance.roomManager.OwnerChanged += (newName) =>
+		//{
+		//	dataSource.text = newName;
+		//};
 	}
 
 
@@ -76,7 +78,6 @@ public class GameManager : MonoBehaviour
 		lastFrameUserPresent = isPresent;
 
 		// hide UI when connected to another user
-		bool isServer = SocialMan.instance.roomManager.amIServer;
 		if (lastFrameWasOwner != isServer)
 		{
 			foreach (var item in instance.uiHiddenOnLive)

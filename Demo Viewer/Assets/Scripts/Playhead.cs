@@ -80,7 +80,7 @@ public class Playhead
 	public Frame GetFrame()
 	{
 		// if we are host of the room (or not in shared space)
-		if (SocialMan.instance.roomManager.amIServer)
+		if (GameManager.instance.isServer)
 		{
 			if (LiveFrameProvider.isLive)
 			{

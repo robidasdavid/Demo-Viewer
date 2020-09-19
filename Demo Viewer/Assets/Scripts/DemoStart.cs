@@ -16,6 +16,7 @@ using System;
 using TMPro;
 using System.Threading;
 using Newtonsoft.Json;
+using Mirror;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -41,7 +42,7 @@ public class PlayerStats : Stats
 
 
 
-public class DemoStart : MonoBehaviour
+public class DemoStart : NetworkBehaviour
 {
 	#region Variables
 	public GameObject orangeScoreEffects;
@@ -172,16 +173,17 @@ public class DemoStart : MonoBehaviour
 			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
 
 			// Only render the next frame if it differs from the last (optimization)
-			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !SocialMan.instance.roomManager.amIServer)
+			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !isServer)
 			{
 				// Grab frame
 				Frame viewingFrame = playhead.GetFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
 
-				if (SocialMan.instance.roomManager.amIServer)
+				if (isServer)
 				{
 					// send playhead info to other players ⬆
-					SocialMan.instance.SendFrameUpdate(playhead.CurrentFrameIndex, playhead.GetNearestFrame().originalJSON);
+					// TODO reinstate
+					//SocialMan.instance.SendFrameUpdate(playhead.CurrentFrameIndex, playhead.GetNearestFrame().originalJSON);
 				}
 
 				if (viewingFrame != null && previousFrame != null)

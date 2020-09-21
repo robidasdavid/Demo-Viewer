@@ -15,7 +15,6 @@ using System.IO.Compression;
 using System;
 using TMPro;
 using System.Threading;
-using Newtonsoft.Json;
 using Mirror;
 
 //Serializable classes for JSON serializing from the API output.
@@ -127,6 +126,12 @@ public class DemoStart : NetworkBehaviour
 	protected string IP = "http://69.30.197.26:5000";
 
 	public TextMeshProUGUI replayFileNameText;
+
+
+	[SyncVar]
+	public string networkJsonData;
+	public int networkFrameIndex;
+
 	#endregion
 
 	void Start()
@@ -182,8 +187,8 @@ public class DemoStart : NetworkBehaviour
 				if (isServer)
 				{
 					// send playhead info to other players ⬆
-					// TODO reinstate
-					//SocialMan.instance.SendFrameUpdate(playhead.CurrentFrameIndex, playhead.GetNearestFrame().originalJSON);
+					networkFrameIndex = playhead.CurrentFrameIndex;
+					networkJsonData = playhead.GetNearestFrame().originalJSON;
 				}
 
 				if (viewingFrame != null && previousFrame != null)

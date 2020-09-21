@@ -94,7 +94,7 @@ public class Playhead
 		}
 		else
 		{
-			return SocialMan.instance.p2pManager.lastReceivedFrame;
+			return Frame.FromJSON(DateTime.Now, GameManager.instance.demoStart.networkJsonData);
 		}
 	}
 

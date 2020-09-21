@@ -3,19 +3,29 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
   m_Name: Readme
   m_EditorClassIdentifier: 
-  icon: 
+  icon: {fileID: 2800000, guid: 6a57710a79e167f48848f0f298874689, type: 3}
   title: EchoVR Replay Viewer
   sections:
-  - heading: 'EchoVR Replay Viewer'
-    text: "Play back replays from previously recorded EchoVR games."
+  - heading: EchoVR Replay Viewer
+    text: Play back replays from previously recorded EchoVR games.
     linkText: Github Page
     url: https://github.com/sneakyevil/Demo-Viewer
+  - heading: Oculus Store
+    text: 
+    linkText: Get an Oculus Store key here
+    url: http://www.davidr.live/code
+  - heading: 
+    text: 'Once you have the product key activated on Oculus, the store page should
+      become available:'
+    linkText: Oculus Store Page
+    url: https://www.oculus.com/experiences/rift/3228453177179864
   loadedLayout: 1

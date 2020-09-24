@@ -1,11 +1,13 @@
 ﻿using Mirror;
+using Mirror.Discovery;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 using unityutilities;
 
-public class GameManager : NetworkBehaviour
+public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
 	public Transform[] vrOnlyThings;
@@ -29,6 +31,9 @@ public class GameManager : NetworkBehaviour
 		}
 	}
 	public DemoStart demoStart;
+	public NetworkFrameManager netFrameMan;
+	public NetworkDiscovery networkDiscovery;
+	public Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
 
 	private void Awake()
 	{
@@ -78,18 +83,18 @@ public class GameManager : NetworkBehaviour
 		lastFrameUserPresent = isPresent;
 
 		// hide UI when connected to another user
-		if (lastFrameWasOwner != isServer)
+		if (lastFrameWasOwner != netFrameMan.IsLocalOrServer)
 		{
 			foreach (var item in instance.uiHiddenOnLive)
 			{
-				item.gameObject.SetActive(isServer);
+				item.gameObject.SetActive(netFrameMan.IsLocalOrServer);
 			}
 			foreach (var item in instance.uiShownOnLive)
 			{
-				item.gameObject.SetActive(!isServer);
+				item.gameObject.SetActive(!netFrameMan.IsLocalOrServer);
 			}
 		}
-		lastFrameWasOwner = isServer;
+		lastFrameWasOwner = netFrameMan.IsLocalOrServer;
 	}
 
 	private static bool GetPresence()

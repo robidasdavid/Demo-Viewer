@@ -292,6 +292,9 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="Ludiq.OdinSerializer">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Ludiq/Ludiq.PeekCore/Runtime/Dependencies/OdinSerializer/EditorOnly/Ludiq.OdinSerializer.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.CecilX">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll</HintPath>
     </Reference>
@@ -312,9 +315,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/jillejr.newtonsoft.json-for-unity@12.0.301/Plugins/Newtonsoft.Json Editor/Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Ludiq.OdinSerializer">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Ludiq/Ludiq.PeekCore/Runtime/Dependencies/OdinSerializer/EditorOnly/Ludiq.OdinSerializer.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -835,6 +835,10 @@
       <Project>{59C8A409-AFD5-2107-A34E-46A6495F7BBA}</Project>
       <Name>FranzCo.unityutilities</Name>
     </ProjectReference>
+    <ProjectReference Include="Ludiq.PeekCore.Editor.csproj">
+      <Project>{89083876-FD1B-ACCE-D000-54EE256ECA9C}</Project>
+      <Name>Ludiq.PeekCore.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Oculus.Platform.Editor.csproj">
       <Project>{A0A7DE5F-8EE3-4C52-F7E0-520A5C7C81C8}</Project>
       <Name>Oculus.Platform.Editor</Name>
@@ -871,6 +875,10 @@
       <Project>{8E9D441D-B353-6041-DE27-43E9863B0967}</Project>
       <Name>Ninja.WebSockets</Name>
     </ProjectReference>
+    <ProjectReference Include="Ludiq.Peek.Editor.csproj">
+      <Project>{16096C9D-F2CB-D28E-41EF-F18C91A2E67F}</Project>
+      <Name>Ludiq.Peek.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Mirror.Cloud.csproj">
       <Project>{F978F212-289D-8361-ABD9-4A56B5A37C05}</Project>
       <Name>Mirror.Cloud</Name>
@@ -903,6 +911,10 @@
       <Project>{91D733D3-3F57-4008-E2B1-B2785A24F6FB}</Project>
       <Name>Mirror.example.RigidbodyPhysics</Name>
     </ProjectReference>
+    <ProjectReference Include="Ludiq.PeekCore.Runtime.csproj">
+      <Project>{02713481-CD12-5DC3-F366-E83D9BBAA1AA}</Project>
+      <Name>Ludiq.PeekCore.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="Mirror.Editor.csproj">
       <Project>{DBCFB6EA-7039-FE04-0240-74D603FBB310}</Project>
       <Name>Mirror.Editor</Name>
@@ -918,18 +930,6 @@
     <ProjectReference Include="Oculus.Platform.csproj">
       <Project>{DA7E6F49-1EB3-1C79-DE03-849CFCB26878}</Project>
       <Name>Oculus.Platform</Name>
-    </ProjectReference>
-    <ProjectReference Include="Ludiq.PeekCore.Editor.csproj">
-      <Project>{89083876-FD1B-ACCE-D000-54EE256ECA9C}</Project>
-      <Name>Ludiq.PeekCore.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Ludiq.Peek.Editor.csproj">
-      <Project>{16096C9D-F2CB-D28E-41EF-F18C91A2E67F}</Project>
-      <Name>Ludiq.Peek.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Ludiq.PeekCore.Runtime.csproj">
-      <Project>{02713481-CD12-5DC3-F366-E83D9BBAA1AA}</Project>
-      <Name>Ludiq.PeekCore.Runtime</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

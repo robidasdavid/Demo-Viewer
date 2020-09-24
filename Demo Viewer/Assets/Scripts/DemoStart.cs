@@ -41,9 +41,11 @@ public class PlayerStats : Stats
 
 
 
-public class DemoStart : NetworkBehaviour
+public class DemoStart : MonoBehaviour
 {
 	#region Variables
+	public NetworkFrameManager netFrameMan;
+
 	public GameObject orangeScoreEffects;
 	public GameObject blueScoreEffects;
 
@@ -128,9 +130,6 @@ public class DemoStart : NetworkBehaviour
 	public TextMeshProUGUI replayFileNameText;
 
 
-	[SyncVar]
-	public string networkJsonData;
-	public int networkFrameIndex;
 
 	#endregion
 
@@ -178,17 +177,17 @@ public class DemoStart : NetworkBehaviour
 			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
 
 			// Only render the next frame if it differs from the last (optimization)
-			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !isServer)
+			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !netFrameMan.IsLocalOrServer)
 			{
 				// Grab frame
 				Frame viewingFrame = playhead.GetFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
 
-				if (isServer)
+				if (netFrameMan.IsLocalOrServer)
 				{
 					// send playhead info to other players ⬆
-					networkFrameIndex = playhead.CurrentFrameIndex;
-					networkJsonData = playhead.GetNearestFrame().originalJSON;
+					netFrameMan.networkFrameIndex = playhead.CurrentFrameIndex;
+					netFrameMan.networkJsonData = playhead.GetNearestFrame().originalJSON;
 				}
 
 				if (viewingFrame != null && previousFrame != null)

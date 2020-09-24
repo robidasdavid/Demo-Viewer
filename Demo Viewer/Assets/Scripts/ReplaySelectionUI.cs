@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Mirror;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.IO;
@@ -281,6 +282,19 @@ public class ReplaySelectionUI : MonoBehaviour
 				item.gameObject.SetActive(live);
 			}
 		}
+	}
+
+	public void HostMatch()
+	{
+		GameManager.instance.discoveredServers.Clear();
+		NetworkManager.singleton.StartHost();
+		GameManager.instance.networkDiscovery.AdvertiseServer();
+	}
+
+	public void ShowMatches()
+	{
+		GameManager.instance.discoveredServers.Clear();
+		GameManager.instance.networkDiscovery.StartDiscovery();
 	}
 
 }

@@ -80,7 +80,7 @@ public class Playhead
 	public Frame GetFrame()
 	{
 		// if we are host of the room (or not in shared space)
-		if (GameManager.instance.isServer)
+		if (GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
 			if (LiveFrameProvider.isLive)
 			{
@@ -94,7 +94,7 @@ public class Playhead
 		}
 		else
 		{
-			return Frame.FromJSON(DateTime.Now, GameManager.instance.demoStart.networkJsonData);
+			return Frame.FromJSON(DateTime.Now, GameManager.instance.netFrameMan.networkJsonData);
 		}
 	}
 

@@ -718,6 +718,9 @@
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="com.unity.quicksearch">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/com.unity.quicksearch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="FranzCo.unityutilities.csproj">

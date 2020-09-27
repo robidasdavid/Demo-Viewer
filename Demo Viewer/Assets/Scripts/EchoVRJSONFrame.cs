@@ -23,8 +23,6 @@ public class Game
 		{
 			while (rawFrames.Count > 0)
 			{
-				Debug.Log("PROCESS");
-				Debug.Log(GC.GetTotalMemory(false));
 				Frame newFrame = Frame.FromEchoReplayString(rawFrames[index]);
 				if (newFrame != null)
 				{
@@ -39,6 +37,7 @@ public class Game
 					nframes--;
 				}
 			}
+			Debug.LogError("File contains no valid arena frames.");
 			return null;
 		}
 		else
@@ -463,9 +462,9 @@ public class Player
 	{
 		t = Mathf.Clamp01(t);
 
-		return new Player()
+		var player = new Player()
 		{
-			rhand = JToken.FromObject(EchoTransform.Lerp(new EchoTransform(from.rhand), new EchoTransform(to.rhand), t).pos),
+			rhand = EchoTransform.Lerp(new EchoTransform(from.rhand), new EchoTransform(to.rhand), t).ToJToken(),
 			playerid = from.playerid,
 			name = from.name,
 			userid = from.userid,
@@ -484,10 +483,12 @@ public class Player
 			head = EchoTransform.Lerp(from.head, to.head, t),
 			possession = from.possession,
 			body = EchoTransform.Lerp(from.body, to.body, t),
-			lhand = JToken.FromObject(EchoTransform.Lerp(new EchoTransform(from.lhand), new EchoTransform(to.lhand), t).pos),
+			lhand = EchoTransform.Lerp(new EchoTransform(from.lhand), new EchoTransform(to.lhand), t).ToJToken(),
 			blocking = from.blocking,
 			velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatArray()
 		};
+
+		return player;
 	}
 }
 
@@ -560,6 +561,7 @@ public class EchoTransform
 		this.up = up;
 	}
 
+	[JsonIgnore]
 	public Vector3 Position {
 		get {
 			if (pos != null) return pos.ToVector3();
@@ -567,6 +569,8 @@ public class EchoTransform
 			else throw new NullReferenceException("Neither pos nor position are set");
 		}
 	}
+
+	[JsonIgnore]
 	public Quaternion Rotation {
 		get { return Quaternion.LookRotation(forward.ToVector3(), up.ToVector3()); }
 	}
@@ -600,6 +604,11 @@ public class EchoTransform
 		};
 
 		return transform;
+	}
+
+	public JToken ToJToken()
+	{
+		return JToken.Parse(JsonConvert.SerializeObject(this));
 	}
 }
 

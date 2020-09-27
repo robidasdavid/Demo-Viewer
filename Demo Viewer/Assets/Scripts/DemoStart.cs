@@ -655,7 +655,7 @@ public class DemoStart : MonoBehaviour
 		var movedObjects = new List<PlayerCharacter>();
 
 		// Update the players
-		for (int i = 0; i < viewingFrame.teams.Length; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			if (viewingFrame.teams[i].players != null)
 			{
@@ -698,6 +698,10 @@ public class DemoStart : MonoBehaviour
 		DiscController discScript = disc.GetComponent<DiscController>();
 		discScript.discVelocity = viewingFrame.disc.velocity.ToVector3();
 		discScript.discPosition = viewingFrame.disc.position.ToVector3();
+		if (viewingFrame.disc.forward != null)
+		{
+			discScript.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
+		}
 		//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
 	}
 
@@ -734,6 +738,9 @@ public class DemoStart : MonoBehaviour
 
 	public void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex)
 	{
+		// don't show spectators
+		if (teamIndex == 2) return;
+
 		// if this player doesn't exist in the scene yet
 		if (!playerObjects.ContainsKey(player.name))
 		{
@@ -754,21 +761,30 @@ public class DemoStart : MonoBehaviour
 			previousVelocityVector = lastFramePlayer.velocity.ToVector3();
 		}
 
-		//Set playerObject's transform values to those stored
-		p.transform.position = player.Position;
 		//Old method that rotates entire player
-		//playerObject.transform.rotation = Quaternion.LookRotation(new Vector3(playerHeadForward[0], playerHeadForward[1], playerHeadForward[2]));
 		IKController playerIK = p.ikController;
-		//Send Head and Hand transforms to IK script
-		playerIK.headForward = player.Head.forward.ToVector3();
-		//playerIK.headForward = new Vector3(playerHeadForward[0], playerHeadForward[1], playerHeadForward[2]);
 
+		//Send Head and Hand transforms to IK script
+
+		// send head rotation 😏
+		playerIK.headPos = player.Head.Position;
+		playerIK.headForward = player.Head.forward.ToVector3();
 		playerIK.headUp = player.Head.up.ToVector3();
-		playerIK.rHandPosition = player.rightHand.Position;
+
+		// send hand pos/rot ✋🤚
 		playerIK.lHandPosition = player.leftHand.Position;
-		//Send Velocity to IK script
+		playerIK.rHandPosition = player.rightHand.Position;
+		playerIK.lHandRotation = Quaternion.LookRotation(player.leftHand.up.ToVector3(), player.leftHand.forward.ToVector3());
+		playerIK.rHandRotation = Quaternion.LookRotation(player.rightHand.up.ToVector3(), player.rightHand.forward.ToVector3());
+
+		// send body pos/rot 🕺
+		playerIK.bodyPosition = player.body.Position;
+		playerIK.bodyRotation = Quaternion.LookRotation(player.body.left.ToVector3(), player.body.up.ToVector3());
+
+		// send velocity 💨
 		playerIK.playerVelocity = playerVelocityVector;
 
+		// send stun info 🤜
 		if (player.stunned && !p.stunnedInitiated)
 		{
 			FXInstantiate(punchParticle, p.transform.position, Vector3.zero);
@@ -777,7 +793,7 @@ public class DemoStart : MonoBehaviour
 		if (!player.stunned && p.stunnedInitiated)
 			p.stunnedInitiated = false;
 
-		//kinda jank but it works (back thruster)
+		// kinda jank but it works (back thruster)
 		if (playerVelocityVector.magnitude - previousVelocityVector.magnitude > 1)
 		{
 			p.boost.SetActive(false);

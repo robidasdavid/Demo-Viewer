@@ -197,7 +197,7 @@ public class DemoStart : MonoBehaviour
 					Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
 					if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
 					{
-						maxGameTime = loadedDemo.frames[0].game_clock;  // TODO this may not be correct if the recording starts midgame
+						maxGameTime = loadedDemo.GetFrame(0).game_clock;  // TODO this may not be correct if the recording starts midgame
 						float currentTime = viewingFrame.game_clock;
 						joustReadout.GetComponentInChildren<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
 						StartCoroutine(FlashInOut(joustReadout, 3));
@@ -282,65 +282,25 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	void ReadReplayFile(StreamReader fileReader)
 	{
-		List<Frame> readFrames = new List<Frame>();
-		Game readGame;
-
 		using (fileReader = OpenOrExtract(fileReader))
 		{
 			string fileData = fileReader.ReadToEnd();
-			string[] allLines = fileData.Split('\n');
+			List<string> allLines = fileData.LowMemSplit("\n");
 			fileReadProgress = 0;
 
-			for (int i = 0; i < allLines.Length; i++)
+			Game readGame = new Game
 			{
-				fileReadProgress = (float)i / allLines.Length;
-				var line = allLines[i];
-				if (!string.IsNullOrEmpty(line))
-				{
-					string[] splitJSON = line.Split('\t');
-					string onlyJSON, onlyTime;
-					if (splitJSON.Length == 2)
-					{
-						onlyJSON = splitJSON[1];
-						onlyTime = splitJSON[0];
-					}
-					else
-					{
-						Debug.LogError("Row doesn't include both a time and API JSON");
-						continue;
-					}
-					DateTime frameTime = DateTime.Parse(onlyTime);
+				rawFrames = allLines,
+				nframes = allLines.Count,
+				frames = new List<Frame>(new Frame[allLines.Count])
+			};
 
-					// if this is actually valid arena data
-					if (onlyJSON.Length > 300)
-					{
-						//try
-						//{
-						readFrames.Add(Frame.FromJSON(frameTime, onlyJSON));
-						//}
-						//catch (Exception e)
-						//{
-						//	Debug.LogError("Couldn't read frame. File is corrupted. " + e);
-						//}
-					}
-				}
+			lock (loadedDemoLock)
+			{
+				loadedDemo = readGame;
 			}
 		}
-		//if (readFrames.Count > 0 && readFrames[0] is Frame_v1)
-		//{
-		//	readGame = new Game_v1();
-		//}
-		//else
-		//{
-		//}
-		readGame = new Game();
-		readGame.frames = readFrames.ToArray();
-		readGame.nframes = readGame.frames.Length;
 
-		lock (loadedDemoLock)
-		{
-			loadedDemo = readGame;
-		}
 	}
 
 	/// <summary>
@@ -928,5 +888,47 @@ public class DemoStart : MonoBehaviour
 	public void setSoundBool()
 	{
 		isSoundOn = masterSoundToggle.isOn;
+	}
+}
+
+/// <summary>
+/// Copied directly from: https://stackoverflow.com/a/28601805
+/// </summary>
+public static class StringExtensions
+{
+
+	// the string.Split() method from .NET tend to run out of memory on 80 Mb strings. 
+	// this has been reported several places online. 
+	// This version is fast and memory efficient and return no empty lines. 
+	public static List<string> LowMemSplit(this string s, string seperator)
+	{
+		List<string> list = new List<string>();
+		int lastPos = 0;
+		int pos = s.IndexOf(seperator);
+		while (pos > -1)
+		{
+			while (pos == lastPos)
+			{
+				lastPos += seperator.Length;
+				pos = s.IndexOf(seperator, lastPos);
+				if (pos == -1)
+					return list;
+			}
+
+			string tmp = s.Substring(lastPos, pos - lastPos);
+			if (tmp.Trim().Length > 0)
+				list.Add(tmp);
+			lastPos = pos + seperator.Length;
+			pos = s.IndexOf(seperator, lastPos);
+		}
+
+		if (lastPos < s.Length)
+		{
+			string tmp = s.Substring(lastPos, s.Length - lastPos);
+			if (tmp.Trim().Length > 0)
+				list.Add(tmp);
+		}
+
+		return list;
 	}
 }

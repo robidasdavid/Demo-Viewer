@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -9,7 +10,42 @@ public class Game
 {
 	public bool isNewstyle;
 	public int nframes;
-	public Frame[] frames;
+	public List<string> rawFrames;
+	public List<Frame> frames { private get; set; }
+
+	/// <summary>
+	/// Gets or converts the requested frame.
+	/// May return null if the frame can't be converted.
+	/// </summary>
+	public Frame GetFrame(int index)
+	{
+		if (frames[index] == null)
+		{
+			while (rawFrames.Count > 0)
+			{
+				Debug.Log("PROCESS");
+				Debug.Log(GC.GetTotalMemory(false));
+				Frame newFrame = Frame.FromEchoReplayString(rawFrames[index]);
+				if (newFrame != null)
+				{
+					frames[index] = newFrame;
+					rawFrames[index] = null;    // free up the memory, since the raw frames take up a lot more
+					return frames[index];
+				}
+				else
+				{
+					frames.RemoveAt(index);
+					rawFrames.RemoveAt(index);
+					nframes--;
+				}
+			}
+			return null;
+		}
+		else
+		{
+			return frames[index];
+		}
+	}
 }
 
 
@@ -118,6 +154,42 @@ public class Frame
 	/// </summary>
 	public Last_Score last_score;
 	public Team[] teams;
+
+	public static Frame FromEchoReplayString(string line)
+	{
+		if (!string.IsNullOrEmpty(line))
+		{
+			string[] splitJSON = line.Split('\t');
+			string onlyJSON, onlyTime;
+			if (splitJSON.Length == 2)
+			{
+				onlyJSON = splitJSON[1];
+				onlyTime = splitJSON[0];
+			}
+			else
+			{
+				Debug.LogError("Row doesn't include both a time and API JSON");
+				return null;
+			}
+			DateTime frameTime = DateTime.Parse(onlyTime);
+
+			// if this is actually valid arena data
+			if (onlyJSON.Length > 800)
+			{
+				return FromJSON(frameTime, onlyJSON);
+			}
+			else
+			{
+				Debug.LogError("Row is not arena data.");
+				return null;
+			}
+		}
+		else
+		{
+			Debug.LogError("String is empty");
+			return null;
+		}
+	}
 
 	/// <summary>
 	/// Creates a frame from json and a timestamp

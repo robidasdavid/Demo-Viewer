@@ -452,7 +452,7 @@
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.3.5/Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.3.7/Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/jillejr.newtonsoft.json-for-unity@12.0.301/Plugins/Newtonsoft.Json Editor/Newtonsoft.Json.dll</HintPath>
@@ -814,17 +814,11 @@
     <Reference Include="System.IO.Compression">
       <HintPath>F:/Program Files/Unity Editors/2019.4.8f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.IO.Compression.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.Management">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Management.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Subsystem.Registration">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Subsystem.Registration.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
@@ -832,17 +826,8 @@
     <Reference Include="Unity.Burst">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.ProBuilder">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.ProBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.ARSubsystems">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.ARSubsystems.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.ARSubsystems.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.ARSubsystems.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Burst.Editor.dll</HintPath>
@@ -859,17 +844,8 @@
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.InteractionSubsystems">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.InteractionSubsystems.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Oculus">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Oculus.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Oculus.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Oculus.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Animation.Rigging">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Animation.Rigging.dll</HintPath>
@@ -892,12 +868,6 @@
     <Reference Include="Unity.Postprocessing.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Management.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Management.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
@@ -916,12 +886,6 @@
     <Reference Include="Unity.Animation.Rigging.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Animation.Rigging.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.ProBuilder.AddOns.Editor">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
     </Reference>
@@ -934,20 +898,14 @@
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.WindowsMixedReality.Editor">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.WindowsMixedReality.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.WindowsMixedReality">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.WindowsMixedReality.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VSCode.Editor">
+      <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

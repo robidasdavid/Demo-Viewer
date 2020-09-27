@@ -281,6 +281,7 @@ public class ReplaySelectionUI : MonoBehaviour
 			{
 				item.gameObject.SetActive(live);
 			}
+			GameManager.instance.dataSource.text = "Local Game";
 		}
 	}
 

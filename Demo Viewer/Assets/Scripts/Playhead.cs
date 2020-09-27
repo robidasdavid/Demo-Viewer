@@ -1,6 +1,6 @@
 ﻿using System;
-using System.CodeDom;
 using UnityEngine;
+
 /// <summary>
 /// Utility class for controlling playback of the game frames
 /// </summary>
@@ -34,8 +34,8 @@ public class Playhead
 		this.game = game;
 
 		// set start and end times
-		startTime = game.frames[0].frameTime;
-		endTime = game.frames[game.nframes - 1].frameTime;
+		startTime = game.GetFrame(0).frameTime;
+		endTime = game.GetFrame(game.nframes - 1).frameTime;
 	}
 
 	public int FrameCount {
@@ -100,7 +100,7 @@ public class Playhead
 
 	public Frame GetNearestFrame()
 	{
-		return game.frames[Mathf.Clamp(currentFrameIndex, 0, game.nframes - 1)];
+		return game.GetFrame(Mathf.Clamp(currentFrameIndex, 0, game.nframes - 1));
 	}
 
 	public Frame GetPreviousFrame()
@@ -111,13 +111,13 @@ public class Playhead
 		}
 		else
 		{
-			return game.frames[Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1)];
+			return game.GetFrame(Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1));
 		}
 	}
 
 	private Frame GetNextFrame()
 	{
-		return game.frames[Mathf.Clamp(currentFrameIndex + 1, 0, game.nframes - 1)];
+		return game.GetFrame(Mathf.Clamp(currentFrameIndex + 1, 0, game.nframes - 1));
 	}
 
 	private void FindCurrentFrameLocation()

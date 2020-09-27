@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
-using UnityEngine.XR.Management;
 using unityutilities;
 
 public class GameManager : MonoBehaviour
@@ -53,20 +52,17 @@ public class GameManager : MonoBehaviour
 				break;
 			}
 
+			// Enable VR Mode
 			if (enableVR || args[i] == "-useVR")
 			{
 				enableVR = true;
 				RefreshVRObjectsVisibility(GetPresence());
-				XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
-				XRGeneralSettings.Instance.Manager.StartSubsystems();
+
+				XRSettings.enabled = true;
+				//XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
+				//XRGeneralSettings.Instance.Manager.StartSubsystems();
 			}
 		}
-
-		// TODO add back
-		//SocialMan.instance.roomManager.OwnerChanged += (newName) =>
-		//{
-		//	dataSource.text = newName;
-		//};
 	}
 
 

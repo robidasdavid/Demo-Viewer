@@ -11,7 +11,7 @@ public class LiveFrameProvider : MonoBehaviour
 	public static Frame frame;
 	public static Frame lastFrame;
 
-	public bool local;
+	public bool local = true;
 	public string localAPIURL = "http://127.0.0.1:6721/session";
 	public string networkAPIURL = "localhost:5005/live_replay/";
 	public string session_id;

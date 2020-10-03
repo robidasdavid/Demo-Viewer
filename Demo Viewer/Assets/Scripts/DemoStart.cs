@@ -109,9 +109,9 @@ public class DemoStart : MonoBehaviour
 	private bool wasDPADYPressed = false;
 
 	/// <summary>
-	/// player ign, player character obj
+	/// ((teamid, player ign), player character obj)
 	/// </summary>
-	Dictionary<string, PlayerCharacter> playerObjects = new Dictionary<string, PlayerCharacter>();
+	Dictionary<(int, string), PlayerCharacter> playerObjects = new Dictionary<(int, string), PlayerCharacter>();
 
 
 	public static Playhead playhead;
@@ -658,45 +658,35 @@ public class DemoStart : MonoBehaviour
 		var movedObjects = new List<PlayerCharacter>();
 
 		// Update the players
-		for (int i = 0; i < 2; i++)
+		for (int t = 0; t < 2; t++)
 		{
-			if (viewingFrame.teams[i].players != null)
+			if (viewingFrame.teams[t].players != null)
 			{
-				foreach (var player in viewingFrame.teams[i].players)
+				foreach (var player in viewingFrame.teams[t].players)
 				{
 					// get the matching player from the previous frame.
 					// Searching through all the players is the only way, since they may have 
 					// switched teams or been reorganized in the list when another player joins
-					Player previousPlayer = FindPlayerOnTeam(previousFrame.teams[i], player.name);
+					Player previousPlayer = FindPlayerOnTeam(previousFrame.teams[t], player.name);
 
-					// if the player was on the other team last frame, remove it
-					if (previousPlayer == null && playerObjects.ContainsKey(player.name))
-					{
-						Destroy(playerObjects[player.name].gameObject);
-						playerObjects.Remove(player.name);
-					}
+					RenderPlayer(player, previousPlayer, t);
 
-					RenderPlayer(player, previousPlayer, i);
-
-					movedObjects.Add(playerObjects[player.name]);
+					movedObjects.Add(playerObjects[(t, player.name)]);
 				}
 			}
 		}
 
 		// remove players that weren't accessed this frame
-		List<string> playersToRemove = new List<string>();
-		foreach (var playerName in playerObjects.Keys)
+		List<(int, string)> playersToRemove = new List<(int, string)>();
+		foreach ((int, string) playerIndex in playerObjects.Keys)
 		{
-			if (!movedObjects.Contains(playerObjects[playerName]))
+			if (!movedObjects.Contains(playerObjects[playerIndex]))
 			{
-				Destroy(playerObjects[playerName].gameObject);
-				playersToRemove.Add(playerName);
+				Destroy(playerObjects[playerIndex].gameObject);
+				playersToRemove.Add(playerIndex);
 			}
 		}
-		foreach (var p in playersToRemove)
-		{
-			playerObjects.Remove(p);
-		}
+		playersToRemove.ForEach(p => playerObjects.Remove(p));
 
 		DiscController discScript = disc.GetComponent<DiscController>();
 		discScript.discVelocity = viewingFrame.disc.velocity.ToVector3();
@@ -748,13 +738,13 @@ public class DemoStart : MonoBehaviour
 		if (teamIndex == 2) return;
 
 		// if this player doesn't exist in the scene yet
-		if (!playerObjects.ContainsKey(player.name))
+		if (!playerObjects.ContainsKey((teamIndex, player.name)))
 		{
 			// instantiate it
-			playerObjects.Add(player.name, Instantiate(teamIndex == 0 ? bluePlayerPrefab : orangePlayerPrefab, playerObjsParent).GetComponent<PlayerCharacter>());
+			playerObjects.Add((teamIndex, player.name), Instantiate(teamIndex == 0 ? bluePlayerPrefab : orangePlayerPrefab, playerObjsParent).GetComponent<PlayerCharacter>());
 		}
 
-		PlayerCharacter p = playerObjects[player.name];
+		PlayerCharacter p = playerObjects[(teamIndex, player.name)];
 
 		// Set names above player heads
 		p.playerName.text = player.name;

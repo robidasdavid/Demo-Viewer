@@ -56,7 +56,8 @@ public class GameManager : MonoBehaviour
 			if (enableVR || args[i] == "-useVR")
 			{
 				enableVR = true;
-				RefreshVRObjectsVisibility(GetPresence());
+				//RefreshVRObjectsVisibility(GetPresence());
+				RefreshVRObjectsVisibility(enableVR);
 
 				XRSettings.enabled = true;
 				//XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
@@ -70,13 +71,13 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// check if headset is worn
-		bool isPresent = GetPresence();
-		if (lastFrameUserPresent != isPresent)
-		{
-			RefreshVRObjectsVisibility(isPresent);
-		}
-		lastFrameUserPresent = isPresent;
+		//// check if headset is worn
+		//bool isPresent = GetPresence();
+		//if (lastFrameUserPresent != isPresent)
+		//{
+		//	RefreshVRObjectsVisibility(isPresent);
+		//}
+		//lastFrameUserPresent = isPresent;
 
 		// hide UI when connected to another user
 		if (lastFrameWasOwner != netFrameMan.IsLocalOrServer)
@@ -95,10 +96,12 @@ public class GameManager : MonoBehaviour
 
 	private static bool GetPresence()
 	{
-		InputDevice headDevice = InputDevices.GetDeviceAtXRNode(XRNode.Head);
-		bool isPresent = false;
-		headDevice.TryGetFeatureValue(CommonUsages.userPresence, out isPresent);
-		return isPresent;
+		//InputDevice headDevice = InputDevices.GetDeviceAtXRNode(XRNode.Head);
+		//bool isPresent = false;
+		//headDevice.TryGetFeatureValue(CommonUsages.userPresence, out isPresent);
+		//return isPresent;
+
+		return XRDevice.userPresence == UserPresenceState.Present;
 	}
 
 	private void RefreshVRObjectsVisibility(bool present)

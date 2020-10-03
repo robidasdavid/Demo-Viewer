@@ -225,11 +225,11 @@ public class Frame
 			Debug.LogError("From frame is after To frame");
 			return null;
 		}
-		else if (from.frameTime > t)
+		else if (from.frameTime >= t)
 		{
 			return from;
 		}
-		else if (to.frameTime < t)
+		else if (to.frameTime <= t)
 		{
 			return to;
 		}

@@ -64,7 +64,10 @@ public class DemoStart : MonoBehaviour
 	[Range(0, 1)]
 	public float fileReadProgress;
 	public object loadedDemoLock = new object();
+
+	[NonSerialized] // This is to prevent the editor from becoming super slow
 	public Game loadedDemo;
+
 	public GameObject controlsOverlay;
 	public static string lastDateTimeString;
 	public static string lastJSON;
@@ -700,6 +703,9 @@ public class DemoStart : MonoBehaviour
 		discScript.discPosition = viewingFrame.disc.position.ToVector3();
 		if (viewingFrame.disc.forward != null)
 		{
+			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.up.ToVector3(), Color.green);
+			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.forward.ToVector3(), Color.blue);
+			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.left.ToVector3(), Color.red);
 			discScript.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
 		}
 		//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
@@ -774,8 +780,8 @@ public class DemoStart : MonoBehaviour
 		// send hand pos/rot ✋🤚
 		playerIK.lHandPosition = player.leftHand.Position;
 		playerIK.rHandPosition = player.rightHand.Position;
-		playerIK.lHandRotation = Quaternion.LookRotation(player.leftHand.up.ToVector3(), player.leftHand.forward.ToVector3());
-		playerIK.rHandRotation = Quaternion.LookRotation(player.rightHand.up.ToVector3(), player.rightHand.forward.ToVector3());
+		playerIK.lHandRotation = Quaternion.LookRotation(-player.leftHand.left.ToVector3(), player.leftHand.forward.ToVector3());
+		playerIK.rHandRotation = Quaternion.LookRotation(player.rightHand.left.ToVector3(), player.rightHand.forward.ToVector3());
 
 		// send body pos/rot 🕺
 		playerIK.bodyPosition = player.body.Position;

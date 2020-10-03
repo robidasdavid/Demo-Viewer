@@ -19,7 +19,7 @@ public class LiveFrameProvider : MonoBehaviour
 	float lastFrameTime = 0;
 
 	// fps of fetching
-	float updateRate = 1;
+	float updateRate = 60;
 
 	// Update is called once per frame
 	void Update()

@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using Mirror.Discovery;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
@@ -41,32 +42,32 @@ public class GameManager : MonoBehaviour
 		RefreshVRObjectsVisibility(false);
 		lastFrameWasOwner = true;
 
-		bool printArgs = false;
-		string[] args = System.Environment.GetCommandLineArgs();
-		for (int i = 0; i < args.Length; i++)
+		List<string> args = System.Environment.GetCommandLineArgs().ToList();
+
+		foreach (var arg in args)
 		{
-			if (printArgs) Debug.Log("ARG " + i + ": " + args[i]);
-			if (args[i].Contains(".json") || args[i].Contains(".echoreplay"))
+			if (arg.Contains(".json") || arg.Contains(".echoreplay"))
 			{
-				PlayerPrefs.SetString("fileDirector", args[i]);
+				PlayerPrefs.SetString("fileDirector", arg);
 				break;
 			}
-
-			// Enable VR Mode
-			if (enableVR || args[i] == "-useVR")
-			{
-				enableVR = true;
-				//RefreshVRObjectsVisibility(GetPresence());
-
-				XRSettings.enabled = true;
-				//XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
-				//XRGeneralSettings.Instance.Manager.StartSubsystems();
-			}
-			else
-			{
-				RefreshVRObjectsVisibility(enableVR);
-			}
 		}
+
+		// Enable VR Mode
+		if (enableVR || args.Contains("-useVR"))
+		{
+			enableVR = true;
+			//RefreshVRObjectsVisibility(GetPresence());
+
+			XRSettings.enabled = true;
+			//XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
+			//XRGeneralSettings.Instance.Manager.StartSubsystems();
+		}
+		else
+		{
+			XRSettings.enabled = false;
+		}
+		RefreshVRObjectsVisibility(enableVR);
 	}
 
 

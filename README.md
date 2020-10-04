@@ -75,5 +75,5 @@ Due to the high efficiency of zip compression, binary formats such as `.milk` (o
 
 ## QUESTIONS
 
-If you have questions, DM **sneakyevil#1967** on discord.
+If you have questions, DM **sneakyevil#1967** on discord, or join the discord server for this project at https://discord.gg/srWMCnD
  

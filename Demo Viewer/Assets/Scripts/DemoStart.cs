@@ -145,7 +145,7 @@ public class DemoStart : MonoBehaviour
 		string demoFile = PlayerPrefs.GetString("fileDirector");
 		replayFileNameText.text = Path.GetFileName(demoFile);
 		SendConsoleMessage("Loading Demo: " + demoFile);
-		StartCoroutine(DoLast(demoFile));
+		StartCoroutine(LoadFile(demoFile));
 #else
 		string getFileName = "";
 			int pm = Application.absoluteURL.IndexOf("=");
@@ -162,6 +162,14 @@ public class DemoStart : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+
+		// controls help
+		if (Input.GetKeyDown(KeyCode.H))
+			controlsOverlay.SetActive(true);
+		if (Input.GetKeyUp(KeyCode.H))
+			controlsOverlay.SetActive(false);
+
+
 		if (ready)
 		{
 			if (playhead.isPlaying)
@@ -287,9 +295,17 @@ public class DemoStart : MonoBehaviour
 	{
 		using (fileReader = OpenOrExtract(fileReader))
 		{
-			string fileData = fileReader.ReadToEnd();
-			List<string> allLines = fileData.LowMemSplit("\n");
 			fileReadProgress = 0;
+			List<string> allLines = new List<string>();
+			do
+			{
+				allLines.Add(fileReader.ReadLine());
+				fileReadProgress += .0001f;
+				fileReadProgress %= 1;
+			} while (!fileReader.EndOfStream);
+
+			//string fileData = fileReader.ReadToEnd();
+			//List<string> allLines = fileData.LowMemSplit("\n");
 
 			Game readGame = new Game
 			{
@@ -310,7 +326,7 @@ public class DemoStart : MonoBehaviour
 	/// Part of the process for reading the file
 	/// </summary>
 	/// <param name="demoFile">The filename of the replay file</param>
-	IEnumerator DoLast(string demoFile = "")
+	IEnumerator LoadFile(string demoFile = "")
 	{
 		if (!string.IsNullOrEmpty(demoFile))
 		{
@@ -400,12 +416,6 @@ public class DemoStart : MonoBehaviour
 			playhead.isReverse = false;
 			playhead.isScrubbing = true;
 		}
-
-		// controls help
-		if (Input.GetKeyDown(KeyCode.H))
-			controlsOverlay.SetActive(true);
-		if (Input.GetKeyUp(KeyCode.H))
-			controlsOverlay.SetActive(false);
 
 		// play/pause ⏯
 		if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("XboxA"))

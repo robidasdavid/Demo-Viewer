@@ -167,7 +167,7 @@ public class ReplaySelectionUI : MonoBehaviour
 				var replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();
 				replayFileInfo.OriginalFilename = Path.GetFileNameWithoutExtension(file);
 				replayFileInfo.CreatedBy = "Local";
-				replayFileInfo.Size = new FileInfo(file).Length / 1000f + " KB";
+				replayFileInfo.Size = FileLengthToString(new FileInfo(file).Length);
 				replayFileInfo.Notes = "";
 
 				button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(file); });
@@ -175,6 +175,26 @@ public class ReplaySelectionUI : MonoBehaviour
 
 			// this is not necessary, but it'll create a slight animation
 			yield return null;
+		}
+	}
+
+	public static string FileLengthToString(float length)
+	{
+		if (length < 1e3f)
+		{
+			return length + " bytes";
+		}
+		else if (length < 1e6f)
+		{
+			return (length / 1e3f).ToString("N2") + " KiB";
+		}
+		else if (length < 1e9f)
+		{
+			return (length / 1e6f).ToString("N2") + " MiB";
+		}
+		else
+		{
+			return (length / 1e9f).ToString("N2") + " GiB";
 		}
 	}
 

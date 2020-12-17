@@ -1,15 +1,16 @@
-﻿using Mirror;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
+using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Application = UnityEngine.Application;
 
 [Serializable]
 public class ReplaysListData
@@ -34,7 +35,7 @@ public class ReplaysListData
 /// UI Controller for the replay browser menu
 /// Prefab defaults are set up for vr, then modified for the 2d interface
 /// </summary>
-public class ReplaySelectionUI : MonoBehaviour
+public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 {
 	public bool isVR;
 	public Transform mainMenu;
@@ -63,10 +64,14 @@ public class ReplaySelectionUI : MonoBehaviour
 		Local,
 		Online
 	}
+
 	private ReplaySources replaysSource;
-	public ReplaySources ReplaysSource {
+
+	public ReplaySources ReplaysSource
+	{
 		get => replaysSource;
-		set {
+		set
+		{
 			if (value == ReplaySources.Local)
 			{
 				localReplaysList.gameObject.SetActive(true);
@@ -89,12 +94,21 @@ public class ReplaySelectionUI : MonoBehaviour
 	}
 
 
+	[Header("Join Room Dialog")] public Transform joinRoomDialog;
+	public InputField roomNameInput;
+	public Text roomPlayerCountLabel;
+	public Text connectedInfoLabel;
+	public Button joinButton;
+	public Button disconnectButton;
+
+
 	void Start()
 	{
 		showing = panel.gameObject.activeSelf;
 
 		manualInputText.text = PlayerPrefs.GetString("fileDirector");
-		folderSrcText.text = "Files in " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "IgniteBot\\replays");
+		folderSrcText.text = "Files in " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+			"IgniteBot\\replays");
 
 
 		// refresh the list
@@ -104,7 +118,7 @@ public class ReplaySelectionUI : MonoBehaviour
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.BackQuote) ||
-			Input.GetButtonDown("XboxStart"))
+		    Input.GetButtonDown("XboxStart"))
 		{
 			ShowToggle();
 		}
@@ -140,7 +154,10 @@ public class ReplaySelectionUI : MonoBehaviour
 					replayFileInfo.CreatedBy = replay.recorded_by;
 					replayFileInfo.Notes = replay.notes;
 
-					button.GetComponentInChildren<Button>().onClick.AddListener(delegate { DownloadReplay(replay.server_filename, replay.original_filename); });
+					button.GetComponentInChildren<Button>().onClick.AddListener(delegate
+					{
+						DownloadReplay(replay.server_filename, replay.original_filename);
+					});
 				}
 			}
 		}
@@ -148,7 +165,8 @@ public class ReplaySelectionUI : MonoBehaviour
 
 	public IEnumerator GetReplaysLocal()
 	{
-		string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "IgniteBot\\replays");
+		string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+			"IgniteBot\\replays");
 
 		// get list of files in the current folder
 		string[] files = Directory.GetFiles(PlayerPrefs.GetString("currentReplayFolder", defaultPath));
@@ -159,7 +177,7 @@ public class ReplaySelectionUI : MonoBehaviour
 		Array.Reverse(files);
 
 		// add the new ones
-		foreach (var file in files)
+		foreach (string file in files)
 		{
 			if (Path.GetExtension(file) == ".echoreplay")
 			{
@@ -244,7 +262,6 @@ public class ReplaySelectionUI : MonoBehaviour
 
 				viewReplayUIController.ReplayName = original_filename;
 				viewReplayUIController.Loading = true;
-
 			}
 		}
 	}
@@ -268,17 +285,10 @@ public class ReplaySelectionUI : MonoBehaviour
 	/// <summary>
 	/// Shows or hides this menu
 	/// </summary>
-	/// <param name="show"></param>
 	public void ShowToggle()
 	{
-		if (showing)
-		{
-			panel.gameObject.SetActive(false);
-		}
-		else
-		{
-			panel.gameObject.SetActive(true);
-		}
+		panel.gameObject.SetActive(!showing);
+
 		showing = !showing;
 	}
 
@@ -297,25 +307,51 @@ public class ReplaySelectionUI : MonoBehaviour
 			{
 				item.gameObject.SetActive(!live);
 			}
+
 			foreach (var item in GameManager.instance.uiShownOnLive)
 			{
 				item.gameObject.SetActive(live);
 			}
+
 			GameManager.instance.dataSource.text = "Local Game";
 		}
 	}
 
 	public void HostMatch()
 	{
-		GameManager.instance.discoveredServers.Clear();
-		NetworkManager.singleton.StartHost();
-		GameManager.instance.networkDiscovery.AdvertiseServer();
+		if (!string.IsNullOrEmpty(roomNameInput.text))
+		{
+			PhotonNetwork.JoinOrCreateRoom(roomNameInput.text, new RoomOptions(), TypedLobby.Default);
+			joinRoomDialog.gameObject.SetActive(false);
+		}
 	}
 
 	public void ShowMatches()
 	{
-		GameManager.instance.discoveredServers.Clear();
-		GameManager.instance.networkDiscovery.StartDiscovery();
+		// TODO
 	}
 
+	public void RoomNameInputChanged(string newText)
+	{
+		// roomPlayerCountLabel.text = 
+	}
+
+	public void LeaveRoom()
+	{
+		PhotonNetwork.LeaveRoom();
+	}
+
+	public override void OnConnectedToMaster()
+	{
+		connectedInfoLabel.text = "Not Connected";
+		joinButton.gameObject.SetActive(true);
+		disconnectButton.gameObject.SetActive(false);
+	}
+
+	public override void OnJoinedRoom()
+	{
+		connectedInfoLabel.text = "Connected: " + PhotonNetwork.CurrentRoom.Name;
+		joinButton.gameObject.SetActive(false);
+		disconnectButton.gameObject.SetActive(true);
+	}
 }

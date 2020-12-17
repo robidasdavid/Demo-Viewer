@@ -15,7 +15,6 @@ using System.IO.Compression;
 using System;
 using TMPro;
 using System.Threading;
-using Mirror;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -44,7 +43,6 @@ public class PlayerStats : Stats
 public class DemoStart : MonoBehaviour
 {
 	#region Variables
-	public NetworkFrameManager netFrameMan;
 
 	public GameObject orangeScoreEffects;
 	public GameObject blueScoreEffects;
@@ -188,17 +186,17 @@ public class DemoStart : MonoBehaviour
 			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
 
 			// Only render the next frame if it differs from the last (optimization)
-			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !netFrameMan.IsLocalOrServer)
+			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !GameManager.instance.netFrameMan.IsLocalOrServer)
 			{
 				// Grab frame
 				Frame viewingFrame = playhead.GetFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
 
-				if (netFrameMan.IsLocalOrServer)
+				if (GameManager.instance.netFrameMan.IsLocalOrServer)
 				{
 					// send playhead info to other players ⬆
-					netFrameMan.networkFrameIndex = playhead.CurrentFrameIndex;
-					netFrameMan.networkJsonData = playhead.GetNearestFrame().originalJSON;
+					GameManager.instance.netFrameMan.networkFrameIndex = playhead.CurrentFrameIndex;
+					GameManager.instance.netFrameMan.networkJsonData = playhead.GetNearestFrame().originalJSON;
 				}
 
 				if (viewingFrame != null && previousFrame != null)
@@ -271,7 +269,7 @@ public class DemoStart : MonoBehaviour
 		doLast();
 	}
 
-	private static StreamReader OpenOrExtract(StreamReader reader)
+	public static StreamReader OpenOrExtract(StreamReader reader)
 	{
 		char[] buffer = new char[2];
 		reader.Read(buffer, 0, buffer.Length);

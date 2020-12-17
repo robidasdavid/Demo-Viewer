@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="953ffe44-f96b-40ca-b68d-fe58d2881c77" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp-Editor-firstpass.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp-Editor-firstpass.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp-Editor.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp-Editor.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp-firstpass.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp-firstpass.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Misc/SubtleBranding.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Misc/SubtleBranding.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Yellow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Yellow.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators/BasicAuthenticator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators/BasicAuthenticator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators/Mirror.Authenticators.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators/Mirror.Authenticators.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators/TimeoutAuthenticator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Authenticators/TimeoutAuthenticator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ApiConnector.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ApiConnector.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/BaseApi.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/BaseApi.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/Events.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/Events.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/Extensions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/Extensions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/ICoroutineRunner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/ICoroutineRunner.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/IRequestCreator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/IRequestCreator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/IUnityEqualCheck.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/IUnityEqualCheck.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/JsonStructs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/JsonStructs.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/Logger.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/Logger.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/RequestCreator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Core/RequestCreator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerBaseApi.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerBaseApi.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerClientApi.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerClientApi.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerJson.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerJson.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerServerApi.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/ListServer/ListServerServerApi.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Mirror.Cloud.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/Mirror.Cloud.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/version.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Cloud/version.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/CompilerSymbols.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/CompilerSymbols/Mirror.CompilerSymbols.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/CompilerSymbols/Mirror.CompilerSymbols.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/CompilerSymbols/PreprocessorDefine.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/CompilerSymbols/PreprocessorDefine.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/NetworkDiscovery.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/NetworkDiscovery.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/NetworkDiscoveryBase.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/NetworkDiscoveryBase.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/NetworkDiscoveryHUD.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/NetworkDiscoveryHUD.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/ServerRequest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/ServerRequest.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/ServerResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Discovery/ServerResponse.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkLerpRigidbody.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkLerpRigidbody.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkRigidbody.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkRigidbody.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkTransform.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkTransform.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkTransformBase.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkTransformBase.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkTransformChild.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Experimental/NetworkTransformChild.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Mirror.Components.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/Mirror.Components.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkAnimator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkAnimator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkLobbyManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkLobbyManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkLobbyPlayer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkLobbyPlayer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkMatchChecker.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkMatchChecker.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkPingDisplay.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkPingDisplay.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkProximityChecker.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkProximityChecker.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkRoomManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkRoomManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkRoomPlayer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkRoomPlayer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkSceneChecker.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkSceneChecker.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkTransform.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkTransform.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkTransformBase.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkTransformBase.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkTransformChild.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Components/NetworkTransformChild.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/EnterPlayModeSettingsCheck.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/EnterPlayModeSettingsCheck.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/InspectorHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/InspectorHelper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/LogLevelWindow.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/LogLevelWindow.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/LogLevelWindow.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/LogLevelWindow.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/LogLevelsGUI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/LogLevelsGUI.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/LogSettingsEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/LogSettingsEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/NetworkLogSettingsEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Logging/NetworkLogSettingsEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Mirror.Editor.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Mirror.Editor.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkBehaviourInspector.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkBehaviourInspector.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkInformationPreview.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkInformationPreview.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkManagerEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkManagerEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkScenePostProcess.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/NetworkScenePostProcess.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/SceneDrawer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/SceneDrawer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/ScriptableObjectUtility.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/ScriptableObjectUtility.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/SyncVarAttributeDrawer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/SyncVarAttributeDrawer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/AssemblyInfo.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/CompilationFinishedHook.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/CompilationFinishedHook.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Extensions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Extensions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Helpers.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Helpers.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Log.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Log.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Mirror.Weaver.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Mirror.Weaver.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/CommandProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/CommandProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/GenericArgumentResolver.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/GenericArgumentResolver.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/MessageClassProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/MessageClassProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/MethodProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/MethodProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/MonoBehaviourProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/MonoBehaviourProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/NetworkBehaviourProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/NetworkBehaviourProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/PropertySiteProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/PropertySiteProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/ReaderWriterProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/ReaderWriterProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/RpcProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/RpcProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/ServerClientAttributeProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/ServerClientAttributeProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncDictionaryProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncDictionaryProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncEventProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncEventProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncListProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncListProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncObjectInitializer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncObjectInitializer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncObjectProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncObjectProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncVarProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/SyncVarProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/TargetRpcProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Processors/TargetRpcProcessor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Program.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Readers.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Readers.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Resolvers.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Resolvers.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Weaver.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Weaver.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/WeaverTypes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/WeaverTypes.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Writers.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Editor/Weaver/Writers.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/AnimationControllers.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/AnimationControllers/Tank.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/AnimationControllers/Tank.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Capsule.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Capsule.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Cube.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Cube.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Cylinder.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Cylinder.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Player.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Player.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Quad.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Quad.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Shelter.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Shelter.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Sphere.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Sphere.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Zone.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Materials/Zone.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Capsule.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Capsule.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Cube.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Cube.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Cylinder.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Cylinder.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Sphere.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Sphere.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Tank.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Prefabs/Tank.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scenes/MainScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scenes/MainScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scenes/SubScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scenes/SubScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/AdditiveNetworkManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/AdditiveNetworkManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/PlayerController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/PlayerController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/RandomColor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/RandomColor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/ShootingTankBehaviour.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/ShootingTankBehaviour.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/ZoneHandler.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/AdditiveScenes/Scripts/ZoneHandler.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Prefabs/Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Scenes/Example.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Scenes/Example.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Scripts/Player.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Basic/Scripts/Player.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Materials/Red.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Materials/Red.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Materials/White.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Materials/White.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Prefabs/Monster.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Prefabs/Monster.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Prefabs/Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scenes/Scene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scenes/Scene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scripts/MonsterMovement.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scripts/MonsterMovement.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scripts/PlayerMovement.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Benchmark/Scripts/PlayerMovement.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Prefabs/Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scenes/Main.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scenes/Main.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts/ChatNetworkManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts/ChatNetworkManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts/ChatWindow.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts/ChatWindow.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts/Player.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Chat/Scripts/Player.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Prefabs/ListServer Canvas.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Prefabs/ListServer Canvas.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Prefabs/ServerListItem.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Prefabs/ServerListItem.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ApiUpdater.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ApiUpdater.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/InstantiateNetworkManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/InstantiateNetworkManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/Mirror.Examples.Cloud.GUI.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/Mirror.Examples.Cloud.GUI.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/NetworkManagerListServer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/NetworkManagerListServer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/QuickListServerDebug.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/QuickListServerDebug.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/QuitButtonHUD.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/QuitButtonHUD.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ServerListManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ServerListManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ServerListUI.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ServerListUI.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ServerListUIItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/GUI/Scripts/ServerListUIItem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/PhysicsMaterials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/PhysicsMaterials/BallMaterial.physicsMaterial2D" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/PhysicsMaterials/BallMaterial.physicsMaterial2D.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs/Ball.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs/Ball.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs/NetworkManagerPong.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs/NetworkManagerPong.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs/Racket.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Prefabs/Racket.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scenes/ListServerLobbyScenePong.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scenes/ListServerLobbyScenePong.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scenes/PongGameScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scenes/PongGameScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/Ball.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/Ball.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/BallManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/BallManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/Mirror.Examples.Cloud.Pong.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/Mirror.Examples.Cloud.Pong.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/NetworkManagerListServerPong.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/NetworkManagerListServerPong.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/Player.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Scripts/Player.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/Ball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/Ball.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/DottedLine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/DottedLine.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/Racket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/Racket.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/WallHorizontal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/WallHorizontal.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/WallVertical.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/PongWithListServer/Sprites/WallVertical.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/Prefabs/TanksNetworkManager.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/Prefabs/TanksNetworkManager.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/Scenes/ListServerLobbySceneTanks.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Cloud/TanksWithListServer/Scenes/ListServerLobbySceneTanks.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery/Prefabs/Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery/Scenes/Scene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Discovery/Scenes/Scene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Mirror.Examples.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Mirror.Examples.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics/Icosphere.physicMaterial" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics/Icosphere.physicMaterial.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics/Player.physicMaterial" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics/Player.physicMaterial.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics/RoomBounce.physicMaterial" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Physics/RoomBounce.physicMaterial.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render/PlayArea.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render/PlayArea.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render/Player.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render/Player.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render/Prize.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Materials/Render/Prize.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models/Icosphere.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models/Icosphere/Icosphere.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models/Icosphere/Icosphere.obj.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models/Icosphere/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models/Icosphere/Materials/Icosphere.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Models/Icosphere/Materials/Icosphere.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs/Icosphere.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs/Icosphere.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs/Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs/Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs/Prize.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Prefabs/Prize.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scenes/Game.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scenes/Game.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scenes/Main.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scenes/Main.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/MultiSceneNetManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/MultiSceneNetManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PhysicsCollision.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PhysicsCollision.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PhysicsSimulator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PhysicsSimulator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PlayerController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PlayerController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PlayerScore.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/PlayerScore.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/RandomColor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/RandomColor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/Reward.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/Reward.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/Spawner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/MultipleAdditiveScenes/Scripts/Spawner.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/PhysicsMaterials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/PhysicsMaterials/BallMaterial.physicsMaterial2D" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/PhysicsMaterials/BallMaterial.physicsMaterial2D.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Prefabs/Ball.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Prefabs/Ball.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Prefabs/Racket.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Prefabs/Racket.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scenes/Scene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scenes/Scene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts/Ball.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts/Ball.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts/NetworkManagerPong.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts/NetworkManagerPong.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts/Player.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Scripts/Player.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/Ball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/Ball.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/DottedLine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/DottedLine.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/Racket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/Racket.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/WallHorizontal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/WallHorizontal.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/WallVertical.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Pong/Sprites/WallVertical.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials/Blue.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials/Blue.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials/Green.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials/Green.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials/Red.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Materials/Red.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/PhysicMaterials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/PhysicMaterials/Ball.physicMaterial" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/PhysicMaterials/Ball.physicMaterial.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/PhysicMaterials/Floor.physicMaterial" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/PhysicMaterials/Floor.physicMaterial.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Prefabs/Empty Player.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Prefabs/Empty Player.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scenes/BounceScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scenes/BounceScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scripts/AddForce.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scripts/AddForce.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scripts/Mirror.Examples.RigidbodyPhysics.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/RigidbodyPhysics/Scripts/Mirror.Examples.RigidbodyPhysics.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/PlayArea.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/PlayArea.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Player.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Player.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Prize.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Prize.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Textures.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Textures/Wall01.tga" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Textures/Wall01.tga.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Textures/Wall01_n.tga" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Materials/Textures/Wall01_n.tga.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs/GamePlayer.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs/GamePlayer.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs/Prize.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs/Prize.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs/RoomPlayer.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Prefabs/RoomPlayer.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/README.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes/OfflineScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes/OfflineScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes/OnlineScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes/OnlineScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes/RoomScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scenes/RoomScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/NetworkRoomManagerExt.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/NetworkRoomManagerExt.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/NetworkRoomPlayerExt.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/NetworkRoomPlayerExt.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/PlayerController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/PlayerController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/PlayerScore.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/PlayerScore.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/RandomColor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/RandomColor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/Reward.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/Reward.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/Spawner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Room/Scripts/Spawner.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/BaseColor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/BaseColor.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Controller.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Controller.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Emissive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Emissive.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Metallic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Metallic.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Normal.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Recon_Tank - License.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/Recon_Tank - License.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/TankMaterial.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/TankMaterial.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/reconTank.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Models/(Public Domain) Recon_Tank/reconTank.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Prefabs/Projectile.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Prefabs/Projectile.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Prefabs/Tank.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Prefabs/Tank.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scenes/Scene.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scenes/Scene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scenes/Scene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scenes/Scene/NavMesh.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scenes/Scene/NavMesh.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts/Projectile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts/Projectile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts/Tank.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts/Tank.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts/TankGameManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Scripts/TankGameManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture/Dirt Hand Painted Texture - License.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture/Dirt Hand Painted Texture - License.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture/Dirt.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture/Dirt.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture/dirt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/(Public Domain) Dirt Hand Painted Texture/dirt.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/ProjectileMaterial.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Examples/Tanks/Textures/ProjectileMaterial.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Icon.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Icon/MirrorIcon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Icon/MirrorIcon.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/License.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/License.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Mdb.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Mdb.dll.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Pdb.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Pdb.dll.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.Rocks.dll.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Plugins/Mono.Cecil/Mono.CecilX.dll.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Readme.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/AssemblyInfo.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/ClientScene.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/ClientScene.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/CustomAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/CustomAttributes.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/DotNetCompatibility.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/DotNetCompatibility.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/ExponentialMovingAverage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/ExponentialMovingAverage.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/FloatBytePacker.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/FloatBytePacker.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/LocalConnections.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/LocalConnections.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/LogFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/LogFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/LogFilter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/LogFilter.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/ConsoleColorLogHandler.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/ConsoleColorLogHandler.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/EditorLogSettingsLoader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/EditorLogSettingsLoader.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/LogFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/LogFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/LogSettings.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/LogSettings.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/NetworkHeadlessLogger.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/NetworkHeadlessLogger.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/NetworkLogSettings.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Logging/NetworkLogSettings.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/MessagePacker.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/MessagePacker.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Messages.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Messages.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Mirror.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Mirror.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkAuthenticator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkAuthenticator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkBehaviour.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkBehaviour.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkClient.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkClient.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkConnection.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkConnection.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkConnectionToClient.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkConnectionToClient.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkConnectionToServer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkConnectionToServer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkDiagnostics.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkDiagnostics.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkIdentity.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkIdentity.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkManagerHUD.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkManagerHUD.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkMessage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkMessage.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkReader.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkReaderPool.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkReaderPool.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkServer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkServer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkStartPosition.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkStartPosition.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkTime.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkTime.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkVisibility.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkVisibility.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkWriter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkWriter.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkWriterPool.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/NetworkWriterPool.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/RemoteCallHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/RemoteCallHelper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/StringHash.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/StringHash.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncDictionary.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncDictionary.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncList.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncList.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncObject.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncObject.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncSet.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/SyncSet.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/FallbackTransport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/FallbackTransport.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/LLAPITransport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/LLAPITransport.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/MultiplexTransport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/MultiplexTransport.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Client.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Client.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Common.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Common.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/EventType.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/EventType.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/LICENSE.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Logger.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Logger.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Message.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Message.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/NetworkStreamExtensions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/NetworkStreamExtensions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/SafeQueue.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/SafeQueue.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Server.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Server.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Telepathy.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Telepathy.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/ThreadExtensions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/ThreadExtensions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Utils.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Telepathy/Utils.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/TelepathyTransport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/TelepathyTransport.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Transport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Transport.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Client.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Client.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/ClientJs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/ClientJs.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Mirror.Websocket.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Mirror.Websocket.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/BufferPool.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/BufferPool.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/EntityTooLargeException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/EntityTooLargeException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/InvalidHttpResponseCodeException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/InvalidHttpResponseCodeException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/README.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/SecWebSocketKeyMissingException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/SecWebSocketKeyMissingException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/ServerListenerSocketException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/ServerListenerSocketException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/WebSocketBufferOverflowException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/WebSocketBufferOverflowException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/WebSocketHandshakeFailedException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/WebSocketHandshakeFailedException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/WebSocketVersionNotSupportedException.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Exceptions/WebSocketVersionNotSupportedException.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/HttpHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/HttpHelper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IBufferPool.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IBufferPool.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IPingPongManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IPingPongManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IWebSocketClientFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IWebSocketClientFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IWebSocketServerFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/IWebSocketServerFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/BinaryReaderWriter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/BinaryReaderWriter.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/Events.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/Events.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrame.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrame.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrameCommon.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrameCommon.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrameReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrameReader.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrameWriter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketFrameWriter.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketImplementation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketImplementation.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketOpCode.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Internal/WebSocketOpCode.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/LICENCE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/LICENCE.md.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Ninja.WebSockets.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Ninja.WebSockets.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/PingPongManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/PingPongManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/PongEventArgs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/PongEventArgs.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Properties.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Properties/PublishProfiles.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Properties/PublishProfiles/FolderProfile.pubxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/Properties/PublishProfiles/FolderProfile.pubxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketClientFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketClientFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketClientOptions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketClientOptions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketHttpContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketHttpContext.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketServerFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketServerFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketServerOptions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Ninja.WebSockets/WebSocketServerOptions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Plugins.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Plugins/WebSocket.jslib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Plugins/WebSocket.jslib.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Server.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/Server.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/WebsocketTransport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/Transport/Websocket/WebsocketTransport.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/UNetwork.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/Runtime/UNetwork.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/version.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mirror/version.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/MenuTablet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/MenuTablet.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Robot Kyle/Materials/Robot_Color.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Robot Kyle/Materials/Robot_Color.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Robot Kyle/Materials/Robot_Color.mat.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Robot Kyle/Materials/Robot_Color.mat.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Robot Kyle/Model/Robot Kyle.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Robot Kyle/Model/Robot Kyle.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/50-Mirror__Network Manager-NewNetworkManager.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/50-Mirror__Network Manager-NewNetworkManager.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/51-Mirror__Network Authenticator-NewNetworkAuthenticator.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/51-Mirror__Network Authenticator-NewNetworkAuthenticator.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/52-Mirror__Network Behaviour-NewNetworkBehaviour.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/52-Mirror__Network Behaviour-NewNetworkBehaviour.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/53-Mirror__Network Observer-NewNetworkObserver.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/53-Mirror__Network Observer-NewNetworkObserver.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/54-Mirror__Network Room Manager-NewNetworkRoomManager.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/54-Mirror__Network Room Manager-NewNetworkRoomManager.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/55-Mirror__Network Room Player-NewNetworkRoomPlayer.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/55-Mirror__Network Room Player-NewNetworkRoomPlayer.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/56-Mirror__Network Discovery-NewNetworkDiscovery.cs.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptTemplates/56-Mirror__Network Discovery-NewNetworkDiscovery.cs.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DemoStart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DemoStart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkDiscoveryAutoJoin.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkDiscoveryAutoJoin.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkFrameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkFrameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkFrameManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkFrameManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkPlayer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkPlayer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ReplaySelectionUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ReplaySelectionUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Demo Viewer.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Demo Viewer.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/PhotonMan.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <changedPaths>
+      <option value="$PROJECT_DIR$/Assets/Scripts/DemoStart.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/PhotonMan.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/ReplaySelectionUI.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/NetworkFrameManager.cs" />
+    </changedPaths>
+  </component>
+  <component name="ProjectId" id="1lnZRnJfRItDsS7sR9byLCnRPPM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/Builds/Windows\Replay Viewer.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="S:\git_repo\Demo-Viewer\Demo Viewer\Builds\Windows" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="953ffe44-f96b-40ca-b68d-fe58d2881c77" name="Default Changelist" comment="" />
+      <created>1608234812047</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1608234812047</updated>
+      <workItem from="1608234819718" duration="6931000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

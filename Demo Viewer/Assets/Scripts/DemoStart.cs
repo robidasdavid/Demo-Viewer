@@ -182,22 +182,15 @@ public class DemoStart : MonoBehaviour
 			// process input
 			CheckKeys();
 
-			frameText.text = string.Format("Frame {0} of {1}", (playhead.CurrentFrameIndex + 1), playhead.FrameCount);
-			playbackFramerate.text = string.Format("{0:0.#}x", speedSlider.value);
-
+			frameText.text = $"Frame {(playhead.CurrentFrameIndex + 1)} of {playhead.FrameCount}";
+			playbackFramerate.text = $"{speedSlider.value:0.#}x";
+			
 			// Only render the next frame if it differs from the last (optimization)
 			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !GameManager.instance.netFrameMan.IsLocalOrServer)
 			{
 				// Grab frame
 				Frame viewingFrame = playhead.GetFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
-
-				if (GameManager.instance.netFrameMan.IsLocalOrServer)
-				{
-					// send playhead info to other players ⬆
-					GameManager.instance.netFrameMan.networkFrameIndex = playhead.CurrentFrameIndex;
-					GameManager.instance.netFrameMan.networkJsonData = playhead.GetNearestFrame().originalJSON;
-				}
 
 				if (viewingFrame != null && previousFrame != null)
 				{
@@ -208,7 +201,7 @@ public class DemoStart : MonoBehaviour
 					{
 						maxGameTime = loadedDemo.GetFrame(0).game_clock;  // TODO this may not be correct if the recording starts midgame
 						float currentTime = viewingFrame.game_clock;
-						joustReadout.GetComponentInChildren<Text>().text = string.Format("{0:0.##}", maxGameTime - currentTime);
+						joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
 						StartCoroutine(FlashInOut(joustReadout, 3));
 					}
 
@@ -265,7 +258,7 @@ public class DemoStart : MonoBehaviour
 
 		//this.jsonStr = dh.text;
 		StreamReader read = new StreamReader(new MemoryStream(dh.data));
-		ReadReplayFile(read);
+		ReadReplayFile(read, fn);
 		doLast();
 	}
 
@@ -289,7 +282,7 @@ public class DemoStart : MonoBehaviour
 	/// Actually reads the replay file into memory
 	/// This is a thread on desktop versions
 	/// </summary>
-	void ReadReplayFile(StreamReader fileReader)
+	void ReadReplayFile(StreamReader fileReader, string filename)
 	{
 		using (fileReader = OpenOrExtract(fileReader))
 		{
@@ -309,6 +302,7 @@ public class DemoStart : MonoBehaviour
 			{
 				rawFrames = allLines,
 				nframes = allLines.Count,
+				filename = filename,
 				frames = new List<Frame>(new Frame[allLines.Count])
 			};
 
@@ -331,7 +325,7 @@ public class DemoStart : MonoBehaviour
 			Debug.Log("Reading file: " + demoFile);
 			StreamReader reader = new StreamReader(demoFile);
 
-			Thread loadThread = new Thread(() => ReadReplayFile(reader));
+			Thread loadThread = new Thread(() => ReadReplayFile(reader, demoFile));
 			loadThread.Start();
 			while (loadThread.IsAlive)
 			{
@@ -341,19 +335,18 @@ public class DemoStart : MonoBehaviour
 		}
 
 		playhead = new Playhead(loadedDemo);
-
-		frameText.text = string.Format("Frame 0 of {0}", playhead.FrameCount);
-
+		frameText.text = $"Frame 0 of {playhead.FrameCount}";
+		
 		//set slider values
 		playbackSlider.maxValue = playhead.FrameCount - 1;
-
+		
 		//HUD initialization
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
 
 		//Set replay settings
 		discTrail.enabled = true;
-
+		
 		ready = true;
 	}
 

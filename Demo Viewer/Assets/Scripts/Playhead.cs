@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -8,13 +9,16 @@ public class Playhead
 {
 	public Game game;
 
-	public int CurrentFrameIndex {
+	public int CurrentFrameIndex
+	{
 		get => currentFrameIndex;
-		set {
+		set
+		{
 			currentFrameIndex = value;
 			playheadLocation = GetNearestFrame().frameTime;
 		}
 	}
+
 	private int currentFrameIndex;
 	public int LastFrameIndex { get; private set; }
 
@@ -23,8 +27,8 @@ public class Playhead
 	public DateTime endTime;
 
 	public bool wasPlaying = false;
-	public bool isPlaying = false;
-	public bool isReverse = false;
+	public bool isPlaying;
+	public bool isReverse;
 	public bool wasPlayingBeforeScrub = false;
 	public bool isScrubbing = false;
 	public float playbackMultiplier = 1f;
@@ -33,14 +37,14 @@ public class Playhead
 	{
 		this.game = game;
 
+		if (game == null) return;
+
 		// set start and end times
 		startTime = game.GetFrame(0).frameTime;
 		endTime = game.GetFrame(game.nframes - 1).frameTime;
 	}
 
-	public int FrameCount {
-		get => game.nframes;
-	}
+	public int FrameCount => game?.nframes ?? 0;
 
 	public void IncrementPlayhead(float deltaTime)
 	{
@@ -58,7 +62,7 @@ public class Playhead
 
 			// if the current playhead and the next recorded frame time are 1 second apart, just skip to the next frame
 			Frame nextFrame = isReverse ? GetPreviousFrame() : GetNextFrame();
-			float diff = (float)Math.Abs((nextFrame.frameTime - playheadLocation).TotalSeconds);
+			float diff = (float) Math.Abs((nextFrame.frameTime - playheadLocation).TotalSeconds);
 			if (diff > 1)
 			{
 				playheadLocation = nextFrame.frameTime;
@@ -79,23 +83,28 @@ public class Playhead
 
 	public Frame GetFrame()
 	{
-		// if we are host of the room (or not in shared space)
-		if (GameManager.instance.netFrameMan.IsLocalOrServer)
+		// if we are not host of the room
+		if (!GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
-			if (LiveFrameProvider.isLive)
-			{
-				return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
-			}
-			else
-			{
-				LastFrameIndex = currentFrameIndex;
-				return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
-			}
+			isPlaying = GameManager.instance.netFrameMan.networkPlaying;
+			return GameManager.instance.netFrameMan.frame;
 		}
-		else
+
+		if (LiveFrameProvider.isLive)
 		{
-			return Frame.FromJSON(DateTime.Now, GameManager.instance.netFrameMan.networkJsonData);
+			// send playhead info to other players ⬆
+			GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
+			GameManager.instance.netFrameMan.networkJsonData = LiveFrameProvider.frame.originalJSON;
+			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
 		}
+
+		LastFrameIndex = currentFrameIndex;
+		// send playhead info to other players ⬆
+		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(game.filename);
+		GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
+		GameManager.instance.netFrameMan.networkFrameTime = GetNearestFrame().frameTime;
+		GameManager.instance.netFrameMan.networkJsonData = GetNearestFrame().originalJSON;
+		return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
 	}
 
 	public Frame GetNearestFrame()
@@ -105,14 +114,18 @@ public class Playhead
 
 	public Frame GetPreviousFrame()
 	{
+		// if we are not host of the room
+		if (!GameManager.instance.netFrameMan.IsLocalOrServer)
+		{
+			return GameManager.instance.netFrameMan.lastFrame;
+		}
+
 		if (LiveFrameProvider.isLive)
 		{
 			return LiveFrameProvider.lastFrame;
 		}
-		else
-		{
-			return game.GetFrame(Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1));
-		}
+
+		return game.GetFrame(Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1));
 	}
 
 	private Frame GetNextFrame()
@@ -126,7 +139,7 @@ public class Playhead
 		{
 			// check if we are done searching
 			if (playheadLocation >= GetPreviousFrame().frameTime &&
-				playheadLocation <= GetNearestFrame().frameTime)
+			    playheadLocation <= GetNearestFrame().frameTime)
 			{
 				return;
 			}
@@ -148,9 +161,10 @@ public class Playhead
 				CurrentFrameIndex = FrameCount - 1;
 				return;
 			}
-			else if (currentFrameIndex <= 0)
+
+			if (currentFrameIndex <= 0)
 			{
-				isPlaying &= !isReverse;    // if we are trying to play forwards, just keep playing
+				isPlaying &= !isReverse; // if we are trying to play forwards, just keep playing
 				CurrentFrameIndex = 0;
 				return;
 			}

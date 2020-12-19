@@ -167,7 +167,7 @@ public class SocialMan : MonoBehaviour
 		localAvatar = Instantiate(localAvatarPrefab);
 		localAvatar.CanOwnMicrophone = false;
 
-		playerObject = GameManager.instance.usingVR ? GameManager.instance.vrRig.gameObject : GameManager.instance.flatCamera.gameObject;
+		playerObject = GameManager.instance.camera.gameObject;
 
 		localAvatar.transform.SetParent(playerObject.transform, false);
 		localAvatar.transform.localPosition = Vector3.zero;

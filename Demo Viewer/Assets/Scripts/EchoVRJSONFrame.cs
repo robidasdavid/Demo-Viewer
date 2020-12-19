@@ -10,6 +10,7 @@ public class Game
 {
 	public bool isNewstyle;
 	public int nframes;
+	public string filename;
 	public List<string> rawFrames;
 	public List<Frame> frames { private get; set; }
 

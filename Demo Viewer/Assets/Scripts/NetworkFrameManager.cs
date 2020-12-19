@@ -1,37 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using Photon.Pun;
-using UnityEngine;
 
-public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable 
+public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public int networkFrameIndex;   // TODO
-    public string networkJsonData;  // TODO
-    private bool isServer;  // TODO
-    public bool IsLocalOrServer => !gameObject.activeSelf || isServer;
+	public int networkFrameIndex; // TODO
+	public bool networkPlaying;
+	public string networkFilename;
+	public DateTime networkFrameTime;
+	public string networkJsonData;
+	public Frame lastFrame;
+	public Frame frame;
+	public bool IsLocalOrServer => !PhotonNetwork.InRoom || photonView.IsMine;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.IsWriting)
+		{
+			stream.SendNext(networkPlaying);
+			stream.SendNext(networkFrameIndex);
+			stream.SendNext(networkFrameTime.ToFileTime());
+			stream.SendNext(networkFilename);
+			stream.SendNext(networkJsonData);
+		}
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(networkJsonData);   
-        }
+		if (stream.IsReading)
+		{
+			networkPlaying = (bool) stream.ReceiveNext();
+			networkFrameIndex = (int) stream.ReceiveNext();
+			networkFrameTime = DateTime.FromFileTime((long) stream.ReceiveNext());
+			networkFilename = (string) stream.ReceiveNext();
+			networkJsonData = (string) stream.ReceiveNext();
 
-        if (stream.IsReading)
-        {
-            networkJsonData = (string)stream.ReceiveNext();
-        }
-    }
+			if (lastFrame == null || lastFrame.frameTime != frame.frameTime)
+			{
+				lastFrame = frame;
+			}
+
+			if (frame == null || frame.frameTime != networkFrameTime)
+			{
+				frame = Frame.FromJSON(networkFrameTime, networkJsonData);
+			}
+		}
+	}
+
+	public void BecomeHost()
+	{
+		photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+	}
 }

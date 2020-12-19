@@ -10,26 +10,57 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance;
 	public NetworkFrameManager netFrameMan;
 	public Transform[] vrOnlyThings;
-	public Transform[] flatOnlyThings;
+	public Transform[] flatOnlyThingsDesktop;
+	public Transform[] flatOnlyThingsMobile;
 	public Transform[] uiHiddenOnLive;
 	public Transform[] uiShownOnLive;
 	public Text dataSource;
-	[ReadOnly]
-	public bool lastFrameWasOwner = true;
-	[ReadOnly]
-	public bool lastFrameUserPresent;
-	[ReadOnly]
-	public bool usingVR = false;
+	public Button becomeHostButton;
+	[ReadOnly] public bool lastFrameWasOwner = true;
+	[ReadOnly] public bool lastFrameUserPresent;
+	[ReadOnly] public bool usingVR = false;
 	public bool enableVR = false;
 	public Rig vrRig;
 	public Camera vrCamera;
-	public Camera flatCamera;
-	public new Camera camera {
-		get {
-			return usingVR ? vrCamera : flatCamera;
+	public Camera flatCameraDesktop;
+	public Camera flatCameraMobile;
+
+	public new Camera camera
+	{
+		get
+		{
+			return usingVR
+				? vrCamera
+#if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
+				: flatCameraMobile;
+#else
+				: flatCameraDesktop;
+#endif
 		}
 	}
+
 	public DemoStart demoStart;
+
+	[Header("Drawing Mode")] public MonoBehaviour[] drawingModeEnabled;
+	public MonoBehaviour[] drawingModeDisabled;
+	private bool drawingMode;
+
+	public bool DrawingMode
+	{
+		set
+		{
+			drawingMode = value;
+			foreach (MonoBehaviour obj in drawingModeEnabled)
+			{
+				obj.enabled = value;
+			}
+
+			foreach (MonoBehaviour obj in drawingModeDisabled)
+			{
+				obj.enabled = !value;
+			}
+		}
+	}
 
 	private void Awake()
 	{
@@ -49,6 +80,8 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
+		DrawingMode = false;
+
 		// Enable VR Mode
 		if (enableVR || args.Contains("-useVR"))
 		{
@@ -63,9 +96,9 @@ public class GameManager : MonoBehaviour
 		{
 			XRSettings.enabled = false;
 		}
+
 		RefreshVRObjectsVisibility(enableVR);
 	}
-
 
 
 	// Update is called once per frame
@@ -88,12 +121,20 @@ public class GameManager : MonoBehaviour
 				{
 					item.gameObject.SetActive(netFrameMan.IsLocalOrServer);
 				}
+
 				foreach (var item in instance.uiShownOnLive)
 				{
 					item.gameObject.SetActive(!netFrameMan.IsLocalOrServer);
 				}
 			}
+
 			lastFrameWasOwner = netFrameMan.IsLocalOrServer;
+
+			becomeHostButton.gameObject.SetActive(!netFrameMan.IsLocalOrServer);
+			if (!netFrameMan.IsLocalOrServer)
+			{
+				dataSource.text = netFrameMan.networkFilename;
+			}
 		}
 	}
 
@@ -117,7 +158,13 @@ public class GameManager : MonoBehaviour
 			{
 				thing.gameObject.SetActive(true);
 			}
-			foreach (var thing in flatOnlyThings)
+
+			foreach (var thing in flatOnlyThingsDesktop)
+			{
+				thing.gameObject.SetActive(false);
+			}
+
+			foreach (var thing in flatOnlyThingsMobile)
 			{
 				thing.gameObject.SetActive(false);
 			}
@@ -128,9 +175,23 @@ public class GameManager : MonoBehaviour
 			{
 				thing.gameObject.SetActive(false);
 			}
-			foreach (var thing in flatOnlyThings)
+
+			foreach (var thing in flatOnlyThingsDesktop)
 			{
+#if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
+				thing.gameObject.SetActive(false);
+#else
 				thing.gameObject.SetActive(true);
+#endif
+			}
+
+			foreach (var thing in flatOnlyThingsMobile)
+			{
+#if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
+				thing.gameObject.SetActive(true);
+#else
+				thing.gameObject.SetActive(false);
+#endif
 			}
 		}
 	}

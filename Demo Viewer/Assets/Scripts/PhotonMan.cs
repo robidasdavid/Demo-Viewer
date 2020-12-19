@@ -1,17 +1,22 @@
 ﻿using Photon.Pun;
 using UnityEngine;
+using unityutilities;
 
-public class PhotonMan : MonoBehaviour
+public class PhotonMan : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
-    private void Start()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-    }
+	public GameObject avatarPrefab;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// Start is called before the first frame update
+	private void Start()
+	{
+		PhotonNetwork.ConnectUsingSettings();
+	}
+
+
+	public override void OnJoinedRoom()
+	{
+		GameObject obj = PhotonNetwork.Instantiate(avatarPrefab.name, Vector3.zero, Quaternion.identity);
+		obj.GetComponent<CopyTransform>().SetTarget(GameManager.instance.camera.transform, false);
+		obj.transform.GetChild(0).gameObject.SetActive(false);
+	}
 }

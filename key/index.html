@@ -195,7 +195,27 @@
             font-size: 1em;
         }
 
-        @media screen and (min-width: 100em) {
+        @media screen and (max-width: 50em) {
+            body {
+                font-size: .8em;
+            }
+
+            .echo_alert_box {
+                padding: .5em;
+            }
+
+            .header_with_background {
+                transform: scale(0.8);
+                width: 23em;
+            }
+
+            .header_with_background > div:first-child {
+                height: 5.2em;
+                width: 28.3em;
+            }
+        }
+
+        @media screen and (min-width: 110em) {
             body {
                 font-size: 2em;
             }

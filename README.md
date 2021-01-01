@@ -9,7 +9,7 @@ The EchoVR Replay Viewer is able to play back data from an EchoVR Arena game tha
 ### Oculus Store Version (preferred)
 
 The Oculus Store version will get automatic updates and has a consistent installation location, making file association easier. The app is not public, but can be "bought" by getting an Oculus Store product key and redeeming it through the Oculus App. The Oculus Store version supports both 2D and VR modes.
- 1. Head to http://www.davidr.live/code to get a product key.
+ 1. Head to https://sneakyevil.github.io/Demo-Viewer/key/ to get a product key.
  2. In your Oculus app, go to `Settings > Account > Redeem Code`
  3. Input the code you received and download within your Oculus Library.
 

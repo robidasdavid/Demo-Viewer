@@ -1,13 +1,12 @@
 {
   "dependencies": {
     "com.franzco.unityutilities": {
-      "version": "https://AntonFranzluebbers@bitbucket.org/AntonFranzluebbers/unityutilities.git",
+      "version": "file:S:/git_repo/unityutilities",
       "depth": 0,
-      "source": "git",
+      "source": "local",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "2.0.0-preview"
-      },
-      "hash": "4e7e0387e7461ae78012525700622790add1de1e"
+      }
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -174,13 +173,6 @@
     },
     "com.unity.xr.legacyinputhelpers": {
       "version": "2.1.4",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.xr.oculus.standalone": {
-      "version": "2.38.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

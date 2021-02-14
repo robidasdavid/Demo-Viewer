@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 using unityutilities;
 
@@ -10,6 +11,24 @@ public class PhotonMan : MonoBehaviourPunCallbacks
 	private void Start()
 	{
 		PhotonNetwork.ConnectUsingSettings();
+		
+		StartCoroutine(ReconnectTimer());
+	}
+	
+	
+
+	IEnumerator ReconnectTimer()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(5);
+
+			if (!PhotonNetwork.IsConnected)
+			{
+				Debug.Log("RECONNECTING");
+				PhotonNetwork.ConnectUsingSettings();
+			}
+		}
 	}
 
 

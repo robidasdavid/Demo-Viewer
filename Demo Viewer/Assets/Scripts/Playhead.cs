@@ -83,11 +83,12 @@ public class Playhead
 
 	public Frame GetFrame()
 	{
-		// if we are not host of the room
+		// if we are not host of the room, get the frame from the network
 		if (!GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
 			isPlaying = GameManager.instance.netFrameMan.networkPlaying;
-			return GameManager.instance.netFrameMan.frame;
+			return Frame.Lerp(GameManager.instance.netFrameMan.lastFrame, GameManager.instance.netFrameMan.frame,
+				GameManager.instance.netFrameMan.CorrectedNetworkFrameTime);
 		}
 
 		if (LiveFrameProvider.isLive)
@@ -102,6 +103,8 @@ public class Playhead
 		// send playhead info to other players ⬆
 		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(game.filename);
 		GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
+		GameManager.instance.netFrameMan.networkPlaying = isPlaying;
+		GameManager.instance.netFrameMan.networkPlaySpeed = playbackMultiplier;
 		GameManager.instance.netFrameMan.networkFrameTime = GetNearestFrame().frameTime;
 		GameManager.instance.netFrameMan.networkJsonData = GetNearestFrame().originalJSON;
 		return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);

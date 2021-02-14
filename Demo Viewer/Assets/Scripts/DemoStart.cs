@@ -184,7 +184,7 @@ public class DemoStart : MonoBehaviour
 
 			frameText.text = $"Frame {(playhead.CurrentFrameIndex + 1)} of {playhead.FrameCount}";
 			playbackFramerate.text = $"{speedSlider.value:0.#}x";
-			
+
 			// Only render the next frame if it differs from the last (optimization)
 			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !GameManager.instance.netFrameMan.IsLocalOrServer)
 			{
@@ -195,14 +195,18 @@ public class DemoStart : MonoBehaviour
 				if (viewingFrame != null && previousFrame != null)
 				{
 					// Joust Readout
-					Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
-					Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
-					if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
+					if (viewingFrame.disc.position.Length != 0 &&
+						previousFrame.disc.position.Length != 0)
 					{
-						maxGameTime = loadedDemo.GetFrame(0).game_clock;  // TODO this may not be correct if the recording starts midgame
-						float currentTime = viewingFrame.game_clock;
-						joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
-						StartCoroutine(FlashInOut(joustReadout, 3));
+						Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
+						Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
+						if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
+						{
+							maxGameTime = loadedDemo.GetFrame(0).game_clock;  // TODO this may not be correct if the recording starts midgame
+							float currentTime = viewingFrame.game_clock;
+							joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
+							StartCoroutine(FlashInOut(joustReadout, 3));
+						}
 					}
 
 					// Handle goal stat visibility
@@ -336,17 +340,17 @@ public class DemoStart : MonoBehaviour
 
 		playhead = new Playhead(loadedDemo);
 		frameText.text = $"Frame 0 of {playhead.FrameCount}";
-		
+
 		//set slider values
 		playbackSlider.maxValue = playhead.FrameCount - 1;
-		
+
 		//HUD initialization
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
 
 		//Set replay settings
 		discTrail.enabled = true;
-		
+
 		ready = true;
 	}
 

@@ -338,7 +338,10 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 
 	public void LeaveRoom()
 	{
-		PhotonNetwork.LeaveRoom();
+		if (PhotonNetwork.IsConnected)
+		{
+			PhotonNetwork.LeaveRoom();
+		}
 	}
 
 	public override void OnConnectedToMaster()

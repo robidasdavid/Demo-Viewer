@@ -15,6 +15,16 @@ public class PlayerCharacter : MonoBehaviour
 	public IKController ikController;
 	public PlayerStatsHover hoverStats;
 
+	public Transform playspaceVisualizer;
+
+	public Vector3 PlayspaceLocation
+	{
+		set
+		{
+			playspaceVisualizer.localPosition = value;
+		}
+	}
+
 	void Start()
 	{
 		stunnedInitiated = false;

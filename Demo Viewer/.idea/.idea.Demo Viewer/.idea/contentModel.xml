@@ -1298,6 +1298,7 @@
           <e p="IKController.cs" t="Include" />
           <e p="LiveFrameProvider.cs" t="Include" />
           <e p="LoadReplayIntoPointCloud.cs" t="Include" />
+          <e p="LoadSetting.cs" t="Include" />
           <e p="MenuScript.cs" t="Include" />
           <e p="NetworkFrameManager.cs" t="Include" />
           <e p="NoParallax.cs" t="Include" />
@@ -1317,6 +1318,8 @@
           <e p="ReplaySelectionUI.cs" t="Include" />
           <e p="Rotator.cs" t="Include" />
           <e p="ScoreBoardController.cs" t="Include" />
+          <e p="ShowFullAPIData.cs" t="Include" />
+          <e p="ShowVersionNumTMP.cs" t="Include" />
           <e p="SimpleCameraController.cs" t="Include" />
           <e p="TimedDestroy.cs" t="Include" />
           <e p="ViewReplayUIController.cs" t="Include" />
@@ -1391,6 +1394,7 @@
       <e p="IDictionaryPackable.cs" t="Include" />
       <e p="INetworkPack.cs" t="Include" />
       <e p="InputMan.cs" t="Include" />
+      <e p="InputManTester.cs" t="Include" />
       <e p="InputModule.cs" t="Include" />
       <e p="InputModuleUnity.cs" t="Include" />
       <e p="InputModuleXR.cs" t="Include" />
@@ -1427,11 +1431,14 @@
         <e p="HighlightRenderOnTop.shader" t="Include" />
         <e p="UnlitTransparent.shader" t="Include" />
       </e>
+      <e p="MonkeHand.cs" t="Include" />
+      <e p="MonkeMovement.cs" t="Include" />
       <e p="Movement.cs" t="Include" />
       <e p="PlayerPrefsJson.cs" t="Include" />
       <e p="Rig.cs" t="Include" />
       <e p="SaveComponent.cs" t="Include" />
       <e p="SaveLoc.cs" t="Include" />
+      <e p="Surface.cs" t="Include" />
       <e p="Util.cs" t="Include" />
       <e p="VRObject.cs" t="Include" />
       <e p="XRSetFloorHeight.cs" t="Include" />

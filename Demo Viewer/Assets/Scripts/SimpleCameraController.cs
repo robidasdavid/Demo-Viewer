@@ -70,13 +70,19 @@ namespace UnityTemplateProjects
         [Tooltip("Whether or not to invert our Y axis for mouse input to rotation.")]
         public bool invertY = false;
 
-        void OnEnable()
+        private void OnEnable()
         {
             m_TargetCameraState.SetFromTransform(transform);
             m_InterpolatingCameraState.SetFromTransform(transform);
         }
 
-        Vector3 GetInputTranslationDirection()
+        public void ApplyPosition()
+        {
+            m_TargetCameraState.SetFromTransform(transform);
+            m_InterpolatingCameraState.SetFromTransform(transform);
+        }
+
+        private static Vector3 GetInputTranslationDirection()
         {
             Vector3 direction = new Vector3();
             if (Input.GetKey(KeyCode.W))
@@ -113,8 +119,8 @@ namespace UnityTemplateProjects
             direction.z += Input.GetAxis("LeftY") * -2.5f;
             return direction;
         }
-        
-        void Update()
+
+        private void Update()
         {
             // Exit Sample  
             if (Input.GetKey(KeyCode.Escape))

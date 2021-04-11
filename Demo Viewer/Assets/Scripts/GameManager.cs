@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
 	public Transform[] flatOnlyThingsMobile;
 	public Transform[] uiHiddenOnLive;
 	public Transform[] uiShownOnLive;
+	
+	public Transform[] arenaModels;
+	public Transform[] blocksModels;
+	
 	public Text dataSource;
 	public Button becomeHostButton;
 	[ReadOnly] public bool lastFrameWasOwner = true;
@@ -102,7 +106,7 @@ public class GameManager : MonoBehaviour
 
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		//// check if headset is worn
 		//bool isPresent = GetPresence();
@@ -154,17 +158,17 @@ public class GameManager : MonoBehaviour
 		usingVR = present;
 		if (present)
 		{
-			foreach (var thing in vrOnlyThings)
+			foreach (Transform thing in vrOnlyThings)
 			{
 				thing.gameObject.SetActive(true);
 			}
 
-			foreach (var thing in flatOnlyThingsDesktop)
+			foreach (Transform thing in flatOnlyThingsDesktop)
 			{
 				thing.gameObject.SetActive(false);
 			}
 
-			foreach (var thing in flatOnlyThingsMobile)
+			foreach (Transform thing in flatOnlyThingsMobile)
 			{
 				thing.gameObject.SetActive(false);
 			}

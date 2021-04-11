@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class PlayerStatsHover : MonoBehaviour
@@ -8,20 +6,16 @@ public class PlayerStatsHover : MonoBehaviour
 	public Transform statsWindow;
 	public TextMeshProUGUI statsTextBox;
 	public TextMeshProUGUI speedTextBox;
-	private float lastVisibleTime = 0;
+	private float lastVisibleTime;
 
 	public Stats Stats {
-		set {
-			statsTextBox.text = value.ToString();
-		}
+		set => statsTextBox.text = value.ToString();
 	}
 	public float Speed {
-		set {
-			speedTextBox.text = "Speed: " + value.ToString("N2") + " m/s";
-		}
+		set => speedTextBox.text = $"Speed: {value:N2} m/s";
 	}
 
-	private bool visible = false;
+	private bool visible;
 	public bool Visible {
 		get => visible;
 		set {
@@ -32,7 +26,7 @@ public class PlayerStatsHover : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		statsWindow.LookAt(GameManager.instance.camera.transform.position);
 		if (Time.time - lastVisibleTime > .2f)

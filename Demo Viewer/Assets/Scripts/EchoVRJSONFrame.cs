@@ -20,31 +20,26 @@ public class Game
 	/// </summary>
 	public Frame GetFrame(int index)
 	{
-		if (frames[index] == null)
+		if (frames[index] != null) return frames[index];
+		
+		// repeat because maybe the requested frame needs to be discarded.
+		while (rawFrames.Count > 0)
 		{
-			while (rawFrames.Count > 0)
+			Frame newFrame = Frame.FromEchoReplayString(rawFrames[index]);
+			if (newFrame != null)
 			{
-				Frame newFrame = Frame.FromEchoReplayString(rawFrames[index]);
-				if (newFrame != null)
-				{
-					frames[index] = newFrame;
-					rawFrames[index] = null;    // free up the memory, since the raw frames take up a lot more
-					return frames[index];
-				}
-				else
-				{
-					frames.RemoveAt(index);
-					rawFrames.RemoveAt(index);
-					nframes--;
-				}
+				frames[index] = newFrame;
+				rawFrames[index] = null;    // free up the memory, since the raw frames take up a lot more
+				return frames[index];
 			}
-			Debug.LogError("File contains no valid arena frames.");
-			return null;
+
+			Debug.LogError($"Discarded frame {index}");
+			frames.RemoveAt(index);
+			rawFrames.RemoveAt(index);
+			nframes--;
 		}
-		else
-		{
-			return frames[index];
-		}
+		Debug.LogError("File contains no valid arena frames.");
+		return null;
 	}
 }
 
@@ -434,12 +429,10 @@ public class Player
 		}
 	}
 	public EchoTransform head { private get; set; }
-	public EchoTransform Head {
-		get {
-			if (head != null) return head;
-			else return new EchoTransform(position, forward, left, up);
-		}
-	}
+	/// <summary>
+	/// In order to support old replay file format
+	/// </summary>
+	public EchoTransform Head => head ?? new EchoTransform(position, forward, left, up);
 	public bool possession;
 	public EchoTransform body;
 	public EchoTransform leftHand { get => new EchoTransform(lhand); }
@@ -449,6 +442,11 @@ public class Player
 	public JToken lhand { private get; set; }
 	public bool blocking;
 	public float[] velocity;
+
+	/// <summary>
+	/// This is not from the api, but set afterwards in the temporal processing step
+	/// </summary>
+	public Vector3 playspacePosition = Vector3.zero;
 
 
 	/// <summary>
@@ -486,7 +484,8 @@ public class Player
 			body = EchoTransform.Lerp(from.body, to.body, t),
 			lhand = EchoTransform.Lerp(new EchoTransform(from.lhand), new EchoTransform(to.lhand), t).ToJToken(),
 			blocking = from.blocking,
-			velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatArray()
+			velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatArray(),
+			playspacePosition = Vector3.Lerp(from.playspacePosition, to.playspacePosition, t)
 		};
 
 		return player;

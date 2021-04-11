@@ -5,9 +5,10 @@
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0-preview"
+        "com.unity.nuget.newtonsoft-json": "2.0.0-preview",
+        "com.unity.xr.legacyinputhelpers": "2.1.7"
       },
-      "hash": "e9b20b3a109e8f8888a59625df682eab8203bc83"
+      "hash": "c7e14898ccea42139575a454063a0b9bd23a2014"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -173,10 +174,13 @@
       }
     },
     "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.4",
-      "depth": 0,
+      "version": "2.1.7",
+      "depth": 1,
       "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.unity.modules.vr": "1.0.0",
+        "com.unity.modules.xr": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.oculus.standalone": {

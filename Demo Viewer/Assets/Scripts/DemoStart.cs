@@ -15,6 +15,7 @@ using System.IO.Compression;
 using System;
 using TMPro;
 using System.Threading;
+using UnityTemplateProjects;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -130,11 +131,18 @@ public class DemoStart : MonoBehaviour
 
 	public TextMeshProUGUI replayFileNameText;
 
+	public bool processTemporalDataInBackground = true;
+
+	/// <summary>
+	/// 0 for none, 1 for all players, 2 for local player
+	/// </summary>
+	public static int showPlayspace;
+
 
 
 	#endregion
 
-	void Start()
+	private void Start()
 	{
 		// Ahh yes welcome to the code
 
@@ -155,6 +163,8 @@ public class DemoStart : MonoBehaviour
 
 			StartCoroutine(GetText(getFileName, DoLast));
 #endif
+
+		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers", 0);
 	}
 
 	// Update is called once per frame
@@ -235,9 +245,20 @@ public class DemoStart : MonoBehaviour
 			if (Physics.Raycast(GameManager.instance.camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000f, LayerMask.GetMask("players")))
 			{
 				PlayerStatsHover psh = hit.collider.GetComponent<PlayerStatsHover>();
-				if (psh)
+				if (!psh) return;
+				
+				psh.Visible = true;
+
+				if (Input.GetMouseButtonDown(0))
 				{
-					psh.Visible = true;
+					Transform cam = GameManager.instance.camera.transform;
+					Vector3 playerPos = psh.transform.position;
+					cam.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+					cam.LookAt(playerPos);
+					if (cam.GetComponent<SimpleCameraController>())
+					{
+						cam.GetComponent<SimpleCameraController>().ApplyPosition();
+					}
 				}
 			}
 
@@ -252,10 +273,9 @@ public class DemoStart : MonoBehaviour
 	/// <summary>
 	/// Used in webgl mode. idk why I haven't looked. Maybe consolidate this with other webrequest file loading?
 	/// </summary>
-	IEnumerator GetText(string fn, Action doLast)
+	private IEnumerator GetText(string fn, Action doLast)
 	{
-		UnityWebRequest req = new UnityWebRequest();
-		req = UnityWebRequest.Get(string.Format("{0}/file?name={1}", IP, fn));
+		UnityWebRequest req = UnityWebRequest.Get($"{IP}/file?name={fn}");
 		yield return req.SendWebRequest();
 
 		DownloadHandler dh = req.downloadHandler;
@@ -286,7 +306,7 @@ public class DemoStart : MonoBehaviour
 	/// Actually reads the replay file into memory
 	/// This is a thread on desktop versions
 	/// </summary>
-	void ReadReplayFile(StreamReader fileReader, string filename)
+	private void ReadReplayFile(StreamReader fileReader, string filename)
 	{
 		using (fileReader = OpenOrExtract(fileReader))
 		{
@@ -318,11 +338,71 @@ public class DemoStart : MonoBehaviour
 
 	}
 
+
+	/// <summary>
+	/// Loops through the whole file in the background and generates temporal data like playspace location
+	/// </summary>
+	private static void ProcessAllTemporalData(Game game)
+	{
+		Frame lastFrame = null;
+		for (int i = 0; i < game.nframes; i++)
+		{
+			// this converts the frame from raw json data to a deserialized object
+			Frame frame = game.GetFrame(i);
+
+			if (lastFrame == null) lastFrame = frame;
+
+			float deltaTime = lastFrame.game_clock - frame.game_clock;
+
+			// loop through the two player teams
+			for (int t = 0; t < 2; t++)
+			{
+				Team team = frame.teams[t];
+				if (team?.players == null) continue;
+
+				// loop through all the players on the team
+				for (int p = 0; p < team.players.Length; p++)
+				{
+					Player lastPlayer = lastFrame.teams[t]?.players[p];
+					Player player = team.players[p];
+					if (lastPlayer == null) continue;
+
+					if (deltaTime == 0)
+					{
+						// just copy the playspace position from last time
+						player.playspacePosition = lastPlayer.playspacePosition;
+						continue;
+					}
+					
+					// how far the player's position moved this frame (m)
+					Vector3 posDiff = player.Head.Position - lastPlayer.Head.Position;
+					
+					// how far the player should have moved by velocity this frame (m)
+					Vector3 velDiff = player.velocity.ToVector3() * deltaTime;
+					
+					// -
+					Vector3 movement = posDiff - velDiff;
+
+					// move the player in the playspace
+					player.playspacePosition = lastPlayer.playspacePosition + movement;
+					
+					// add a "recentering force" to correct longterm inaccuracies
+					player.playspacePosition -= player.playspacePosition.normalized * (.05f * deltaTime);
+				}
+			}
+
+			lastFrame = frame;
+		}
+
+		Debug.Log("Fished processing temporal data.");
+	}
+
+
 	/// <summary>
 	/// Part of the process for reading the file
 	/// </summary>
 	/// <param name="demoFile">The filename of the replay file</param>
-	IEnumerator LoadFile(string demoFile = "")
+	private IEnumerator LoadFile(string demoFile = "")
 	{
 		if (!string.IsNullOrEmpty(demoFile))
 		{
@@ -335,6 +415,12 @@ public class DemoStart : MonoBehaviour
 			{
 				// maybe put a progress bar here
 				yield return null;
+			}
+			
+			if (processTemporalDataInBackground)
+			{
+				Thread processTemporalDataThread = new Thread(() => ProcessAllTemporalData(loadedDemo));
+				processTemporalDataThread.Start();		
 			}
 		}
 
@@ -444,37 +530,42 @@ public class DemoStart : MonoBehaviour
 			// handled in ReplaySelectionUI
 		}
 		float dpadX = Input.GetAxis("XboxDpadX");
-		if (!wasDPADXReleased && dpadX == 0)
+		switch (wasDPADXReleased)
 		{
-			wasDPADXReleased = true;
-		}
-		else if (wasDPADXReleased && dpadX == -1)
-		{
-			wasDPADXReleased = false;
-			playhead.isPlaying = true;
-			if (playhead.isReverse == true)
+			case false when dpadX == 0:
+				wasDPADXReleased = true;
+				break;
+			case true when dpadX == -1:
 			{
-				playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 32f);
-			}
-			else
-			{
-				playhead.isReverse = true;
-				playbackSpeed = 1f;
-			}
+				wasDPADXReleased = false;
+				playhead.isPlaying = true;
+				if (playhead.isReverse == true)
+				{
+					playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 32f);
+				}
+				else
+				{
+					playhead.isReverse = true;
+					playbackSpeed = 1f;
+				}
 
-		}
-		else if (wasDPADXReleased && dpadX == 1)
-		{
-			wasDPADXReleased = false;
-			playhead.isPlaying = true;
-			if (playhead.isReverse == false)
-			{
-				playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 32f);
+				break;
 			}
-			else
+			case true when dpadX == 1:
 			{
-				playhead.isReverse = false;
-				playbackSpeed = 1f;
+				wasDPADXReleased = false;
+				playhead.isPlaying = true;
+				if (playhead.isReverse == false)
+				{
+					playbackSpeed = Mathf.Clamp(playbackSpeed / 2, 0.03125f, 32f);
+				}
+				else
+				{
+					playhead.isReverse = false;
+					playbackSpeed = 1f;
+				}
+
+				break;
 			}
 		}
 
@@ -811,7 +902,17 @@ public class DemoStart : MonoBehaviour
 		{
 			blockingEffect.gameObject.SetActive(false);
 		}
-
+		
+		// show playspace position
+		if (showPlayspace == 1)
+		{
+			p.PlayspaceLocation = player.playspacePosition;
+			p.playspaceVisualizer.gameObject.SetActive(true);
+		}
+		else
+		{
+			p.playspaceVisualizer.gameObject.SetActive(false);
+		}
 
 		// show player stats on player stats board 🧮
 		p.hoverStats.Stats = player.stats;

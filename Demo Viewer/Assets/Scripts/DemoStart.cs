@@ -168,7 +168,7 @@ public class DemoStart : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 
 		// controls help
@@ -718,7 +718,7 @@ public class DemoStart : MonoBehaviour
 		}
 
 		// blue team possession effects
-		if (viewingFrame.teams[0].possession)
+		if (viewingFrame.teams[0] != null && viewingFrame.teams[0].possession)
 		{
 			discTrailMat.color = new Color(0f, 0.647f, 0.847f, 0.8f);
 			discLight.color = new Color(0f, 0.647f, 0.847f, 0.8f);
@@ -726,7 +726,7 @@ public class DemoStart : MonoBehaviour
 			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
 		}
 		// orange team possession effects
-		else if (viewingFrame.teams[1].possession)
+		else if (viewingFrame.teams[1] != null && viewingFrame.teams[1].possession)
 		{
 			discTrailMat.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
 			discLight.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
@@ -758,14 +758,14 @@ public class DemoStart : MonoBehaviour
 		{
 			if (viewingFrame.teams[t].players != null)
 			{
-				foreach (var player in viewingFrame.teams[t].players)
+				foreach (Player player in viewingFrame.teams[t].players)
 				{
 					// get the matching player from the previous frame.
 					// Searching through all the players is the only way, since they may have 
 					// switched teams or been reorganized in the list when another player joins
 					Player previousPlayer = FindPlayerOnTeam(previousFrame.teams[t], player.name);
 
-					RenderPlayer(player, previousPlayer, t);
+					RenderPlayer(player, previousPlayer, t, viewingFrame.client_name == player.name ? viewingFrame.player : null);
 
 					movedObjects.Add(playerObjects[(t, player.name)]);
 				}
@@ -828,7 +828,7 @@ public class DemoStart : MonoBehaviour
 		return null;
 	}
 
-	public void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex)
+	private void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex, Playspace playspace)
 	{
 		// don't show spectators
 		if (teamIndex == 2) return;
@@ -904,14 +904,28 @@ public class DemoStart : MonoBehaviour
 		}
 		
 		// show playspace position
-		if (showPlayspace == 1)
+		switch (showPlayspace)
 		{
-			p.PlayspaceLocation = player.playspacePosition;
-			p.playspaceVisualizer.gameObject.SetActive(true);
-		}
-		else
-		{
-			p.playspaceVisualizer.gameObject.SetActive(false);
+			case 0:
+				p.playspaceVisualizer.gameObject.SetActive(false);
+				break;
+			// all players
+			case 1:
+				p.PlayspaceLocation = player.playspacePosition;
+				p.playspaceVisualizer.gameObject.SetActive(true);
+				break;
+			// only local player
+			case 2:
+				if (playspace != null)
+				{
+					p.PlayspaceLocation = playspace.vr_position.ToVector3();
+					p.playspaceVisualizer.gameObject.SetActive(true);
+				}
+				else
+				{
+					p.playspaceVisualizer.gameObject.SetActive(false);
+				}
+				break;
 		}
 
 		// show player stats on player stats board 🧮

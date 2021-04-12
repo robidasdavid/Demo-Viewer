@@ -1357,9 +1357,6 @@
       <e p="BitpackersASMDEF.csproj" t="IncludeRecursive" />
       <e p="Demo Viewer.sln" t="IncludeFlat" />
       <e p="EmoCompressUtilsASMDEF.csproj" t="IncludeRecursive" />
-      <e p="FranzCo.unityutilities.csproj" t="IncludeRecursive" />
-      <e p="FranzCo.unityutilities.Editor.csproj" t="IncludeRecursive" />
-      <e p="FranzCo.unityutilities.VRInteraction.csproj" t="IncludeRecursive" />
       <e p="HalfFloatASMDEF.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Oculus.Platform.csproj" t="IncludeRecursive" />
@@ -1379,69 +1376,6 @@
       <e p="PunDemos.DemoHubEditor.csproj" t="IncludeRecursive" />
       <e p="PunDemos.DemoSlotcarEditor.csproj" t="IncludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
-    </e>
-    <e p="S:\git_repo\unityutilities\Editor" t="Include">
-      <e p="CreateUtilities.cs" t="Include" />
-      <e p="EditorShortCutKeys.cs" t="Include" />
-      <e p="SetupVRInput.cs" t="Include" />
-    </e>
-    <e p="S:\git_repo\unityutilities\Runtime" t="Include">
-      <e p="AdjustPos.cs" t="Include" />
-      <e p="ControllerHelp.cs" t="Include" />
-      <e p="ControllerHelpTester.cs" t="Include" />
-      <e p="CopyTransform.cs" t="Include" />
-      <e p="DontDestroyOnLoad.cs" t="Include" />
-      <e p="IDictionaryPackable.cs" t="Include" />
-      <e p="INetworkPack.cs" t="Include" />
-      <e p="InputMan.cs" t="Include" />
-      <e p="InputManTester.cs" t="Include" />
-      <e p="InputModule.cs" t="Include" />
-      <e p="InputModuleUnity.cs" t="Include" />
-      <e p="InputModuleXR.cs" t="Include" />
-      <e p="Interaction" t="Include">
-        <e p="CollisionSound.cs" t="Include" />
-        <e p="VRInteraction" t="Include">
-          <e p="MouseControlsVRGrabbableHand.cs" t="Include" />
-          <e p="VRGrabbable" t="Include">
-            <e p="Subclasses" t="Include">
-              <e p="Climbable.cs" t="Include" />
-              <e p="VRDial.cs" t="Include" />
-              <e p="VRDialAdjuster.cs" t="Include" />
-              <e p="VRGrabbableJustSendEvent.cs" t="Include" />
-              <e p="VRLocalConstrainedMoveable.cs" t="Include" />
-              <e p="VRMoveable.cs" t="Include" />
-              <e p="VRMoveableButOnceItsStuckInTheGroundItsADial.cs" t="Include" />
-              <e p="VRPointForceGrabbable.cs" t="Include" />
-              <e p="VRSlider.cs" t="Include" />
-            </e>
-            <e p="VRGrabbable.cs" t="Include" />
-          </e>
-          <e p="VRGrabbableHand.cs" t="Include" />
-          <e p="VRPhysicalButton.cs" t="Include" />
-        </e>
-        <e p="WorldMouse" t="Include">
-          <e p="CursorWorldMouse.cs" t="Include" />
-          <e p="UUWorldMouse.cs" t="Include" />
-          <e p="WorldMouse.cs" t="Include" />
-          <e p="WorldMouseInputModule.cs" t="Include" />
-        </e>
-      </e>
-      <e p="Logger.cs" t="Include" />
-      <e p="Materials" t="Include">
-        <e p="HighlightRenderOnTop.shader" t="Include" />
-        <e p="UnlitTransparent.shader" t="Include" />
-      </e>
-      <e p="MonkeHand.cs" t="Include" />
-      <e p="MonkeMovement.cs" t="Include" />
-      <e p="Movement.cs" t="Include" />
-      <e p="PlayerPrefsJson.cs" t="Include" />
-      <e p="Rig.cs" t="Include" />
-      <e p="SaveComponent.cs" t="Include" />
-      <e p="SaveLoc.cs" t="Include" />
-      <e p="Surface.cs" t="Include" />
-      <e p="Util.cs" t="Include" />
-      <e p="VRObject.cs" t="Include" />
-      <e p="XRSetFloorHeight.cs" t="Include" />
     </e>
   </component>
 </project>

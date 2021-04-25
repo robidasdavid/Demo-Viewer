@@ -13,14 +13,14 @@ namespace UnityTemplateProjects
             public float y;
             public float z;
 
-            public void SetFromTransform(Transform t)
+            public void SetFromTransform(Transform t, Vector3 origin)
             {
                 pitch = t.eulerAngles.x;
                 yaw = t.eulerAngles.y;
                 roll = t.eulerAngles.z;
-                x = t.position.x;
-                y = t.position.y;
-                z = t.position.z;
+                x = t.position.x + origin.x;
+                y = t.position.y + origin.y;
+                z = t.position.z + origin.z;
             }
 
             public void Translate(Vector3 translation)
@@ -53,6 +53,18 @@ namespace UnityTemplateProjects
         CameraState m_TargetCameraState = new CameraState();
         CameraState m_InterpolatingCameraState = new CameraState();
 
+        private Vector3 origin = Vector3.zero;
+        public Vector3 Origin {
+            set
+            {
+                Vector3 diff = value - origin;
+                m_TargetCameraState.x += diff.x;
+                m_TargetCameraState.y += diff.y;
+                m_TargetCameraState.z += diff.z;
+                origin = value;
+            }
+        }
+        
         [Header("Movement Settings")]
         [Tooltip("Exponential boost factor on translation, controllable by mouse wheel.")]
         public float boost = 3.5f;
@@ -72,14 +84,14 @@ namespace UnityTemplateProjects
 
         private void OnEnable()
         {
-            m_TargetCameraState.SetFromTransform(transform);
-            m_InterpolatingCameraState.SetFromTransform(transform);
+            m_TargetCameraState.SetFromTransform(transform, Vector3.zero);
+            m_InterpolatingCameraState.SetFromTransform(transform, Vector3.zero);
         }
 
         public void ApplyPosition()
         {
-            m_TargetCameraState.SetFromTransform(transform);
-            m_InterpolatingCameraState.SetFromTransform(transform);
+            m_TargetCameraState.SetFromTransform(transform, Vector3.zero);
+            m_InterpolatingCameraState.SetFromTransform(transform, Vector3.zero);
         }
 
         private static Vector3 GetInputTranslationDirection()

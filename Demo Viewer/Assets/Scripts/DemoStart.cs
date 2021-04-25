@@ -138,6 +138,9 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	public static int showPlayspace;
 
+	private Transform followingPlayer;
+	public SimpleCameraController camController;
+
 
 
 	#endregion
@@ -164,7 +167,27 @@ public class DemoStart : MonoBehaviour
 			StartCoroutine(GetText(getFileName, DoLast));
 #endif
 
-		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers", 0);
+		
+		// arena model
+		foreach (Transform obj in GameManager.instance.arenaModels)
+		{
+			obj.gameObject.SetActive(false);
+		}
+		GameManager.instance.arenaModels[PlayerPrefs.GetInt("ArenaModel")].gameObject.SetActive(true);
+
+		
+		// blocks model
+		foreach (Transform obj in GameManager.instance.blocksModels)
+		{
+			obj.gameObject.SetActive(false);
+		}
+		GameManager.instance.blocksModels[PlayerPrefs.GetInt("BlocksModel")].gameObject.SetActive(true);
+
+		
+		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers");
+		
+		float[] options = {30f, 10f, 1f};
+		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",0)];
 	}
 
 	// Update is called once per frame
@@ -246,26 +269,40 @@ public class DemoStart : MonoBehaviour
 			{
 				PlayerStatsHover psh = hit.collider.GetComponent<PlayerStatsHover>();
 				if (!psh) return;
-				
+
 				psh.Visible = true;
 
+				// clicked on a player - follow player
 				if (Input.GetMouseButtonDown(0))
 				{
-					Transform cam = GameManager.instance.camera.transform;
-					Vector3 playerPos = psh.transform.position;
-					cam.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-					cam.LookAt(playerPos);
-					if (cam.GetComponent<SimpleCameraController>())
+					if (followingPlayer == psh.transform)
 					{
-						cam.GetComponent<SimpleCameraController>().ApplyPosition();
+						followingPlayer = null;
+					}
+					else
+					{
+						followingPlayer = psh.transform;
+
+						if (camController != null)
+						{
+							camController.Origin = followingPlayer.position;
+							Vector3 playerPos = psh.transform.position;
+							camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+							camController.transform.LookAt(playerPos);
+							camController.ApplyPosition();
+						}
 					}
 				}
 			}
-
 		}
 		else
 		{
 			playbackSlider.value = fileReadProgress;
+		}
+
+		if (followingPlayer != null)
+		{
+			camController.Origin = followingPlayer.position;
 		}
 	}
 
@@ -682,6 +719,8 @@ public class DemoStart : MonoBehaviour
 		//{
 		//	return;
 		//}
+
+		if (viewingFrame == null) return;
 
 		string gameTime = viewingFrame.game_clock_display;
 		gameTimeText.text = gameTime;

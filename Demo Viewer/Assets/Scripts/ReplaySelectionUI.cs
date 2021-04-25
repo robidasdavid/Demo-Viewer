@@ -320,6 +320,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 			obj.gameObject.SetActive(false);
 		}
 		GameManager.instance.arenaModels[selection].gameObject.SetActive(true);
+		PlayerPrefs.SetInt("ArenaModel", selection);
 	}
 
 	public void BlocksModelChanged(int selection)
@@ -329,11 +330,20 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 			obj.gameObject.SetActive(false);
 		}
 		GameManager.instance.blocksModels[selection].gameObject.SetActive(true);
+		PlayerPrefs.SetInt("BlocksModel", selection);
 	}
 
 	public void ShowPlayspaceChanged(int selection)
 	{
 		DemoStart.showPlayspace = selection;
+		PlayerPrefs.SetInt("ShowPlayspaceVisualizers", selection);
+	}
+	
+	public void VRArenaScaleChanged(int selection)
+	{
+		float[] options = {30f, 10f, 1f};
+		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[selection];
+		PlayerPrefs.SetInt("VRArenaScale", selection);
 	}
 
 	public void HostMatch()

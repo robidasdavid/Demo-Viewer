@@ -42,19 +42,19 @@ public class LoadSetting : MonoBehaviour
 		{
 			case InputField inputField:
 				if (PlayerPrefs.HasKey(key))
-					inputField.text = PlayerPrefs.GetString(key);
+					inputField.SetTextWithoutNotify(PlayerPrefs.GetString(key));
 				break;
 			case Toggle toggle:
 				if (PlayerPrefs.HasKey(key))
-					toggle.isOn = PlayerPrefs.GetInt(key) == 1;
+					toggle.SetIsOnWithoutNotify(PlayerPrefs.GetInt(key) == 1);
 				break;
 			case Dropdown dropdown:
 				if (PlayerPrefs.HasKey(key))
-					dropdown.value = PlayerPrefs.GetInt(key);
+					dropdown.SetValueWithoutNotify(PlayerPrefs.GetInt(key));
 				break;
 			case TMP_Dropdown dropdown:
 				if (PlayerPrefs.HasKey(key))
-					dropdown.value = PlayerPrefs.GetInt(key);
+					dropdown.SetValueWithoutNotify(PlayerPrefs.GetInt(key));
 				break;
 		}
 	}

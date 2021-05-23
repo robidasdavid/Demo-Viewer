@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
 	public MonoBehaviour[] drawingModeDisabled;
 	private bool drawingMode;
 
+	/// <summary>
+	/// True for drawing, false for not drawing
+	/// </summary>
 	public bool DrawingMode
 	{
 		set
@@ -64,6 +67,7 @@ public class GameManager : MonoBehaviour
 				obj.enabled = !value;
 			}
 		}
+		get => drawingMode;
 	}
 
 	private void Awake()

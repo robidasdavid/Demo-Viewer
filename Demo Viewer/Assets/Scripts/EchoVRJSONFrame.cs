@@ -166,7 +166,20 @@ public class Frame
 				Debug.LogError("Row doesn't include both a time and API JSON");
 				return null;
 			}
-			DateTime frameTime = DateTime.Parse(onlyTime);
+
+			if (onlyTime.Length == 23 && onlyTime[13] == '.')
+			{
+				StringBuilder sb = new StringBuilder(onlyTime);
+				sb[13] = ':';
+				sb[16] = ':';
+				onlyTime = sb.ToString();
+			}
+			
+			if (!DateTime.TryParse(onlyTime, out DateTime frameTime))
+			{
+				Debug.LogError($"Can't parse date: {onlyTime}");
+				return null;
+			}
 
 			// if this is actually valid arena data
 			if (onlyJSON.Length > 800)

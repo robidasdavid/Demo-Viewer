@@ -273,7 +273,7 @@ public class DemoStart : MonoBehaviour
 				psh.Visible = true;
 
 				// clicked on a player - follow player
-				if (Input.GetMouseButtonDown(0))
+				if (Input.GetMouseButtonDown(0) && !GameManager.instance.DrawingMode)
 				{
 					if (followingPlayer == psh.transform)
 					{
@@ -386,6 +386,8 @@ public class DemoStart : MonoBehaviour
 		{
 			// this converts the frame from raw json data to a deserialized object
 			Frame frame = game.GetFrame(i);
+			
+			if (frame == null) continue;
 
 			if (lastFrame == null) lastFrame = frame;
 

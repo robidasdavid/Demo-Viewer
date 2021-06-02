@@ -13,6 +13,7 @@ public class Game
 	public string filename;
 	public List<string> rawFrames;
 	public List<Frame> frames { private get; set; }
+	public Mesh pointCloud;
 
 	/// <summary>
 	/// Gets or converts the requested frame.

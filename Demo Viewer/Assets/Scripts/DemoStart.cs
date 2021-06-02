@@ -13,8 +13,10 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO.Compression;
 using System;
+using System.Linq;
 using TMPro;
 using System.Threading;
+using UnityEngine.Rendering;
 using UnityTemplateProjects;
 
 //Serializable classes for JSON serializing from the API output.
@@ -51,6 +53,7 @@ public class DemoStart : MonoBehaviour
 	public Text frameText;
 	public Text gameTimeText;
 	public Slider playbackSlider;
+	public Slider temporalProcessingSlider;
 	public Slider speedSlider;
 	public float playbackSpeed {
 		get => playhead.playbackMultiplier;
@@ -132,6 +135,7 @@ public class DemoStart : MonoBehaviour
 	public TextMeshProUGUI replayFileNameText;
 
 	public bool processTemporalDataInBackground = true;
+	public float temporalProcessingProgress = 0;
 
 	/// <summary>
 	/// 0 for none, 1 for all players, 2 for local player
@@ -140,6 +144,20 @@ public class DemoStart : MonoBehaviour
 
 	private Transform followingPlayer;
 	public SimpleCameraController camController;
+
+	public Material pointCloudMaterial;
+	
+	
+	private static bool loadPointCloud;
+
+	// for the point cloud
+	static List<Vector3> vertices = new List<Vector3>();
+	static List<Color> colors = new List<Color>();
+	static List<Vector3> normals = new List<Vector3>();
+	
+	private static bool finishedProcessingTemporalData = false;
+
+	public static int loadingId;
 
 
 
@@ -185,6 +203,7 @@ public class DemoStart : MonoBehaviour
 
 		
 		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers");
+		loadPointCloud = PlayerPrefs.GetInt("ShowPointCloud", 0) == 1;
 		
 		float[] options = {30f, 10f, 1f};
 		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",0)];
@@ -304,6 +323,39 @@ public class DemoStart : MonoBehaviour
 		{
 			camController.Origin = followingPlayer.position;
 		}
+
+		if (finishedProcessingTemporalData)
+		{
+			finishedProcessingTemporalData = false;
+			
+
+			if (loadPointCloud)
+			{
+				loadedDemo.pointCloud = new Mesh()
+				{
+					name = loadedDemo.filename,
+					vertices =  vertices.ToArray(),
+					colors =  colors.ToArray(),
+					normals =  normals.ToArray(),
+					indexFormat = vertices.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
+				};
+			
+				loadedDemo.pointCloud.SetIndices(
+					Enumerable.Range(0, vertices.Count).ToArray(),
+					MeshTopology.Points, 0
+				);
+			
+				loadedDemo.pointCloud.UploadMeshData(true);
+
+				GameObject obj = new GameObject("Point Cloud");
+				MeshFilter mf = obj.AddComponent<MeshFilter>();
+				mf.sharedMesh = loadedDemo.pointCloud;
+				MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
+				meshRenderer.sharedMaterial = GameManager.instance.demoStart.pointCloudMaterial;
+			}
+		}
+
+		temporalProcessingSlider.value = temporalProcessingProgress;
 	}
 
 
@@ -319,7 +371,7 @@ public class DemoStart : MonoBehaviour
 
 		//this.jsonStr = dh.text;
 		StreamReader read = new StreamReader(new MemoryStream(dh.data));
-		ReadReplayFile(read, fn);
+		ReadReplayFile(read, fn, ++loadingId);
 		doLast();
 	}
 
@@ -343,7 +395,7 @@ public class DemoStart : MonoBehaviour
 	/// Actually reads the replay file into memory
 	/// This is a thread on desktop versions
 	/// </summary>
-	private void ReadReplayFile(StreamReader fileReader, string filename)
+	private void ReadReplayFile(StreamReader fileReader, string filename, int threadLoadingId)
 	{
 		using (fileReader = OpenOrExtract(fileReader))
 		{
@@ -354,6 +406,9 @@ public class DemoStart : MonoBehaviour
 				allLines.Add(fileReader.ReadLine());
 				fileReadProgress += .0001f;
 				fileReadProgress %= 1;
+
+				// if we started loading a different file instead, stop this one
+				if (threadLoadingId != loadingId) return;
 			} while (!fileReader.EndOfStream);
 
 			//string fileData = fileReader.ReadToEnd();
@@ -379,11 +434,17 @@ public class DemoStart : MonoBehaviour
 	/// <summary>
 	/// Loops through the whole file in the background and generates temporal data like playspace location
 	/// </summary>
-	private static void ProcessAllTemporalData(Game game)
+	private static void ProcessAllTemporalData(Game game, int threadLoadingId)
 	{
+		GameManager.instance.demoStart.temporalProcessingProgress = 0;
 		Frame lastFrame = null;
 		for (int i = 0; i < game.nframes; i++)
 		{
+			// if we started loading a different file instead, stop this one
+			if (threadLoadingId != loadingId) return;
+			
+			GameManager.instance.demoStart.temporalProcessingProgress = (float)i / game.nframes;
+			
 			// this converts the frame from raw json data to a deserialized object
 			Frame frame = game.GetFrame(i);
 			
@@ -402,8 +463,20 @@ public class DemoStart : MonoBehaviour
 				// loop through all the players on the team
 				for (int p = 0; p < team.players.Length; p++)
 				{
-					Player lastPlayer = lastFrame.teams[t]?.players[p];
 					Player player = team.players[p];
+					
+					if (loadPointCloud)
+					{
+						vertices.Add(player.Head.Position);
+						colors.Add(t == 1 ? new Color(1, 136/255f, 0, 1) : new Color(0, 123/255f, 1, 1));
+						normals.Add(player.velocity.ToVector3());
+					}
+					
+					
+					Player[] lastPlayers = lastFrame.teams[t]?.players;
+					if (lastPlayers == null) continue;
+					if (lastPlayers.Length <= p + 1) continue;
+					Player lastPlayer = lastPlayers[p];
 					if (lastPlayer == null) continue;
 
 					if (deltaTime == 0)
@@ -429,10 +502,18 @@ public class DemoStart : MonoBehaviour
 					player.playspacePosition -= player.playspacePosition.normalized * (.05f * deltaTime);
 				}
 			}
+			
+			if (loadPointCloud)
+			{
+				vertices.Add(frame.disc.position.ToVector3());
+				colors.Add(new Color(1, 1, 1, 1));
+				normals.Add(frame.disc.velocity.ToVector3());
+			}
 
 			lastFrame = frame;
 		}
 
+		finishedProcessingTemporalData = true;
 		Debug.Log("Fished processing temporal data.");
 	}
 
@@ -448,7 +529,7 @@ public class DemoStart : MonoBehaviour
 			Debug.Log("Reading file: " + demoFile);
 			StreamReader reader = new StreamReader(demoFile);
 
-			Thread loadThread = new Thread(() => ReadReplayFile(reader, demoFile));
+			Thread loadThread = new Thread(() => ReadReplayFile(reader, demoFile, ++loadingId));
 			loadThread.Start();
 			while (loadThread.IsAlive)
 			{
@@ -458,7 +539,7 @@ public class DemoStart : MonoBehaviour
 			
 			if (processTemporalDataInBackground)
 			{
-				Thread processTemporalDataThread = new Thread(() => ProcessAllTemporalData(loadedDemo));
+				Thread processTemporalDataThread = new Thread(() => ProcessAllTemporalData(loadedDemo, ++loadingId));
 				processTemporalDataThread.Start();		
 			}
 		}

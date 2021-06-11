@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
+using UnityEngine.XR.Management;
 using unityutilities;
 
 public class GameManager : MonoBehaviour
@@ -14,10 +16,10 @@ public class GameManager : MonoBehaviour
 	public Transform[] flatOnlyThingsMobile;
 	public Transform[] uiHiddenOnLive;
 	public Transform[] uiShownOnLive;
-	
+
 	public Transform[] arenaModels;
 	public Transform[] blocksModels;
-	
+
 	public Text dataSource;
 	public Button becomeHostButton;
 	[ReadOnly] public bool lastFrameWasOwner = true;
@@ -96,9 +98,9 @@ public class GameManager : MonoBehaviour
 			enableVR = true;
 			//RefreshVRObjectsVisibility(GetPresence());
 
-			XRSettings.enabled = true;
-			//XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
-			//XRGeneralSettings.Instance.Manager.StartSubsystems();
+			// XRGeneralSettings.Instance.Manager.InitializeLoader();
+			XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
+			XRGeneralSettings.Instance.Manager.StartSubsystems();
 		}
 		else
 		{
@@ -106,6 +108,14 @@ public class GameManager : MonoBehaviour
 		}
 
 		RefreshVRObjectsVisibility(enableVR);
+
+
+		// add file handling to registry for .echoreplay files
+		FileAssociations.SetAssociation(
+			".echoreplay",
+			"EchoVR Replay Viewer",
+			"View EchoVR replay files in a reconstructed 3D environment",
+			Path.Combine(Application.dataPath, "Replay Viewer.exe"));
 	}
 
 
@@ -144,16 +154,6 @@ public class GameManager : MonoBehaviour
 				dataSource.text = netFrameMan.networkFilename;
 			}
 		}
-	}
-
-	private static bool GetPresence()
-	{
-		//InputDevice headDevice = InputDevices.GetDeviceAtXRNode(XRNode.Head);
-		//bool isPresent = false;
-		//headDevice.TryGetFeatureValue(CommonUsages.userPresence, out isPresent);
-		//return isPresent;
-
-		return XRDevice.userPresence == UserPresenceState.Present;
 	}
 
 	private void RefreshVRObjectsVisibility(bool present)

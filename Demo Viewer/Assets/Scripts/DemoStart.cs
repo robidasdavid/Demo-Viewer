@@ -191,7 +191,7 @@ public class DemoStart : MonoBehaviour
 		{
 			obj.gameObject.SetActive(false);
 		}
-		GameManager.instance.arenaModels[PlayerPrefs.GetInt("ArenaModel")].gameObject.SetActive(true);
+		GameManager.instance.arenaModels[PlayerPrefs.GetInt("ArenaModel", 2)].gameObject.SetActive(true);
 
 		
 		// blocks model
@@ -199,10 +199,10 @@ public class DemoStart : MonoBehaviour
 		{
 			obj.gameObject.SetActive(false);
 		}
-		GameManager.instance.blocksModels[PlayerPrefs.GetInt("BlocksModel")].gameObject.SetActive(true);
+		GameManager.instance.blocksModels[PlayerPrefs.GetInt("BlocksModel", 2)].gameObject.SetActive(true);
 
 		
-		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers");
+		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers", 0);
 		loadPointCloud = PlayerPrefs.GetInt("ShowPointCloud", 0) == 1;
 		
 		float[] options = {30f, 10f, 1f};
@@ -438,6 +438,11 @@ public class DemoStart : MonoBehaviour
 	{
 		GameManager.instance.demoStart.temporalProcessingProgress = 0;
 		Frame lastFrame = null;
+		
+		vertices.Clear();
+		colors.Clear();
+		normals.Clear();
+		
 		for (int i = 0; i < game.nframes; i++)
 		{
 			// if we started loading a different file instead, stop this one

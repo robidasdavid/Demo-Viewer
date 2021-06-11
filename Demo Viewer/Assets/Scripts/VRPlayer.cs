@@ -8,6 +8,8 @@ public class VRPlayer : MonoBehaviour
 	public Movement m;
 	public Rigidbody rb;
 
+	public Transform startPosition;
+
 
 	private bool lastGrabAir;
 	private bool lastGrabWalls;
@@ -37,10 +39,11 @@ public class VRPlayer : MonoBehaviour
 	}
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
 	{
 		SaveLastValues();
 
+		m.TeleportTo(startPosition.position, startPosition.rotation, true);
 	}
 
 	private void SaveLastValues()

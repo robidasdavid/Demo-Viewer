@@ -87,6 +87,7 @@ public class Playhead
 		if (!GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
 			isPlaying = GameManager.instance.netFrameMan.networkPlaying;
+			if (GameManager.instance.netFrameMan.frame == null) GameManager.instance.netFrameMan.lastFrame = null;
 			return Frame.Lerp(GameManager.instance.netFrameMan.lastFrame, GameManager.instance.netFrameMan.frame,
 				GameManager.instance.netFrameMan.CorrectedNetworkFrameTime);
 		}

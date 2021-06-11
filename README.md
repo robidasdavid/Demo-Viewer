@@ -28,15 +28,15 @@ We will try to keep the latest GitHub release up-to-date for people that may not
 
 ### Loading Files
 
-To load a file, click on the menu icon on the right side of the screen (shortcut: tilde). This menu contains a list of `.echoreplay` files in the folder that the IgniteBot saves files to by default (`C:\Users\[USERNAME]\Documents\IgniteBot\replays\`). At the top of this menu, there is an input field, where any file path can be entered if the replay is stored somewhere else on your computer.
+To load a file, click on the menu icon on the right side of the screen (shortcut: tilde). This menu contains a list of `.echoreplay` files in the folder that Spark saves files to by default (`C:\Users\[USERNAME]\Documents\Spark\replays\`). At the top of this menu, there is an input field, where any file path can be entered if the replay is stored somewhere else on your computer.
 
-To save your own replays, download the [IgniteBot](https://www.ignitevr.gg/ignitebot)!
+To save your own replays, download [Spark](https://www.ignitevr.gg/Spark)!
 
 ### File Association:
 
 File association is supported with the replay viewer, to make it easier for you to load downloaded files, you can associate `.echoreplay` files with ReplayViewer.exe by double clicking a `.echoreplay` file. When Windows brings up the "How do you want to echoreplay files from now on?" window, click "More apps", scroll down and select "Look for another app on this PC". Navigate to where you unzipped the application (GitHub Release), or to `C:\Program Files\Oculus\Software\Software\franzco-echodata\Replay Viewer.exe` (Oculus Store), and select "ReplayViewer.exe". Once you have done this, you can open `.echoreplay` files just by opening a file directly from File Explorer.
 
-If you do not do this and you want to open files downloaded from the internet, you will have to copy the entire file location and file name of the file you want to view, and paste it into the field after launching the app. Files recorded with the IgniteBot will save to a folder readable by the Replay Viewer and will not require this process to view.
+If you do not do this and you want to open files downloaded from the internet, you will have to copy the entire file location and file name of the file you want to view, and paste it into the field after launching the app. Files recorded with Spark will save to a folder readable by the Replay Viewer and will not require this process to view.
 
 ### Controls:
 
@@ -62,7 +62,7 @@ If you do not do this and you want to open files downloaded from the internet, y
 
 ## `.echoreplay` File Format
 
-To record `.echoreplay` files without writing your own software, you can use the IgniteBot ([download](https://www.ignitevr.gg/ignitebot))
+To record `.echoreplay` files without writing your own software, you can use Spark ([download](https://www.ignitevr.gg/Spark))
 
 The `.echoreplay` file format is a complete storage format for time-series EchoVR API request data. There are two versions of this format - compressed and uncompressed, both with the same file extension. The compressed version is simple the uncompressed file in a renamed `.zip` file.
 

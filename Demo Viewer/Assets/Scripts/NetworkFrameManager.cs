@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
 using Photon.Pun;
 using UnityEngine;
 
@@ -30,7 +33,7 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 			stream.SendNext(networkFrameIndex);
 			stream.SendNext(networkFrameTime.ToFileTime());
 			stream.SendNext(networkFilename);
-			stream.SendNext(networkJsonData);
+			stream.SendNext(Zip(networkJsonData));
 		}
 
 		if (stream.IsReading)
@@ -40,7 +43,10 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 			networkFrameIndex = (int)stream.ReceiveNext();
 			networkFrameTime = DateTime.FromFileTime((long)stream.ReceiveNext());
 			networkFilename = (string)stream.ReceiveNext();
-			networkJsonData = (string)stream.ReceiveNext();
+			networkJsonData = Unzip((byte[])stream.ReceiveNext());
+			
+			// zipping saves about 90%
+			// Debug.Log($"Raw size: {Encoding.Unicode.GetByteCount(networkJsonData):N}, Compressed size: {Zip(networkJsonData).Length:N}");
 
 			if (lastFrame == null || lastFrame.frameTime != frame.frameTime)
 			{
@@ -51,6 +57,9 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 			{
 				frame = Frame.FromJSON(networkFrameTime, networkJsonData);
 			}
+			
+			// frame is still null, make sure the last frame is too
+			if (frame == null) lastFrame = null;
 
 			gameTimeAtLastFrame = Time.time;
 		}
@@ -59,5 +68,42 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 	public void BecomeHost()
 	{
 		photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+	}
+	
+	
+	public static void CopyTo(Stream src, Stream dest) {
+		byte[] bytes = new byte[4096];
+
+		int cnt;
+
+		while ((cnt = src.Read(bytes, 0, bytes.Length)) != 0) {
+			dest.Write(bytes, 0, cnt);
+		}
+	}
+
+	public static byte[] Zip(string str) {
+		byte[] bytes = Encoding.UTF8.GetBytes(str);
+
+		using (var msi = new MemoryStream(bytes))
+		using (var mso = new MemoryStream()) {
+			using (var gs = new GZipStream(mso, CompressionMode.Compress)) {
+				//msi.CopyTo(gs);
+				CopyTo(msi, gs);
+			}
+
+			return mso.ToArray();
+		}
+	}
+
+	public static string Unzip(byte[] bytes) {
+		using (var msi = new MemoryStream(bytes))
+		using (var mso = new MemoryStream()) {
+			using (var gs = new GZipStream(msi, CompressionMode.Decompress)) {
+				//gs.CopyTo(mso);
+				CopyTo(gs, mso);
+			}
+
+			return Encoding.UTF8.GetString(mso.ToArray());
+		}
 	}
 }

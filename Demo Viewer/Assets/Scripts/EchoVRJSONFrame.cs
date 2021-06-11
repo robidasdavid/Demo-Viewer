@@ -208,6 +208,8 @@ public class Frame
 	/// <returns>A Frame object</returns>
 	public static Frame FromJSON(DateTime time, string json)
 	{
+		if (string.IsNullOrEmpty(json)) return null;
+		
 		Frame frame = JsonConvert.DeserializeObject<Frame>(json);
 		frame.frameTime = time;
 		frame.originalJSON = json;
@@ -224,82 +226,71 @@ public class Frame
 	/// <returns>A mix of the two frames</returns>
 	internal static Frame Lerp(Frame from, Frame to, DateTime t)
 	{
+		// of the frames is null, return the other, even if it is null
 		if (from == null) return to;
 		if (to == null) return from;
-		if (from.frameTime == to.frameTime)
-		{
-			return from;
-		}
-		else if (from.frameTime > to.frameTime)
-		{
-			Debug.LogError("From frame is after To frame");
-			return null;
-		}
-		else if (from.frameTime >= t)
-		{
-			return from;
-		}
-		else if (to.frameTime <= t)
-		{
-			return to;
-		}
-		else
-		{
-			// the ratio between the frames
-			float lerpValue = (float)((t - from.frameTime).TotalSeconds / (to.frameTime - from.frameTime).TotalSeconds);
+		
+		// the frames are the same
+		if (from.frameTime == to.frameTime) return from;
+		
+		// t is out of bounds
+		if (from.frameTime >= t) return from;
+		if (to.frameTime <= t) return to;
 
-			Frame newFrame = new Frame()
+		// the ratio between the frames
+		float lerpValue = (float)((t - @from.frameTime).TotalSeconds / (to.frameTime - @from.frameTime).TotalSeconds);
+
+		Frame newFrame = new Frame()
+		{
+			frameTime = t,
+
+
+			disc = Disc.Lerp(@from.disc, to.disc, lerpValue),
+			sessionid = @from.sessionid,
+			orange_team_restart_request = @from.orange_team_restart_request,
+			sessionip = @from.sessionip,
+			game_status = @from.game_status,
+			game_clock_display = @from.game_clock_display, // TODO this could be interpolated
+			game_clock = Mathf.Lerp(@from.game_clock, to.game_clock, lerpValue),
+			match_type = @from.match_type,
+			map_name = @from.map_name,
+			client_name = @from.client_name,
+			player = Playspace.Lerp(@from.player, to.player, lerpValue),
+			orange_points = @from.orange_points,
+			private_match = @from.private_match,
+			possession = @from.possession,
+			tournament_match = @from.tournament_match,
+			blue_team_restart_request = @from.blue_team_restart_request,
+			blue_points = @from.blue_points,
+			last_score = @from.last_score
+
+		};
+
+		int numTeams = Math.Max(@from.teams.Length, to.teams.Length);
+
+		newFrame.teams = new Team[numTeams];
+
+		for (int i = 0; i < numTeams; i++)
+		{
+			if (@from.teams.Length <= i &&
+			    to.teams.Length > i)
 			{
-				frameTime = t,
-
-
-				disc = Disc.Lerp(from.disc, to.disc, lerpValue),
-				sessionid = from.sessionid,
-				orange_team_restart_request = from.orange_team_restart_request,
-				sessionip = from.sessionip,
-				game_status = from.game_status,
-				game_clock_display = from.game_clock_display, // TODO this could be interpolated
-				game_clock = Mathf.Lerp(from.game_clock, to.game_clock, lerpValue),
-				match_type = from.match_type,
-				map_name = from.map_name,
-				client_name = from.client_name,
-				player = Playspace.Lerp(from.player, to.player, lerpValue),
-				orange_points = from.orange_points,
-				private_match = from.private_match,
-				possession = from.possession,
-				tournament_match = from.tournament_match,
-				blue_team_restart_request = from.blue_team_restart_request,
-				blue_points = from.blue_points,
-				last_score = from.last_score
-
-			};
-
-			int numTeams = Math.Max(from.teams.Length, to.teams.Length);
-
-			newFrame.teams = new Team[numTeams];
-
-			for (int i = 0; i < numTeams; i++)
-			{
-				if (from.teams.Length <= i &&
-					to.teams.Length > i)
-				{
-					newFrame.teams[i] = to.teams[i];
-				}
-				else if (to.teams.Length <= i &&
-				  from.teams.Length > i)
-				{
-					newFrame.teams[i] = from.teams[i];
-				}
-				else if (from.teams.Length > i &&
-				  to.teams.Length > i)
-				{
-					// actually lerp the team
-					newFrame.teams[i] = Team.Lerp(from.teams[i], to.teams[i], lerpValue);
-				}
+				newFrame.teams[i] = to.teams[i];
 			}
-
-			return newFrame;
+			else if (to.teams.Length <= i &&
+			         @from.teams.Length > i)
+			{
+				newFrame.teams[i] = @from.teams[i];
+			}
+			else if (@from.teams.Length > i &&
+			         to.teams.Length > i)
+			{
+				// actually lerp the team
+				newFrame.teams[i] = Team.Lerp(@from.teams[i], to.teams[i], lerpValue);
+			}
 		}
+
+		return newFrame;
 	}
 }
 

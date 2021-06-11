@@ -808,7 +808,7 @@ public class DemoStart : MonoBehaviour
 		//	return;
 		//}
 
-		if (viewingFrame == null) return;
+		if (viewingFrame == null || string.IsNullOrEmpty(viewingFrame.client_name)) return;
 
 		string gameTime = viewingFrame.game_clock_display;
 		gameTimeText.text = gameTime;

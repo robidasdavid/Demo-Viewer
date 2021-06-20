@@ -164,31 +164,35 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 
 	private IEnumerator GetReplaysLocal()
 	{
-		DirectoryInfo replaysFolder = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Spark", "replays"));
-
-		// get list of files in the current folder
-		FileInfo[] files = replaysFolder.GetFiles().OrderBy(p => p.CreationTime).ToArray();
-		Array.Reverse(files);
-		
-		files = files.Take(200).ToArray();		// avoid lag by only loading the first 100 files
-
-		// add the new ones
-		foreach (FileInfo file in files)
+		string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Spark", "replays");
+		if (Directory.Exists(path))
 		{
-			if (file.Extension == ".echoreplay")
+			DirectoryInfo replaysFolder = new DirectoryInfo(path);
+
+			// get list of files in the current folder
+			FileInfo[] files = replaysFolder.GetFiles().OrderBy(p => p.CreationTime).ToArray();
+			Array.Reverse(files);
+
+			files = files.Take(200).ToArray();      // avoid lag by only loading the first 100 files
+
+			// add the new ones
+			foreach (FileInfo file in files)
 			{
-				GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
-				ReplayFileInfo replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();
-				replayFileInfo.OriginalFilename = file.Name;
-				replayFileInfo.CreatedBy = "Local";
-				replayFileInfo.Size = FileLengthToString(file.Length);
-				replayFileInfo.Notes = "";
+				if (file.Extension == ".echoreplay")
+				{
+					GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
+					ReplayFileInfo replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();
+					replayFileInfo.OriginalFilename = file.Name;
+					replayFileInfo.CreatedBy = "Local";
+					replayFileInfo.Size = FileLengthToString(file.Length);
+					replayFileInfo.Notes = "";
 
-				button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(file.FullName); });
+					button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(file.FullName); });
+				}
+
+				// this is not necessary, but it'll create a slight animation
+				yield return null;
 			}
-
-			// this is not necessary, but it'll create a slight animation
-			yield return null;
 		}
 	}
 
@@ -341,7 +345,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	
 	public void VRArenaScaleChanged(int selection)
 	{
-		float[] options = {30f, 10f, 1f};
+		float[] options = {1, 10, 30, 50};
 		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[selection];
 		PlayerPrefs.SetInt("VRArenaScale", selection);
 	}

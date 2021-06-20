@@ -205,8 +205,8 @@ public class DemoStart : MonoBehaviour
 		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers", 0);
 		loadPointCloud = PlayerPrefs.GetInt("ShowPointCloud", 0) == 1;
 		
-		float[] options = {30f, 10f, 1f};
-		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",0)];
+		float[] options = {1, 10, 30, 50};
+		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",2)];
 	}
 
 	// Update is called once per frame

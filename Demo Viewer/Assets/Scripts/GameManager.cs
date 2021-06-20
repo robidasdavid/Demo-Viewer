@@ -111,11 +111,13 @@ public class GameManager : MonoBehaviour
 
 
 		// add file handling to registry for .echoreplay files
+#if UNITY_STANDALONE_WIN
 		FileAssociations.SetAssociation(
 			".echoreplay",
 			"EchoVR Replay Viewer",
 			"View EchoVR replay files in a reconstructed 3D environment",
 			Path.Combine(Application.dataPath, "Replay Viewer.exe"));
+#endif
 	}
 
 

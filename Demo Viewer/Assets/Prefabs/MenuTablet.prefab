@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8767203148444004221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 81.51999}
+  m_AnchoredPosition: {x: 0, y: 90}
   m_SizeDelta: {x: 317.59686, y: 38.263744}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4714908953289928965
@@ -3870,12 +3870,12 @@ MonoBehaviour:
   m_Placeholder: {fileID: 0}
   m_ItemText: {fileID: 2807647582797821850}
   m_ItemImage: {fileID: 0}
-  m_Value: 0
+  m_Value: 2
   m_Options:
     m_Options:
-    - m_Text: Textured
-      m_Image: {fileID: 0}
     - m_Text: Detailed
+      m_Image: {fileID: 0}
+    - m_Text: Textured
       m_Image: {fileID: 0}
     - m_Text: Textured transparent
       m_Image: {fileID: 0}
@@ -4111,14 +4111,16 @@ MonoBehaviour:
   m_Placeholder: {fileID: 0}
   m_ItemText: {fileID: 8642759956262500303}
   m_ItemImage: {fileID: 0}
-  m_Value: 0
+  m_Value: 2
   m_Options:
     m_Options:
-    - m_Text: 30
+    - m_Text: 1 (Real Scale)
       m_Image: {fileID: 0}
-    - m_Text: 10
+    - m_Text: 1/10
       m_Image: {fileID: 0}
-    - m_Text: 1
+    - m_Text: 1/30
+      m_Image: {fileID: 0}
+    - m_Text: 1/50
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8596,12 +8598,12 @@ MonoBehaviour:
   m_Placeholder: {fileID: 0}
   m_ItemText: {fileID: 5998467035085540502}
   m_ItemImage: {fileID: 0}
-  m_Value: 0
+  m_Value: 2
   m_Options:
     m_Options:
-    - m_Text: Zzenith's new really cool model
-      m_Image: {fileID: 0}
     - m_Text: Old boring model
+      m_Image: {fileID: 0}
+    - m_Text: Zzenith's new really cool model
       m_Image: {fileID: 0}
     - m_Text: Zzenith's model but transparent
       m_Image: {fileID: 0}

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: shieldtransparencies
+  m_Name: Shield Texture for EchoVR Bounds
   m_Shader: {fileID: -6465566751694194690, guid: b2db521cf28372f449f68c3f499e68f6,
     type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
@@ -86,9 +86,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_629F8F22: 0
-    - Vector1_D50379C7: 0.1
-    - Vector1_D7DDBAAF: 1
-    - Vector1_beb0003f1c8a4f11828252eea4f768de: 0.5
+    - Vector1_D50379C7: -0.15
+    - Vector1_D7DDBAAF: 2
+    - Vector1_beb0003f1c8a4f11828252eea4f768de: 0.01
     - _Bias: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -133,8 +133,8 @@ Material:
     - _ZWrite: 0
     - __dirty: 1
     m_Colors:
-    - Color_605CC4B0: {r: 0.8107437, g: 0.53626734, b: 0.9716981, a: 0}
-    - Vector2_83FF7A6C: {r: 1, g: 0.5, b: 0, a: 0}
+    - Color_605CC4B0: {r: 0, g: 0, b: 0, a: 0}
+    - Vector2_83FF7A6C: {r: 5, g: 2.5, b: 0, a: 0}
     - _Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0.5686275}
     - _Edgecolor: {r: 0.63781625, g: 0.4575472, b: 1, a: 0.666}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

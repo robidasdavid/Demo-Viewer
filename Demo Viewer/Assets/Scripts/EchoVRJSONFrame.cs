@@ -209,11 +209,17 @@ public class Frame
 	public static Frame FromJSON(DateTime time, string json)
 	{
 		if (string.IsNullOrEmpty(json)) return null;
-		
-		Frame frame = JsonConvert.DeserializeObject<Frame>(json);
-		frame.frameTime = time;
-		frame.originalJSON = json;
-		return frame;
+
+		try
+		{
+			Frame frame = JsonConvert.DeserializeObject<Frame>(json);
+			frame.frameTime = time;
+			frame.originalJSON = json;
+			return frame;
+		} catch (JsonReaderException ex)
+		{
+			return null;
+		}
 	}
 
 	/// <summary>

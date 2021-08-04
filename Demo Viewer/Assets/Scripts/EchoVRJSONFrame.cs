@@ -458,6 +458,8 @@ public class Player
 	/// This is not from the api, but set afterwards in the temporal processing step
 	/// </summary>
 	public Vector3 playspacePosition = Vector3.zero;
+	public float distanceGained = 0;
+	public Vector3 virtualPlayspacePosition = Vector3.zero;
 
 
 	/// <summary>

@@ -459,6 +459,12 @@ public class DemoStart : MonoBehaviour
 
 			float deltaTime = lastFrame.game_clock - frame.game_clock;
 
+			#region Local Playspace
+
+			
+
+			#endregion
+
 			// loop through the two player teams
 			for (int t = 0; t < 2; t++)
 			{

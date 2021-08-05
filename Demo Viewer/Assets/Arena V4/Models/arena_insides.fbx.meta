@@ -3,7 +3,17 @@ guid: ce3d7f5e88a1d4946bdf497e8d53d3f6
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: center_pink_stripe
+    second: {fileID: 2100000, guid: c4a54b8a2b4035c4c98bd6ccfc4dc35f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: glowing_strips
+    second: {fileID: 2100000, guid: 88caa06d353ba8149a5f43f9c1e24ce1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

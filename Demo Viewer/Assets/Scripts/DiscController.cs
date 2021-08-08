@@ -4,56 +4,69 @@
  * Purpose: Control Disc position and rotation
  */
 
+using System;
 using UnityEngine;
 
 public class DiscController : MonoBehaviour
-{
-	//Sent 
+{ 
 	public Vector3 discPosition;
 	public Quaternion discRotation;
 	public Vector3 discVelocity;
 	//public ArrayList isGrabbed = new ArrayList() { false, false, new int[2]{ -1, -1 } };
 	//public GameObject playerHolding;
+	public bool IsGrabbed
+	{
+		set {
+			if (value != isGrabbed)
+			{
+				discFloating.gameObject.SetActive(!value);				
+				discGrabbed.gameObject.SetActive(value);
+				grabTime = Time.time;
+			}
+			isGrabbed = value;
+		}
+		get => isGrabbed;
+	}
+	private bool isGrabbed;
+
+	public TeamColor TeamIndex
+	{
+		set {
+			if (value != teamIndex)
+			{
+				GetComponent<Light>().color = lightColors[(int) teamIndex];
+			}
+			teamIndex = value;
+		}
+		get => teamIndex;
+	}
+
+	private TeamColor teamIndex;
+	
+	private float grabTime;
 
 	public Transform child;
-	private Transform rForeArm;
-	private Transform lForeArm;
+	public Transform discFloating;
+	public Transform discGrabbed;
+
+	public Light pointLight;
+	[Tooltip("blue, orange, default")]
+	public Color[] lightColors = new Color[3];
+	[Tooltip("blue, orange, default")]
+	public Material[] materials = new Material[3];
 
 
 
 	// Update is called once per frame
 	void Update()
 	{
-
-		//Todo- make this code work with new skeleton
-		/*if((bool)isGrabbed[0])
-        {
-            if((bool)isGrabbed[1])
-            {
-                rForeArm = playerHolding.transform.GetChild(2).
-                    transform.GetChild(0).
-                    transform.GetChild(1).
-                    transform.GetChild(1).
-                    transform.GetChild(0).
-                    transform.GetChild(0).
-                    transform.GetChild(0).
-                    transform;
-                transform.rotation = rForeArm.rotation;
-            }
-            else
-            {
-                lForeArm = playerHolding.transform.GetChild(2).
-                    transform.GetChild(0).
-                    transform.GetChild(1).
-                    transform.GetChild(1).
-                    transform.GetChild(2).
-                    transform.GetChild(0).
-                    transform.GetChild(0).
-                    transform;
-                transform.rotation = lForeArm.rotation;
-            }
-        } else*/
+		if (isGrabbed)
 		{
+			
+		}
+		else
+		{
+			
 			if (discRotation != null)
 			{
 				transform.rotation = discRotation;

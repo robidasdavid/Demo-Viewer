@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutsideBlocks_Pink
+  m_Name: Backboard_White
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _EMISSION _RECEIVE_SHADOWS_OFF
-  m_LightmapFlags: 2
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
@@ -78,8 +78,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_05269a64983f4c00b1c96aac53ba3146: 0.01
+    - Vector1_d38d4c40997e44d683c82607df9f7331: 0.2
     - _AlphaClip: 0
-    - _Blend: 0
+    - _Blend: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -91,19 +92,15 @@ Material:
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
-    - _GlossinessSource: 0
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
-    - _ReceiveShadows: 0
-    - _Shininess: 0
-    - _Smoothness: 0.5
-    - _SmoothnessSource: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0.725
     - _SmoothnessTextureChannel: 0
-    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
@@ -113,9 +110,9 @@ Material:
     m_Colors:
     - Color_ec2d5cd3706e40728f20bb7bd83d0f0f: {r: 0.30588233, g: 0.53654844, b: 0.81960785,
         a: 1}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.12941177}
+    - _BaseColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
     - _Color: {r: 0, g: 0.64705884, b: 0.84705883, a: 0.09803922}
-    - _EmissionColor: {r: 8, g: 0.055999756, b: 6.211559, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7319293144784938947

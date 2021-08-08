@@ -7,13 +7,73 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: anistropic_metal
+    second: {fileID: 2100000, guid: 6da1f19c6e34f6447b5c2dd73f50c4c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: backboard_white
+    second: {fileID: 2100000, guid: d233b89f01eb0384ebbb4e76e16cea73, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: center_pink_stripe
     second: {fileID: 2100000, guid: c4a54b8a2b4035c4c98bd6ccfc4dc35f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: dark_trim
+    second: {fileID: 2100000, guid: 8cb430d9e117e1749a604e66cbf491d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: glowing_strips
     second: {fileID: 2100000, guid: 88caa06d353ba8149a5f43f9c1e24ce1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light_metal_panel
+    second: {fileID: 2100000, guid: ca40bf5d72592304fb082c75fca0f677, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: slight_glow
+    second: {fileID: 2100000, guid: 88caa06d353ba8149a5f43f9c1e24ce1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tunnel_ligher_colored
+    second: {fileID: 2100000, guid: 489e617af43e7cd4582b171b21857fc6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_clean_dark
+    second: {fileID: 2100000, guid: 7e0c430a6a56df2468b3095298c64363, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_clean_light
+    second: {fileID: 2100000, guid: ca40bf5d72592304fb082c75fca0f677, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_dotty_dark
+    second: {fileID: 2100000, guid: 2db06f0f25bacbb4a9866fcebcfbae55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_dotty_light
+    second: {fileID: 2100000, guid: 28f2c64a085143a42b0c6f390618acb7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_stripey_dark
+    second: {fileID: 2100000, guid: cd4ff5e4388c1034b8de1cbef8f468ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_stripey_light
+    second: {fileID: 2100000, guid: 59080a2fab5c36d4b8403e83a9ca2be6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

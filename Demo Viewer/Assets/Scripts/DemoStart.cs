@@ -88,12 +88,7 @@ public class DemoStart : MonoBehaviour
 	public Text blueGoals;
 	public Text orangeGoals;
 
-	public Light discLight;
-	public TrailRenderer discTrail;
-
 	public GameObject punchParticle;
-
-	public Material discTrailMat;
 
 	public Text playbackFramerate;
 
@@ -101,9 +96,7 @@ public class DemoStart : MonoBehaviour
 	public GameObject bluePlayerPrefab;
 	public GameObject orangePlayerPrefab;
 
-	public GameObject disc;
-	public Material autograbBubble;
-	private Color autograbColor;
+	public DiscController disc;
 
 	private bool isScored = false;
 
@@ -186,20 +179,6 @@ public class DemoStart : MonoBehaviour
 #endif
 
 		
-		// arena model
-		foreach (Transform obj in GameManager.instance.arenaModels)
-		{
-			obj.gameObject.SetActive(false);
-		}
-		GameManager.instance.arenaModels[PlayerPrefs.GetInt("ArenaModel", 2)].gameObject.SetActive(true);
-
-		
-		// blocks model
-		foreach (Transform obj in GameManager.instance.blocksModels)
-		{
-			obj.gameObject.SetActive(false);
-		}
-		GameManager.instance.blocksModels[PlayerPrefs.GetInt("BlocksModel", 2)].gameObject.SetActive(true);
 
 		
 		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers", 0);
@@ -565,9 +544,6 @@ public class DemoStart : MonoBehaviour
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
 
-		//Set replay settings
-		discTrail.enabled = true;
-
 		ready = true;
 	}
 
@@ -819,17 +795,6 @@ public class DemoStart : MonoBehaviour
 		string gameTime = viewingFrame.game_clock_display;
 		gameTimeText.text = gameTime;
 
-		if (!IsBeingHeld(viewingFrame).Item1)
-		{
-			if (!discTrail.enabled)
-				discTrail.Clear();
-			discTrail.enabled = true;
-		}
-		else
-		{
-			discTrail.enabled = false;
-		}
-
 		//Activate goal score effects when a team scores
 		if (viewingFrame.game_status != "score")
 		{
@@ -853,26 +818,17 @@ public class DemoStart : MonoBehaviour
 		// blue team possession effects
 		if (viewingFrame.teams[0] != null && viewingFrame.teams[0].possession)
 		{
-			discTrailMat.color = new Color(0f, 0.647f, 0.847f, 0.8f);
-			discLight.color = new Color(0f, 0.647f, 0.847f, 0.8f);
-			autograbColor = new Color(0f, 0.647f, 0.847f, 0.08f);
-			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
+			disc.TeamIndex = TeamColor.orange;
 		}
 		// orange team possession effects
 		else if (viewingFrame.teams[1] != null && viewingFrame.teams[1].possession)
 		{
-			discTrailMat.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
-			discLight.color = new Color(0.8235f, 0.4313f, 0.1764f, 0.8f);
-			autograbColor = new Color(0.8235f, 0.4313f, 0.1764f, 0.08f);
-			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
+			disc.TeamIndex = TeamColor.blue;
 		}
 		// no team possession effects
 		else
 		{
-			discTrailMat.color = new Color(1f, 1f, 1f, 0.8f);
-			discLight.color = new Color(1f, 1f, 1f, 0.8f);
-			autograbColor = new Color(1f, 1f, 1f, 0.08f);
-			autograbBubble.SetColor("Color_605CC4B0", autograbColor);
+			disc.TeamIndex = TeamColor.spectator;
 		}
 
 		// set 2d score board
@@ -917,15 +873,14 @@ public class DemoStart : MonoBehaviour
 		}
 		playersToRemove.ForEach(p => playerObjects.Remove(p));
 
-		DiscController discScript = disc.GetComponent<DiscController>();
-		discScript.discVelocity = viewingFrame.disc.velocity.ToVector3();
-		discScript.discPosition = viewingFrame.disc.position.ToVector3();
+		disc.discVelocity = viewingFrame.disc.velocity.ToVector3();
+		disc.discPosition = viewingFrame.disc.position.ToVector3();
 		if (viewingFrame.disc.forward != null)
 		{
 			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.up.ToVector3(), Color.green);
 			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.forward.ToVector3(), Color.blue);
 			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.left.ToVector3(), Color.red);
-			discScript.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
+			disc.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
 		}
 		//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
 	}

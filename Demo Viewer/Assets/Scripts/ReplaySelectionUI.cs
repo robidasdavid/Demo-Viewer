@@ -319,22 +319,9 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 
 	public void ArenaModelChanged(int selection)
 	{
-		foreach (Transform obj in GameManager.instance.arenaModels)
-		{
-			obj.gameObject.SetActive(false);
-		}
-		GameManager.instance.arenaModels[selection].gameObject.SetActive(true);
+		SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)].name);
+		SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[selection].name, LoadSceneMode.Additive);
 		PlayerPrefs.SetInt("ArenaModel", selection);
-	}
-
-	public void BlocksModelChanged(int selection)
-	{
-		foreach (Transform obj in GameManager.instance.blocksModels)
-		{
-			obj.gameObject.SetActive(false);
-		}
-		GameManager.instance.blocksModels[selection].gameObject.SetActive(true);
-		PlayerPrefs.SetInt("BlocksModel", selection);
 	}
 
 	public void ShowPlayspaceChanged(int selection)

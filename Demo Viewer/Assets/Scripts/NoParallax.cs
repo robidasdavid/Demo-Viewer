@@ -2,10 +2,15 @@
 
 public class NoParallax : MonoBehaviour
 {
-    public Transform cam;
+	public Transform cam;
 
-    void LateUpdate()
-    {
-        transform.position = cam.transform.position;
-    }
+	private void Start()
+	{
+		cam = Camera.main.transform;
+	}
+
+	private void LateUpdate()
+	{
+		transform.position = cam.transform.position;
+	}
 }

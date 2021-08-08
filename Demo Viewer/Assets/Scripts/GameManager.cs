@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
@@ -17,8 +19,8 @@ public class GameManager : MonoBehaviour
 	public Transform[] uiHiddenOnLive;
 	public Transform[] uiShownOnLive;
 
-	public Transform[] arenaModels;
-	public Transform[] blocksModels;
+	public SceneAsset[] arenaModelScenes;
+	
 
 	public Text dataSource;
 	public Button becomeHostButton;
@@ -108,6 +110,10 @@ public class GameManager : MonoBehaviour
 		}
 
 		RefreshVRObjectsVisibility(enableVR);
+		
+		
+		// arena model
+		SceneManager.LoadSceneAsync(arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)].name, LoadSceneMode.Additive);
 
 
 		// add file handling to registry for .echoreplay files

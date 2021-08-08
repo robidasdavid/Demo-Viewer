@@ -29,18 +29,23 @@ public class DiscController : MonoBehaviour
 	}
 	private bool isGrabbed;
 
+	/// <summary>
+	/// 0: blue
+	/// 1: orange
+	/// 2: spectator
+	/// </summary>
 	public TeamColor TeamIndex
 	{
 		set {
 			if (value != teamIndex)
 			{
-				GetComponent<Light>().color = lightColors[(int) teamIndex];
+				pointLight.color = lightColors[(int) teamIndex];
+				discTrailRenderer.material.color = lightColors[(int) teamIndex];
 			}
 			teamIndex = value;
 		}
 		get => teamIndex;
 	}
-
 	private TeamColor teamIndex;
 	
 	private float grabTime;
@@ -48,6 +53,8 @@ public class DiscController : MonoBehaviour
 	public Transform child;
 	public Transform discFloating;
 	public Transform discGrabbed;
+
+	public Renderer discTrailRenderer;
 
 	public Light pointLight;
 	[Tooltip("blue, orange, default")]

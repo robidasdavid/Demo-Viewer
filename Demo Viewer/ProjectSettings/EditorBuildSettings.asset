@@ -5,10 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Game Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Scenes/Environments/Arena_V4.unity
+    guid: befe913b6f2cb29419fe87f72db28812
+  - enabled: 1
+    path: Assets/Scenes/Environments/Old Arena.unity
+    guid: 472a4f22e8fcbbd428e5921c09a61774
+  - enabled: 1
+    path: Assets/Scenes/Environments/ZzenModel Transparent.unity
+    guid: adab8a66319beb94783941090f376a75
+  - enabled: 1
+    path: Assets/Scenes/Environments/ZzenModel.unity
+    guid: 966510d753b09864c8f904635ff050f0
+  - enabled: 0
     path: Assets/Scenes/PointCloudVisualizations.unity
     guid: d9924ec57e864f54d852175ad553711b
   m_configObjects:

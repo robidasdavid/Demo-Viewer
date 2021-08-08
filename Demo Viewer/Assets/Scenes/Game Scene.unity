@@ -55148,7 +55148,6 @@ MonoBehaviour:
     type: 3}
   disc: {fileID: 1728779524}
   wasDPADXReleased: 1
-  discThroughWall: {fileID: 4800000, guid: c80b297982b238749b59e9544df90c7a, type: 3}
   scoreBoardController: {fileID: 1556286057}
   showDebugLogs: 0
   replayFileNameText: {fileID: 1949024105}
@@ -62851,10 +62850,10 @@ MonoBehaviour:
   uiShownOnLive:
   - {fileID: 1616236469}
   arenaModelScenes:
-  - {fileID: 102900000, guid: befe913b6f2cb29419fe87f72db28812, type: 3}
-  - {fileID: 102900000, guid: 472a4f22e8fcbbd428e5921c09a61774, type: 3}
-  - {fileID: 102900000, guid: 966510d753b09864c8f904635ff050f0, type: 3}
-  - {fileID: 102900000, guid: adab8a66319beb94783941090f376a75, type: 3}
+  - Arena_V4
+  - Old Arena
+  - ZzenModel
+  - ZzenModel Transparent
   dataSource: {fileID: 1538663195}
   becomeHostButton: {fileID: 122646117}
   lastFrameWasOwner: 0

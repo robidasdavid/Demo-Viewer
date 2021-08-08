@@ -931,6 +931,22 @@
       <Project>{74865e88-2797-ceb5-fce2-2ec58b36ef3c}</Project>
       <Name>FranzCo.unityutilities.VRInteraction</Name>
     </ProjectReference>
+    <ProjectReference Include="Autodesk.Fbx.Editor.csproj">
+      <Project>{b8796208-a5d7-32fa-ee01-807062de6fad}</Project>
+      <Name>Autodesk.Fbx.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Formats.Fbx.Editor.csproj">
+      <Project>{626c4f00-434a-67f7-36f3-1c12717a8f6e}</Project>
+      <Name>Unity.Formats.Fbx.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Autodesk.Fbx.csproj">
+      <Project>{fa0ffc8c-2e97-4c45-1ec2-e27ae2b66b5b}</Project>
+      <Name>Autodesk.Fbx</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Formats.Fbx.Runtime.csproj">
+      <Project>{586a87b0-7b17-3be9-ab2f-54d2ab779a2e}</Project>
+      <Name>Unity.Formats.Fbx.Runtime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

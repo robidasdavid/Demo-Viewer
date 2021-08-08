@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 	public Transform[] uiHiddenOnLive;
 	public Transform[] uiShownOnLive;
 
-	public SceneAsset[] arenaModelScenes;
+	public string[] arenaModelScenes;
 	
 
 	public Text dataSource;
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
 		
 		
 		// arena model
-		SceneManager.LoadSceneAsync(arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)].name, LoadSceneMode.Additive);
+		SceneManager.LoadSceneAsync(arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
 
 
 		// add file handling to registry for .echoreplay files

@@ -319,8 +319,8 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 
 	public void ArenaModelChanged(int selection)
 	{
-		SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)].name);
-		SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[selection].name, LoadSceneMode.Additive);
+		SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
+		SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[selection], LoadSceneMode.Additive);
 		PlayerPrefs.SetInt("ArenaModel", selection);
 	}
 

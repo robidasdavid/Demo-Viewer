@@ -111,11 +111,6 @@ public class DemoStart : MonoBehaviour
 
 	public static Playhead playhead;
 
-	public static Color blueTeamColor = new Color(0, 165, 216);
-	public static Color orangeTeamColor = new Color(210, 110, 45);
-
-	public Shader discThroughWall;
-
 	public ScoreBoardController scoreBoardController;
 
 	private string jsonStr;
@@ -144,13 +139,13 @@ public class DemoStart : MonoBehaviour
 	private static bool loadPointCloud;
 
 	// for the point cloud
-	static List<Vector3> vertices = new List<Vector3>();
-	static List<Color> colors = new List<Color>();
-	static List<Vector3> normals = new List<Vector3>();
+	private static readonly List<Vector3> vertices = new List<Vector3>();
+	private static readonly List<Color> colors = new List<Color>();
+	private static readonly List<Vector3> normals = new List<Vector3>();
 	
 	private static bool finishedProcessingTemporalData = false;
 
-	public static int loadingId;
+	private static int loadingThreadId;
 
 
 
@@ -350,7 +345,7 @@ public class DemoStart : MonoBehaviour
 
 		//this.jsonStr = dh.text;
 		StreamReader read = new StreamReader(new MemoryStream(dh.data));
-		ReadReplayFile(read, fn, ++loadingId);
+		ReadReplayFile(read, fn, ++loadingThreadId);
 		doLast();
 	}
 
@@ -387,7 +382,7 @@ public class DemoStart : MonoBehaviour
 				fileReadProgress %= 1;
 
 				// if we started loading a different file instead, stop this one
-				if (threadLoadingId != loadingId) return;
+				if (threadLoadingId != loadingThreadId) return;
 			} while (!fileReader.EndOfStream);
 
 			//string fileData = fileReader.ReadToEnd();
@@ -425,7 +420,7 @@ public class DemoStart : MonoBehaviour
 		for (int i = 0; i < game.nframes; i++)
 		{
 			// if we started loading a different file instead, stop this one
-			if (threadLoadingId != loadingId) return;
+			if (threadLoadingId != loadingThreadId) return;
 			
 			GameManager.instance.demoStart.temporalProcessingProgress = (float)i / game.nframes;
 			
@@ -519,7 +514,7 @@ public class DemoStart : MonoBehaviour
 			Debug.Log("Reading file: " + demoFile);
 			StreamReader reader = new StreamReader(demoFile);
 
-			Thread loadThread = new Thread(() => ReadReplayFile(reader, demoFile, ++loadingId));
+			Thread loadThread = new Thread(() => ReadReplayFile(reader, demoFile, ++loadingThreadId));
 			loadThread.Start();
 			while (loadThread.IsAlive)
 			{
@@ -529,7 +524,7 @@ public class DemoStart : MonoBehaviour
 			
 			if (processTemporalDataInBackground)
 			{
-				Thread processTemporalDataThread = new Thread(() => ProcessAllTemporalData(loadedDemo, ++loadingId));
+				Thread processTemporalDataThread = new Thread(() => ProcessAllTemporalData(loadedDemo, ++loadingThreadId));
 				processTemporalDataThread.Start();		
 			}
 		}

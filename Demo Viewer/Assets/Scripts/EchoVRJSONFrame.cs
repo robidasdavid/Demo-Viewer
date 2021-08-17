@@ -323,6 +323,9 @@ public class Disc
 	{
 		t = Mathf.Clamp01(t);
 
+		if (from == null) return to;
+		if (to == null) return from;
+
 		return new Disc()
 		{
 			position = Vector3.Lerp(from.position.ToVector3(), to.position.ToVector3(), t).ToFloatArray(),

@@ -382,10 +382,13 @@ namespace Pcx
 							}
 						}
 
-						Vector3 discVel = new Vector3(frame.disc.velocity[2], frame.disc.velocity[1], frame.disc.velocity[0]);
-						data.vertices.Add(new Vector3(frame.disc.position[2], frame.disc.position[1], frame.disc.position[0]));
-						data.colors.Add(new Color32(255, 255, 255, 255));
-						data.normals.Add(discVel);
+						if (frame.disc != null)
+						{
+							Vector3 discVel = new Vector3(frame.disc.velocity[2], frame.disc.velocity[1], frame.disc.velocity[0]);
+							data.vertices.Add(new Vector3(frame.disc.position[2], frame.disc.position[1], frame.disc.position[0]));
+							data.colors.Add(new Color32(255, 255, 255, 255));
+							data.normals.Add(discVel);
+						}
 					}
 					else
 					{

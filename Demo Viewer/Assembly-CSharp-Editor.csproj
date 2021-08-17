@@ -725,6 +725,10 @@
       <Project>{60abd5fc-1ec6-f023-34ce-86cd8a115cbf}</Project>
       <Name>Unity.TextMeshPro.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Formats.Fbx.Editor.csproj">
+      <Project>{626c4f00-434a-67f7-36f3-1c12717a8f6e}</Project>
+      <Name>Unity.Formats.Fbx.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Searcher.Editor.csproj">
       <Project>{e8fa3af4-da5a-d6f9-cade-5fb5c8ff8a21}</Project>
       <Name>Unity.Searcher.Editor</Name>
@@ -773,6 +777,10 @@
       <Project>{c82bca3a-7678-253e-160b-6333c267cc4d}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="Autodesk.Fbx.csproj">
+      <Project>{fa0ffc8c-2e97-4c45-1ec2-e27ae2b66b5b}</Project>
+      <Name>Autodesk.Fbx</Name>
+    </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.csproj">
       <Project>{fea437d2-2626-d5e5-56cf-cde09bf05c23}</Project>
       <Name>PhotonUnityNetworking</Name>
@@ -780,6 +788,10 @@
     <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
       <Project>{829de81f-bcf5-6021-9aa9-7a20f8c70c28}</Project>
       <Name>Unity.ShaderGraph.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Formats.Fbx.Runtime.csproj">
+      <Project>{586a87b0-7b17-3be9-ab2f-54d2ab779a2e}</Project>
+      <Name>Unity.Formats.Fbx.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.RenderPipeline.Universal.ShaderLibrary.csproj">
       <Project>{862c60fe-1faf-df6b-edc1-01955c6d5329}</Project>
@@ -824,6 +836,10 @@
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
       <Project>{da594d5f-29fd-5a51-2d4e-eb213d9e4190}</Project>
       <Name>Unity.VisualStudio.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Autodesk.Fbx.Editor.csproj">
+      <Project>{b8796208-a5d7-32fa-ee01-807062de6fad}</Project>
+      <Name>Autodesk.Fbx.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualEffectGraph.Runtime.csproj">
       <Project>{cf93b30b-31f8-9c89-01ac-2475b1d6d0cc}</Project>
@@ -944,22 +960,6 @@
     <ProjectReference Include="FranzCo.unityutilities.VRInteraction.csproj">
       <Project>{74865e88-2797-ceb5-fce2-2ec58b36ef3c}</Project>
       <Name>FranzCo.unityutilities.VRInteraction</Name>
-    </ProjectReference>
-    <ProjectReference Include="Autodesk.Fbx.Editor.csproj">
-      <Project>{b8796208-a5d7-32fa-ee01-807062de6fad}</Project>
-      <Name>Autodesk.Fbx.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Formats.Fbx.Editor.csproj">
-      <Project>{626c4f00-434a-67f7-36f3-1c12717a8f6e}</Project>
-      <Name>Unity.Formats.Fbx.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Autodesk.Fbx.csproj">
-      <Project>{fa0ffc8c-2e97-4c45-1ec2-e27ae2b66b5b}</Project>
-      <Name>Autodesk.Fbx</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Formats.Fbx.Runtime.csproj">
-      <Project>{586a87b0-7b17-3be9-ab2f-54d2ab779a2e}</Project>
-      <Name>Unity.Formats.Fbx.Runtime</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

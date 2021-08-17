@@ -20,6 +20,14 @@ public class GameManager : MonoBehaviour
 	public Transform[] uiShownOnLive;
 
 	public string[] arenaModelScenes;
+
+	public static readonly Dictionary<string, string> combatMapScenes = new Dictionary<string, string>
+	{
+		{"mpl_combat_dyson", "Dyson"},
+		{"mpl_combat_combustion", "Combustion"},
+		{"mpl_combat_fission", "Fission"},
+		{"mpl_combat_gauss", "Surge"},
+	};
 	
 
 	public Text dataSource;

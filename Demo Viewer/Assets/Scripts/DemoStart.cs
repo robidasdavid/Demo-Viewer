@@ -17,6 +17,7 @@ using System.Linq;
 using TMPro;
 using System.Threading;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityTemplateProjects;
 
 //Serializable classes for JSON serializing from the API output.
@@ -220,34 +221,38 @@ public class DemoStart : MonoBehaviour
 
 				if (viewingFrame != null && previousFrame != null)
 				{
-					// Joust Readout
-					if (viewingFrame.disc.position.Length != 0 &&
-						previousFrame.disc.position.Length != 0)
+					// Arena-only stuff
+					if (viewingFrame.map_name == "mpl_arena_a")
 					{
-						Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
-						Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
-						if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
+						// Joust Readout
+						if (viewingFrame.disc.position.Length != 0 &&
+						    previousFrame.disc.position.Length != 0)
 						{
-							maxGameTime = loadedDemo.GetFrame(0).game_clock;  // TODO this may not be correct if the recording starts midgame
-							float currentTime = viewingFrame.game_clock;
-							joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
-							StartCoroutine(FlashInOut(joustReadout, 3));
+							Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
+							Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
+							if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
+							{
+								maxGameTime = loadedDemo.GetFrame(0).game_clock; // TODO this may not be correct if the recording starts midgame
+								float currentTime = viewingFrame.game_clock;
+								joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
+								StartCoroutine(FlashInOut(joustReadout, 3));
+							}
 						}
-					}
 
-					// Handle goal stat visibility
-					if (showingGoalStats)
-					{
-						goalEventObject.SetActive(false);
-						lastGoalStats.SetActive(true);
-						RenderGoalStats(viewingFrame.last_score);
-					}
-					else if (!showingGoalStats && lastGoalStats.activeSelf)
-					{
-						lastGoalStats.SetActive(false);
-						if (viewingFrame.game_status == "score" && showGoalAnim)
+						// Handle goal stat visibility
+						if (showingGoalStats)
 						{
-							goalEventObject.SetActive(true);
+							goalEventObject.SetActive(false);
+							lastGoalStats.SetActive(true);
+							RenderGoalStats(viewingFrame.last_score);
+						}
+						else if (!showingGoalStats && lastGoalStats.activeSelf)
+						{
+							lastGoalStats.SetActive(false);
+							if (viewingFrame.game_status == "score" && showGoalAnim)
+							{
+								goalEventObject.SetActive(true);
+							}
 						}
 					}
 
@@ -488,7 +493,8 @@ public class DemoStart : MonoBehaviour
 				}
 			}
 			
-			if (loadPointCloud)
+			// combat replays don't have disc position
+			if (loadPointCloud && frame.disc != null)
 			{
 				vertices.Add(frame.disc.position.ToVector3());
 				colors.Add(new Color(1, 1, 1, 1));
@@ -538,6 +544,17 @@ public class DemoStart : MonoBehaviour
 		//HUD initialization
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
+		
+		
+		// load a combat map if necessary
+		// read the first frame
+		Frame middleFrame = loadedDemo.GetFrame(loadedDemo.nframes/2);
+		if (middleFrame.map_name != "mpl_arena_a")
+		{
+			SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
+			SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
+			scoreBoardController.gameObject.SetActive(false);
+		}
 
 		ready = true;
 	}
@@ -868,16 +885,19 @@ public class DemoStart : MonoBehaviour
 		}
 		playersToRemove.ForEach(p => playerObjects.Remove(p));
 
-		disc.discVelocity = viewingFrame.disc.velocity.ToVector3();
-		disc.discPosition = viewingFrame.disc.position.ToVector3();
-		if (viewingFrame.disc.forward != null)
+		if (viewingFrame.map_name == "mpl_arena_a")
 		{
-			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.up.ToVector3(), Color.green);
-			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.forward.ToVector3(), Color.blue);
-			Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.left.ToVector3(), Color.red);
-			disc.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
+			disc.discVelocity = viewingFrame.disc.velocity.ToVector3();
+			disc.discPosition = viewingFrame.disc.position.ToVector3();
+			if (viewingFrame.disc.forward != null)
+			{
+				Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.up.ToVector3(), Color.green);
+				Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.forward.ToVector3(), Color.blue);
+				Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.left.ToVector3(), Color.red);
+				disc.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
+			}
+			//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
 		}
-		//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
 	}
 
 	private Player FindPlayerOnTeam(Team team, string name)
@@ -1010,6 +1030,8 @@ public class DemoStart : MonoBehaviour
 				}
 				break;
 		}
+
+		p.trailRenderer.gameObject.SetActive(PlayerPrefs.GetInt("ShowPlayerTrails", 0) == 1);
 
 		// show player stats on player stats board 🧮
 		p.hoverStats.Stats = player.stats;

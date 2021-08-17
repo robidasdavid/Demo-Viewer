@@ -9,7 +9,7 @@ public class PlayerStatsHover : MonoBehaviour
 	private float lastVisibleTime;
 
 	public Stats Stats {
-		set => statsTextBox.text = value.ToString();
+		set => statsTextBox.text = value?.ToString();
 	}
 	public float Speed {
 		set => speedTextBox.text = $"Speed: {value:N2} m/s";

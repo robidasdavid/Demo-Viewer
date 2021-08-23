@@ -1678,7 +1678,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2021101914736274476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2088,6 +2088,7 @@ MonoBehaviour:
   standUp: {fileID: 8906478569582462575}
   rForeArm: {fileID: 6366333264967366288}
   lForeArm: {fileID: 5766274845206763791}
+  playerStatsHover: {fileID: 521808348649562276}
 --- !u!95 &4530796996353476890
 Animator:
   serializedVersion: 3

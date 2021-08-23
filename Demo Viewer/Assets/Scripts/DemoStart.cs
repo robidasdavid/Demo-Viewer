@@ -132,6 +132,7 @@ public class DemoStart : MonoBehaviour
 	public static int showPlayspace;
 
 	private Transform followingPlayer;
+	private bool follwingPOV;
 	public SimpleCameraController camController;
 
 	public Material pointCloudMaterial;
@@ -261,7 +262,21 @@ public class DemoStart : MonoBehaviour
 				}
 			}
 
-
+			bool leftMouseButtonDown = Input.GetMouseButtonDown(0);
+			bool rightMouseButtonDown = Input.GetMouseButtonDown(1);
+			
+			if ((leftMouseButtonDown || rightMouseButtonDown) && follwingPOV && followingPlayer != null)
+			{
+				camController.PovTransform = null;
+				camController.Origin = followingPlayer.position;
+				Vector3 playerPos = followingPlayer.position;
+				camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+				camController.transform.LookAt(playerPos);
+				camController.ApplyPosition();
+				follwingPOV = false;
+				followingPlayer = null;
+			}
+			
 			// hover over players to get stats
 			if (Physics.Raycast(GameManager.instance.camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000f, LayerMask.GetMask("players")))
 			{
@@ -271,11 +286,20 @@ public class DemoStart : MonoBehaviour
 				psh.Visible = true;
 
 				// clicked on a player - follow player
-				if (Input.GetMouseButtonDown(0) && !GameManager.instance.DrawingMode)
-				{
+				if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
+				{	
+					// clicked a player while already following them. 
 					if (followingPlayer == psh.transform)
 					{
-						followingPlayer = null;
+						// if your in POV mode exit POV
+						if (!follwingPOV)
+						{
+							follwingPOV = true;
+							camController.PovTransform = psh.transform;
+							camController.transform.localPosition = Vector3.zero;
+							camController.transform.localRotation = Quaternion.identity;
+							camController.ApplyPosition();
+						}
 					}
 					else
 					{
@@ -292,6 +316,9 @@ public class DemoStart : MonoBehaviour
 					}
 				}
 			}
+
+			
+
 		}
 		else
 		{
@@ -300,7 +327,10 @@ public class DemoStart : MonoBehaviour
 
 		if (followingPlayer != null)
 		{
-			camController.Origin = followingPlayer.position;
+			if (!follwingPOV)
+			{
+				camController.Origin = followingPlayer.position;
+			}
 		}
 
 		if (finishedProcessingTemporalData)

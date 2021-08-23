@@ -39,6 +39,7 @@ public class IKController : MonoBehaviour
 	public Transform rForeArm;
 	public Transform lForeArm;
 
+	public Transform playerStatsHover;
 	// Update is called once per frame
 	void Update()
 	{
@@ -123,7 +124,8 @@ public class IKController : MonoBehaviour
 
 			// set the headRotation
 			head.rotation = Quaternion.LookRotation(headForward, headUp);
-
+			playerStatsHover.rotation = head.rotation;
+			playerStatsHover.position = headPos;
 			// TODO set the leg stuff based on velocity
 
 			//Set the hand positions

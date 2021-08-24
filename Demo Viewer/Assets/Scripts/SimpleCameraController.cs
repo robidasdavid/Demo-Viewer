@@ -53,7 +53,39 @@ namespace UnityTemplateProjects
         CameraState m_TargetCameraState = new CameraState();
         CameraState m_InterpolatingCameraState = new CameraState();
 
+        private Transform povTransform = null;
+        public Transform defaultParentTransform = null;
         private Vector3 origin = Vector3.zero;
+
+        public Transform PovTransform
+        {
+            set
+            {
+                if (value == null)
+                {
+                    if (defaultParentTransform == null)
+                    {
+                        
+                    }
+                    else
+                    {
+                        transform.SetParent(defaultParentTransform);
+                        defaultParentTransform = null;
+                        povTransform = null;
+                    }
+                }
+                else
+                {
+                    if (defaultParentTransform == null)
+                    {
+                        defaultParentTransform = transform.parent;
+                    }
+                    povTransform = value;
+                    transform.SetParent(value);
+                }
+            }
+        }
+        
         public Vector3 Origin {
             set
             {
@@ -63,8 +95,29 @@ namespace UnityTemplateProjects
                 m_TargetCameraState.z += diff.z;
                 origin = value;
             }
+            get
+            {
+                return origin;
+            }
         }
         
+        private Quaternion targetRotation = Quaternion.identity;
+        public Quaternion TargetRotation {
+            set
+            {
+                //targetRotation diff = value - origin;
+                //m_TargetCameraState.x += diff.x;
+                //m_TargetCameraState.y += diff.y;
+                //m_TargetCameraState.z += diff.z;
+                Quaternion diff = value * Quaternion.Inverse(targetRotation);
+                Quaternion cameraStateRotation = Quaternion.Euler(m_TargetCameraState.pitch, m_TargetCameraState.yaw, m_TargetCameraState.roll);
+                Quaternion newRotation = diff * cameraStateRotation;
+                m_TargetCameraState.pitch = newRotation.eulerAngles.x;
+                m_TargetCameraState.yaw = newRotation.eulerAngles.y;
+                m_TargetCameraState.roll = newRotation.eulerAngles.z;
+                targetRotation = value;
+            }
+        }
         [Header("Movement Settings")]
         [Tooltip("Exponential boost factor on translation, controllable by mouse wheel.")]
         public float boost = 3.5f;
@@ -134,6 +187,10 @@ namespace UnityTemplateProjects
 
         private void Update()
         {
+            if (povTransform != null)
+            {
+                return;
+            }
             // Hide and lock cursor when right mouse button pressed
             if (Input.GetMouseButtonDown(1))
             {
@@ -179,8 +236,12 @@ namespace UnityTemplateProjects
 
             // Framerate-independent interpolation
             // Calculate the lerp amount, such that we get 99% of the way to our target in the specified time
-            var positionLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / positionLerpTime) * Time.deltaTime);
-            var rotationLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / rotationLerpTime) * Time.deltaTime);
+            //var positionLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / positionLerpTime) * Time.deltaTime);
+            //var rotationLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / rotationLerpTime) * Time.deltaTime);
+            var positionLerpPct = 1f;
+            var rotationLerpPct = 1f;
+            
+            
             m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, rotationLerpPct);
 
             m_InterpolatingCameraState.UpdateTransform(transform);

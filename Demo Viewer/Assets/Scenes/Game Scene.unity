@@ -10639,6 +10639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6547d18b2bc62c94aa5ec1e87434da4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultParentTransform: {fileID: 0}
   boost: 3.5
   positionLerpTime: 0.2
   mouseSensitivityCurve:
@@ -10690,7 +10691,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.142
   far clip plane: 1000
   field of view: 60
   orthographic: 0

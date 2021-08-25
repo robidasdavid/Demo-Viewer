@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using TMPro;
 using System.Threading;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityTemplateProjects;
@@ -264,18 +265,9 @@ public class DemoStart : MonoBehaviour
 
 			bool leftMouseButtonDown = Input.GetMouseButtonDown(0);
 			bool rightMouseButtonDown = Input.GetMouseButtonDown(1);
+			//Debug.Log(Input.mousePosition);
 			
-			if ((leftMouseButtonDown || rightMouseButtonDown) && follwingPOV && followingPlayer != null)
-			{
-				camController.PovTransform = null;
-				camController.Origin = followingPlayer.position;
-				Vector3 playerPos = followingPlayer.position;
-				camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-				camController.transform.LookAt(playerPos);
-				camController.ApplyPosition();
-				follwingPOV = false;
-				followingPlayer = null;
-			}
+			
 			
 			// hover over players to get stats
 			if (Physics.Raycast(GameManager.instance.camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000f, LayerMask.GetMask("players")))
@@ -291,9 +283,10 @@ public class DemoStart : MonoBehaviour
 					// clicked a player while already following them. 
 					if (followingPlayer == psh.transform)
 					{
-						// if your in POV mode exit POV
+						// if your not in POV mode enter POV
 						if (!follwingPOV)
 						{
+							followingPlayer.gameObject.layer = 2;
 							follwingPOV = true;
 							camController.PovTransform = psh.transform;
 							camController.transform.localPosition = Vector3.zero;
@@ -303,21 +296,57 @@ public class DemoStart : MonoBehaviour
 					}
 					else
 					{
-						followingPlayer = psh.transform;
-
-						if (camController != null)
+						//if your in POV mode and you click on another person
+						if (follwingPOV)
 						{
-							camController.Origin = followingPlayer.position;
-							Vector3 playerPos = psh.transform.position;
-							camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-							camController.transform.LookAt(playerPos);
+							
+							followingPlayer.gameObject.layer = 10;
+							followingPlayer = psh.transform;
+							followingPlayer.gameObject.layer = 2;
+							camController.PovTransform = null;
+							camController.PovTransform = followingPlayer;
+							camController.transform.localPosition = Vector3.zero;
+							camController.transform.localRotation = Quaternion.identity;
 							camController.ApplyPosition();
+
 						}
+						else
+						{
+							followingPlayer = psh.transform;
+	                        
+                        	if (camController != null)
+                        	{
+                        		camController.Origin = followingPlayer.position;
+                        		Vector3 playerPos = psh.transform.position;
+                        		camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+                        		camController.transform.LookAt(playerPos);
+                        		camController.ApplyPosition();
+                        	}	
+						}
+
+						
 					}
+				}
+			}
+			else
+			{
+				if ((leftMouseButtonDown || rightMouseButtonDown) && follwingPOV && followingPlayer != null && !IsPointerOverUIObject())
+				{
+					
+					followingPlayer.gameObject.layer = 10;
+					camController.PovTransform = null;
+					camController.Origin = followingPlayer.position;
+					Vector3 playerPos = followingPlayer.position;
+					camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+					camController.transform.LookAt(playerPos);
+					camController.ApplyPosition();
+					follwingPOV = false;
+					followingPlayer = null;
 				}
 			}
 
 			
+
 
 		}
 		else
@@ -366,7 +395,18 @@ public class DemoStart : MonoBehaviour
 
 		temporalProcessingSlider.value = temporalProcessingProgress;
 	}
-
+	/// <summary>
+	/// This is used to see if the pointer is hovering over an UI object.
+	/// </summary>
+	/// <returns></returns>
+	public static bool IsPointerOverUIObject()
+	{
+		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+		return results.Count > 0;
+	}
 
 	/// <summary>
 	/// Used in webgl mode. idk why I haven't looked. Maybe consolidate this with other webrequest file loading?
@@ -908,7 +948,19 @@ public class DemoStart : MonoBehaviour
 		foreach ((int, string) playerIndex in playerObjects.Keys)
 		{
 			if (!movedObjects.Contains(playerObjects[playerIndex]))
-			{
+			{	
+				// if the camera is parented to the player that is about to be removed
+				if (playerObjects[playerIndex].hoverStats.transform == followingPlayer)
+				{
+					camController.PovTransform = null;
+					camController.Origin = followingPlayer.position;
+					Vector3 playerPos = followingPlayer.position;
+					camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+					camController.transform.LookAt(playerPos);
+					camController.ApplyPosition();
+					follwingPOV = false;
+					followingPlayer = null;
+				}
 				Destroy(playerObjects[playerIndex].gameObject);
 				playersToRemove.Add(playerIndex);
 			}

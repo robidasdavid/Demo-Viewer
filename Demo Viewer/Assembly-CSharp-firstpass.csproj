@@ -302,9 +302,6 @@
  <Reference Include="HalFloat">
  <HintPath>C:/Users/kaleb/Desktop/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/HalFloat.dll</HintPath>
  </Reference>
- <Reference Include="InspectorGadgets.Lite">
- <HintPath>C:/Users/kaleb/Desktop/Demo-Viewer/Demo Viewer/Assets/Plugins/Inspector Gadgets/Misc/Inspector Gadgets Lite/InspectorGadgets.Lite.dll</HintPath>
- </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
  </Reference>
@@ -862,10 +859,6 @@
     <ProjectReference Include="PhotonUnityNetworking.Demos.csproj">
       <Project>{7e9391f7-d3aa-1c2a-9d1d-2201bccabb07}</Project>
       <Name>PhotonUnityNetworking.Demos</Name>
-    </ProjectReference>
-    <ProjectReference Include="InspectorGadgets.csproj">
-      <Project>{10ddeecc-295f-16da-0c63-3b51379f575c}</Project>
-      <Name>InspectorGadgets</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

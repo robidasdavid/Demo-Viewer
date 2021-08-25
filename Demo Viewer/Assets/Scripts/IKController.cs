@@ -3,6 +3,8 @@
  * Date: 16 April 2020
  * Purpose: Control IK of an individual player
  */
+
+using Unity.Mathematics;
 using UnityEngine;
 
 /// <summary>
@@ -18,7 +20,11 @@ public class IKController : MonoBehaviour
 
 	public Vector3 bodyPosition;
 	public Quaternion bodyRotation;
-
+	public Vector3 bodyUp;
+	public Vector3 bodyForward;
+	
+	public Transform bodyTarget;
+	
 	public Transform lHandTarget;
 	public Transform rHandTarget;
 	public Vector3 lHandPosition;
@@ -41,6 +47,11 @@ public class IKController : MonoBehaviour
 
 	public Transform playerStatsHover;
 	// Update is called once per frame
+	
+	private float BodyRotationValueForward = 171;
+	private float BodyYRotation = 0;
+	private float TargetForwardDotVelocityInLine;
+	private float ForwardDotVelocityInLine;
 	void Update()
 	{
 		// old API compatible method
@@ -116,16 +127,87 @@ public class IKController : MonoBehaviour
 		// use the new v28 API version with body position
 		else
 		{
+			
 			// set the whole player position based on the head
 			transform.position = headPos;
-
 			// set the body rotation
-			transform.rotation = bodyRotation;
-
+			//transform.rotation = bodyRotation;
+		
 			// set the headRotation
+			
+			//Debug.DrawRay(headPos,headForward*3);
+			//Debug.DrawRay(headPos,headUp*3);
 			head.rotation = Quaternion.LookRotation(headForward, headUp);
-			playerStatsHover.rotation = head.rotation;
-			playerStatsHover.position = headPos;
+			
+			Quaternion IdealBodyRotation = Quaternion.LookRotation(-bodyForward,-bodyUp);
+			bodyTarget.rotation = Quaternion.LookRotation(-bodyForward,-bodyUp);
+
+			TargetForwardDotVelocityInLine = Vector3.Dot(bodyForward, playerVelocity);
+			if (TargetForwardDotVelocityInLine > 0)
+			{
+				TargetForwardDotVelocityInLine *= 16;
+				if (TargetForwardDotVelocityInLine > 80)
+				{
+					TargetForwardDotVelocityInLine = 80;
+				}
+			}
+
+			if (TargetForwardDotVelocityInLine < 0)
+			{
+				TargetForwardDotVelocityInLine *= 3;
+				if (TargetForwardDotVelocityInLine < 15)
+				{
+					TargetForwardDotVelocityInLine = -15;
+				}
+			}
+
+			ForwardDotVelocityInLine = math.lerp(ForwardDotVelocityInLine, TargetForwardDotVelocityInLine, .1f);
+			Quaternion offsetBodyRotation = Quaternion.Euler(ForwardDotVelocityInLine, 0, 0);
+			bodyTarget.rotation = IdealBodyRotation * offsetBodyRotation;
+			Debug.DrawRay(bodyPosition,bodyForward,Color.cyan);
+			Debug.DrawRay(bodyPosition,playerVelocity,Color.green);
+			
+			Debug.DrawRay(bodyPosition, bodyForward*Vector3.Dot(bodyForward,playerVelocity),Color.red);
+			//Debug.DrawRay(bodyPosition,bodyUp*3,Color.cyan);
+			
+			// float HeadYRotation = head.localRotation.eulerAngles.y;
+			//
+			// BodyYRotation = math.lerp(BodyYRotation, HeadYRotation, .05f);
+			//
+			// //bodyTarget.localRotation = quaternion.Euler(180,BodyXRotation,0);
+			// bodyTarget.localRotation = Quaternion.Euler(180,BodyYRotation,0);
+			//transform.rotation = quaternion.Euler(transform.eulerAngles.x,head.rotation.eulerAngles.y,transform.eulerAngles.z);
+			//playerStatsHover.rotation = head.rotation;
+			//playerStatsHover.position = headPos;
+				
+			
+			//psuedo-code
+			//Given points A, B, P1
+			 
+			//get vector AB ~ Note the subtraction here
+			 
+			//get vector AP1 ~ Note the subtraction here
+			Vector2 RelativeVelocityPlane = new Vector2(bodyTarget.forward.x,bodyTarget.forward.z);
+			Vector2 GlobalVelocityPlane = new Vector2(playerVelocity.x,playerVelocity.z);
+
+			//find the scalar projection of AP1 onto AB, thus distance
+			float ForwardVelocity = Vector2.Dot(GlobalVelocityPlane, RelativeVelocityPlane) / GlobalVelocityPlane.magnitude;
+			
+			 // max forward = 267;
+			 // min forward = 154
+			 // defauly = 171
+			if (ForwardVelocity > 0)
+			{
+				BodyRotationValueForward = 154;
+			}
+			else
+			{
+				BodyRotationValueForward = 267;
+
+			}
+			//bodyTarget.rotation = Quaternion.Euler(bodyRotation.eulerAngles.x+180,bodyRotation.eulerAngles.y,-bodyRotation.eulerAngles.z);
+			//bodyTarget.position = bodyPosition;
+			
 			// TODO set the leg stuff based on velocity
 
 			//Set the hand positions

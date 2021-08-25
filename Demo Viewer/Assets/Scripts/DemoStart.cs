@@ -1057,7 +1057,8 @@ public class DemoStart : MonoBehaviour
 		// send body pos/rot 🕺
 		playerIK.bodyPosition = player.body.Position;
 		playerIK.bodyRotation = Quaternion.LookRotation(player.body.left.ToVector3(), player.body.up.ToVector3());
-
+		playerIK.bodyUp = player.body.up.ToVector3();
+		playerIK.bodyForward = player.body.forward.ToVector3();
 		// send velocity 💨
 		playerIK.playerVelocity = playerVelocityVector;
 

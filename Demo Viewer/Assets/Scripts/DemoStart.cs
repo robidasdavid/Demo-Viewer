@@ -20,6 +20,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityTemplateProjects;
+using unityutilities;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -288,8 +289,8 @@ public class DemoStart : MonoBehaviour
 						{
 							followingPlayer.gameObject.layer = 2;
 							follwingPOV = true;
-							camController.PovTransform = psh.transform;
-							camController.transform.localPosition = Vector3.zero;
+							camController.PovTransform = psh.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0).GetChild(0);
+							camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
 							camController.transform.localRotation = Quaternion.identity;
 							camController.ApplyPosition();
 						}
@@ -304,8 +305,8 @@ public class DemoStart : MonoBehaviour
 							followingPlayer = psh.transform;
 							followingPlayer.gameObject.layer = 2;
 							camController.PovTransform = null;
-							camController.PovTransform = followingPlayer;
-							camController.transform.localPosition = Vector3.zero;
+							camController.PovTransform = followingPlayer.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0).GetChild(0);
+							camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
 							camController.transform.localRotation = Quaternion.identity;
 							camController.ApplyPosition();
 
@@ -1057,7 +1058,8 @@ public class DemoStart : MonoBehaviour
 		// send body pos/rot 🕺
 		playerIK.bodyPosition = player.body.Position;
 		playerIK.bodyRotation = Quaternion.LookRotation(player.body.left.ToVector3(), player.body.up.ToVector3());
-
+		playerIK.bodyUp = player.body.up.ToVector3();
+		playerIK.bodyForward = player.body.forward.ToVector3();
 		// send velocity 💨
 		playerIK.playerVelocity = playerVelocityVector;
 

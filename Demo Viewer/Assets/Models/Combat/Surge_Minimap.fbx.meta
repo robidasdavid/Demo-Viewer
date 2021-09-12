@@ -3,7 +3,57 @@ guid: 7b302c5571ae8c64094a030e456e2530
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark Blue
+    second: {fileID: 2100000, guid: 04032500d483b634a895cf75d0f6f4b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark Gray
+    second: {fileID: 2100000, guid: c0ba9ac83913d304da68fa66aea38b18, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glowing Blue
+    second: {fileID: 2100000, guid: 3f10b9c900515e8458c34b8b16586907, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Blue
+    second: {fileID: 2100000, guid: 137b4a3e5e3a5e140b42c224ec4dbf61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Gray
+    second: {fileID: 2100000, guid: d1f3d05721bc7ad47a9ca8eaccb455b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Light Gray
+    second: {fileID: 2100000, guid: f285cd124c345cc46a0bc703bed5c782, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Orange
+    second: {fileID: 2100000, guid: 2f1cd7786d7117e4886a1df082a10ff5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Map
+    second: {fileID: 2100000, guid: c597a4840e8d63748aa9eb1c9b6c0b3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pink
+    second: {fileID: 2100000, guid: 0a214ad62adb13c40a407fe27bf90f1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Watery
+    second: {fileID: 2100000, guid: 68cdbb662858c694c89fea6e76276315, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -57,12 +107,12 @@ ModelImporter:
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 1
+    secondaryUVMarginMethod: 0
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
-    secondaryUVPackMargin: 4
+    secondaryUVPackMargin: 6
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60

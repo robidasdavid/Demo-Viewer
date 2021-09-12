@@ -11,6 +11,6 @@ public class NoParallax : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		transform.position = cam.transform.position;
+		if (cam != null) transform.position = cam.transform.position;
 	}
 }

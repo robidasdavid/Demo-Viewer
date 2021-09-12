@@ -12,8 +12,43 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Dark Gray
+    second: {fileID: 2100000, guid: c0ba9ac83913d304da68fa66aea38b18, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Blue
+    second: {fileID: 2100000, guid: 137b4a3e5e3a5e140b42c224ec4dbf61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Gray
+    second: {fileID: 2100000, guid: d1f3d05721bc7ad47a9ca8eaccb455b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Light Gray
+    second: {fileID: 2100000, guid: f285cd124c345cc46a0bc703bed5c782, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Orange
+    second: {fileID: 2100000, guid: 2f1cd7786d7117e4886a1df082a10ff5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Map
-    second: {fileID: 2100000, guid: 4018e8660d9f3a54ebf884826add1358, type: 2}
+    second: {fileID: 2100000, guid: c597a4840e8d63748aa9eb1c9b6c0b3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pink
+    second: {fileID: 2100000, guid: 0a214ad62adb13c40a407fe27bf90f1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Watery
+    second: {fileID: 2100000, guid: 68cdbb662858c694c89fea6e76276315, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -67,12 +102,12 @@ ModelImporter:
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 1
+    secondaryUVMarginMethod: 0
     secondaryUVMinLightmapResolution: 40
-    secondaryUVMinObjectScale: 1
-    secondaryUVPackMargin: 4
+    secondaryUVMinObjectScale: 0.01
+    secondaryUVPackMargin: 6
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60

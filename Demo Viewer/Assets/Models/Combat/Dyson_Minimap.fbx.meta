@@ -2,13 +2,65 @@ fileFormatVersion: 2
 guid: 3aea82721352ed2488846b53ddef5971
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 8440248360967096626
+    second: Camera|CameraAction
+  - first:
+      74: -856581955518318762
+    second: Camera|EmptyAction
+  - first:
+      74: 1139993622509640070
+    second: Empty|CameraAction
+  - first:
+      74: -5572541973309549404
+    second: Empty|EmptyAction
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Capture Point Transparent
     second: {fileID: 2100000, guid: 5e418d2022d9d794d801a95d9d96293b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark Gray
+    second: {fileID: 2100000, guid: c0ba9ac83913d304da68fa66aea38b18, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Blue
+    second: {fileID: 2100000, guid: 137b4a3e5e3a5e140b42c224ec4dbf61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Gray
+    second: {fileID: 2100000, guid: d1f3d05721bc7ad47a9ca8eaccb455b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Light Gray
+    second: {fileID: 2100000, guid: f285cd124c345cc46a0bc703bed5c782, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light Orange
+    second: {fileID: 2100000, guid: 2f1cd7786d7117e4886a1df082a10ff5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Map
+    second: {fileID: 2100000, guid: c597a4840e8d63748aa9eb1c9b6c0b3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pink
+    second: {fileID: 2100000, guid: 0a214ad62adb13c40a407fe27bf90f1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Watery
+    second: {fileID: 2100000, guid: 68cdbb662858c694c89fea6e76276315, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -52,22 +104,22 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
-    keepQuads: 0
+    keepQuads: 1
     weldVertices: 1
     bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    meshOptimizationFlags: -1
+    meshOptimizationFlags: 0
     indexFormat: 0
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 1
+    secondaryUVMarginMethod: 0
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
-    secondaryUVPackMargin: 4
+    secondaryUVPackMargin: 6
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60

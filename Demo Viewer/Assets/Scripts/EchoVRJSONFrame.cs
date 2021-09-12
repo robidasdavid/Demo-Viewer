@@ -30,7 +30,7 @@ public class Game
 			if (newFrame != null)
 			{
 				frames[index] = newFrame;
-				rawFrames[index] = null;    // free up the memory, since the raw frames take up a lot more
+				// rawFrames[index] = null;    // free up the memory, since the raw frames take up a lot more
 				return frames[index];
 			}
 

@@ -81,6 +81,19 @@ public class GameManager : MonoBehaviour
 		}
 		get => drawingMode;
 	}
+	
+	[Header("Clipping Mode")] public GameObject clippingModeUI;
+	
+	private bool clippingMode;
+	public bool ClippingMode
+	{
+		set
+		{
+			clippingMode = value;
+			clippingModeUI.SetActive(value);
+		}
+		get => clippingMode;
+	}
 
 	private void Awake()
 	{
@@ -101,6 +114,7 @@ public class GameManager : MonoBehaviour
 		}
 
 		DrawingMode = false;
+		ClippingMode = false;
 
 		// Enable VR Mode
 		if (enableVR || args.Contains("-useVR"))

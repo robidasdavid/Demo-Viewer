@@ -44,7 +44,6 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	public Transform playersList;
 	public GameObject replayDataRowPrefab;
 	public TMP_InputField manualInputText;
-	public TextMeshProUGUI folderSrcText;
 	public Transform onlineReplaysList;
 	public Transform localReplaysList;
 	public ScrollRect scrollView;
@@ -108,7 +107,6 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		showing = panel.gameObject.activeSelf;
 
 		manualInputText.text = PlayerPrefs.GetString("fileDirector");
-		folderSrcText.text = "Files in " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Spark","replays");
 
 		// refresh the list
 		ReplaysSource = ReplaysSource;
@@ -166,7 +164,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	{
 		StartCoroutine(GetReplaysLocal(path));
 	}
-	
+
 	private IEnumerator GetReplaysLocal(string path)
 	{
 		Debug.Log("Finding path to :" + path);
@@ -174,37 +172,38 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		{
 			path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Spark", "replays");
 		}
-		if (Directory.Exists(path)||File.Exists(path))
+
+		if (Directory.Exists(path) || File.Exists(path))
 		{
 			if (File.Exists(path))
 			{
 				FileInfo file = new FileInfo(path);
 				path = file.Directory.FullName;
-
 			}
-			//Debug.Log("File Exists");
 			DirectoryInfo replaysFolder = new DirectoryInfo(path);
 
 			// get list of files in the current folder
-			DirectoryInfo[] subDirectorys = replaysFolder.GetDirectories();
+			DirectoryInfo[] subDirectories = replaysFolder.GetDirectories();
 			FileInfo[] files = replaysFolder.GetFiles().OrderBy(p => p.CreationTime).ToArray();
 			Array.Reverse(files);
 
-			files = files.Take(200).ToArray();      // avoid lag by only loading the first 100 files
-			int Counter = 0;
-			foreach(Transform child in localReplaysList)
+			files = files.Take(200).ToArray(); // avoid lag by only loading the first 200 files
+			
+			// delete the old entries
+			bool firstFile = true;
+			foreach (Transform child in localReplaysList)
 			{
-				// Destroy(child.gameObject);
-				if (Counter == 0)
+				if (firstFile)
 				{
-					Counter++;
-				} else
+					firstFile = false;
+				}
+				else
 				{
 					Destroy(child.gameObject);
 				}
 			}
-			// add the new ones
 			
+			// add the new ones
 			GameObject backButton = Instantiate(replayDataRowPrefab, localReplaysList);
 			ReplayFileInfo backReplayFileInfo = backButton.GetComponentInChildren<ReplayFileInfo>();
 			backReplayFileInfo.OriginalFilename = "...";
@@ -212,8 +211,11 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 			backReplayFileInfo.Size = "";
 			backReplayFileInfo.Notes = "";
 
-			backButton.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(replaysFolder.Parent.FullName); });
-			foreach (DirectoryInfo directory in subDirectorys)
+			backButton.GetComponentInChildren<Button>().onClick.AddListener(delegate
+			{
+				LoadLocalReplay(replaysFolder.Parent.FullName);
+			});
+			foreach (DirectoryInfo directory in subDirectories)
 			{
 				GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
 				ReplayFileInfo replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();
@@ -221,13 +223,16 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 				replayFileInfo.CreatedBy = "Local";
 				replayFileInfo.Size = "";
 				replayFileInfo.Notes = "";
-				button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(directory.FullName); });
+				button.GetComponentInChildren<Button>().onClick.AddListener(delegate
+				{
+					LoadLocalReplay(directory.FullName);
+				});
 			}
+
 			foreach (FileInfo file in files)
 			{
 				//Debug.Log(file.FullName);
-				
-				
+
 				if (file.Extension == ".echoreplay")
 				{
 					GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
@@ -237,11 +242,13 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 					replayFileInfo.Size = FileLengthToString(file.Length);
 					replayFileInfo.Notes = "";
 
-					button.GetComponentInChildren<Button>().onClick.AddListener(delegate { LoadLocalReplay(file.FullName); });
+					button.GetComponentInChildren<Button>().onClick.AddListener(delegate
+					{
+						LoadLocalReplay(file.FullName);
+					});
 				}
 				else
 				{
-					
 				}
 
 				// this is not necessary, but it'll create a slight animation
@@ -254,36 +261,35 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	{
 		if (length < 1e3f)
 		{
-			return length + " bytes";
+			return $"{length} bytes";
 		}
 		else if (length < 1e6f)
 		{
-			return (length / 1e3f).ToString("N2") + " KiB";
+			return $"{(length / 1e3f):N2} KiB";
 		}
 		else if (length < 1e9f)
 		{
-			return (length / 1e6f).ToString("N2") + " MiB";
+			return $"{(length / 1e6f):N2} MiB";
 		}
 		else
 		{
-			return (length / 1e9f).ToString("N2") + " GiB";
+			return $"{(length / 1e9f):N2} GiB";
 		}
 	}
 
 	public void LoadLocalReplay(string filename)
 	{
-		Debug.Log("Loading Local Replay: "+filename);
-		if (filename.EndsWith(".echoreplay"))
+		if (File.Exists(filename))
 		{
 			PlayerPrefs.SetString("fileDirector", filename);
 
 			// only way to load a new replay file is to reload the scene
 			SceneManager.LoadSceneAsync("Game Scene");
-			
+
 			viewReplayUIController.ReplayName = filename;
 			viewReplayUIController.Loading = true;
 		}
-		else
+		else if (Directory.Exists(filename))
 		{
 			PlayerPrefs.SetString("fileDirector", filename);
 			manualInputText.text = filename;
@@ -392,7 +398,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		DemoStart.showPlayspace = selection;
 		PlayerPrefs.SetInt("ShowPlayspaceVisualizers", selection);
 	}
-	
+
 	public void VRArenaScaleChanged(int selection)
 	{
 		float[] options = {1, 10, 30, 50};

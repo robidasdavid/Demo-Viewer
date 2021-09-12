@@ -482,6 +482,46 @@ public class DemoStart : MonoBehaviour
 
 
 	/// <summary>
+	/// Saves a replay clip
+	/// </summary>
+	public void SaveReplayClip(string fileName, int startFrame, int endFrame)
+	{
+		if (loadedDemo == null)
+		{
+			Debug.LogError("No replay loaded. Can't clip.");
+			return;
+		}
+
+
+		// write the frames directly into a zip
+		using (MemoryStream memoryStream = new MemoryStream())
+		{
+			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+			{
+				ZipArchiveEntry zipContents = archive.CreateEntry(Path.GetFileName(fileName));
+
+				using (Stream entryStream = zipContents.Open())
+				{
+					using (StreamWriter streamWriter = new StreamWriter(entryStream))
+					{
+						for (int i = startFrame; i < endFrame; i++)
+						{
+							streamWriter.WriteLine(loadedDemo.rawFrames[i]);
+						}
+					}
+				}
+			}
+
+			using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+			{
+				memoryStream.Seek(0, SeekOrigin.Begin);
+				memoryStream.CopyTo(fileStream);
+			}
+		}
+	}
+
+
+	/// <summary>
 	/// Loops through the whole file in the background and generates temporal data like playspace location
 	/// </summary>
 	private static void ProcessAllTemporalData(Game game, int threadLoadingId)
@@ -918,12 +958,7 @@ public class DemoStart : MonoBehaviour
 		blueGoals.text = viewingFrame.blue_points.ToString();
 		orangeGoals.text = viewingFrame.orange_points.ToString();
 
-		// set in game scoreboard elements
-		scoreBoardController.blueScore = viewingFrame.blue_points;
-		scoreBoardController.orangeScore = viewingFrame.orange_points;
-		scoreBoardController.gameTime = viewingFrame.game_clock_display;
-
-		var movedObjects = new List<PlayerCharacter>();
+		List<PlayerCharacter> movedObjects = new List<PlayerCharacter>();
 
 		// Update the players
 		for (int t = 0; t < 2; t++)

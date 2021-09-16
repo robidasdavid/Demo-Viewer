@@ -142,9 +142,9 @@ public class GameManager : MonoBehaviour
 #if UNITY_STANDALONE_WIN
 		FileAssociations.SetAssociation(
 			".echoreplay",
-			"EchoVR Replay Viewer",
-			"View EchoVR replay files in a reconstructed 3D environment",
-			Path.Combine(Application.dataPath, "Replay Viewer.exe"));
+			"EchoVR.Replay.Viewer",
+			"EchoVR Replay File",
+			Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Replay Viewer.exe"));
 #endif
 	}
 

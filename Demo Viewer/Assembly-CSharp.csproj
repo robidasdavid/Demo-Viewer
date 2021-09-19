@@ -70,6 +70,7 @@
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\Interfaces\IConsumable.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\VitalsContactReactor.cs" />
      <Compile Include="Assets\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
+     <Compile Include="Assets\Scripts\AnimationRowController.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\Interfaces\IContactReactor.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\OnStateChangeKinematic.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\Interfaces\IOnTeleport.cs" />
@@ -120,6 +121,7 @@
      <Compile Include="Assets\Photon\Simple\Components\Enums\FrameArrival.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\TransformCrusher\Extensions\FloatCrusherExtensions.cs" />
+     <Compile Include="Assets\Scripts\CameraWriteSettings.cs" />
      <Compile Include="Assets\Scripts\NoParallax.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\Networking\GenericSpawnPoint.cs" />
      <Compile Include="Assets\Photon\Simple\Example\Scripts\LowFrameRate.cs" />
@@ -153,6 +155,7 @@
      <Compile Include="Assets\Photon\Simple\Core\Utilities\GetNestedComponentUtils.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\TransformCrusher\Structs\IncludedAxisEnum.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncShoot\Interfaces\IProjectile.cs" />
+     <Compile Include="Assets\Scripts\Bezier.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\GUITools\InspectorWidgets.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\OnStateChangeToggle.cs" />
      <Compile Include="Assets\Photon\Simple\Example\Scripts\TestPackObject.cs" />
@@ -165,6 +168,7 @@
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncShoot\Projectile.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\PackObject\PackObjectDatabase.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\VitalsSystem\Vital.cs" />
+     <Compile Include="Assets\Scripts\CameraSplineEditor.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncAnimator\SyncAnimator.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
      <Compile Include="Assets\Scripts\ScoreBoardController.cs" />
@@ -221,6 +225,7 @@
      <Compile Include="Assets\Photon\Simple\Components\SyncState\MountSwitcher.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\PackObject\CodeGen\Helpers\TypeHelpers.cs" />
+     <Compile Include="Assets\Scripts\CameraSplineManager.cs" />
      <Compile Include="Assets\Scripts\NetworkFrameManager.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\GUITools\NameTypeDrawer.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncContact.cs" />
@@ -264,6 +269,7 @@
      <Compile Include="Assets\Photon\Simple\Utilities\GhostWorld\HauntedStatic.cs" />
      <Compile Include="Assets\Photon\Simple\Components\Mount\MountSelector.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\Networking\Interfaces\IHasNetworkID.cs" />
+     <Compile Include="Assets\Scripts\CameraAnimationsPanel.cs" />
      <Compile Include="Assets\Photon\Simple\Core\GenericHitscan\GenericHitscan.cs" />
      <Compile Include="Assets\Photon\Simple\Components\Mount\MountThrow.cs" />
      <Compile Include="Assets\Scripts\ReplaySelectionUI.cs" />
@@ -596,7 +602,7 @@
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Burst.Unsafe">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.4.8/Unity.Burst.Unsafe.dll</HintPath>
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.4.11/Unity.Burst.Unsafe.dll</HintPath>
  </Reference>
  <Reference Include="FloatCrusher">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/FloatCrusher.dll</HintPath>

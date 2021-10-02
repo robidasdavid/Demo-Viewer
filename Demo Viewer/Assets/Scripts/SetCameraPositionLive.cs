@@ -1,58 +1,30 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class SetCameraPositionLive : MonoBehaviour
 {
-	[Serializable]
-	public class SendCameraPosData
-	{
-		[Serializable]
-		public class Vector3Json
-		{
-			public Vector3Json(Vector3 v)
-			{
-				X = -v.x;
-				Y = v.y;
-				Z = v.z;
-			}
-
-			public float X;
-			public float Y;
-			public float Z;
-		}
-
-		[Serializable]
-		public class QuaternionJson
-		{
-			public QuaternionJson(Quaternion q)
-			{
-				X = q.x;
-				Y = -q.y;
-				Z = -q.z;
-				W = q.w;
-			}
-
-			public float X;
-			public float Y;
-			public float Z;
-			public float W;
-		}
-
-		public Vector3Json position;
-		public QuaternionJson rotation;
-	}
-
 	private void Update()
 	{
-		string jsonData = JsonUtility.ToJson(new SendCameraPosData
+		Vector3 localPosition = transform.localPosition;
+		Quaternion localRotation = transform.localRotation;
+		string jsonData = JsonConvert.SerializeObject(new Dictionary<string, float>()
 		{
-			position = new SendCameraPosData.Vector3Json(transform.localPosition),
-			rotation = new SendCameraPosData.QuaternionJson(transform.localRotation)
+			{"px", -localPosition.x},
+			{"py", localPosition.y},
+			{"pz", localPosition.z},
+			{"qx", localRotation.x},
+			{"qy", localRotation.y},
+			{"qz", localRotation.z},
+			{"qw", localRotation.w},
+			{"fovy", 1},
 		});
 
-		UnityWebRequest req = UnityWebRequest.Post("http://127.0.0.1:6723", jsonData);
+		UnityWebRequest req = UnityWebRequest.Post("http://127.0.0.1:6721/camera_transform", jsonData);
 		req.uploadHandler = new UploadHandlerRaw(string.IsNullOrEmpty(jsonData) ? null : Encoding.UTF8.GetBytes(jsonData));
 		req.SendWebRequest();
 	}

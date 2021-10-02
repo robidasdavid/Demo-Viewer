@@ -65,7 +65,7 @@ public class DiscController : MonoBehaviour
 
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		if (isGrabbed)
 		{

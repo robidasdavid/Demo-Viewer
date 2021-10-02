@@ -114,7 +114,6 @@ public class DemoStart : MonoBehaviour
 
 	public static Playhead playhead;
 
-	public ScoreBoardController scoreBoardController;
 
 	private string jsonStr;
 	bool ready = false;
@@ -664,7 +663,6 @@ public class DemoStart : MonoBehaviour
 		{
 			SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
 			SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
-			scoreBoardController.gameObject.SetActive(false);
 		}
 
 		ready = true;

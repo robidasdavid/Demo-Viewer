@@ -256,7 +256,7 @@ public class IKController : MonoBehaviour
 			bodyTarget.rotation = IdealBodyRotation * offsetBodyRotation;
 			bodyTarget.GetChild(0).localRotation = Quaternion.Euler(BodyXRotation1+ (-10*TargetlegsRestingMultiplier), 0, -BodyYRotation1);
 			bodyTarget.GetChild(0).GetChild(0).localRotation = Quaternion.Euler(BodyXRotation2+ (-10*TargetlegsRestingMultiplier), 0, -BodyYRotation2);
-			bodyTarget.GetChild(0).GetChild(0).GetChild(0).localRotation = Quaternion.Euler(BodyXRotation3+ (-10*TargetlegsRestingMultiplier), 180, -(BodyYRotation3 ));
+			bodyTarget.GetChild(0).GetChild(0).GetChild(0).localRotation = Quaternion.Euler(-BodyXRotation3+ (10*TargetlegsRestingMultiplier), 180, -(BodyYRotation3 ));
 
 			
 			

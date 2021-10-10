@@ -16,6 +16,8 @@ using System;
 using System.Linq;
 using TMPro;
 using System.Threading;
+using Photon.Pun.Demo.PunBasics;
+using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -281,52 +283,7 @@ public class DemoStart : MonoBehaviour
 				// clicked on a player - follow player
 				if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
 				{	
-					// clicked a player while already following them. 
-					if (followingPlayer == psh.transform)
-					{
-						// if your not in POV mode enter POV
-						if (!follwingPOV)
-						{
-							followingPlayer.gameObject.layer = 2;
-							follwingPOV = true;
-							camController.PovTransform = psh.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0).GetChild(0);
-							camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
-							camController.transform.localRotation = Quaternion.identity;
-							camController.ApplyPosition();
-						}
-					}
-					else
-					{
-						//if your in POV mode and you click on another person
-						if (follwingPOV)
-						{
-							
-							followingPlayer.gameObject.layer = 10;
-							followingPlayer = psh.transform;
-							followingPlayer.gameObject.layer = 2;
-							camController.PovTransform = null;
-							camController.PovTransform = followingPlayer.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0).GetChild(0);
-							camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
-							camController.transform.localRotation = Quaternion.identity;
-							camController.ApplyPosition();
-
-						}
-						else
-						{
-							followingPlayer = psh.transform;
-	                        
-                        	if (camController != null)
-                        	{
-                        		camController.Origin = followingPlayer.position;
-                        		Vector3 playerPos = psh.transform.position;
-                        		camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-                        		camController.transform.LookAt(playerPos);
-                        		camController.ApplyPosition();
-                        	}	
-						}
-
-						
-					}
+					FocusPlayer(psh.transform.parent);
 				}
 			}
 			else
@@ -616,12 +573,13 @@ public class DemoStart : MonoBehaviour
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
 		
-		
+		disc.gameObject.active = true;
 		// load a combat map if necessary
 		// read the first frame
 		Frame middleFrame = loadedDemo.GetFrame(loadedDemo.nframes/2);
 		if (middleFrame.map_name != "mpl_arena_a")
 		{
+			disc.gameObject.active = false;
 			SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
 			SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
 			scoreBoardController.gameObject.SetActive(false);
@@ -639,6 +597,67 @@ public class DemoStart : MonoBehaviour
 
 	}
 
+
+	public void FocusPlayer(Transform playerTransform)
+	{
+		PlayerStatsHover psh = playerTransform.Find("PlayerStatsHover").GetComponent<PlayerStatsHover>();
+		if (!psh) return;
+		// clicked a player while already following them. 
+		if (followingPlayer == psh.transform)
+		{
+			// if your not in POV mode enter POV
+			if (!follwingPOV)
+			{
+				followingPlayer.gameObject.layer = 2;
+				follwingPOV = true;
+				camController.PovTransform = psh.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0).GetChild(0);
+				camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
+				camController.transform.localRotation = Quaternion.identity;
+				camController.ApplyPosition();
+			}
+			else
+			{
+				followingPlayer.gameObject.layer = 10;
+				camController.PovTransform = null;
+				camController.Origin = followingPlayer.position;
+				Vector3 playerPos = followingPlayer.position;
+				camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+				camController.transform.LookAt(playerPos);
+				camController.ApplyPosition();
+				follwingPOV = false;
+				followingPlayer = null;
+			}
+		}
+		else //Interacted with someone else
+		{
+			//if your in POV mode and you click on another person
+			if (follwingPOV)
+			{
+				followingPlayer.gameObject.layer = 10;
+				followingPlayer = psh.transform;
+				followingPlayer.gameObject.layer = 2;
+				camController.PovTransform = null;
+				camController.PovTransform = followingPlayer.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0)
+					.GetChild(0);
+				camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
+				camController.transform.localRotation = Quaternion.identity;
+				camController.ApplyPosition();
+
+			}
+			else //If your not In POV Just Attatch to someone else
+			{
+				followingPlayer = psh.transform;
+				if (camController != null)
+				{
+					camController.Origin = followingPlayer.position;
+					Vector3 playerPos = psh.transform.position;
+					camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
+					camController.transform.LookAt(playerPos);
+					camController.ApplyPosition();
+				}
+			}
+		}
+	}
 
 	/// <summary>
 	/// Does input processing for keyboard and controller
@@ -804,6 +823,34 @@ public class DemoStart : MonoBehaviour
 		if (Input.GetAxis("XboxDpadY") == 0)
 		{
 			wasDPADYPressed = false;
+		}
+		for ( int i = 0; i < 5; ++i )
+		{
+			if ( Input.GetKeyDown( "" + (i+1) ) )
+			{
+				Transform playerByNumber = playerObjsParent.GetChild(i);
+				if (playerByNumber.name == "PlayerCharacter (Blue)(Clone)")
+				{
+					FocusPlayer(playerByNumber);
+				}
+			}
+		}
+		for ( int i = 5; i < 9; ++i )
+		{
+			
+			if ( Input.GetKeyDown( "" + (i+1)))
+			{
+				int startingIndex = 0;
+				for (int j = 0; j < 5; ++j)
+				{
+					if (playerObjsParent.GetChild(j).name == "PlayerCharacter (Orange)(Clone)") startingIndex = j;
+				}
+				Transform playerByNumber = playerObjsParent.GetChild(startingIndex + (i-5));
+				if (playerByNumber)
+				{
+					FocusPlayer(playerObjsParent.GetChild(startingIndex + (i - 5)));
+				}
+			}
 		}
 	}
 

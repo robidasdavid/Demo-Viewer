@@ -16,13 +16,10 @@ using System;
 using System.Linq;
 using TMPro;
 using System.Threading;
-using Photon.Pun.Demo.PunBasics;
-using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityTemplateProjects;
-using unityutilities;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -100,8 +97,6 @@ public class DemoStart : MonoBehaviour
 	public Transform playerObjsParent;
 	public GameObject bluePlayerPrefab;
 	public GameObject orangePlayerPrefab;
-
-	public DiscController disc;
 
 	private bool isScored = false;
 
@@ -612,13 +607,11 @@ public class DemoStart : MonoBehaviour
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
 		
-		disc.gameObject.active = true;
 		// load a combat map if necessary
 		// read the first frame
 		Frame middleFrame = loadedDemo.GetFrame(loadedDemo.nframes/2);
 		if (middleFrame.map_name != "mpl_arena_a")
 		{
-			disc.gameObject.active = false;
 			SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
 			SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
 		}

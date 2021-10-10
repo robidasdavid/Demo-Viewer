@@ -183,7 +183,7 @@ public class DemoStart : MonoBehaviour
 		loadPointCloud = PlayerPrefs.GetInt("ShowPointCloud", 0) == 1;
 		
 		float[] options = {1, 10, 30, 50};
-		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",2)];
+		GameManager.instance.vrRig.transform.parent.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",2)];
 	}
 
 	// Update is called once per frame
@@ -936,22 +936,6 @@ public class DemoStart : MonoBehaviour
 			}
 		}
 
-		// blue team possession effects
-		if (viewingFrame.teams[0] != null && viewingFrame.teams[0].possession)
-		{
-			disc.TeamIndex = TeamColor.orange;
-		}
-		// orange team possession effects
-		else if (viewingFrame.teams[1] != null && viewingFrame.teams[1].possession)
-		{
-			disc.TeamIndex = TeamColor.blue;
-		}
-		// no team possession effects
-		else
-		{
-			disc.TeamIndex = TeamColor.spectator;
-		}
-
 		// set 2d score board
 		blueGoals.text = viewingFrame.blue_points.ToString();
 		orangeGoals.text = viewingFrame.orange_points.ToString();
@@ -1000,20 +984,6 @@ public class DemoStart : MonoBehaviour
 			}
 		}
 		playersToRemove.ForEach(p => playerObjects.Remove(p));
-
-		if (viewingFrame.map_name == "mpl_arena_a")
-		{
-			disc.discVelocity = viewingFrame.disc.velocity.ToVector3();
-			disc.discPosition = viewingFrame.disc.position.ToVector3();
-			if (viewingFrame.disc.forward != null)
-			{
-				Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.up.ToVector3(), Color.green);
-				Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.forward.ToVector3(), Color.blue);
-				Debug.DrawRay(viewingFrame.disc.position.ToVector3(), viewingFrame.disc.left.ToVector3(), Color.red);
-				disc.discRotation = Quaternion.LookRotation(viewingFrame.disc.forward.ToVector3(), viewingFrame.disc.up.ToVector3());
-			}
-			//discScript.isGrabbed = isBeingHeld(viewingFrame, false);
-		}
 	}
 
 	private Player FindPlayerOnTeam(Team team, string name)

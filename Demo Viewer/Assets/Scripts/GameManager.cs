@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
 			//RefreshVRObjectsVisibility(GetPresence());
 
 			// XRGeneralSettings.Instance.Manager.InitializeLoader();
+			XRSettings.enabled = true;
 			XRGeneralSettings.Instance.Manager.InitializeLoaderSync();
 			XRGeneralSettings.Instance.Manager.StartSubsystems();
 		}

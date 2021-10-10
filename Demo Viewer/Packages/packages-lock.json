@@ -15,7 +15,7 @@
         "com.unity.nuget.newtonsoft-json": "2.0.0-preview",
         "com.unity.xr.legacyinputhelpers": "2.1.7"
       },
-      "hash": "b032c4088cbefecb20b5b54538b2bc917a22279c"
+      "hash": "eee4cdf1c47686e2aa8a2a7fde32e8dfb09be986"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -93,6 +93,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.inputsystem": {
+      "version": "1.0.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.mathematics": {
       "version": "1.2.1",
       "depth": 1,
@@ -117,7 +124,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.quicksearch": {
-      "version": "3.0.0-preview.16",
+      "version": "3.0.0-preview.19",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -255,6 +262,17 @@
       "dependencies": {
         "com.unity.xr.management": "4.0.1",
         "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.openxr": {
+      "version": "1.1.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.management": "4.0.1",
+        "com.unity.xr.legacyinputhelpers": "2.1.2",
+        "com.unity.inputsystem": "1.0.2"
       },
       "url": "https://packages.unity.com"
     },

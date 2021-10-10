@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Spark;
 using UnityEngine;
 
 /// <summary>
@@ -56,7 +57,14 @@ public class Playhead
 		{
 			deltaTime *= playbackMultiplier;
 
-			playheadLocation += TimeSpan.FromSeconds(deltaTime * (isReverse ? -1 : 1));
+			try
+			{
+				playheadLocation += TimeSpan.FromSeconds(deltaTime * (isReverse ? -1 : 1));
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//
+			}
 
 			FindCurrentFrameLocation();
 

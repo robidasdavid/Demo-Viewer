@@ -402,7 +402,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	public void VRArenaScaleChanged(int selection)
 	{
 		float[] options = {1, 10, 30, 50};
-		GameManager.instance.vrRig.transform.localScale = Vector3.one * options[selection];
+		GameManager.instance.vrRig.transform.parent.localScale = Vector3.one * options[selection];
 		PlayerPrefs.SetInt("VRArenaScale", selection);
 	}
 

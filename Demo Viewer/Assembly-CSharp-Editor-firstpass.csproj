@@ -27,7 +27,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_2020_3_10;UNITY_2020_3;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;UNITY_POST_PROCESSING_STACK_V2;MIRROR;MIRROR_1726_OR_NEWER;MIRROR_3_0_OR_NEWER;MIRROR_3_12_OR_NEWER;MIRROR_4_0_OR_NEWER;MIRROR_5_0_OR_NEWER;MIRROR_6_0_OR_NEWER;MIRROR_7_0_OR_NEWER;MIRROR_8_0_OR_NEWER;MIRROR_9_0_OR_NEWER;MIRROR_10_0_OR_NEWER;MIRROR_11_0_OR_NEWER;MIRROR_12_0_OR_NEWER;MIRROR_13_0_OR_NEWER;MIRROR_14_0_OR_NEWER;MIRROR_15_0_OR_NEWER;MIRROR_16_0_OR_NEWER;PHOTON_UNITY_NETWORKING;PUN_2_0_OR_NEWER;PUN_2_OR_NEWER;PUN_2_19_OR_NEWER;MIRROR_17_0_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2020_3_10;UNITY_2020_3;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;ENABLE_LEGACY_INPUT_MANAGER;UNITY_POST_PROCESSING_STACK_V2;MIRROR;MIRROR_1726_OR_NEWER;MIRROR_3_0_OR_NEWER;MIRROR_3_12_OR_NEWER;MIRROR_4_0_OR_NEWER;MIRROR_5_0_OR_NEWER;MIRROR_6_0_OR_NEWER;MIRROR_7_0_OR_NEWER;MIRROR_8_0_OR_NEWER;MIRROR_9_0_OR_NEWER;MIRROR_10_0_OR_NEWER;MIRROR_11_0_OR_NEWER;MIRROR_12_0_OR_NEWER;MIRROR_13_0_OR_NEWER;MIRROR_14_0_OR_NEWER;MIRROR_15_0_OR_NEWER;MIRROR_16_0_OR_NEWER;PHOTON_UNITY_NETWORKING;PUN_2_0_OR_NEWER;PUN_2_OR_NEWER;PUN_2_19_OR_NEWER;MIRROR_17_0_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn></NoWarn>
@@ -284,14 +284,26 @@
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>M:/Program Files/Unity Editors/2020.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="Photon3Unity3D">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
+ </Reference>
+ <Reference Include="log4netPlastic">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
+ </Reference>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
+ </Reference>
+ <Reference Include="QuatCompress">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/QuatCompress.dll</HintPath>
+ </Reference>
+ <Reference Include="HalFloat">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/HalFloat.dll</HintPath>
+ </Reference>
  <Reference Include="ByteConverter">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/Compression/plugins/ByteConverter.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Plastic.Antlr3.Runtime">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="Photon3Unity3D">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
  </Reference>
  <Reference Include="websocket-sharp">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
@@ -302,23 +314,11 @@
  <Reference Include="FloatCrusher">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/FloatCrusher.dll</HintPath>
  </Reference>
- <Reference Include="log4netPlastic">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
- </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.franzco.unityutilities@b032c4088c/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.franzco.unityutilities@eee4cdf1c4/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.NRefactory">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.render-pipelines.core@10.5.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
- </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
- </Reference>
- <Reference Include="QuatCompress">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/QuatCompress.dll</HintPath>
- </Reference>
- <Reference Include="HalFloat">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/HalFloat.dll</HintPath>
  </Reference>
  <Reference Include="unityplastic">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.5.7/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
@@ -677,6 +677,9 @@
  <Reference Include="System.IO.Compression">
  <HintPath>M:/Program Files/Unity Editors/2020.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.IO.Compression.dll</HintPath>
  </Reference>
+ <Reference Include="System.IO.Compression.FileSystem">
+ <HintPath>M:/Program Files/Unity Editors/2020.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.IO.Compression.FileSystem.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
  </Reference>
@@ -704,6 +707,9 @@
  <Reference Include="UnityEditor.UI">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.InputSystem">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.InputSystem.dll</HintPath>
+ </Reference>
  <Reference Include="Pcx">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Pcx.dll</HintPath>
  </Reference>
@@ -716,14 +722,14 @@
  <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
  </Reference>
+ <Reference Include="Autodesk.Fbx">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Autodesk.Fbx.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="Autodesk.Fbx">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Autodesk.Fbx.dll</HintPath>
  </Reference>
  <Reference Include="Unity.ShaderGraph.Editor">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
@@ -797,6 +803,9 @@
  <Reference Include="Unity.Mathematics">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.XR.OpenXR.TestHelpers">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.OpenXR.TestHelpers.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Burst">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
  </Reference>
@@ -809,11 +818,17 @@
  <Reference Include="UnityEngine.XR.LegacyInputHelpers">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.XR.OpenXR.Editor">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.OpenXR.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.XR.LegacyInputHelpers">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.XR.OpenXR">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.OpenXR.dll</HintPath>
  </Reference>
  <Reference Include="Unity.XR.Oculus">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.Oculus.dll</HintPath>
@@ -821,11 +836,17 @@
  <Reference Include="UnityEditor.SpatialTracking">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.XR.OpenXR.Features.ConformanceAutomation">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
  </Reference>
  <Reference Include="Unity.RenderPipelines.Core.Editor">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.XR.OpenXR.Features.RuntimeDebugger.Editor">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/ScriptAssemblies/Unity.XR.OpenXR.Features.RuntimeDebugger.Editor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -852,6 +873,10 @@
     <ProjectReference Include="EmoCompressUtilsASMDEF.csproj">
       <Project>{ddd7f5f8-7daa-27f7-b918-7b351b735d9b}</Project>
       <Name>EmoCompressUtilsASMDEF</Name>
+    </ProjectReference>
+    <ProjectReference Include="MenuTablet.csproj">
+      <Project>{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}</Project>
+      <Name>MenuTablet</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.csproj">
       <Project>{fea437d2-2626-d5e5-56cf-cde09bf05c23}</Project>

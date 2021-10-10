@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitpackersASMDEF", "Bitpack
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{fbabf9cb-3fda-7612-bac2-d479b5b9a9bf}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuTablet", "MenuTablet.csproj", "{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotonUnityNetworking.Editor", "PhotonUnityNetworking.Editor.csproj", "{67910ffc-6003-4a21-9c56-193a4d88289f}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FranzCo.unityutilities.Editor", "FranzCo.unityutilities.Editor.csproj", "{c5594bd6-7d31-d6ac-1ff4-e49ecd15c467}"
@@ -95,6 +97,10 @@ Global
 		{fbabf9cb-3fda-7612-bac2-d479b5b9a9bf}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{fbabf9cb-3fda-7612-bac2-d479b5b9a9bf}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{fbabf9cb-3fda-7612-bac2-d479b5b9a9bf}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67910ffc-6003-4a21-9c56-193a4d88289f}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67910ffc-6003-4a21-9c56-193a4d88289f}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67910ffc-6003-4a21-9c56-193a4d88289f}.Release|Any CPU.ActiveCfg = Release|Any CPU

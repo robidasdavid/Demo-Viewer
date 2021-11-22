@@ -649,4 +649,10 @@ static class FloatArrayExtension
 			vector3.x
 		};
 	}
+	
+	
+	public static System.Numerics.Vector3 Normalized(this System.Numerics.Vector3 v1)
+	{
+		return v1 / v1.Length();
+	}
 }

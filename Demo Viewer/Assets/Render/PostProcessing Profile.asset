@@ -16,11 +16,11 @@ MonoBehaviour:
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 1
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
     min: 0
   scatter:
     m_OverrideState: 1
@@ -158,7 +158,7 @@ MonoBehaviour:
     min: -100
     max: 100
   colorFilter:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
     hdr: 1
     showAlpha: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     min: -180
     max: 180
   saturation:
-    m_OverrideState: 1
-    m_Value: 15
+    m_OverrideState: 0
+    m_Value: -25
     min: -100
     max: 100

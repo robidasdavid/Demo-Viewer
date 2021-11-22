@@ -21,4 +21,6 @@ public class CameraSplineManager : MonoBehaviour
 	{
 		// editor.Animation = CameraWriteSettings.instance.animations.Values.ToArray()[animationIndex];
 	}
+	
+	
 }

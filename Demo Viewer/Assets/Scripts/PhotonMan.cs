@@ -11,7 +11,6 @@ public class PhotonMan : MonoBehaviourPunCallbacks
 	private void Start()
 	{
 		PhotonNetwork.ConnectUsingSettings();
-		
 		StartCoroutine(ReconnectTimer());
 	}
 	

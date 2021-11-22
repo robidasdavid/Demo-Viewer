@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Spark;
 using UnityEngine;
+using unityutilities;
 
 public class CameraSplineEditor : MonoBehaviour
 {
-	private List<CameraTransform> animation;
+	public GameObject controlPointPrefab;
+	private AnimationKeyframes animation;
 	private readonly List<GameObject> controlPoints = new List<GameObject>();
-	public List<CameraTransform> Animation
+	public AnimationKeyframes Animation
 	{
 		get => animation;
 		set
@@ -19,11 +21,16 @@ public class CameraSplineEditor : MonoBehaviour
 					Destroy(controlPoint);
 				}
 				controlPoints.Clear();
-				for (int i = 0; i < value.Count; i++)
+				if (value != null)
 				{
-					controlPoints.Add(new GameObject($"Control Point {i}"));
-					controlPoints.Last().transform.SetParent(transform);
-					controlPoints.Last().transform.localPosition = value[i].position;
+					for (int i = 0; i < value.keyframes.Count; i++)
+					{
+						GameObject cp = Instantiate(controlPointPrefab, transform);
+						cp.name = $"Control Point {i}";
+						cp.transform.localPosition = value.keyframes[i].Position.ToVector3();
+						cp.transform.localRotation = value.keyframes[i].Rotation.ToQuaternion();
+						controlPoints.Add(cp);
+					}
 				}
 			}
 			animation = value;
@@ -32,19 +39,25 @@ public class CameraSplineEditor : MonoBehaviour
 
 	public LineRenderer lineRenderer;
 
-	// Start is called before the first frame update
-	void Start()
-	{
-	}
-
 	// Update is called once per frame
 	private void Update()
 	{
-		if (animation == null) return;
+		if (animation == null)
+		{
+			lineRenderer.positionCount = 0;
+			return;
+		}
 
 		for (int i = 0; i < controlPoints.Count; i++)
 		{
-			animation[i].position = controlPoints[i].transform.localPosition;
+			animation.keyframes[i].px = controlPoints[i].transform.localPosition.x;
+			animation.keyframes[i].py = controlPoints[i].transform.localPosition.y;
+			animation.keyframes[i].pz = controlPoints[i].transform.localPosition.z;
+
+			animation.keyframes[i].qx = controlPoints[i].transform.localRotation.x;
+			animation.keyframes[i].qy = controlPoints[i].transform.localRotation.y;
+			animation.keyframes[i].qz = controlPoints[i].transform.localRotation.z;
+			animation.keyframes[i].qw = controlPoints[i].transform.localRotation.w;
 		}
 		
 		BezierSpline spline = new BezierSpline(animation);
@@ -52,8 +65,8 @@ public class CameraSplineEditor : MonoBehaviour
 
 		for (float t = 0; t < 1; t += .01f)
 		{
-			Vector3 newPos = spline.GetPoint(t);
-			Quaternion newRot = spline.GetRotation(t);
+			Vector3 newPos = spline.GetPoint(t).ToVector3();
+			Quaternion newRot = spline.GetRotation(t).ToQuaternion();
 
 			positions.Add(lineRenderer.transform.InverseTransformPoint(newPos));
 		}

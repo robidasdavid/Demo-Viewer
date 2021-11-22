@@ -10,21 +10,40 @@ namespace Spark
 	{
 		#region Settings
 
-		public Dictionary<string, CameraTransform> waypoints { get; } = new Dictionary<string, CameraTransform>();
-		public Dictionary<string, List<CameraTransform>> animations { get; } = new Dictionary<string, List<CameraTransform>>();
 		public string activeAnimation { get; set; } = "";
+		public Dictionary<string, CameraTransform> waypoints { get; } = new Dictionary<string, CameraTransform>();
+
+
+		public float rotSpeed { get; set; } = 30;
+		public float orbitRadius { get; set; } = 2;
+		public float followSmoothing { get; set; } = 1f;
+		public float lagCompDiscFollow { get; set; } = 0f;
+
+		public float spaceMouseMoveSpeed { get; set; } = .5f;
+		public float spaceMouseRotateSpeed { get; set; } = .2f;
+		public float spaceMouseMoveExponential { get; set; } = 1.5f;
+		public float spaceMouseRotateExponential { get; set; } = 1.5f;
+		public float joystickMoveSpeed { get; set; } = .5f;
+		public float joystickRotateSpeed { get; set; } = .1f;
+		public float joystickMoveExponential { get; set; } = 1.2f;
+		public float joystickRotateExponential { get; set; } = 1.2f;
+		public float xPlanePosMultiplier { get; set; } = .1f;
+		public bool enableHotKeys { get; set; } = false;
 
 		#endregion
 
 
 		public static CameraWriteSettings instance;
+		public static Dictionary<string, AnimationKeyframes> animations;
 
 
 		public void Save()
 		{
 			try
 			{
-				string filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IgniteVR", "Spark", "camerawrite_settings.json");
+				string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IgniteVR", "Spark");
+				string filename = Path.Combine(settingsFolder, "camerawrite_settings.json");
+				string animationsFolder = Path.Combine(settingsFolder, "Animations");
 
 				Task.Run(() =>
 				{
@@ -37,6 +56,23 @@ namespace Spark
 
 						string json = JsonConvert.SerializeObject(this, Formatting.Indented);
 						File.WriteAllText(filename, json);
+
+
+						// animation files
+						if (!Directory.Exists(animationsFolder))
+						{
+							Console.WriteLine("Animations folder doesn't exist, creating.");
+							Directory.CreateDirectory(animationsFolder);
+						}
+
+						foreach (var anim in animations)
+						{
+							if (anim.Value != null)
+							{
+								string animJson = JsonConvert.SerializeObject(anim.Value, Formatting.Indented);
+								File.WriteAllText(Path.Combine(animationsFolder, anim.Key + ".json"), animJson);
+							}
+						}
 					}
 					catch (Exception e)
 					{
@@ -52,9 +88,14 @@ namespace Spark
 
 		public static void Load()
 		{
+			string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IgniteVR", "Spark");
+			string filename = Path.Combine(settingsFolder, "camerawrite_settings.json");
+			string animationsFolder = Path.Combine(settingsFolder, "Animations");
+
+
 			try
 			{
-				string filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IgniteVR", "Spark", "camerawrite_settings.json");
+				// general settings file
 				if (File.Exists(filename))
 				{
 					string json = File.ReadAllText(filename);
@@ -70,6 +111,68 @@ namespace Spark
 			{
 				Console.WriteLine($"Error reading settings file\n{e}");
 				instance = new CameraWriteSettings();
+			}
+
+			try
+			{
+				// animation files
+				if (!Directory.Exists(animationsFolder))
+				{
+					Console.WriteLine("Animations folder doesn't exist, creating.");
+					Directory.CreateDirectory(animationsFolder);
+				}
+
+				animations = new Dictionary<string, AnimationKeyframes>();
+				string[] files = Directory.GetFiles(animationsFolder);
+				foreach (string file in files)
+				{
+					string json = File.ReadAllText(file);
+					AnimationKeyframes anim = JsonConvert.DeserializeObject<AnimationKeyframes>(json);
+					if (anim != null)
+					{
+						animations[Path.GetFileNameWithoutExtension(file)] = anim;
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Error reading animation files\n{e}");
+			}
+		}
+
+		public void SaveAnimation(string animName)
+		{
+			if (!animations.ContainsKey(animName)) return;
+			if (animations[animName] == null) return;
+
+			try
+			{
+				string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IgniteVR", "Spark");
+				string animationsFolder = Path.Combine(settingsFolder, "Animations");
+
+				Task.Run(() =>
+				{
+					try
+					{
+						// animation files
+						if (!Directory.Exists(animationsFolder))
+						{
+							Console.WriteLine("Animations folder doesn't exist, creating.");
+							Directory.CreateDirectory(animationsFolder);
+						}
+
+						string animJson = JsonConvert.SerializeObject(animations[animName], Formatting.Indented);
+						File.WriteAllText(Path.Combine(animationsFolder, animName + ".json"), animJson);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine($"Error writing to settings file\n{e}");
+					}
+				});
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Error writing to settings file (outside)\n{e}");
 			}
 		}
 	}

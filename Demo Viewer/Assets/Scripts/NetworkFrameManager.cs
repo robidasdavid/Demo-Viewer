@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using EchoVRAPI;
 using Photon.Pun;
 using UnityEngine;
 
@@ -48,12 +49,12 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 			// zipping saves about 90%
 			// Debug.Log($"Raw size: {Encoding.Unicode.GetByteCount(networkJsonData):N}, Compressed size: {Zip(networkJsonData).Length:N}");
 
-			if (lastFrame == null || lastFrame.frameTime != frame.frameTime)
+			if (lastFrame == null || lastFrame.recorded_time != frame.recorded_time)
 			{
 				lastFrame = frame;
 			}
 
-			if (frame == null || frame.frameTime != networkFrameTime)
+			if (frame == null || frame.recorded_time != networkFrameTime)
 			{
 				frame = Frame.FromJSON(networkFrameTime, networkJsonData);
 			}

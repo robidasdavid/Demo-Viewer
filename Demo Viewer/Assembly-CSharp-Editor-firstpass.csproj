@@ -829,6 +829,10 @@
       <Project>{c289065f-6916-9223-6d59-629875ada945}</Project>
       <Name>Unity.RenderPipelines.Universal.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="EchoVRAPI.csproj">
+      <Project>{26800ecf-2abc-fd48-a10e-70fa682c8fd9}</Project>
+      <Name>EchoVRAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
       <Project>{da594d5f-29fd-5a51-2d4e-eb213d9e4190}</Project>
       <Name>Unity.VisualStudio.Editor</Name>
@@ -848,6 +852,10 @@
     <ProjectReference Include="Unity.XR.Management.Editor.csproj">
       <Project>{74a037e3-d832-c45e-7468-33103cdad08a}</Project>
       <Name>Unity.XR.Management.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="ButterReplays.csproj">
+      <Project>{13d1a138-1371-bd74-246c-911f29b08bad}</Project>
+      <Name>ButterReplays</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.csproj">
       <Project>{a073b2c2-0ec4-18dc-d3b7-66b797e24278}</Project>

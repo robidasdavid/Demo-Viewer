@@ -5,7 +5,9 @@
  */
 
 using System;
+using EchoVRAPI;
 using UnityEngine;
+using Transform = UnityEngine.Transform;
 
 public class DiscController : MonoBehaviour
 {
@@ -39,7 +41,7 @@ public class DiscController : MonoBehaviour
 	/// 1: orange
 	/// 2: spectator
 	/// </summary>
-	public TeamColor TeamIndex
+	public Team.TeamColor TeamIndex
 	{
 		set
 		{
@@ -54,7 +56,7 @@ public class DiscController : MonoBehaviour
 		get => teamIndex;
 	}
 
-	private TeamColor teamIndex;
+	private Team.TeamColor teamIndex;
 
 	private float grabTime;
 
@@ -91,17 +93,17 @@ public class DiscController : MonoBehaviour
 		// blue team possession effects
 		if (frame.teams[0] != null && frame.teams[0].possession)
 		{
-			TeamIndex = TeamColor.orange;
+			TeamIndex = Team.TeamColor.orange;
 		}
 		// orange team possession effects
 		else if (frame.teams[1] != null && frame.teams[1].possession)
 		{
-			TeamIndex = TeamColor.blue;
+			TeamIndex = Team.TeamColor.blue;
 		}
 		// no team possession effects
 		else
 		{
-			TeamIndex = TeamColor.spectator;
+			TeamIndex = Team.TeamColor.spectator;
 		}
 
 

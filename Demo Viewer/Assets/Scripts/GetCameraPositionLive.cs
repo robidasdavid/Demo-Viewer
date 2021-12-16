@@ -1,4 +1,5 @@
 using System;
+using EchoVRAPI;
 using UnityEngine;
 
 public class GetCameraPositionLive : MonoBehaviour
@@ -12,7 +13,7 @@ public class GetCameraPositionLive : MonoBehaviour
 	{
 		if (LiveFrameProvider.frame == null) return;
 
-		Playspace player = LiveFrameProvider.frame.player;
+		EchoVRAPI.VRPlayer player = LiveFrameProvider.frame.player;
 		transform.position = player.vr_position.ToVector3();
 		transform.forward = player.vr_forward.ToVector3();
 		transform.up = player.vr_up.ToVector3();

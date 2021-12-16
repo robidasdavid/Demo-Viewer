@@ -1,3 +1,4 @@
+using EchoVRAPI;
 using UnityEngine;
 
 public class SpectatorCameraVisualizer : MonoBehaviour

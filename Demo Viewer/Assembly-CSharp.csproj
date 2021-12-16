@@ -136,7 +136,6 @@
      <Compile Include="Assets\Photon\Simple\Components\SyncAnimator\Structs\AnimPassThru.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\GUITools\EditorUtils.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncInventory\Assistants\InventorySystemAssists.cs" />
-     <Compile Include="Assets\Scripts\EchoVRJSONFrame.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\TransformCrusher\TransformCrusher.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncInventory\BasicInventory.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\GhostWorld\Interfaces\IIncludeInGhost.cs" />
@@ -218,6 +217,7 @@
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\Assistants\VitalsAssists.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\Interfaces\IMountable.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\PackObject\_GeneratedPackExtensions\Pack_TestPackObject.cs" />
+     <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Photon\Simple\Core\Structs\FrameBase.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\UI\VitalUI.cs" />
      <Compile Include="Assets\Scripts\GetCameraPositionLive.cs" />
@@ -1118,6 +1118,10 @@
       <Project>{c289065f-6916-9223-6d59-629875ada945}</Project>
       <Name>Unity.RenderPipelines.Universal.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="EchoVRAPI.csproj">
+      <Project>{26800ecf-2abc-fd48-a10e-70fa682c8fd9}</Project>
+      <Name>EchoVRAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
       <Project>{da594d5f-29fd-5a51-2d4e-eb213d9e4190}</Project>
       <Name>Unity.VisualStudio.Editor</Name>
@@ -1137,6 +1141,10 @@
     <ProjectReference Include="Unity.XR.Management.Editor.csproj">
       <Project>{74a037e3-d832-c45e-7468-33103cdad08a}</Project>
       <Name>Unity.XR.Management.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="ButterReplays.csproj">
+      <Project>{13d1a138-1371-bd74-246c-911f29b08bad}</Project>
+      <Name>ButterReplays</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.csproj">
       <Project>{a073b2c2-0ec4-18dc-d3b7-66b797e24278}</Project>

@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using EchoVRAPI;
+using TMPro;
 using UnityEngine;
+using Transform = UnityEngine.Transform;
 
 public class PlayerStatsHover : MonoBehaviour
 {

@@ -160,7 +160,7 @@ namespace Spark
 
 		public Vector3 GetDirection(float t)
 		{
-			return GetVelocity(t).Normalized();
+			return GetVelocity(t) / GetVelocity(t).Length();
 		}
 
 

@@ -233,7 +233,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 			{
 				//Debug.Log(file.FullName);
 
-				if (file.Extension == ".echoreplay")
+				if (file.Extension == ".echoreplay" || file.Extension == ".butter")
 				{
 					GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
 					ReplayFileInfo replayFileInfo = button.GetComponentInChildren<ReplayFileInfo>();

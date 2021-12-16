@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
+using EchoVRAPI;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -59,7 +60,7 @@ public class LiveFrameProvider : MonoBehaviour
 				frame = Frame.FromJSON(DateTime.Now, request.downloadHandler.text);
 				if (lastFrame != null && DemoStart.playhead != null)
 				{
-					DemoStart.playhead.playheadLocation = lastFrame.frameTime;
+					DemoStart.playhead.playheadLocation = lastFrame.recorded_time;
 				}
 			}
 			catch (ArgumentException)

@@ -13,13 +13,19 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO.Compression;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using TMPro;
 using System.Threading;
+using ButterReplays;
+using EchoVRAPI;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityTemplateProjects;
+using Debug = UnityEngine.Debug;
+using Transform = UnityEngine.Transform;
+using VRPlayer = EchoVRAPI.VRPlayer;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -224,8 +230,8 @@ public class DemoStart : MonoBehaviour
 					if (viewingFrame.map_name == "mpl_arena_a")
 					{
 						// Joust Readout
-						if (viewingFrame.disc.position.Length != 0 &&
-						    previousFrame.disc.position.Length != 0)
+						if (viewingFrame.disc.position.Count != 0 &&
+						    previousFrame.disc.position.Count != 0)
 						{
 							Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
 							Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
@@ -398,34 +404,66 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	private void ReadReplayFile(StreamReader fileReader, string filename, int threadLoadingId)
 	{
-		using (fileReader = OpenOrExtract(fileReader))
+		if (filename.EndsWith(".butter"))
 		{
+			fileReader.Close();
+			
 			fileReadProgress = 0;
-			List<string> allLines = new List<string>();
-			do
+			List<Frame> frames;
+			using (BinaryReader binaryReader = new BinaryReader(File.OpenRead(filename)))
 			{
-				allLines.Add(fileReader.ReadLine());
-				fileReadProgress += .0001f;
-				fileReadProgress %= 1;
+				frames = ButterFile.FromBytes(binaryReader);
+			}
 
-				// if we started loading a different file instead, stop this one
-				if (threadLoadingId != loadingThreadId) return;
-			} while (!fileReader.EndOfStream);
+			fileReadProgress = 1;
 
 			//string fileData = fileReader.ReadToEnd();
 			//List<string> allLines = fileData.LowMemSplit("\n");
 
 			Game readGame = new Game
 			{
-				rawFrames = allLines,
-				nframes = allLines.Count,
+				// rawFrames = // TODO,
+				nframes = frames.Count,
 				filename = filename,
-				frames = new List<Frame>(new Frame[allLines.Count])
+				frames = frames
 			};
 
 			lock (loadedDemoLock)
 			{
 				loadedDemo = readGame;
+			}
+		} 
+		else 
+		{
+			using (fileReader = OpenOrExtract(fileReader))
+			{
+				fileReadProgress = 0;
+				List<string> allLines = new List<string>();
+				do
+				{
+					allLines.Add(fileReader.ReadLine());
+					fileReadProgress += .0001f;
+					fileReadProgress %= 1;
+
+					// if we started loading a different file instead, stop this one
+					if (threadLoadingId != loadingThreadId) return;
+				} while (!fileReader.EndOfStream);
+
+				//string fileData = fileReader.ReadToEnd();
+				//List<string> allLines = fileData.LowMemSplit("\n");
+
+				Game readGame = new Game
+				{
+					rawFrames = allLines,
+					nframes = allLines.Count,
+					filename = filename,
+					frames = new List<Frame>(new Frame[allLines.Count])
+				};
+
+				lock (loadedDemoLock)
+				{
+					loadedDemo = readGame;
+				}
 			}
 		}
 
@@ -479,6 +517,9 @@ public class DemoStart : MonoBehaviour
 	{
 		GameManager.instance.demoStart.temporalProcessingProgress = 0;
 		Frame lastFrame = null;
+
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
 		
 		vertices.Clear();
 		colors.Clear();
@@ -513,21 +554,21 @@ public class DemoStart : MonoBehaviour
 				if (team?.players == null) continue;
 
 				// loop through all the players on the team
-				for (int p = 0; p < team.players.Length; p++)
+				for (int p = 0; p < team.players.Count; p++)
 				{
 					Player player = team.players[p];
 					
 					if (loadPointCloud)
 					{
-						vertices.Add(player.Head.Position);
+						vertices.Add(player.head.Position);
 						colors.Add(t == 1 ? new Color(1, 136/255f, 0, 1) : new Color(0, 123/255f, 1, 1));
 						normals.Add(player.velocity.ToVector3());
 					}
 					
 					
-					Player[] lastPlayers = lastFrame.teams[t]?.players;
+					List<Player> lastPlayers = lastFrame.teams[t]?.players;
 					if (lastPlayers == null) continue;
-					if (lastPlayers.Length <= p + 1) continue;
+					if (lastPlayers.Count <= p + 1) continue;
 					Player lastPlayer = lastPlayers[p];
 					if (lastPlayer == null) continue;
 
@@ -539,7 +580,7 @@ public class DemoStart : MonoBehaviour
 					}
 					
 					// how far the player's position moved this frame (m)
-					Vector3 posDiff = player.Head.Position - lastPlayer.Head.Position;
+					Vector3 posDiff = player.head.Position - lastPlayer.head.Position;
 					
 					// how far the player should have moved by velocity this frame (m)
 					Vector3 velDiff = player.velocity.ToVector3() * deltaTime;
@@ -567,7 +608,7 @@ public class DemoStart : MonoBehaviour
 		}
 
 		finishedProcessingTemporalData = true;
-		Debug.Log("Fished processing temporal data.");
+		Debug.Log($"Fished processing temporal data in {sw.Elapsed.TotalSeconds:N1} seconds.");
 	}
 
 
@@ -921,7 +962,7 @@ public class DemoStart : MonoBehaviour
 	/// Handle goal stats GUI
 	/// </summary>
 	/// <param name="ls">Data about the last score from the API</param>
-	public void RenderGoalStats(Last_Score ls)
+	public void RenderGoalStats(LastScore ls)
 	{
 		goalEventObject.SetActive(false);
 		//Debug.Log(ls.disc_speed.ToString());
@@ -1057,7 +1098,7 @@ public class DemoStart : MonoBehaviour
 		return null;
 	}
 
-	private void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex, Playspace playspace)
+	private void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex, EchoVRAPI.VRPlayer playspace)
 	{
 		// don't show spectators
 		if (teamIndex == 2) return;
@@ -1088,15 +1129,15 @@ public class DemoStart : MonoBehaviour
 		//Send Head and Hand transforms to IK script
 
 		// send head rotation 😏
-		playerIK.headPos = player.Head.Position;
-		playerIK.headForward = player.Head.forward.ToVector3();
-		playerIK.headUp = player.Head.up.ToVector3();
+		playerIK.headPos = player.head.Position;
+		playerIK.headForward = player.head.forward.ToVector3();
+		playerIK.headUp = player.head.up.ToVector3();
 
 		// send hand pos/rot ✋🤚
-		playerIK.lHandPosition = player.leftHand.Position;
-		playerIK.rHandPosition = player.rightHand.Position;
-		playerIK.lHandRotation = Quaternion.LookRotation(-player.leftHand.left.ToVector3(), player.leftHand.forward.ToVector3());
-		playerIK.rHandRotation = Quaternion.LookRotation(player.rightHand.left.ToVector3(), player.rightHand.forward.ToVector3());
+		playerIK.lHandPosition = player.lhand.Position;
+		playerIK.rHandPosition = player.rhand.Position;
+		playerIK.lHandRotation = Quaternion.LookRotation(-player.lhand.left.ToVector3(), player.lhand.forward.ToVector3());
+		playerIK.rHandRotation = Quaternion.LookRotation(player.rhand.left.ToVector3(), player.rhand.forward.ToVector3());
 
 		// send body pos/rot 🕺
 		playerIK.bodyPosition = player.body.Position;
@@ -1172,16 +1213,16 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	public (bool, bool, int[]) IsBeingHeld(Frame viewingFrame)
 	{
-		for (int j = 0; j < viewingFrame.teams.Length; j++)
+		for (int j = 0; j < viewingFrame.teams.Count; j++)
 		{
 			if (viewingFrame.teams[j].players != null)
 			{
-				for (int i = 0; i < viewingFrame.teams[j].players.Length; i++)
+				for (int i = 0; i < viewingFrame.teams[j].players.Count; i++)
 				{
 					Player p = viewingFrame.teams[j].players[i];
 					Vector3 discPosition = viewingFrame.disc.position.ToVector3();
-					Vector3 rHand = p.rightHand.Position;
-					Vector3 lHand = p.leftHand.Position;
+					Vector3 rHand = p.rhand.Position;
+					Vector3 lHand = p.lhand.Position;
 					float rHandDis = Vector3.Distance(discPosition, rHand);
 					float lHandDis = Vector3.Distance(discPosition, lHand);
 					if (rHandDis < 0.2f)

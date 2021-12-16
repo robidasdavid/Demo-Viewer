@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using EchoVRAPI;
+using Newtonsoft.Json;
 using Spark;
 using UnityEngine;
 
@@ -16,7 +18,7 @@ public class Playhead
 		set
 		{
 			currentFrameIndex = value;
-			playheadLocation = GetNearestFrame().frameTime;
+			playheadLocation = GetNearestFrame().recorded_time;
 		}
 	}
 
@@ -41,8 +43,8 @@ public class Playhead
 		if (game == null) return;
 
 		// set start and end times
-		startTime = game.GetFrame(0).frameTime;
-		endTime = game.GetFrame(game.nframes - 1).frameTime;
+		startTime = game.GetFrame(0).recorded_time;
+		endTime = game.GetFrame(game.nframes - 1).recorded_time;
 	}
 
 	public int FrameCount => game?.nframes ?? 0;
@@ -70,10 +72,10 @@ public class Playhead
 
 			// if the current playhead and the next recorded frame time are 1 second apart, just skip to the next frame
 			Frame nextFrame = isReverse ? GetPreviousFrame() : GetNextFrame();
-			float diff = (float) Math.Abs((nextFrame.frameTime - playheadLocation).TotalSeconds);
+			float diff = (float) Math.Abs((nextFrame.recorded_time - playheadLocation).TotalSeconds);
 			if (diff > 1)
 			{
-				playheadLocation = nextFrame.frameTime;
+				playheadLocation = nextFrame.recorded_time;
 			}
 		}
 	}
@@ -104,7 +106,8 @@ public class Playhead
 		{
 			// send playhead info to other players ⬆
 			GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
-			GameManager.instance.netFrameMan.networkJsonData = LiveFrameProvider.frame.originalJSON;
+			// TODO send butter frame over the network instead
+			// GameManager.instance.netFrameMan.networkJsonData = JsonConvert.SerializeObject(LiveFrameProvider.frame);
 			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
 		}
 
@@ -114,8 +117,8 @@ public class Playhead
 		GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
 		GameManager.instance.netFrameMan.networkPlaying = isPlaying;
 		GameManager.instance.netFrameMan.networkPlaySpeed = playbackMultiplier;
-		GameManager.instance.netFrameMan.networkFrameTime = GetNearestFrame().frameTime;
-		GameManager.instance.netFrameMan.networkJsonData = GetNearestFrame().originalJSON;
+		GameManager.instance.netFrameMan.networkFrameTime = GetNearestFrame().recorded_time;
+		// GameManager.instance.netFrameMan.networkJsonData = JsonConvert.SerializeObject(GetNearestFrame());
 		return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
 	}
 
@@ -150,13 +153,13 @@ public class Playhead
 		while (true)
 		{
 			// check if we are done searching
-			if (playheadLocation >= GetPreviousFrame().frameTime &&
-			    playheadLocation <= GetNearestFrame().frameTime)
+			if (playheadLocation >= GetPreviousFrame().recorded_time &&
+			    playheadLocation <= GetNearestFrame().recorded_time)
 			{
 				return;
 			}
 
-			if (GetNearestFrame().frameTime < playheadLocation)
+			if (GetNearestFrame().recorded_time < playheadLocation)
 			{
 				currentFrameIndex++;
 			}

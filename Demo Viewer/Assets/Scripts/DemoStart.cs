@@ -22,10 +22,8 @@ using EchoVRAPI;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using UnityTemplateProjects;
 using Debug = UnityEngine.Debug;
 using Transform = UnityEngine.Transform;
-using VRPlayer = EchoVRAPI.VRPlayer;
 
 //Serializable classes for JSON serializing from the API output.
 
@@ -135,8 +133,6 @@ public class DemoStart : MonoBehaviour
 	/// </summary>
 	public static int showPlayspace;
 
-	private Transform followingPlayer;
-	private bool follwingPOV;
 	public SimpleCameraController camController;
 
 	public Material pointCloudMaterial;
@@ -282,42 +278,14 @@ public class DemoStart : MonoBehaviour
 
 				// clicked on a player - follow player
 				if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
-				{	
-					FocusPlayer(psh.transform.parent);
-				}
-			}
-			else
-			{
-				if ((leftMouseButtonDown || rightMouseButtonDown) && follwingPOV && followingPlayer != null && !IsPointerOverUIObject())
 				{
-					
-					followingPlayer.gameObject.layer = 10;
-					camController.PovTransform = null;
-					camController.Origin = followingPlayer.position;
-					Vector3 playerPos = followingPlayer.position;
-					camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-					camController.transform.LookAt(playerPos);
-					camController.ApplyPosition();
-					follwingPOV = false;
-					followingPlayer = null;
+					camController.FocusPlayer(psh.GetComponentInParent<IKController>().head);
 				}
 			}
-
-			
-
-
 		}
 		else
 		{
 			playbackSlider.value = fileReadProgress;
-		}
-
-		if (followingPlayer != null)
-		{
-			if (!follwingPOV)
-			{
-				camController.Origin = followingPlayer.position;
-			}
 		}
 
 		if (finishedProcessingTemporalData)
@@ -672,69 +640,7 @@ public class DemoStart : MonoBehaviour
 	{
 
 	}
-
-
-	public void FocusPlayer(Transform playerTransform)
-	{
-		PlayerStatsHover psh = playerTransform.Find("PlayerStatsHover").GetComponent<PlayerStatsHover>();
-		if (!psh) return;
-		// clicked a player while already following them. 
-		if (followingPlayer == psh.transform)
-		{
-			// if your not in POV mode enter POV
-			if (!follwingPOV)
-			{
-				followingPlayer.gameObject.layer = 2;
-				follwingPOV = true;
-				camController.PovTransform = psh.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0).GetChild(0);
-				camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
-				camController.transform.localRotation = Quaternion.identity;
-				camController.ApplyPosition();
-			}
-			else
-			{
-				followingPlayer.gameObject.layer = 10;
-				camController.PovTransform = null;
-				camController.Origin = followingPlayer.position;
-				Vector3 playerPos = followingPlayer.position;
-				camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-				camController.transform.LookAt(playerPos);
-				camController.ApplyPosition();
-				follwingPOV = false;
-				followingPlayer = null;
-			}
-		}
-		else //Interacted with someone else
-		{
-			//if your in POV mode and you click on another person
-			if (follwingPOV)
-			{
-				followingPlayer.gameObject.layer = 10;
-				followingPlayer = psh.transform;
-				followingPlayer.gameObject.layer = 2;
-				camController.PovTransform = null;
-				camController.PovTransform = followingPlayer.transform.parent.Find("Stand_Up2").GetChild(0).GetChild(0)
-					.GetChild(0);
-				camController.transform.localPosition = new Vector3(-0.206f, 0.628000021f, -0.232999995f);
-				camController.transform.localRotation = Quaternion.identity;
-				camController.ApplyPosition();
-
-			}
-			else //If your not In POV Just Attatch to someone else
-			{
-				followingPlayer = psh.transform;
-				if (camController != null)
-				{
-					camController.Origin = followingPlayer.position;
-					Vector3 playerPos = psh.transform.position;
-					camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-					camController.transform.LookAt(playerPos);
-					camController.ApplyPosition();
-				}
-			}
-		}
-	}
-
+	
 	/// <summary>
 	/// Does input processing for keyboard and controller
 	/// </summary>
@@ -904,16 +810,16 @@ public class DemoStart : MonoBehaviour
 		{
 			if ( Input.GetKeyDown( "" + (i+1) ) )
 			{
+				// TODO don't find players by scene name
 				Transform playerByNumber = playerObjsParent.GetChild(i);
 				if (playerByNumber.name == "PlayerCharacter (Blue)(Clone)")
 				{
-					FocusPlayer(playerByNumber);
+					camController.FocusPlayer(playerByNumber.GetComponent<IKController>().head);
 				}
 			}
 		}
 		for ( int i = 5; i < 9; ++i )
 		{
-			
 			if ( Input.GetKeyDown( "" + (i+1)))
 			{
 				int startingIndex = 0;
@@ -924,8 +830,20 @@ public class DemoStart : MonoBehaviour
 				Transform playerByNumber = playerObjsParent.GetChild(startingIndex + (i-5));
 				if (playerByNumber)
 				{
-					FocusPlayer(playerObjsParent.GetChild(startingIndex + (i - 5)));
+					camController.FocusPlayer(playerByNumber.GetComponent<IKController>().head);
 				}
+			}
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			switch (camController.Mode)
+			{
+				case SimpleCameraController.CameraMode.pov:
+				case SimpleCameraController.CameraMode.follow:
+				case SimpleCameraController.CameraMode.followOrbit:
+					camController.FocusPlayer(null);
+					break;
 			}
 		}
 	}
@@ -1051,19 +969,7 @@ public class DemoStart : MonoBehaviour
 		foreach ((int, string) playerIndex in playerObjects.Keys)
 		{
 			if (!movedObjects.Contains(playerObjects[playerIndex]))
-			{	
-				// if the camera is parented to the player that is about to be removed
-				if (playerObjects[playerIndex].hoverStats.transform == followingPlayer)
-				{
-					camController.PovTransform = null;
-					camController.Origin = followingPlayer.position;
-					Vector3 playerPos = followingPlayer.position;
-					camController.transform.position = playerPos + Vector3.forward * 4 + Vector3.up * 2;
-					camController.transform.LookAt(playerPos);
-					camController.ApplyPosition();
-					follwingPOV = false;
-					followingPlayer = null;
-				}
+			{
 				Destroy(playerObjects[playerIndex].gameObject);
 				playersToRemove.Add(playerIndex);
 			}

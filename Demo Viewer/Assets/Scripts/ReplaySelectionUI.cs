@@ -65,30 +65,29 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		Online
 	}
 
-	private ReplaySources replaysSource;
+	private ReplaySources replaysSource = ReplaySources.Local;
 
 	public ReplaySources ReplaysSource
 	{
 		get => replaysSource;
 		set
 		{
-			if (value == ReplaySources.Local)
+			if (value == replaysSource) return;
+			switch (value)
 			{
-				localReplaysList.gameObject.SetActive(true);
-				onlineReplaysList.gameObject.SetActive(false);
-				scrollView.content = localReplaysList.GetComponent<RectTransform>();
-
-				StartCoroutine(GetReplaysLocal(manualInputText.text));
-			}
-			else if (value == ReplaySources.Online)
-			{
-				localReplaysList.gameObject.SetActive(false);
-				onlineReplaysList.gameObject.SetActive(true);
-				scrollView.content = onlineReplaysList.GetComponent<RectTransform>();
-
-				StartCoroutine(GetReplaysWeb());
+				case ReplaySources.Local:
+					localReplaysList.gameObject.SetActive(true);
+					onlineReplaysList.gameObject.SetActive(false);
+					scrollView.content = localReplaysList.GetComponent<RectTransform>();
+					break;
+				case ReplaySources.Online:
+					localReplaysList.gameObject.SetActive(false);
+					onlineReplaysList.gameObject.SetActive(true);
+					scrollView.content = onlineReplaysList.GetComponent<RectTransform>();
+					break;
 			}
 
+			RefreshReplaysList();
 			replaysSource = value;
 		}
 	}
@@ -109,7 +108,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		manualInputText.text = PlayerPrefs.GetString("fileDirector");
 
 		// refresh the list
-		ReplaysSource = ReplaysSource;
+		RefreshReplaysList();
 	}
 
 	private void Update()
@@ -121,7 +120,22 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		}
 	}
 
-	IEnumerator GetReplaysWeb()
+	private void RefreshReplaysList()
+	{
+		switch (ReplaysSource)
+		{
+			case ReplaySources.Local:
+				StartCoroutine(GetReplaysLocal(manualInputText.text));
+				break;
+			case ReplaySources.Online:
+				StartCoroutine(GetReplaysWeb());
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+	}
+
+	private IEnumerator GetReplaysWeb()
 	{
 		// get the json data about what replays are available
 		using (UnityWebRequest webRequest = UnityWebRequest.Get(replayGetURL))
@@ -160,14 +174,9 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		}
 	}
 
-	public void GetReplayLocalStatic(string path)
-	{
-		StartCoroutine(GetReplaysLocal(path));
-	}
-
 	private IEnumerator GetReplaysLocal(string path)
 	{
-		Debug.Log("Finding path to :" + path);
+		Debug.Log("Finding path to: " + path);
 		if (path == "")
 		{
 			path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Spark", "replays");

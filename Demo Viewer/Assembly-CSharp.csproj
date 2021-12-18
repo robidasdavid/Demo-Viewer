@@ -1278,6 +1278,14 @@
       <Project>{74865e88-2797-ceb5-fce2-2ec58b36ef3c}</Project>
       <Name>FranzCo.unityutilities.VRInteraction</Name>
     </ProjectReference>
+    <ProjectReference Include="com.unity.cinemachine.editor.csproj">
+      <Project>{077beedc-7f92-90f6-16f6-5eb07ba00fe5}</Project>
+      <Name>com.unity.cinemachine.editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Cinemachine.csproj">
+      <Project>{1f642ffd-6ad8-3471-0c95-74181fd2c5de}</Project>
+      <Name>Cinemachine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

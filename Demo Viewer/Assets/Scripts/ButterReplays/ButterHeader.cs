@@ -131,6 +131,11 @@ namespace ButterReplays
 				return playerIndex == 0 ? -1 : levels[playerIndex - 1];
 			}
 
+			public int GetPlayerNumber(byte playerIndex)
+			{
+				return playerIndex == 0 ? -1 : numbers[playerIndex - 1];
+			}
+
 			public long GetUserId(byte playerIndex)
 			{
 				return playerIndex == 0 ? 0 : userids[playerIndex - 1];

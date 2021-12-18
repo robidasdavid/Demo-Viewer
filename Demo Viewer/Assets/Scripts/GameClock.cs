@@ -14,8 +14,8 @@ public class GameClock : MonoBehaviour
 		if (DemoStart.playhead == null) return;
 		Frame frame = DemoStart.playhead.GetFrame();
 		if (frame == null) return;
-		blueScore.text = frame.blue_points.ToString("00.##");
-		orangeScore.text = frame.orange_points.ToString("00.##");
+		blueScore.text = frame.blue_points.ToString("D2");
+		orangeScore.text = frame.orange_points.ToString("D2");
 		gameClock.text = frame.game_clock_display;
 	}
 }

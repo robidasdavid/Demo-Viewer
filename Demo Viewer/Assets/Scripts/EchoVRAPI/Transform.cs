@@ -11,6 +11,7 @@ namespace EchoVRAPI
 	/// </summary>
 	public class Transform
 	{
+		
 		/// <summary>
 		/// Don't get this value. Use Position property instead
 		/// </summary>
@@ -40,6 +41,7 @@ namespace EchoVRAPI
 				// only set the one with prior data
 				if (pos != null) pos = value.ToFloatList();
 				if (position != null) position = value.ToFloatList();
+				else position = value.ToFloatList();
 			}
 		}
 		
@@ -63,6 +65,30 @@ namespace EchoVRAPI
 				up = value.Up().ToFloatList();
 				left = value.Left().ToFloatList();
 			}
+		}
+
+		public static Transform operator +(Transform t1, Transform t2)
+		{
+			if (t2 == null) return t1;
+			Transform ret = new Transform
+			{
+				Position = t1.Position + t2.Position,
+				// ret.Rotation = Quaternion.Multiply(t1.Rotation, t2.Rotation);
+				Rotation = t1.Rotation
+			};
+			return ret;
+		}
+		
+		public static Transform operator -(Transform t1, Transform t2)
+		{
+			if (t2 == null) return t1;
+			Transform ret = new Transform
+			{
+				Position = t1.Position - t2.Position,
+				// ret.Rotation = Quaternion.Multiply(t1.Rotation, Quaternion.Inverse(t2.Rotation));
+				Rotation = t1.Rotation
+			};
+			return ret;
 		}
 
 		/// <summary>

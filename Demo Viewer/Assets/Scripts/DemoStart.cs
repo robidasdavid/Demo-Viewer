@@ -608,7 +608,7 @@ public class DemoStart : MonoBehaviour
 		}
 
 		finishedProcessingTemporalData = true;
-		Debug.Log($"Fished processing temporal data in {sw.Elapsed.TotalSeconds:N1} seconds.");
+		Debug.Log($"Fished processing temporal data in {sw.Elapsed.TotalSeconds:N2} seconds.");
 	}
 
 
@@ -618,6 +618,8 @@ public class DemoStart : MonoBehaviour
 	/// <param name="demoFile">The filename of the replay file</param>
 	private IEnumerator LoadFile(string demoFile = "")
 	{
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
 		if (!string.IsNullOrEmpty(demoFile))
 		{
 			Debug.Log("Reading file: " + demoFile);
@@ -630,6 +632,8 @@ public class DemoStart : MonoBehaviour
 				// maybe put a progress bar here
 				yield return null;
 			}
+			
+			Debug.Log($"Fished reading file in {sw.Elapsed.TotalSeconds:N2} seconds.");
 			
 			if (processTemporalDataInBackground)
 			{

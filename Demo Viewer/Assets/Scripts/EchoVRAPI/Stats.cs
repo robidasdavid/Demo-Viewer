@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace EchoVRAPI
 {
 	
@@ -57,6 +59,26 @@ namespace EchoVRAPI
 				shots_taken = a.shots_taken - b.shots_taken
 			};
 			return stats;
+		}
+		
+		public override string ToString()
+		{
+			StringBuilder s = new StringBuilder();
+			s.Append("Possession Time: ");
+			s.Append(possession_time.ToString("N0"));
+			s.Append("\nPoints: ");
+			s.Append(points);
+			s.Append("\nGoals: ");
+			s.Append(goals);
+			s.Append("\nSaves: ");
+			s.Append(saves);
+			s.Append("\nStuns: ");
+			s.Append(stuns);
+			s.Append("\nAssists: ");
+			s.Append(assists);
+			s.Append("\nShots Taken: ");
+			s.Append(shots_taken);
+			return s.ToString();
 		}
 	}
 

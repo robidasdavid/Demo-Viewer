@@ -121,7 +121,8 @@ namespace Photon.Compression.HalfFloat
 		//[CLSCompliant(false)]
 		public ushort RawValue
 		{
-			get { return value; }
+			get => value;
+			set => this.value = value;
 		}
 
 		/// <summary>

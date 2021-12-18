@@ -438,20 +438,20 @@ namespace EchoVRAPI
 		{
 			if (input.Count != 3)
 			{
-				throw new Exception("Can't convert List to Vector3");
+				throw new Exception("Can't convert List to Vector3. There must be 3 elements.");
 			}
 
-			return new Vector3(input[0], input[1], input[2]);
+			return new Vector3(input[2], input[1], input[0]);
 		}
 
 		public static Vector3 ToVector3(this float[] input)
 		{
 			if (input.Length != 3)
 			{
-				throw new Exception("Can't convert array to Vector3");
+				throw new Exception("Can't convert array to Vector3. There must be 3 elements.");
 			}
 
-			return new Vector3(input[0], input[1], input[2]);
+			return new Vector3(input[2], input[1], input[0]);
 		}
 
 		public static Vector3 ToVector3Backwards(this float[] input)
@@ -461,16 +461,16 @@ namespace EchoVRAPI
 				throw new Exception("Can't convert array to Vector3");
 			}
 
-			return new Vector3(input[2], input[1], input[0]);
+			return new Vector3(input[0], input[1], input[2]);
 		}
 
 		public static float[] ToFloatArray(this Vector3 vector3)
 		{
 			return new float[]
 			{
-				vector3.x,
+				vector3.z,
 				vector3.y,
-				vector3.z
+				vector3.x
 			};
 		}
 
@@ -478,9 +478,9 @@ namespace EchoVRAPI
 		{
 			return new List<float>
 			{
-				vector3.x,
+				vector3.z,
 				vector3.y,
-				vector3.z
+				vector3.x
 			};
 		}
 

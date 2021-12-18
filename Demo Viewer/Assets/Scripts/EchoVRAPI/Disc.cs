@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace EchoVRAPI
@@ -26,6 +27,36 @@ namespace EchoVRAPI
 		public List<float> velocity { get; set; }
 
 		public int bounce_count { get; set; }
+		
+		
+		[JsonIgnore]
+		public Vector3 Position
+		{
+			get => position?.ToVector3() ?? Vector3.zero;
+			set => position = value.ToFloatList();
+		}
+		
+		[JsonIgnore]
+		internal Quaternion? rot;
+
+		[JsonIgnore]
+		public Quaternion Rotation
+		{
+			get
+			{
+				if (rot != null) return (Quaternion) rot;
+
+				rot = Math2.QuaternionLookRotation(forward.ToVector3(), up.ToVector3());
+				return (Quaternion) rot;
+			}
+			set
+			{
+				rot = value;
+				forward = value.Forward().ToFloatList();
+				up = value.Up().ToFloatList();
+				left = value.Left().ToFloatList();
+			}
+		}
 
 		/// <summary>
 		/// ↔ Mixes the two states with a linear interpolation based on t

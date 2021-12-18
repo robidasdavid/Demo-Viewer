@@ -29,6 +29,9 @@ public class Playhead
 	public DateTime startTime;
 	public DateTime endTime;
 
+	private DateTime lastPlayheadLocation;
+	private Frame lastFrame;
+
 	public bool wasPlaying = false;
 	public bool isPlaying;
 	public bool isReverse;
@@ -111,6 +114,11 @@ public class Playhead
 			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
 		}
 
+		if (lastPlayheadLocation == playheadLocation && lastFrame != null)
+		{
+			return lastFrame;
+		}
+
 		LastFrameIndex = currentFrameIndex;
 		// send playhead info to other players ⬆
 		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(game.filename);
@@ -119,7 +127,9 @@ public class Playhead
 		GameManager.instance.netFrameMan.networkPlaySpeed = playbackMultiplier;
 		GameManager.instance.netFrameMan.networkFrameTime = GetNearestFrame().recorded_time;
 		// GameManager.instance.netFrameMan.networkJsonData = JsonConvert.SerializeObject(GetNearestFrame());
-		return Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
+		lastFrame = Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
+		lastPlayheadLocation = playheadLocation;
+		return lastFrame;
 	}
 
 	public Frame GetNearestFrame()

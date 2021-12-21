@@ -235,6 +235,7 @@ namespace EchoVRAPI
 				private_match = from.private_match,
 				client_name = from.client_name,
 				game_clock_display = from.game_clock_display, // TODO this could be interpolated
+				player = VRPlayer.Lerp(from.player, to.player, lerpValue),
 				game_status = from.game_status,
 				game_clock = Math2.Lerp(from.game_clock, to.game_clock, lerpValue),
 				match_type = from.match_type,
@@ -464,6 +465,16 @@ namespace EchoVRAPI
 			return new Vector3(input[0], input[1], input[2]);
 		}
 
+		public static Vector3 ToVector3Backwards(this List<float> input)
+		{
+			if (input.Count != 3)
+			{
+				throw new Exception("Can't convert array to Vector3");
+			}
+
+			return new Vector3(input[0], input[1], input[2]);
+		}
+
 		public static float[] ToFloatArray(this Vector3 vector3)
 		{
 			return new float[]
@@ -507,6 +518,17 @@ namespace EchoVRAPI
 		}
 
 		/// <summary>
+		/// converts this quaternion to its forward vector
+		/// </summary>
+		public static Vector3 ForwardBackwards(this Quaternion q)
+		{
+			return new Vector3(
+				1 - 2 * (q.x * q.x + q.y * q.y), 
+				2 * (q.y * q.z - q.w * q.x),
+				2 * (q.x * q.z + q.w * q.y));
+		}
+
+		/// <summary>
 		/// converts this quaternion to its left vector
 		/// </summary>
 		public static Vector3 Left(this Quaternion q)
@@ -523,6 +545,17 @@ namespace EchoVRAPI
 				2 * (q.x * q.y - q.w * q.z), 
 				1 - 2 * (q.x * q.x + q.z * q.z),
 				2 * (q.y * q.z + q.w * q.x));
+		}
+
+		/// <summary>
+		/// converts this quaternion to its up vector
+		/// </summary>
+		public static Vector3 UpBackwards(this Quaternion q)
+		{
+			return new Vector3(
+				2 * (q.y * q.z + q.w * q.x),
+				1 - 2 * (q.x * q.x + q.z * q.z),
+				2 * (q.x * q.y - q.w * q.z));
 		}
 	}
 }

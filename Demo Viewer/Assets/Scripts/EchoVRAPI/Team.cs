@@ -54,6 +54,9 @@ namespace EchoVRAPI
 		/// <returns>A mix of the two frames</returns>
 		internal static Team Lerp(Team from, Team to, float t)
 		{
+			if (from == null) return to;
+			if (to == null) return from;
+			
 			t = Math2.Clamp01(t);
 
 			Team newTeam = new Team()

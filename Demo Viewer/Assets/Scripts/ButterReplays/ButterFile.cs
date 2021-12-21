@@ -404,6 +404,12 @@ namespace ButterReplays
 
 		public static List<Frame> FromBytes(BinaryReader fileInput)
 		{
+			float progress = 0;
+			return FromBytes(fileInput, ref progress);
+		}
+
+		public static List<Frame> FromBytes(BinaryReader fileInput, ref float readProgress)
+		{
 			List<Frame> l = new List<Frame>();
 
 			byte formatVersion = fileInput.ReadByte();
@@ -782,7 +788,7 @@ namespace ButterReplays
 							}
 							else
 							{
-								p.velocity = lastFrame.GetPlayer(p.userid).velocity;
+								p.velocity = lastFrame?.GetPlayer(p.userid)?.velocity ?? new List<float>() {0,0,0};
 							}
 
 							List<bool> playerPoseBitmask = input.ReadByte().GetBitmaskValues();
@@ -867,6 +873,8 @@ namespace ButterReplays
 					lastFrame = f;
 					l.Add(f);
 				}
+
+				readProgress = (float)chunkIndex / numChunks;
 			}
 
 			return l;
@@ -1159,7 +1167,7 @@ namespace ButterReplays
 			}
 			
 			float f4 = Mathf.Sqrt(1 - f1 * f1 - f2 * f2 - f3 * f3);
-			return maxIndex switch
+			Quaternion ret = maxIndex switch
 			{
 				0 => new Quaternion(f4, f1, f2, f3),
 				1 => new Quaternion(f1, f4, f2, f3),
@@ -1167,6 +1175,8 @@ namespace ButterReplays
 				3 => new Quaternion(f1, f2, f3, f4),
 				_ => throw new Exception("Invalid index")
 			};
+			return Quaternion.LookRotation(ret.ForwardBackwards(), ret.UpBackwards());
+			return ret;
 		}
 
 		// converts time in seconds to a string in the format "mm:ss.ms"

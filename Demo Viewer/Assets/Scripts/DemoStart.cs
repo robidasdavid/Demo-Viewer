@@ -380,7 +380,7 @@ public class DemoStart : MonoBehaviour
 			List<Frame> frames;
 			using (BinaryReader binaryReader = new BinaryReader(File.OpenRead(filename)))
 			{
-				frames = ButterFile.FromBytes(binaryReader);
+				frames = ButterFile.FromBytes(binaryReader, ref fileReadProgress);
 			}
 
 			fileReadProgress = 1;
@@ -845,6 +845,15 @@ public class DemoStart : MonoBehaviour
 					camController.FocusPlayer(null);
 					break;
 			}
+		}
+		
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			camController.Mode = SimpleCameraController.CameraMode.free;
+		}
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			camController.Mode = SimpleCameraController.CameraMode.recorded;
 		}
 	}
 

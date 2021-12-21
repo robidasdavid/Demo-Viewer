@@ -1,5 +1,7 @@
 ﻿using System;
+using EchoVRAPI;
 using UnityEngine;
+using Transform = UnityEngine.Transform;
 
 public class SimpleCameraController : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class SimpleCameraController : MonoBehaviour
 			yaw = eulerAngles.y;
 			roll = eulerAngles.z;
 		}
-		
+
 		public void Translate(Vector3 translation)
 		{
 			Vector3 rotatedTranslation = Quaternion.Euler(0, yaw, roll) * translation;
@@ -66,18 +68,19 @@ public class SimpleCameraController : MonoBehaviour
 		recorded,
 	}
 
-	private CameraMode mode;
+	[SerializeField] private CameraMode mode;
 
 	public CameraMode Mode
 	{
 		get => mode;
-		private set
+		set
 		{
 			switch (value)
 			{
 				case CameraMode.free:
 					targetCameraState.SetPosition(transform.position);
 					interpolatingCameraState.SetPosition(transform.position);
+					targetCameraState.SetRotation(Quaternion.LookRotation(transform.forward, Vector3.up));
 					break;
 				case CameraMode.pov:
 					break;
@@ -86,6 +89,7 @@ public class SimpleCameraController : MonoBehaviour
 				case CameraMode.followOrbit:
 					targetCameraState.SetPosition(transform.position - playerTarget.position);
 					interpolatingCameraState.SetPosition(transform.position - playerTarget.position);
+					targetCameraState.SetRotation(Quaternion.LookRotation(transform.forward, Vector3.up));
 					break;
 				case CameraMode.auto:
 					break;
@@ -100,6 +104,11 @@ public class SimpleCameraController : MonoBehaviour
 			mode = value;
 		}
 	}
+
+	/// <summary>
+	/// This is used when a player is clicked
+	/// </summary>
+	private CameraMode followCameraMode = CameraMode.followOrbit;
 
 	/// <summary>
 	/// The local position relative to the origin
@@ -140,21 +149,32 @@ public class SimpleCameraController : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (mode == CameraMode.free)
+		switch (mode)
 		{
-			FreeCamMovement();
-		}
-
-		if (mode == CameraMode.followOrbit)
-		{
-			OrbitMovement();
+			case CameraMode.free:
+				FreeCamMovement();
+				break;
+			case CameraMode.pov:
+				break;
+			case CameraMode.follow:
+				break;
+			case CameraMode.followOrbit:
+				OrbitMovement();
+				break;
+			case CameraMode.auto:
+				break;
+			case CameraMode.sideline:
+				break;
+			case CameraMode.recorded:
+				RecordedCameraMovement();
+				break;
 		}
 
 		// Framerate-independent interpolation
 		// Calculate the lerp amount, such that we get 99% of the way to our target in the specified time
 		float positionLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / positionLerpTime) * Time.deltaTime);
 		float rotationLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / rotationLerpTime) * Time.deltaTime);
-		
+
 		interpolatingCameraState.LerpTowards(targetCameraState, positionLerpPct, rotationLerpPct);
 
 		switch (mode)
@@ -256,14 +276,23 @@ public class SimpleCameraController : MonoBehaviour
 		Vector2 controllerRightStick = new Vector2(Input.GetAxis("RightX"), Input.GetAxis("RightY"));
 		targetCameraState.yaw += controllerRightStick.x * 1.25f;
 		targetCameraState.pitch += controllerRightStick.y * 1.25f;
-		
+
 		// zoom
 		targetCameraState.orbitDistance -= Input.mouseScrollDelta.y * orbitScrollSpeed;
 		targetCameraState.orbitDistance = Mathf.Clamp(targetCameraState.orbitDistance, .1f, 20f);
-		
+
 		// generate the position that matches this orientation and orbitDistance
 		Vector3 targetPos = transform.TransformDirection(Vector3.forward) * -targetCameraState.orbitDistance;
 		targetCameraState.SetPosition(targetPos);
+	}
+
+	private void RecordedCameraMovement()
+	{
+		if (DemoStart.playhead == null) return;
+		Frame frame = DemoStart.playhead.GetFrame();
+		if (frame == null) return;
+		targetCameraState.SetPosition(frame.player.Position);
+		targetCameraState.SetRotation(frame.player.Rotation);
 	}
 
 
@@ -315,44 +344,26 @@ public class SimpleCameraController : MonoBehaviour
 		return direction;
 	}
 
+	public void SetFollowCameraModeDropdown(int index)
+	{
+		followCameraMode = index switch
+		{
+			0 => CameraMode.followOrbit,
+			1 => CameraMode.follow,
+			2 => CameraMode.pov,
+			_ => Mode
+		};
+
+		if (playerTarget != null)
+		{
+			Mode = followCameraMode;
+		}
+	}
+
 	public void FocusPlayer(Transform playerHead)
 	{
-		bool targetsSame = playerHead == playerTarget;
 		playerTarget = playerHead;
-		
-		// if already focused on this player, switch to next follow mode
-		if (targetsSame)
-		{
-			switch (Mode)
-			{
-				case CameraMode.free:
-					Mode = CameraMode.followOrbit;
-					break;
-				case CameraMode.pov:
-					Mode = CameraMode.free;
-					break;
-				case CameraMode.follow:
-					Mode = CameraMode.pov;
-					break;
-				case CameraMode.followOrbit:
-					Mode = CameraMode.follow;
-					break;
-				case CameraMode.auto:
-				case CameraMode.sideline:
-				case CameraMode.recorded:
-					Mode = CameraMode.followOrbit;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-		}
-		else if (playerHead !=null)
-		{
-			Mode = CameraMode.followOrbit;
-		}
-		else
-		{
-			Mode = CameraMode.free;
-		}
+
+		Mode = playerHead != null ? followCameraMode : CameraMode.free;
 	}
 }

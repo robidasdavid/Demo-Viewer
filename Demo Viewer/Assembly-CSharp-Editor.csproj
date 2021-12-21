@@ -747,17 +747,13 @@
       <Project>{6dc7a04d-3089-642a-08dc-53980ef9f335}</Project>
       <Name>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.InputSystem.csproj">
-      <Project>{063fa87b-9a0c-f4ed-1dc3-3eb722ce6b58}</Project>
-      <Name>Unity.InputSystem</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{1f11dcc7-2371-0779-258d-cd9d338d4787}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
-    <ProjectReference Include="PunDemos.DemoHubEditor.csproj">
-      <Project>{d89b06b6-082e-48f8-61bf-124fbb32c440}</Project>
-      <Name>PunDemos.DemoHubEditor</Name>
+    <ProjectReference Include="Unity.InputSystem.csproj">
+      <Project>{063fa87b-9a0c-f4ed-1dc3-3eb722ce6b58}</Project>
+      <Name>Unity.InputSystem</Name>
     </ProjectReference>
     <ProjectReference Include="Pcx.csproj">
       <Project>{e6cf0009-54e6-7e0f-3021-fedd5ffb4ec7}</Project>
@@ -779,17 +775,21 @@
       <Project>{6bbab12e-d47c-a946-ca67-013f425a59c5}</Project>
       <Name>Unity.RenderPipelines.Core.ShaderLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="UnityEngine.SpatialTracking.csproj">
+      <Project>{197ff217-bd20-43c1-6426-2c9320f31743}</Project>
+      <Name>UnityEngine.SpatialTracking</Name>
+    </ProjectReference>
     <ProjectReference Include="Autodesk.Fbx.csproj">
       <Project>{fa0ffc8c-2e97-4c45-1ec2-e27ae2b66b5b}</Project>
       <Name>Autodesk.Fbx</Name>
     </ProjectReference>
+    <ProjectReference Include="PunDemos.DemoHubEditor.csproj">
+      <Project>{d89b06b6-082e-48f8-61bf-124fbb32c440}</Project>
+      <Name>PunDemos.DemoHubEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="MenuTablet.csproj">
       <Project>{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}</Project>
       <Name>MenuTablet</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityEngine.SpatialTracking.csproj">
-      <Project>{197ff217-bd20-43c1-6426-2c9320f31743}</Project>
-      <Name>UnityEngine.SpatialTracking</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
       <Project>{c82bca3a-7678-253e-160b-6333c267cc4d}</Project>
@@ -802,6 +802,14 @@
     <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
       <Project>{829de81f-bcf5-6021-9aa9-7a20f8c70c28}</Project>
       <Name>Unity.ShaderGraph.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Cinemachine.csproj">
+      <Project>{1f642ffd-6ad8-3471-0c95-74181fd2c5de}</Project>
+      <Name>Cinemachine</Name>
+    </ProjectReference>
+    <ProjectReference Include="com.unity.cinemachine.editor.csproj">
+      <Project>{077beedc-7f92-90f6-16f6-5eb07ba00fe5}</Project>
+      <Name>com.unity.cinemachine.editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Formats.Fbx.Runtime.csproj">
       <Project>{586a87b0-7b17-3be9-ab2f-54d2ab779a2e}</Project>
@@ -1002,14 +1010,6 @@
     <ProjectReference Include="FranzCo.unityutilities.VRInteraction.csproj">
       <Project>{74865e88-2797-ceb5-fce2-2ec58b36ef3c}</Project>
       <Name>FranzCo.unityutilities.VRInteraction</Name>
-    </ProjectReference>
-    <ProjectReference Include="com.unity.cinemachine.editor.csproj">
-      <Project>{077beedc-7f92-90f6-16f6-5eb07ba00fe5}</Project>
-      <Name>com.unity.cinemachine.editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Cinemachine.csproj">
-      <Project>{1f642ffd-6ad8-3471-0c95-74181fd2c5de}</Project>
-      <Name>Cinemachine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -210,6 +210,9 @@ namespace EchoVRAPI
 		/// <returns>A mix of the two frames</returns>
 		public static Frame Lerp(Frame from, Frame to, DateTime t)
 		{
+			if (from == null) return to;
+			if (to == null) return from;
+			
 			if (from.recorded_time == to.recorded_time) return from;
 			if (from.recorded_time > to.recorded_time)
 			{

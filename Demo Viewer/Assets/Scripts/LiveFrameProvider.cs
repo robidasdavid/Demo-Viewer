@@ -17,20 +17,20 @@ public class LiveFrameProvider : MonoBehaviour
 	public string networkAPIURL = "localhost:5005/live_replay/";
 	public string session_id;
 
-	float lastFrameTime = 0;
+	double lastFetchTime = 0;
 
 	// fps of fetching
-	float updateRate = 60;
+	public float updateRate = 60;
 
 	// Update is called once per frame
 	void Update()
 	{
 		if (isLive)
 		{
-			if (Time.time - lastFrameTime > (1 / updateRate))
+			if (Time.time - lastFetchTime > (1 / updateRate))
 			{
 				StartCoroutine(GetNewFrame());
-				lastFrameTime = Time.time;
+				lastFetchTime = Time.timeAsDouble;
 			}
 		}
 	}
@@ -48,11 +48,7 @@ public class LiveFrameProvider : MonoBehaviour
 		}
 		yield return request.SendWebRequest();
 
-		if (request.isNetworkError)
-		{
-			// not in match
-		}
-		else
+		if (request.result == UnityWebRequest.Result.Success)
 		{
 			lastFrame = frame;
 			try

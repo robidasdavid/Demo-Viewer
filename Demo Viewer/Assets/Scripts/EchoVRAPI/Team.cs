@@ -81,6 +81,12 @@ namespace EchoVRAPI
 				else if (to.players.Count <= i &&
 				         from.players.Count > i)
 				{
+					if (from.players == null)
+					{
+						Debug.LogError("Team null");
+					}
+					if (newTeam.players.Count <= i) Debug.LogError("newTeam too short");
+					if (from.players.Count <= i) Debug.LogError("from too short");
 					newTeam.players[i] = from.players[i];
 				}
 				else if (from.players.Count > i &&

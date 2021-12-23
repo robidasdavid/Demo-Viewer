@@ -110,6 +110,8 @@ public class SimpleCameraController : MonoBehaviour
 	/// </summary>
 	private CameraMode followCameraMode = CameraMode.followOrbit;
 
+	public Camera cam;
+
 	/// <summary>
 	/// The local position relative to the origin
 	/// </summary>
@@ -124,6 +126,12 @@ public class SimpleCameraController : MonoBehaviour
 	public Vector3 followCamOffset = new Vector3(0, .5f, -2f);
 	public float orbitScrollSpeed = .1f;
 
+
+	[Header("Sideline Camera")]
+	public float discPositionSmoothness = 1f;
+	public float discPositionSmoothnessDirection = 1f;
+	private Vector3 smoothedDiscPos = Vector3.zero;
+	private Vector3 smoothedDiscPosDirection = Vector3.zero;
 
 	[Header("Movement Settings")] [Tooltip("Exponential boost factor on translation, controllable by mouse wheel.")]
 	public float boost = 3.5f;
@@ -155,15 +163,19 @@ public class SimpleCameraController : MonoBehaviour
 				FreeCamMovement();
 				break;
 			case CameraMode.pov:
+				if (playerTarget == null) Mode = CameraMode.free;
 				break;
 			case CameraMode.follow:
+				if (playerTarget == null) Mode = CameraMode.free;
 				break;
 			case CameraMode.followOrbit:
-				OrbitMovement();
+				if (playerTarget == null) Mode = CameraMode.free;
+				else OrbitMovement();
 				break;
 			case CameraMode.auto:
 				break;
 			case CameraMode.sideline:
+				SidelineMovement();
 				break;
 			case CameraMode.recorded:
 				RecordedCameraMovement();
@@ -293,6 +305,29 @@ public class SimpleCameraController : MonoBehaviour
 		if (frame == null) return;
 		targetCameraState.SetPosition(frame.player.Position);
 		targetCameraState.SetRotation(frame.player.Rotation);
+	}
+
+	private void SidelineMovement()
+	{
+		if (DemoStart.playhead == null) return;
+		Frame frame = DemoStart.playhead.GetFrame();
+		if (frame == null) return;
+
+		smoothedDiscPos = Vector3.Lerp(smoothedDiscPos, frame.disc.Position, Time.deltaTime * discPositionSmoothness);
+		smoothedDiscPosDirection = Vector3.Lerp(smoothedDiscPosDirection, frame.disc.Position, Time.deltaTime * discPositionSmoothnessDirection);
+			
+		Vector3 pos = smoothedDiscPos;
+		
+		pos.x = Mathf.Clamp(pos.x, -24, 24);
+		pos.z = 14.4f;
+		pos.y = pos.x*pos.x * .009f;
+		Vector3 direction = smoothedDiscPosDirection - pos;
+		direction.z = -Mathf.Abs(direction.z);
+		Quaternion rotation = Quaternion.LookRotation(direction);
+		cam.fieldOfView = Mathf.Clamp(1/Vector3.Distance(pos, smoothedDiscPos) * 500f, 10, 100);
+		SetCameraPositionLive.FOV = cam.fieldOfView;
+		targetCameraState.SetPosition(pos);
+		targetCameraState.SetRotation(rotation);
 	}
 
 

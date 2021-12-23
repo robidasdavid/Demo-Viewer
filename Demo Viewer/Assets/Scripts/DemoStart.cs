@@ -855,6 +855,10 @@ public class DemoStart : MonoBehaviour
 		{
 			camController.Mode = SimpleCameraController.CameraMode.recorded;
 		}
+		if (Input.GetKeyDown(KeyCode.T))
+		{
+			camController.Mode = SimpleCameraController.CameraMode.sideline;
+		}
 	}
 
 	private void UpdateSpeedSlider()

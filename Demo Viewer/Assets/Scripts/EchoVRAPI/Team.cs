@@ -56,7 +56,7 @@ namespace EchoVRAPI
 		{
 			if (from == null) return to;
 			if (to == null) return from;
-			
+
 			t = Math2.Clamp01(t);
 
 			Team newTeam = new Team()

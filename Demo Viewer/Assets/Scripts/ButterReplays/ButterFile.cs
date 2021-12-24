@@ -401,6 +401,14 @@ namespace ButterReplays
 		//
 		// 	return fullFileBytes.ToArray();
 		// }
+		
+		public static List<Frame> FromBytes(byte[] bytes)
+		{
+			float progress = 0;
+			using MemoryStream mem = new MemoryStream(bytes);
+			using BinaryReader fileInput = new BinaryReader(mem);
+			return FromBytes(fileInput, ref progress);
+		}
 
 		public static List<Frame> FromBytes(BinaryReader fileInput)
 		{
@@ -697,20 +705,21 @@ namespace ButterReplays
 					}
 
 					byte teamDataBitmask = input.ReadByte();
+					List<bool> teamDataBools = teamDataBitmask.GetBitmaskValues();
 					f.teams = new List<Team>()
 					{
 						new Team(),
 						new Team(),
 						new Team(),
 					};
-					f.teams[0].possession = (teamDataBitmask & 0b1) > 0;
-					f.teams[1].possession = (teamDataBitmask & 0b10) > 0;
+					f.teams[0].possession = teamDataBools[0];
+					f.teams[1].possession = teamDataBools[1];
 
 					// Team stats included
 					bool[] teamStatsIncluded = new bool[3];
-					teamStatsIncluded[0] = (teamDataBitmask & 0b100) > 0;
-					teamStatsIncluded[1] = (teamDataBitmask & 0b1000) > 0;
-					teamStatsIncluded[2] = (teamDataBitmask & 0b10000) > 0;
+					teamStatsIncluded[0] = teamDataBools[2];
+					teamStatsIncluded[1] = teamDataBools[3];
+					teamStatsIncluded[2] = teamDataBools[4];
 
 					// add team data
 					for (int i = 0; i < 3; i++)
@@ -719,6 +728,11 @@ namespace ButterReplays
 						{
 							f.teams[i].stats = input.ReadStats();
 							// TODO diff
+						}
+						else
+						{
+							// these could just be 0 to start with, so we create a new Stats obj
+							f.teams[i].stats = lastFrame?.teams[i].stats ?? new Stats();
 						}
 
 						int teamPlayerCount = input.ReadByte();
@@ -931,6 +945,12 @@ namespace ButterReplays
 		{
 			return Encoding.UTF8.GetString(UnzipBytes(bytes));
 		}
+		
+		
+		public static byte[] GetHalfBytes(Half half)
+		{
+			return BitConverter.GetBytes(half.RawValue);
+		}
 	}
 
 	public static class BitConverterExtensions
@@ -945,7 +965,7 @@ namespace ButterReplays
 			List<byte> bytes = new List<byte>();
 			foreach (float val in values)
 			{
-				bytes.AddRange(BitConverter.GetBytes((Half)val));
+				bytes.AddRange(ButterFile.GetHalfBytes((Half)val));
 			}
 
 			return bytes.ToArray();
@@ -959,9 +979,9 @@ namespace ButterReplays
 		public static byte[] GetHalfBytes(this Vector3 value)
 		{
 			List<byte> bytes = new List<byte>();
-			bytes.AddRange(BitConverter.GetBytes((Half)value.x));
-			bytes.AddRange(BitConverter.GetBytes((Half)value.y));
-			bytes.AddRange(BitConverter.GetBytes((Half)value.z));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)value.x));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)value.y));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)value.z));
 			return bytes.ToArray();
 		}
 
@@ -1245,6 +1265,11 @@ namespace ButterReplays
 				RawValue = s
 			};
 			return h;
+		}
+		
+		public static void WriteHalf(this BinaryWriter writer, Half h)
+		{
+			writer.Write(h.RawValue);
 		}
 	}
 }

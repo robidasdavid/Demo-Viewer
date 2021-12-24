@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ButterReplays;
 using EchoVRAPI;
 using Newtonsoft.Json;
 using Spark;
@@ -29,7 +30,7 @@ public class Playhead
 	public DateTime startTime;
 	public DateTime endTime;
 
-	private DateTime lastPlayheadLocation;
+	public DateTime lastPlayheadLocation;
 	private Frame lastFrame;
 
 	public bool wasPlaying = false;
@@ -99,18 +100,13 @@ public class Playhead
 		// if we are not host of the room, get the frame from the network
 		if (!GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
-			isPlaying = GameManager.instance.netFrameMan.networkPlaying;
-			if (GameManager.instance.netFrameMan.frame == null) GameManager.instance.netFrameMan.lastFrame = null;
+			// if (GameManager.instance.netFrameMan.frame == null) GameManager.instance.netFrameMan.lastFrame = null;
 			return Frame.Lerp(GameManager.instance.netFrameMan.lastFrame, GameManager.instance.netFrameMan.frame,
 				GameManager.instance.netFrameMan.CorrectedNetworkFrameTime);
 		}
 
 		if (LiveFrameProvider.isLive)
-		{
-			// send playhead info to other players ⬆
-			GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
-			// TODO send butter frame over the network instead
-			// GameManager.instance.netFrameMan.networkJsonData = JsonConvert.SerializeObject(LiveFrameProvider.frame);
+		{  
 			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
 		}
 
@@ -122,11 +118,6 @@ public class Playhead
 		LastFrameIndex = currentFrameIndex;
 		// send playhead info to other players ⬆
 		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(game.filename);
-		GameManager.instance.netFrameMan.networkFrameIndex = CurrentFrameIndex;
-		GameManager.instance.netFrameMan.networkPlaying = isPlaying;
-		GameManager.instance.netFrameMan.networkPlaySpeed = playbackMultiplier;
-		GameManager.instance.netFrameMan.networkFrameTime = GetNearestFrame().recorded_time;
-		// GameManager.instance.netFrameMan.networkJsonData = JsonConvert.SerializeObject(GetNearestFrame());
 		lastFrame = Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
 		lastPlayheadLocation = playheadLocation;
 		return lastFrame;

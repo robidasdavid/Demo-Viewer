@@ -78,24 +78,30 @@ public class SimpleCameraController : MonoBehaviour
 			switch (value)
 			{
 				case CameraMode.free:
+					cam.fieldOfView = defaultFov;
 					targetCameraState.SetPosition(transform.position);
 					interpolatingCameraState.SetPosition(transform.position);
 					targetCameraState.SetRotation(Quaternion.LookRotation(transform.forward, Vector3.up));
 					break;
 				case CameraMode.pov:
+					cam.fieldOfView = defaultFov;
 					break;
 				case CameraMode.follow:
+					cam.fieldOfView = defaultFov;
 					break;
 				case CameraMode.followOrbit:
+					cam.fieldOfView = defaultFov;
 					targetCameraState.SetPosition(transform.position - playerTarget.position);
 					interpolatingCameraState.SetPosition(transform.position - playerTarget.position);
 					targetCameraState.SetRotation(Quaternion.LookRotation(transform.forward, Vector3.up));
 					break;
 				case CameraMode.auto:
+					cam.fieldOfView = defaultFov;
 					break;
 				case CameraMode.sideline:
 					break;
 				case CameraMode.recorded:
+					cam.fieldOfView = defaultFov;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -110,6 +116,7 @@ public class SimpleCameraController : MonoBehaviour
 	/// </summary>
 	private CameraMode followCameraMode = CameraMode.followOrbit;
 
+	public float defaultFov = 75;
 	public Camera cam;
 
 	/// <summary>
@@ -200,9 +207,9 @@ public class SimpleCameraController : MonoBehaviour
 				targetCameraState.UpdateTransform(transform, Vector3.zero);
 				break;
 			case CameraMode.pov:
-				directCameraState.SetPosition(playerTarget.TransformPoint(povOffset));
-				directCameraState.SetRotation(playerTarget.rotation);
-				directCameraState.UpdateTransform(transform, Vector3.zero);
+				targetCameraState.SetPosition(playerTarget.TransformPoint(povOffset));
+				targetCameraState.SetRotation(playerTarget.rotation);
+				targetCameraState.UpdateTransform(transform, Vector3.zero);
 				break;
 			case CameraMode.free:
 			case CameraMode.auto:
@@ -324,7 +331,7 @@ public class SimpleCameraController : MonoBehaviour
 		Vector3 direction = smoothedDiscPosDirection - pos;
 		direction.z = -Mathf.Abs(direction.z);
 		Quaternion rotation = Quaternion.LookRotation(direction);
-		cam.fieldOfView = Mathf.Clamp(1/Vector3.Distance(pos, smoothedDiscPos) * 500f, 10, 100);
+		cam.fieldOfView = Mathf.Clamp(1/Vector3.Distance(pos, smoothedDiscPos) * 800f, 20, 90);
 		SetCameraPositionLive.FOV = cam.fieldOfView;
 		targetCameraState.SetPosition(pos);
 		targetCameraState.SetRotation(rotation);

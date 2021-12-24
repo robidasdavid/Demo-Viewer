@@ -24582,6 +24582,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter (Orange)
       objectReference: {fileID: 0}
+    - target: {fileID: 5616668837722032391, guid: ead607fd64f84d8409c40f39f5e49023,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616668837722032391, guid: ead607fd64f84d8409c40f39f5e49023,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.5882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616668837722032391, guid: ead607fd64f84d8409c40f39f5e49023,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5989683367632214047, guid: ead607fd64f84d8409c40f39f5e49023,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

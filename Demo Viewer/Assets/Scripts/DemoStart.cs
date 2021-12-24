@@ -198,14 +198,12 @@ public class DemoStart : MonoBehaviour
 
 		if (ready)
 		{
-			if (playhead.isPlaying)
+			if (playhead.isPlaying && GameManager.instance.netFrameMan.IsLocalOrServer)
 			{
 				playhead.IncrementPlayhead(Time.deltaTime);
-			}
-
-			// Find and declare what frame the slider is on.
-			if (playhead.isPlaying)
+				// Find and declare what frame the slider is on.
 				playbackSlider.value = playhead.CurrentFrameIndex;
+			}
 
 			// process input
 			CheckKeys();

@@ -142,9 +142,11 @@ namespace ButterReplays
 				writer.Write(DiscBytes);
 			}
 
-			byte teamDataBitmask = 0;
-			teamDataBitmask |= (byte)(frame.teams[0].possession ? 1 : 0);
-			teamDataBitmask |= (byte)((frame.teams[1].possession ? 1 : 0) << 1);
+			List<bool> teamDataBools = new List<bool>
+			{
+				frame.teams[0].possession,
+				frame.teams[1].possession
+			};
 			// TODO check team stats diff
 			// Team stats included
 			bool[] teamStatsIncluded = new bool[3];
@@ -154,10 +156,10 @@ namespace ButterReplays
 				.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[1].stats));
 			teamStatsIncluded[2] = frame.teams[2]?.stats != null && !StatsBytes(frame.teams[2].stats)
 				.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[2].stats));
-			teamDataBitmask |= (byte)((byte)(teamStatsIncluded[0] ? 1 : 0) << 2);
-			teamDataBitmask |= (byte)((byte)(teamStatsIncluded[1] ? 1 : 0) << 3);
-			teamDataBitmask |= (byte)((byte)(teamStatsIncluded[2] ? 1 : 0) << 4);
-			writer.Write(teamDataBitmask);
+			teamDataBools.Add(teamStatsIncluded[0]);
+			teamDataBools.Add(teamStatsIncluded[1]);
+			teamDataBools.Add(teamStatsIncluded[2]);
+			writer.Write(teamDataBools.GetBitmasks()[0]);
 
 
 			// add team data
@@ -208,7 +210,7 @@ namespace ButterReplays
 						if (playerStateBitmask[5])
 						{
 							writer.Write((ushort)(player.ping - (lastFramePlayer?.ping ?? 0)));
-							writer.Write((Half)(player.packetlossratio - (lastFramePlayer?.packetlossratio ?? 0)));
+							writer.WriteHalf((Half)(player.packetlossratio - (lastFramePlayer?.packetlossratio ?? 0)));
 						}
 
 						if (playerStateBitmask[6])
@@ -299,7 +301,7 @@ namespace ButterReplays
 			bytes.Add((byte)(stats.shots_taken - (lastStats?.shots_taken ?? 0)));
 
 			bytes.AddRange(
-				BitConverter.GetBytes((Half)(stats.possession_time - (lastStats?.possession_time ?? 0))));
+				ButterFile.GetHalfBytes((Half)(stats.possession_time - (lastStats?.possession_time ?? 0))));
 			bytes.AddRange(BitConverter.GetBytes((ushort)Mathf.Clamp(stats.stuns - (lastStats?.stuns ?? 0), 0,
 				ushort.MaxValue)));
 			return bytes.ToArray();
@@ -356,19 +358,19 @@ namespace ButterReplays
 				if (_lastThrowBytes == null)
 				{
 					List<byte> bytes = new List<byte>();
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.arm_speed));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.total_speed));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.off_axis_spin_deg));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.wrist_throw_penalty));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.rot_per_sec));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.pot_speed_from_rot));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.speed_from_arm));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.speed_from_movement));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.speed_from_wrist));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.wrist_align_to_throw_deg));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.throw_align_to_movement_deg));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.off_axis_penalty));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_throw.throw_move_penalty));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.arm_speed));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.total_speed));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.off_axis_spin_deg));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.wrist_throw_penalty));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.rot_per_sec));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.pot_speed_from_rot));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.speed_from_arm));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.speed_from_movement));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.speed_from_wrist));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.wrist_align_to_throw_deg));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.throw_align_to_movement_deg));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.off_axis_penalty));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_throw.throw_move_penalty));
 					_lastThrowBytes = bytes.ToArray();
 				}
 
@@ -395,8 +397,8 @@ namespace ButterReplays
 
 					bytes.Add(butterHeader.GetPlayerIndex(frame.last_score.person_scored));
 					bytes.Add(butterHeader.GetPlayerIndex(frame.last_score.assist_scored));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_score.disc_speed));
-					bytes.AddRange(BitConverter.GetBytes((Half)frame.last_score.distance_thrown));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_score.disc_speed));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)frame.last_score.distance_thrown));
 					_lastScoreBytes = bytes.ToArray();
 				}
 
@@ -441,10 +443,8 @@ namespace ButterReplays
 					pauses |= (byte)(PausedStateToByte(frame.pause.paused_state) << 6);
 					bytes.Add(pauses);
 
-					bytes.AddRange(BitConverter.GetBytes(
-						(Half)(frame.pause.paused_timer - lastFrameInChunk?.frame.pause.paused_timer ?? 0)));
-					bytes.AddRange(BitConverter.GetBytes(
-						(Half)(frame.pause.unpaused_timer - lastFrameInChunk?.frame.pause.unpaused_timer ?? 0)));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)(frame.pause.paused_timer - lastFrameInChunk?.frame.pause.paused_timer ?? 0)));
+					bytes.AddRange(ButterFile.GetHalfBytes((Half)(frame.pause.unpaused_timer - lastFrameInChunk?.frame.pause.unpaused_timer ?? 0)));
 					_pauseAndRestartsBytes = bytes.ToArray();
 				}
 
@@ -563,9 +563,9 @@ namespace ButterReplays
 		public static byte[] PoseToBytes(Vector3 pos, Quaternion rot)
 		{
 			List<byte> bytes = new List<byte>();
-			bytes.AddRange(BitConverter.GetBytes((Half)pos.x));
-			bytes.AddRange(BitConverter.GetBytes((Half)pos.y));
-			bytes.AddRange(BitConverter.GetBytes((Half)pos.z));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)pos.z));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)pos.y));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)pos.x));
 
 			bytes.AddRange(SmallestThree(rot));
 
@@ -574,6 +574,8 @@ namespace ButterReplays
 
 		public static byte[] SmallestThree(Quaternion q)
 		{
+			q = Quaternion.LookRotation(q.ForwardBackwards(), q.UpBackwards());
+			
 			// make an array of the components
 			float[] components =
 			{

@@ -10964,6 +10964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
+  defaultFov: 75
   cam: {fileID: 282840813}
   playerTarget: {fileID: 0}
   povOffset: {x: 0, y: 0.6, z: 0.3}
@@ -16836,12 +16837,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d7e52b36c77c4a42b1458bfa374e0d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkFrameIndex: 0
-  networkPlaying: 0
-  networkPlaySpeed: 0
   networkFilename: 
   gameTimeAtLastFrame: 0
   networkJsonData: 
+  networkBinaryData: 
 --- !u!114 &468288437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66975,6 +66974,7 @@ MonoBehaviour:
   - {fileID: 7593353449931525761}
   - {fileID: 7593353449704137817}
   - {fileID: 7593353450920765746}
+  - {fileID: 2053075864}
   uiShownOnLive:
   - {fileID: 1616236469}
   arenaModelScenes:

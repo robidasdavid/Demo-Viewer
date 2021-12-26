@@ -26,7 +26,7 @@ public class DiscController : MonoBehaviour
 			{
 				discFloating.gameObject.SetActive(!value);
 				discGrabbed.gameObject.SetActive(value);
-				grabTime = Time.time;
+				grabTime = Time.timeAsDouble;
 			}
 
 			isGrabbed = value;
@@ -58,7 +58,7 @@ public class DiscController : MonoBehaviour
 
 	private Team.TeamColor teamIndex;
 
-	private float grabTime;
+	private double grabTime;
 
 	public Transform child;
 	public Transform discFloating;

@@ -18,10 +18,10 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 	public DateTime CorrectedNetworkFrameTime => 
 		lastFrame?.recorded_time.AddSeconds((DemoStart.playhead.isPlaying ? 1 : 0) * 
 		                                    DemoStart.playhead.playbackMultiplier * 
-		                                    (Time.time - gameTimeAtLastFrame)) 
+		                                    (Time.timeAsDouble - gameTimeAtLastFrame)) 
 		?? DateTime.Now;
 
-	public float gameTimeAtLastFrame;
+	public double gameTimeAtLastFrame;
 	public string networkJsonData;
 	public byte[] networkBinaryData;
 	public Frame lastFrame;
@@ -70,7 +70,7 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 				if (frames.Count < 1) Debug.LogError("Didn't get a frame", this);
 				if (frames.Count > 1) Debug.LogError("Got too many frames", this);
 				frame = frames[0];
-				gameTimeAtLastFrame = Time.time;
+				gameTimeAtLastFrame = Time.timeAsDouble;
 			}
 
 			// frame is still null, make sure the last frame is too

@@ -69,25 +69,19 @@ namespace EchoVRAPI
 			// TODO make sure the players are in the same order. This should only be a problem when players join/leave
 			int numPlayers = Math.Max(from.players.Count, to.players.Count);
 
-			newTeam.players = new List<Player>(numPlayers);
+			newTeam.players = new List<Player>();
 
 			for (int i = 0; i < numPlayers; i++)
 			{
 				if (from.players.Count <= i &&
 				    to.players.Count > i)
 				{
-					newTeam.players[i] = to.players[i];
+					newTeam.players.Add(to.players[i]);
 				}
 				else if (to.players.Count <= i &&
 				         from.players.Count > i)
 				{
-					if (from.players == null)
-					{
-						Debug.LogError("Team null");
-					}
-					if (newTeam.players.Count <= i) Debug.LogError("newTeam too short");
-					if (from.players.Count <= i) Debug.LogError("from too short");
-					newTeam.players[i] = from.players[i];
+					newTeam.players.Add(from.players[i]);
 				}
 				else if (from.players.Count > i &&
 				         to.players.Count > i)

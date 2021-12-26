@@ -8,7 +8,7 @@ public class PlayerStatsHover : MonoBehaviour
 	public Transform statsWindow;
 	public TextMeshProUGUI statsTextBox;
 	public TextMeshProUGUI speedTextBox;
-	private float lastVisibleTime;
+	private double lastVisibleTime;
 
 	public Stats Stats {
 		set => statsTextBox.text = value?.ToString();
@@ -23,7 +23,7 @@ public class PlayerStatsHover : MonoBehaviour
 		set {
 			statsWindow.gameObject.SetActive(value);
 			visible = value;
-			lastVisibleTime = Time.time;
+			lastVisibleTime = Time.timeAsDouble;
 		}
 	}
 
@@ -31,7 +31,7 @@ public class PlayerStatsHover : MonoBehaviour
 	private void Update()
 	{
 		statsWindow.LookAt(GameManager.instance.camera.transform.position);
-		if (Time.time - lastVisibleTime > .2f)
+		if (Time.timeAsDouble - lastVisibleTime > .2f)
 		{
 			Visible = false;
 		}

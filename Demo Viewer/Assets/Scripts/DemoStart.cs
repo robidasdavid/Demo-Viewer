@@ -19,6 +19,7 @@ using TMPro;
 using System.Threading;
 using ButterReplays;
 using EchoVRAPI;
+using Spark;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -214,8 +215,11 @@ public class DemoStart : MonoBehaviour
 			// Only render the next frame if it differs from the last (optimization)
 			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !GameManager.instance.netFrameMan.IsLocalOrServer)
 			{
+				playhead.LastFrameIndex = playhead.CurrentFrameIndex;
+				
 				// Grab frame
 				Frame viewingFrame = playhead.GetFrame();
+				Frame nearestFrame = playhead.GetNearestFrame();
 				Frame previousFrame = playhead.GetPreviousFrame();
 
 				if (viewingFrame != null && previousFrame != null)
@@ -236,6 +240,16 @@ public class DemoStart : MonoBehaviour
 								joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
 								StartCoroutine(FlashInOut(joustReadout, 3));
 							}
+						}
+
+						if (nearestFrame?.last_score?.disc_speed != (previousFrame?.last_score?.disc_speed ?? -1))
+						{
+							GameEvents.Goal?.Invoke(nearestFrame?.last_score);
+						}
+						
+						if (nearestFrame?.last_throw?.total_speed != previousFrame?.last_throw?.total_speed)
+						{
+							GameEvents.LocalThrow?.Invoke(nearestFrame?.last_throw);
 						}
 
 						// Handle goal stat visibility

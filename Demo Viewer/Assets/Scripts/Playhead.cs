@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using ButterReplays;
 using EchoVRAPI;
-using Newtonsoft.Json;
-using Spark;
 using UnityEngine;
 
 /// <summary>
@@ -24,7 +21,7 @@ public class Playhead
 	}
 
 	private int currentFrameIndex;
-	public int LastFrameIndex { get; private set; }
+	public int LastFrameIndex { get; set; }
 
 	public DateTime playheadLocation;
 	public DateTime startTime;
@@ -115,7 +112,6 @@ public class Playhead
 			return lastFrame;
 		}
 
-		LastFrameIndex = currentFrameIndex;
 		// send playhead info to other players ⬆
 		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(game.filename);
 		lastFrame = Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);

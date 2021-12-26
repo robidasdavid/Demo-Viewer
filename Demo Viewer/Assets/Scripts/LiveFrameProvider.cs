@@ -27,7 +27,7 @@ public class LiveFrameProvider : MonoBehaviour
 	{
 		if (isLive)
 		{
-			if (Time.time - lastFetchTime > (1 / updateRate))
+			if (Time.timeAsDouble - lastFetchTime > (1 / updateRate))
 			{
 				StartCoroutine(GetNewFrame());
 				lastFetchTime = Time.timeAsDouble;

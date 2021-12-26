@@ -343,6 +343,8 @@
      <Compile Include="Assets\Photon\Simple\Components\Assistants\TriggerAssists.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncOculus\Assistants\OculusAssist.cs" />
      <Compile Include="Assets\Photon\Simple\Core\Interfaces\NetObjInterfaces.cs" />
+     <Compile Include="Assets\Scripts\GoalAnimationHandler.cs" />
+     <Compile Include="Assets\Scripts\GameEvents.cs" />
      <None Include="Assets\Materials\PointClouds\DataFoldvrDisk.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

@@ -100,6 +100,8 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	public Button joinButton;
 	public Button disconnectButton;
 
+	private Coroutine fetchingReplaysRoutine;
+
 
 	private void Start()
 	{
@@ -122,17 +124,17 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 
 	private void RefreshReplaysList()
 	{
-		switch (ReplaysSource)
+		if (fetchingReplaysRoutine != null)
 		{
-			case ReplaySources.Local:
-				StartCoroutine(GetReplaysLocal(manualInputText.text));
-				break;
-			case ReplaySources.Online:
-				StartCoroutine(GetReplaysWeb());
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
+			StopCoroutine(fetchingReplaysRoutine);
 		}
+
+		fetchingReplaysRoutine = ReplaysSource switch
+		{
+			ReplaySources.Local => StartCoroutine(GetReplaysLocal(manualInputText.text)),
+			ReplaySources.Online => StartCoroutine(GetReplaysWeb()),
+			_ => throw new ArgumentOutOfRangeException()
+		};
 	}
 
 	private IEnumerator GetReplaysWeb()
@@ -213,17 +215,18 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 			}
 			
 			// add the new ones
-			GameObject backButton = Instantiate(replayDataRowPrefab, localReplaysList);
-			ReplayFileInfo backReplayFileInfo = backButton.GetComponentInChildren<ReplayFileInfo>();
-			backReplayFileInfo.OriginalFilename = "...";
-			backReplayFileInfo.CreatedBy = "Local";
-			backReplayFileInfo.Size = "";
-			backReplayFileInfo.Notes = "";
-
-			backButton.GetComponentInChildren<Button>().onClick.AddListener(delegate
+			if (replaysFolder.Parent != null)
 			{
-				LoadLocalReplay(replaysFolder.Parent.FullName);
-			});
+				GameObject backButton = Instantiate(replayDataRowPrefab, localReplaysList);
+				ReplayFileInfo backReplayFileInfo = backButton.GetComponentInChildren<ReplayFileInfo>();
+				backReplayFileInfo.OriginalFilename = "...";
+				backReplayFileInfo.CreatedBy = "Local";
+				backReplayFileInfo.Size = "";
+				backReplayFileInfo.Notes = "";
+
+				backButton.GetComponentInChildren<Button>().onClick.AddListener(() => { LoadLocalReplay(replaysFolder.Parent.FullName); });
+			}
+
 			foreach (DirectoryInfo directory in subDirectories)
 			{
 				GameObject button = Instantiate(replayDataRowPrefab, localReplaysList);
@@ -302,6 +305,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		{
 			PlayerPrefs.SetString("fileDirector", filename);
 			manualInputText.text = filename;
+			RefreshReplaysList();
 		}
 	}
 

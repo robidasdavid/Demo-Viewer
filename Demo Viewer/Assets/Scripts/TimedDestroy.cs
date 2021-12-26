@@ -8,21 +8,21 @@ using UnityEngine;
 
 public class TimedDestroy : MonoBehaviour
 {
-    public float destoryTime = 10f;
+    public double destoryTime = 10f;
     public bool destroy = true;
-    private float startTime;
+    private double startTime;
 
     // Start is called before the first frame update
     void Awake()
     {
-        startTime = Time.time;
+        startTime = Time.timeAsDouble;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Time.time >= startTime + destoryTime)
+        if (Time.timeAsDouble >= startTime + destoryTime)
         {
             if (destroy) Destroy(gameObject);
             else gameObject.SetActive(false);

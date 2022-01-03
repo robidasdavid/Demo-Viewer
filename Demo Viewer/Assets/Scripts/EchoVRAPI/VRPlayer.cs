@@ -1,6 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
 using Newtonsoft.Json;
+#if UNITY
+using UnityEngine;
+#else
+using System.Numerics;
+#endif
 
 namespace EchoVRAPI
 {
@@ -10,26 +14,29 @@ namespace EchoVRAPI
 		public List<float> vr_position { get; set; }
 		public List<float> vr_forward { get; set; }
 		public List<float> vr_up { get; set; }
-		
+
 		[JsonIgnore]
 		public Vector3 Position
 		{
-			get => vr_position?.ToVector3() ?? Vector3.zero;
+			get => vr_position?.ToVector3() ??
+#if UNITY
+			       Vector3.zero;
+#else
+			       Vector3.Zero;
+#endif
 			set => vr_position = value.ToFloatList();
 		}
-		
-		[JsonIgnore]
-		internal Quaternion? rot;
+		[JsonIgnore] internal Quaternion? rot;
 
 		[JsonIgnore]
 		public Quaternion Rotation
 		{
 			get
 			{
-				if (rot != null) return (Quaternion) rot;
+				if (rot != null) return (Quaternion)rot;
 
 				rot = Math2.QuaternionLookRotation(vr_forward.ToVector3(), vr_up.ToVector3());
-				return (Quaternion) rot;
+				return (Quaternion)rot;
 			}
 			set
 			{

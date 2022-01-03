@@ -8,14 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OutsideBlocks_Pink
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 4342f9e79c4e19e4fa9a4a95b384efbc,
+    type: 3}
   m_ShaderKeywords: _EMISSION _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -78,6 +78,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_05269a64983f4c00b1c96aac53ba3146: 0.01
+    - Vector1_d38d4c40997e44d683c82607df9f7331: 0.2
+    - Vector1_f6c23dda3b5d41d9af260e186f547195: 10
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -111,8 +113,10 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_ec2d5cd3706e40728f20bb7bd83d0f0f: {r: 0.30588233, g: 0.53654844, b: 0.81960785,
+    - Color_76c947aefc3c426a9e112983aa2660f9: {r: 1, g: 0.18400002, b: 0.9734634,
         a: 1}
+    - Color_ec2d5cd3706e40728f20bb7bd83d0f0f: {r: 1, g: 0.57254905, b: 0.9647059,
+        a: 0.12941177}
     - _BaseColor: {r: 1, g: 0.5707547, b: 0.96496654, a: 0.12941177}
     - _Color: {r: 0, g: 0.64705884, b: 0.84705883, a: 0.09803922}
     - _EmissionColor: {r: 2, g: 0.5568628, b: 1.6941177, a: 1}

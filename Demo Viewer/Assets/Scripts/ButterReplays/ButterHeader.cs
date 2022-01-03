@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using EchoVRAPI;
+using Half = SystemHalf.Half;
 
 namespace ButterReplays
 {

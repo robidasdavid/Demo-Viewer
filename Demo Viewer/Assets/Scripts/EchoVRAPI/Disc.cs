@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+#if UNITY
 using UnityEngine;
+#else
+using System.Numerics;
+#endif
 
 namespace EchoVRAPI
 {
@@ -27,12 +31,15 @@ namespace EchoVRAPI
 		public List<float> velocity { get; set; }
 
 		public int bounce_count { get; set; }
-		
-		
+
 		[JsonIgnore]
 		public Vector3 Position
 		{
+#if UNITY
 			get => position?.ToVector3() ?? Vector3.zero;
+#else
+			get => position?.ToVector3() ?? Vector3.Zero;
+#endif
 			set => position = value.ToFloatList();
 		}
 		

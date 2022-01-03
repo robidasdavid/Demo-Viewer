@@ -3,10 +3,10 @@ using UnityEngine;
 /// <summary>
 /// Enables or disables objects on keypress
 /// </summary>
-public class ToggleObjectOnKeypress : MonoBehaviour
+public class ToggleObjectsOnKeypress : MonoBehaviour
 {
 	public KeyCode keyCode;
-	public GameObject obj;
+	public GameObject[] obj;
 	public ToggleEnable toggleOrEnable;
 	public enum ToggleEnable
 	{
@@ -22,13 +22,22 @@ public class ToggleObjectOnKeypress : MonoBehaviour
 			switch (toggleOrEnable)
 			{
 				case ToggleEnable.Toggle:
-					obj.SetActive(!obj.activeSelf);
+					foreach (GameObject o in obj)
+					{
+						o.SetActive(!o.activeSelf);						
+					}
 					break;
 				case ToggleEnable.Enable:
-					obj.SetActive(true);
+					foreach (GameObject o in obj)
+					{
+						o.SetActive(true);						
+					}
 					break;
 				case ToggleEnable.Disable:
-					obj.SetActive(false);
+					foreach (GameObject o in obj)
+					{
+						o.SetActive(false);						
+					}
 					break;
 			}
 		}

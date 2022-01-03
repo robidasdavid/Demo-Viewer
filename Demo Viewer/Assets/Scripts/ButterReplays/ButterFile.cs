@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+#if UNITY
 using UnityEngine;
+#else
+using System.Numerics;
+#endif
 using System.Text;
 using EchoVRAPI;
-using Photon.Compression.HalfFloat;
+using Half = SystemHalf.Half;
 #if ZSTD
 using ZstdNet;
 #endif
@@ -22,16 +27,14 @@ namespace ButterReplays
 	{
 		private readonly ButterHeader header;
 
-		// private readonly List<ButterFrame> frames;
-		private int frameCount = 0;
-		private readonly string filePath;
+		private int frameCount;
 
 		/// <summary>
 		/// These always belong to a single chunk
 		/// </summary>
-		private readonly List<ButterFrame> unprocessedFrames = new List<ButterFrame>();
+		private readonly ConcurrentQueue<ButterFrame> unprocessedFrames = new ConcurrentQueue<ButterFrame>();
 
-		private readonly List<byte[]> chunkData = new List<byte[]>();
+		private readonly ConcurrentQueue<byte[]> chunkData = new ConcurrentQueue<byte[]>();
 
 #if ZSTD
 		private readonly Compressor compressor;
@@ -164,13 +167,13 @@ namespace ButterReplays
 			ButterFrame butterFrame = new ButterFrame(frame, frameCount++, unprocessedFrames.LastOrDefault(), header);
 
 			// if chunk is finished
-			if (butterFrame.IsKeyframe && unprocessedFrames.Count > 0)
+			if (butterFrame.IsKeyframe && !unprocessedFrames.IsEmpty)
 			{
-				chunkData.Add(ChunkUnprocessedFrames());
+				chunkData.Enqueue(ChunkUnprocessedFrames());
 				unprocessedFrames.Clear();
 			}
 
-			unprocessedFrames.Add(butterFrame);
+			unprocessedFrames.Enqueue(butterFrame);
 		}
 
 		public int NumChunks()
@@ -198,7 +201,7 @@ namespace ButterReplays
 #if ZSTD
 					compressed = compressor.Wrap(uncompressed);
 #else
-					throw new Exception("Zstd not available.");					
+					throw new Exception("Zstd not available.");
 #endif
 					break;
 				default:
@@ -277,131 +280,6 @@ namespace ButterReplays
 			return fullFileBytes.ToArray();
 		}
 
-		// public byte[] GetBytes(out Dictionary<string, double> sizeBreakdown)
-		// {
-		// 	List<byte> fullFileBytes = new List<byte>();
-		// 	List<byte> lastChunkBytes = new List<byte>();
-		// 	sizeBreakdown = new Dictionary<string, double>();
-		// 	Stopwatch sw = new Stopwatch();
-		// 	sw.Start();
-		//
-		// 	byte[] headerBytes = header.GetBytes();
-		// 	fullFileBytes.AddRange(headerBytes);
-		// 	sizeBreakdown["HeaderBytes"] = headerBytes.Length;
-		// 	uint numChunks = (uint) (frames.Count / header.keyframeInterval + 1);
-		//
-		// 	// save the int for the number of chunks
-		// 	fullFileBytes.AddRange(BitConverter.GetBytes(numChunks));
-		//
-		// 	// allocate space for the chunk sizes
-		// 	fullFileBytes.AddRange(new byte[sizeof(uint) * numChunks]);
-		//
-		// 	sizeBreakdown["ChunkSizes"] = fullFileBytes.Count - headerBytes.Length;
-		//
-		//
-		// 	Compressor compressor;
-		//
-		// 	// this generates a new dict for each file - wouldn't be useful like this
-		// 	if (header.compression.UsingZstdDict())
-		// 	{
-		// 		// generate dictionary
-		// 		List<byte[]> zstdDictionary = new List<byte[]>();
-		// 		foreach (ButterFrame frame in frames)
-		// 		{
-		// 			zstdDictionary.Add(frame.GetBytes());
-		// 		}
-		//
-		// 		compressor = new Compressor(new CompressionOptions(DictBuilder.TrainFromBuffer(zstdDictionary), header.compression.ToZstdLevel()));
-		// 	}
-		// 	else
-		// 	{
-		// 		compressor = new Compressor(new CompressionOptions(header.compression.ToZstdLevel()));
-		// 	}
-		//
-		// 	sizeBreakdown["CompressionLevel"] = header.compression.ToZstdLevel();
-		// 	sizeBreakdown["UsingZstdDict"] = header.compression.UsingZstdDict() ? 1 : 0;
-		// 	sizeBreakdown["KeyframeInterval"] = header.keyframeInterval;
-		//
-		// 	double byteTotal = 0;
-		// 	double chunkBytesTotal = 0;
-		// 	double chunkBytesTotalUncompressed = 0;
-		// 	int chunkFrames = 0;
-		// 	int chunkIndex = 0;
-		//
-		// 	void CompressChunk()
-		// 	{
-		// 		byte[] uncompressed = lastChunkBytes.ToArray();
-		// 		byte[] compressed;
-		// 		switch (header.compression)
-		// 		{
-		// 			case CompressionFormat.none:
-		// 				compressed = uncompressed;
-		// 				break;
-		// 			case CompressionFormat.gzip:
-		// 				compressed = Zip(uncompressed);
-		// 				break;
-		// 			case CompressionFormat.zstd_3:
-		// 			case CompressionFormat.zstd_7:
-		// 			case CompressionFormat.zstd_15:
-		// 			case CompressionFormat.zstd_22:
-		// 			case CompressionFormat.zstd_7_dict:
-		// 				compressed = compressor.Wrap(uncompressed);
-		// 				break;
-		// 			default:
-		// 				throw new Exception("Unknown compression.");
-		// 		}
-		//
-		// 		chunkBytesTotal += compressed.Length;
-		// 		chunkBytesTotalUncompressed += uncompressed.Length;
-		// 		fullFileBytes.AddRange(compressed);
-		// 		// Console.WriteLine($"Chunk size:\t{compressed.Length:N0} bytes\traw: {lastChunkBytes.Count:N0}\tratio: {(float) compressed.Length / lastChunkBytes.Count:P}\tnframes: {chunkFrames:N}");
-		// 		byte[] chunkSizeBytes = BitConverter.GetBytes((uint) compressed.Length);
-		// 		fullFileBytes[headerBytes.Length + sizeof(uint) + chunkIndex * sizeof(uint)] = chunkSizeBytes[0];
-		// 		fullFileBytes[headerBytes.Length + sizeof(uint) + chunkIndex * sizeof(uint) + 1] =
-		// 			chunkSizeBytes[1];
-		// 		fullFileBytes[headerBytes.Length + sizeof(uint) + chunkIndex * sizeof(uint) + 2] =
-		// 			chunkSizeBytes[2];
-		// 		fullFileBytes[headerBytes.Length + sizeof(uint) + chunkIndex * sizeof(uint) + 3] =
-		// 			chunkSizeBytes[3];
-		// 		chunkFrames = 0;
-		// 		chunkIndex++;
-		// 		lastChunkBytes.Clear();
-		// 	}
-		//
-		//
-		// 	foreach (ButterFrame frame in frames)
-		// 	{
-		// 		// is a keyframe but not the first frame in the file
-		// 		if (frame.IsKeyframe && lastChunkBytes.Count > 0)
-		// 		{
-		// 			CompressChunk();
-		// 		}
-		//
-		// 		byte[] newBytes = frame.GetBytes();
-		// 		lastChunkBytes.AddRange(newBytes);
-		// 		byteTotal += newBytes.Length;
-		// 		chunkFrames++;
-		// 	}
-		//
-		// 	// compress the last chunk
-		// 	CompressChunk();
-		//
-		// 	sizeBreakdown["AllFramesUncompressed"] = byteTotal;
-		// 	sizeBreakdown["AllFramesCompressed"] = chunkBytesTotal;
-		// 	sizeBreakdown["AverageFrameSizeUncompressed"] = byteTotal / frames.Count;
-		// 	sizeBreakdown["AverageFrameSizeCompressed"] = chunkBytesTotal / frames.Count;
-		// 	sizeBreakdown["NumChunks"] = chunkIndex;
-		// 	sizeBreakdown["AverageChunkSize"] = chunkBytesTotal / chunkIndex;
-		//
-		// 	// Console.WriteLine();
-		//
-		// 	// Console.WriteLine($"Included:\t{includedCount:N}\tExcluded:\t{excludedCount:N}\tPerc:\t{(float) includedCount / (excludedCount + includedCount):P}");
-		// 	// Console.WriteLine($"Average frame size:\t{includedCount/excludedCount:P} bytes");
-		// 	sizeBreakdown["ConversionTime"] = sw.Elapsed.TotalSeconds;
-		//
-		// 	return fullFileBytes.ToArray();
-		// }
-		
 		public static List<Frame> FromBytes(byte[] bytes)
 		{
 			float progress = 0;
@@ -479,7 +357,7 @@ namespace ButterReplays
 
 			Frame lastKeyframe = null;
 			Frame lastFrame = null;
-			
+
 #if ZSTD
 			Decompressor decompressor = new Decompressor();
 #endif
@@ -507,10 +385,10 @@ namespace ButterReplays
 					case CompressionFormat.zstd_7_dict:
 #if ZSTD
 						uncompressedChunk = decompressor.Unwrap(compressedChunk);
+						break;
 #else
 						throw new Exception("Zstd not available.");
 #endif
-						break;
 					default:
 						throw new Exception("Compression format unknown");
 				}
@@ -682,7 +560,12 @@ namespace ButterReplays
 					{
 						(Vector3 p, Quaternion q) = input.ReadPose();
 
-						p += (lastFrame?.disc.position.ToVector3() ?? Vector3.zero);
+						p += lastFrame?.disc.position.ToVector3() ??
+#if UNITY
+						     Vector3.zero;
+#else
+						     Vector3.Zero;
+#endif
 
 
 						f.disc = new Disc
@@ -798,11 +681,15 @@ namespace ButterReplays
 
 							if (playerStateBitmask[7])
 							{
+#if UNITY
 								p.velocity = (input.ReadVector3Half() + (lastFrame?.GetPlayer(p.userid)?.velocity?.ToVector3() ?? Vector3.zero)).ToFloatArray().ToList();
+#else
+								p.velocity = (input.ReadVector3Half() + (lastFrame?.GetPlayer(p.userid)?.velocity?.ToVector3() ?? Vector3.Zero)).ToFloatArray().ToList();
+#endif
 							}
 							else
 							{
-								p.velocity = lastFrame?.GetPlayer(p.userid)?.velocity ?? new List<float>() {0,0,0};
+								p.velocity = lastFrame?.GetPlayer(p.userid)?.velocity ?? new List<float>() { 0, 0, 0 };
 							}
 
 							List<bool> playerPoseBitmask = input.ReadByte().GetBitmaskValues();
@@ -816,8 +703,11 @@ namespace ButterReplays
 							{
 								p.head.position =
 									(input.ReadVector3Half() +
-									 (lastFrame?.GetPlayer(p.userid)?.head.Position ?? Vector3.zero))
-									.ToFloatList();
+#if UNITY
+									 (lastFrame?.GetPlayer(p.userid)?.head.Position ?? Vector3.zero)).ToFloatList();
+#else
+									 (lastFrame?.GetPlayer(p.userid)?.head.Position ?? Vector3.Zero)).ToFloatList();
+#endif
 							}
 							else
 							{
@@ -832,13 +722,16 @@ namespace ButterReplays
 							{
 								p.body.position =
 									(input.ReadVector3Half() +
+#if UNITY
 									 (lastFrame?.GetPlayer(p.userid)?.body.Position ?? Vector3.zero)).ToFloatList();
+#else
+									 (lastFrame?.GetPlayer(p.userid)?.body.Position ?? Vector3.Zero)).ToFloatList();
+#endif
 							}
 							else
 							{
 								p.body.position = lastFrame.GetPlayer(p.userid).body.position;
 							}
-
 
 							p.body.Rotation = playerPoseBitmask[3]
 								? input.ReadSmallestThree()
@@ -849,9 +742,11 @@ namespace ButterReplays
 							{
 								p.lhand.pos =
 									(input.ReadVector3Half() +
-									 (lastFrame?.GetPlayer(p.userid)?.lhand.Position ?? Vector3.zero))
-									.ToFloatArray()
-									.ToList();
+#if UNITY
+									 (lastFrame?.GetPlayer(p.userid)?.lhand.Position ?? Vector3.zero)).ToFloatList();
+#else
+									 (lastFrame?.GetPlayer(p.userid)?.lhand.Position ?? Vector3.Zero)).ToFloatList();
+#endif
 							}
 							else
 							{
@@ -866,9 +761,11 @@ namespace ButterReplays
 							{
 								p.rhand.pos =
 									(input.ReadVector3Half() +
-									 (lastFrame?.GetPlayer(p.userid)?.rhand.Position ?? Vector3.zero))
-									.ToFloatArray()
-									.ToList();
+#if UNITY
+									 (lastFrame?.GetPlayer(p.userid)?.rhand.Position ?? Vector3.zero)).ToFloatList();
+#else
+									 (lastFrame?.GetPlayer(p.userid)?.rhand.Position ?? Vector3.Zero)).ToFloatList();
+#endif
 							}
 							else
 							{
@@ -945,11 +842,10 @@ namespace ButterReplays
 		{
 			return Encoding.UTF8.GetString(UnzipBytes(bytes));
 		}
-		
-		
+
 		public static byte[] GetHalfBytes(Half half)
 		{
-			return BitConverter.GetBytes(half.RawValue);
+			return BitConverter.GetBytes(half.Value);
 		}
 	}
 
@@ -978,11 +874,7 @@ namespace ButterReplays
 		/// <returns></returns>
 		public static byte[] GetHalfBytes(this Vector3 value)
 		{
-			List<byte> bytes = new List<byte>();
-			bytes.AddRange(ButterFile.GetHalfBytes((Half)value.x));
-			bytes.AddRange(ButterFile.GetHalfBytes((Half)value.y));
-			bytes.AddRange(ButterFile.GetHalfBytes((Half)value.z));
-			return bytes.ToArray();
+			return value.ToFloatList().GetHalfBytes();
 		}
 
 		public static byte[] GetByteBytes(this IEnumerable<int> values)
@@ -1000,7 +892,6 @@ namespace ButterReplays
 
 			return bytes.ToArray();
 		}
-		
 
 		public static byte[] GetBytes(this IEnumerable<long> values)
 		{
@@ -1131,7 +1022,9 @@ namespace ButterReplays
 				(float)reader.ReadHalf(),
 				(float)reader.ReadHalf()
 			);
+#if UNITY
 			(p.z, p.x) = (p.x, p.z);
+#endif
 
 			Quaternion q = reader.ReadSmallestThree();
 
@@ -1158,16 +1051,32 @@ namespace ButterReplays
 			return stats;
 		}
 
+		public static Half ReadHalf(this BinaryReader reader)
+		{
+			Half val = new Half();
+			val.Value = reader.ReadUInt16();
+			return val;
+		}
+
+		public static void WriteHalf(this BinaryWriter writer, Half h)
+		{
+			writer.Write(h.Value);
+		}
 
 		public static Vector3 ReadVector3Half(this BinaryReader reader)
 		{
 			Vector3 p = new Vector3
 			{
-				x = (float)reader.ReadHalf(),
+#if UNITY
+				z = (float)reader.ReadHalf(),
 				y = (float)reader.ReadHalf(),
-				z = (float)reader.ReadHalf()
+				x = (float)reader.ReadHalf()
+#else
+				X = (float)reader.ReadHalf(),
+				Y = (float)reader.ReadHalf(),
+				Z = (float)reader.ReadHalf()
+#endif
 			};
-			(p.x, p.z) = (p.z, p.x);
 
 			return p;
 		}
@@ -1185,8 +1094,11 @@ namespace ButterReplays
 			{
 				return (float)(input / 1023 * 1.41421356 - 0.70710678);
 			}
-			
+#if UNITY
 			float f4 = Mathf.Sqrt(1 - f1 * f1 - f2 * f2 - f3 * f3);
+#else
+			float f4 = MathF.Sqrt(1 - f1 * f1 - f2 * f2 - f3 * f3);
+#endif
 			Quaternion ret = maxIndex switch
 			{
 				0 => new Quaternion(f4, f1, f2, f3),
@@ -1195,7 +1107,9 @@ namespace ButterReplays
 				3 => new Quaternion(f1, f2, f3, f4),
 				_ => throw new Exception("Invalid index")
 			};
-			return Quaternion.LookRotation(ret.ForwardBackwards(), ret.UpBackwards());
+#if UNITY
+			ret = Quaternion.LookRotation(ret.ForwardBackwards(), ret.UpBackwards());
+#endif
 			return ret;
 		}
 
@@ -1256,20 +1170,17 @@ namespace ButterReplays
 				_ => false
 			};
 		}
-		
-		public static Half ReadHalf(this BinaryReader reader)
+	}
+
+#if UNITY
+	internal static class ConcurrentQueueExtensions
+	{
+		public static void Clear<T>(this ConcurrentQueue<T> queue)
 		{
-			ushort s = reader.ReadUInt16();
-			Half h = new Half
+			while (queue.TryDequeue(out T _))
 			{
-				RawValue = s
-			};
-			return h;
-		}
-		
-		public static void WriteHalf(this BinaryWriter writer, Half h)
-		{
-			writer.Write(h.RawValue);
+			}
 		}
 	}
+#endif
 }

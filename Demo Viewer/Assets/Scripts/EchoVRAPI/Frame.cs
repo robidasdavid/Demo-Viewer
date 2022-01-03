@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+#if UNITY
 using UnityEngine;
+#else
+using System.Numerics;
+#endif
+
 
 namespace EchoVRAPI
 {
@@ -53,7 +59,18 @@ namespace EchoVRAPI
 		/// </summary>
 		public float game_clock { get; set; }
 
-		[JsonIgnore] public bool inLobby => map_name == "mpl_lobby_b2";
+		[JsonIgnore] public bool InLobby => map_name == "mpl_lobby_b2";
+		[JsonIgnore] public bool InArena => map_name == "mpl_arena_a";
+
+		private static readonly string[] combatMaps = new string[]
+		{
+			"mpl_combat_fission",
+			"mpl_combat_combustion",
+			"mpl_combat_dyson",
+			"mpl_combat_gauss"
+		};
+
+		[JsonIgnore] public bool InCombat => combatMaps.Contains(map_name);
 
 		public string match_type { get; set; }
 		public string map_name { get; set; }
@@ -93,11 +110,19 @@ namespace EchoVRAPI
 		public List<Team> teams { get; set; }
 
 		[JsonIgnore]
-		public List<Team> playerTeams =>
+		public List<Team> PlayerTeams =>
 			new List<Team>
 			{
 				teams[0], teams[1]
 			};
+		[JsonIgnore]
+		public Team ClientTeam =>
+			teams.FirstOrDefault(t => t.players.Exists(p => p.name == client_name));
+
+		[JsonIgnore]
+		public Team.TeamColor ClientTeamColor =>
+			teams.FirstOrDefault(t => t.players.Exists(p => p.name == client_name))?.color
+			?? Team.TeamColor.spectator;
 
 		/// <summary>
 		/// Gets all the g_Player objects from both teams
@@ -189,14 +214,13 @@ namespace EchoVRAPI
 
 			return Team.TeamColor.spectator;
 		}
-		
-		
+
 
 		public (Vector3, Quaternion) GetCameraTransform()
 		{
 			return (
 				player.vr_position.ToVector3(),
-				Math2.QuaternionLookRotation(player.vr_forward.ToVector3(), player.vr_up.ToVector3()) 
+				Math2.QuaternionLookRotation(player.vr_forward.ToVector3(), player.vr_up.ToVector3())
 			);
 		}
 
@@ -212,11 +236,11 @@ namespace EchoVRAPI
 		{
 			if (from == null) return to;
 			if (to == null) return from;
-			
+
 			if (from.recorded_time == to.recorded_time) return from;
 			if (from.recorded_time > to.recorded_time)
 			{
-				Console.WriteLine("From frame is after To frame");
+				Log("From frame is after To frame");
 				return null;
 			}
 
@@ -225,8 +249,8 @@ namespace EchoVRAPI
 
 			// the ratio between the frames
 			float lerpValue =
-				(float) ((t - from.recorded_time).TotalSeconds /
-				         (to.recorded_time - from.recorded_time).TotalSeconds);
+				(float)((t - from.recorded_time).TotalSeconds /
+				        (to.recorded_time - from.recorded_time).TotalSeconds);
 
 			Frame newFrame = new Frame()
 			{
@@ -275,7 +299,7 @@ namespace EchoVRAPI
 
 			return newFrame;
 		}
-		
+
 		public static Frame FromEchoReplayString(string line)
 		{
 			if (!string.IsNullOrEmpty(line))
@@ -289,7 +313,7 @@ namespace EchoVRAPI
 				}
 				else
 				{
-					Debug.LogError("Row doesn't include both a time and API JSON");
+					Log("Row doesn't include both a time and API JSON");
 					return null;
 				}
 
@@ -302,10 +326,10 @@ namespace EchoVRAPI
 					};
 					onlyTime = sb.ToString();
 				}
-			
+
 				if (!DateTime.TryParse(onlyTime, out DateTime frameTime))
 				{
-					Debug.LogError($"Can't parse date: {onlyTime}");
+					Log($"Can't parse date: {onlyTime}");
 					return null;
 				}
 
@@ -316,17 +340,17 @@ namespace EchoVRAPI
 				}
 				else
 				{
-					Debug.LogError("Row is not arena data.");
+					Log("Row is not arena data.");
 					return null;
 				}
 			}
 			else
 			{
-				Debug.LogError("String is empty");
+				Log("String is empty");
 				return null;
 			}
 		}
-		
+
 		/// <summary>
 		/// Creates a frame from json and a timestamp
 		/// </summary>
@@ -342,11 +366,21 @@ namespace EchoVRAPI
 				Frame frame = JsonConvert.DeserializeObject<Frame>(json);
 				frame.recorded_time = time;
 				return frame;
-			} catch (JsonReaderException ex)
+			}
+			catch (JsonReaderException ex)
 			{
-				Console.WriteLine(ex);
+				Log(ex.ToString());
 				return null;
 			}
+		}
+
+		public static void Log(string message)
+		{
+#if UNITY
+			Debug.Log(message);
+#else
+			Console.WriteLine(message);
+#endif
 		}
 	}
 
@@ -368,7 +402,8 @@ namespace EchoVRAPI
 			return f;
 		}
 
-		public static Quaternion QuaternionLookRotation(Vector3 forward, Vector3 up)
+#if UNITY
+public static Quaternion QuaternionLookRotation(Vector3 forward, Vector3 up)
 		{
 			forward /= forward.magnitude;
 
@@ -390,7 +425,7 @@ namespace EchoVRAPI
 			var quaternion = new Quaternion();
 			if (num8 > 0f)
 			{
-				var num = (float) Math.Sqrt(num8 + 1f);
+				var num = (float)Math.Sqrt(num8 + 1f);
 				quaternion.w = num * 0.5f;
 				num = 0.5f / num;
 				quaternion.x = (m12 - m21) * num;
@@ -401,7 +436,7 @@ namespace EchoVRAPI
 
 			if ((m00 >= m11) && (m00 >= m22))
 			{
-				var num7 = (float) Math.Sqrt(((1f + m00) - m11) - m22);
+				var num7 = (float)Math.Sqrt(((1f + m00) - m11) - m22);
 				var num4 = 0.5f / num7;
 				quaternion.x = 0.5f * num7;
 				quaternion.y = (m01 + m10) * num4;
@@ -412,7 +447,7 @@ namespace EchoVRAPI
 
 			if (m11 > m22)
 			{
-				var num6 = (float) Math.Sqrt(((1f + m11) - m00) - m22);
+				var num6 = (float)Math.Sqrt(((1f + m11) - m00) - m22);
 				var num3 = 0.5f / num6;
 				quaternion.x = (m10 + m01) * num3;
 				quaternion.y = 0.5f * num6;
@@ -421,7 +456,7 @@ namespace EchoVRAPI
 				return quaternion;
 			}
 
-			var num5 = (float) Math.Sqrt(((1f + m22) - m00) - m11);
+			var num5 = (float)Math.Sqrt(((1f + m22) - m00) - m11);
 			var num2 = 0.5f / num5;
 			quaternion.x = (m20 + m02) * num2;
 			quaternion.y = (m21 + m12) * num2;
@@ -429,6 +464,69 @@ namespace EchoVRAPI
 			quaternion.w = (m01 - m10) * num2;
 			return quaternion;
 		}
+#else
+		public static Quaternion QuaternionLookRotation(Vector3 forward, Vector3 up)
+		{
+			forward /= forward.Length();
+
+			Vector3 vector = Vector3.Normalize(forward);
+			Vector3 vector2 = Vector3.Normalize(Vector3.Cross(up, vector));
+			Vector3 vector3 = Vector3.Cross(vector, vector2);
+			var m00 = vector2.X;
+			var m01 = vector2.Y;
+			var m02 = vector2.Z;
+			var m10 = vector3.X;
+			var m11 = vector3.Y;
+			var m12 = vector3.Z;
+			var m20 = vector.X;
+			var m21 = vector.Y;
+			var m22 = vector.Z;
+
+
+			float num8 = (m00 + m11) + m22;
+			var quaternion = new Quaternion();
+			if (num8 > 0f)
+			{
+				var num = (float)Math.Sqrt(num8 + 1f);
+				quaternion.W = num * 0.5f;
+				num = 0.5f / num;
+				quaternion.X = (m12 - m21) * num;
+				quaternion.Y = (m20 - m02) * num;
+				quaternion.Z = (m01 - m10) * num;
+				return quaternion;
+			}
+
+			if ((m00 >= m11) && (m00 >= m22))
+			{
+				var num7 = (float)Math.Sqrt(((1f + m00) - m11) - m22);
+				var num4 = 0.5f / num7;
+				quaternion.X = 0.5f * num7;
+				quaternion.Y = (m01 + m10) * num4;
+				quaternion.Z = (m02 + m20) * num4;
+				quaternion.W = (m12 - m21) * num4;
+				return quaternion;
+			}
+
+			if (m11 > m22)
+			{
+				var num6 = (float)Math.Sqrt(((1f + m11) - m00) - m22);
+				var num3 = 0.5f / num6;
+				quaternion.X = (m10 + m01) * num3;
+				quaternion.Y = 0.5f * num6;
+				quaternion.Z = (m21 + m12) * num3;
+				quaternion.W = (m20 - m02) * num3;
+				return quaternion;
+			}
+
+			var num5 = (float)Math.Sqrt(((1f + m22) - m00) - m11);
+			var num2 = 0.5f / num5;
+			quaternion.X = (m20 + m02) * num2;
+			quaternion.Y = (m21 + m12) * num2;
+			quaternion.Z = 0.5f * num5;
+			quaternion.W = (m01 - m10) * num2;
+			return quaternion;
+		}
+#endif
 	}
 
 
@@ -440,12 +538,7 @@ namespace EchoVRAPI
 	{
 		public static Vector3 ToVector3(this List<float> input)
 		{
-			if (input.Count != 3)
-			{
-				throw new Exception("Can't convert List to Vector3. There must be 3 elements.");
-			}
-
-			return new Vector3(input[2], input[1], input[0]);
+			return ToVector3(input.ToArray());
 		}
 
 		public static Vector3 ToVector3(this float[] input)
@@ -455,7 +548,11 @@ namespace EchoVRAPI
 				throw new Exception("Can't convert array to Vector3. There must be 3 elements.");
 			}
 
+#if UNITY
 			return new Vector3(input[2], input[1], input[0]);
+#else
+			return new Vector3(input[0], input[1], input[2]);
+#endif
 		}
 
 		public static Vector3 ToVector3Backwards(this float[] input)
@@ -465,26 +562,26 @@ namespace EchoVRAPI
 				throw new Exception("Can't convert array to Vector3");
 			}
 
+#if UNITY
 			return new Vector3(input[0], input[1], input[2]);
-		}
-
-		public static Vector3 ToVector3Backwards(this List<float> input)
-		{
-			if (input.Count != 3)
-			{
-				throw new Exception("Can't convert array to Vector3");
-			}
-
-			return new Vector3(input[0], input[1], input[2]);
+#else
+			return new Vector3(input[2], input[1], input[0]);
+#endif
 		}
 
 		public static float[] ToFloatArray(this Vector3 vector3)
 		{
 			return new float[]
 			{
+#if UNITY
 				vector3.z,
 				vector3.y,
 				vector3.x
+#else
+				vector3.X,
+				vector3.Y,
+				vector3.Z
+#endif
 			};
 		}
 
@@ -492,20 +589,34 @@ namespace EchoVRAPI
 		{
 			return new List<float>
 			{
+#if UNITY
 				vector3.z,
 				vector3.y,
 				vector3.x
+#else
+				vector3.X,
+				vector3.Y,
+				vector3.Z
+#endif
 			};
 		}
 
 		public static float DistanceTo(this Vector3 v1, Vector3 v2)
 		{
-			return (float) Math.Sqrt(Math.Pow(v1.x - v2.x, 2) + Math.Pow(v1.y - v2.y, 2) + Math.Pow(v1.z - v2.z, 2));
+#if UNITY
+			return (float)Math.Sqrt(Math.Pow(v1.x - v2.x, 2) + Math.Pow(v1.y - v2.y, 2) + Math.Pow(v1.z - v2.z, 2));
+#else
+			return (float)Math.Sqrt(Math.Pow(v1.X - v2.X, 2) + Math.Pow(v1.Y - v2.Y, 2) + Math.Pow(v1.Z - v2.Z, 2));
+#endif
 		}
 
 		public static Vector3 Normalized(this Vector3 v1)
 		{
+#if UNITY
 			return v1 / v1.magnitude;
+#else
+			return v1 / v1.Length();
+#endif
 		}
 
 
@@ -514,10 +625,17 @@ namespace EchoVRAPI
 		/// </summary>
 		public static Vector3 Forward(this Quaternion q)
 		{
+#if UNITY
 			return new Vector3(
-				2 * (q.x * q.z + q.w * q.y), 
+				2 * (q.x * q.z + q.w * q.y),
 				2 * (q.y * q.z - q.w * q.x),
 				1 - 2 * (q.x * q.x + q.y * q.y));
+#else
+			return new Vector3(
+				2 * (q.X * q.Z + q.W * q.Y),
+				2 * (q.Y * q.Z - q.W * q.X),
+				1 - 2 * (q.X * q.X + q.Y * q.Y));
+#endif
 		}
 
 		/// <summary>
@@ -525,10 +643,17 @@ namespace EchoVRAPI
 		/// </summary>
 		public static Vector3 ForwardBackwards(this Quaternion q)
 		{
+#if UNITY
 			return new Vector3(
 				1 - 2 * (q.x * q.x + q.y * q.y), 
 				2 * (q.y * q.z - q.w * q.x),
 				2 * (q.x * q.z + q.w * q.y));
+#else
+			return new Vector3(
+				1 - 2 * (q.X * q.X + q.Y * q.Y),
+				2 * (q.Y * q.Z - q.W * q.X),
+				2 * (q.X * q.Z + q.W * q.Y));
+#endif
 		}
 
 		/// <summary>
@@ -544,10 +669,17 @@ namespace EchoVRAPI
 		/// </summary>
 		public static Vector3 Up(this Quaternion q)
 		{
+#if UNITY
 			return new Vector3(
-				2 * (q.x * q.y - q.w * q.z), 
+				2 * (q.x * q.y - q.w * q.z),
 				1 - 2 * (q.x * q.x + q.z * q.z),
 				2 * (q.y * q.z + q.w * q.x));
+#else
+			return new Vector3(
+				2 * (q.X * q.Y - q.W * q.Z),
+				1 - 2 * (q.X * q.X + q.Z * q.Z),
+				2 * (q.Y * q.Z + q.W * q.X));
+#endif
 		}
 
 		/// <summary>
@@ -555,10 +687,17 @@ namespace EchoVRAPI
 		/// </summary>
 		public static Vector3 UpBackwards(this Quaternion q)
 		{
+#if UNITY
 			return new Vector3(
 				2 * (q.y * q.z + q.w * q.x),
 				1 - 2 * (q.x * q.x + q.z * q.z),
 				2 * (q.x * q.y - q.w * q.z));
+#else
+			return new Vector3(
+				2 * (q.Y * q.Z + q.W * q.X),
+				1 - 2 * (q.X * q.X + q.Z * q.Z),
+				2 * (q.X * q.Y + q.W * q.Z));
+#endif
 		}
 	}
 }

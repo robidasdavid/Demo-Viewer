@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+#if UNITY
 using UnityEngine;
-using EchoVRAPI;
-using Photon.Compression.HalfFloat;
 using Debug = UnityEngine.Debug;
 using Transform = EchoVRAPI.Transform;
+#else
+using System.Numerics;
+#endif
+using EchoVRAPI;
+using Half = SystemHalf.Half;
 
 namespace ButterReplays
 {
@@ -69,7 +73,7 @@ namespace ButterReplays
 			if (IsKeyframe)
 			{
 				// TODO make sure this is switched to UTC
-				writer.Write((long) (frame.recorded_time - UnixEpoch).TotalMilliseconds);
+				writer.Write((long)(frame.recorded_time - UnixEpoch).TotalMilliseconds);
 			}
 			else
 			{
@@ -179,11 +183,13 @@ namespace ButterReplays
 						writer.Write((byte)player.playerid);
 
 						Player lastFramePlayer = lastFrameInChunk?.frame.GetPlayer(player.userid);
-						Player lastLastFramePlayer =
-							lastFrameInChunk?.lastFrameInChunk?.frame.GetPlayer(player.userid);
+						Player lastLastFramePlayer = lastFrameInChunk?.lastFrameInChunk?.frame.GetPlayer(player.userid);
 
-						Vector3 vel = player.velocity.ToVector3() - (lastFramePlayer?.velocity.ToVector3() ??
-						                                             Vector3.zero);
+#if UNITY
+						Vector3 vel = player.velocity.ToVector3() - (lastFramePlayer?.velocity.ToVector3() ?? Vector3.zero);
+#else
+						Vector3 vel = player.velocity.ToVector3() - (lastFramePlayer?.velocity.ToVector3() ?? Vector3.Zero);
+#endif
 
 						List<bool> playerStateBitmask = new List<bool>()
 						{
@@ -197,7 +203,11 @@ namespace ButterReplays
 							                                      lastFramePlayer.packetlossratio) < float.Epsilon),
 							lastFramePlayer == null || !(player.holding_left == lastFramePlayer.holding_left &&
 							                             player.holding_right == lastFramePlayer.holding_right),
+#if UNITY
 							vel.sqrMagnitude > .0001f
+#else
+							vel.LengthSquared() > .0001f
+#endif
 						};
 						writer.Write(playerStateBitmask.GetBitmasks()[0]);
 
@@ -300,10 +310,12 @@ namespace ButterReplays
 			bytes.Add((byte)(stats.steals - (lastStats?.steals ?? 0)));
 			bytes.Add((byte)(stats.shots_taken - (lastStats?.shots_taken ?? 0)));
 
-			bytes.AddRange(
-				ButterFile.GetHalfBytes((Half)(stats.possession_time - (lastStats?.possession_time ?? 0))));
-			bytes.AddRange(BitConverter.GetBytes((ushort)Mathf.Clamp(stats.stuns - (lastStats?.stuns ?? 0), 0,
-				ushort.MaxValue)));
+			bytes.AddRange(ButterFile.GetHalfBytes((Half)(stats.possession_time - (lastStats?.possession_time ?? 0))));
+#if UNITY
+			bytes.AddRange(BitConverter.GetBytes((ushort)Mathf.Clamp(stats.stuns - (lastStats?.stuns ?? 0), 0, ushort.MaxValue)));
+#else
+			bytes.AddRange(BitConverter.GetBytes((ushort)Math.Clamp(stats.stuns - (lastStats?.stuns ?? 0), 0, ushort.MaxValue)));
+#endif
 			return bytes.ToArray();
 		}
 
@@ -316,12 +328,20 @@ namespace ButterReplays
 					List<byte> bytes = new List<byte>();
 
 					bytes.AddRange(PoseToBytes(
+#if UNITY
 						frame.disc.Position - (lastFrameInChunk?.frame.disc.Position ?? Vector3.zero),
+#else
+						frame.disc.Position - (lastFrameInChunk?.frame.disc.Position ?? Vector3.Zero),
+#endif
 						frame.disc.Rotation
 					));
 
 					bytes.AddRange((frame.disc.velocity.ToVector3() -
+#if UNITY
 					                (lastFrameInChunk?.frame.disc.velocity.ToVector3() ?? Vector3.zero))
+#else
+					                (lastFrameInChunk?.frame.disc.velocity.ToVector3() ?? Vector3.Zero))
+#endif
 						.GetHalfBytes());
 
 					_discBytes = bytes.ToArray();
@@ -340,7 +360,11 @@ namespace ButterReplays
 					List<byte> bytes = new List<byte>();
 
 					bytes.AddRange(PoseToBytes(
+#if UNITY
 						frame.player.Position - (lastFrameInChunk?.frame.player.Position ?? Vector3.zero),
+#else
+						frame.player.Position - (lastFrameInChunk?.frame.player.Position ?? Vector3.Zero),
+#endif
 						frame.player.Rotation
 					));
 
@@ -550,7 +574,6 @@ namespace ButterReplays
 			};
 		}
 
-		
 		public static byte[] PoseToBytes(Transform transform)
 		{
 			if (transform == null) return null;
@@ -563,9 +586,7 @@ namespace ButterReplays
 		public static byte[] PoseToBytes(Vector3 pos, Quaternion rot)
 		{
 			List<byte> bytes = new List<byte>();
-			bytes.AddRange(ButterFile.GetHalfBytes((Half)pos.z));
-			bytes.AddRange(ButterFile.GetHalfBytes((Half)pos.y));
-			bytes.AddRange(ButterFile.GetHalfBytes((Half)pos.x));
+			bytes.AddRange(pos.GetHalfBytes());
 
 			bytes.AddRange(SmallestThree(rot));
 
@@ -574,19 +595,28 @@ namespace ButterReplays
 
 		public static byte[] SmallestThree(Quaternion q)
 		{
+#if UNITY
 			q = Quaternion.LookRotation(q.ForwardBackwards(), q.UpBackwards());
-			
+#endif
 			// make an array of the components
 			float[] components =
 			{
+#if UNITY
 				q.x, q.y, q.z, q.w
+#else
+				q.X, q.Y, q.Z, q.W
+#endif
 			};
 
 			// find component with largest absolute value
 			float max = 0;
 			int maxIndex = 0;
 			int sign = 1;
+#if UNITY
 			float[] absComponents = components.Select(Mathf.Abs).ToArray();
+#else
+			float[] absComponents = components.Select(MathF.Abs).ToArray();
+#endif
 			for (int i = 0; i < 4; i++)
 			{
 				if (absComponents[i] > max)
@@ -610,7 +640,7 @@ namespace ButterReplays
 				if (i != maxIndex)
 				{
 					// TODO test if these rotations are correct
-					ushort val = (ushort)((components[i] * sign +  0.70710678) / 1.41421356 * 1023);
+					ushort val = (ushort)((components[i] * sign + 0.70710678) / 1.41421356 * 1023);
 					data |= (uint)(val << ((j++ * 10) + 2));
 				}
 			}

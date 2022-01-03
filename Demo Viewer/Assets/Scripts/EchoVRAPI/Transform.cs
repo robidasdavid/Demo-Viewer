@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Newtonsoft.Json;
+#if UNITY
+using UnityEngine;
+#else
+using System.Numerics;
+#endif
 
 namespace EchoVRAPI
 {

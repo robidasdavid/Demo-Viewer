@@ -111,7 +111,7 @@ public class DemoStart : MonoBehaviour
 	/// <summary>
 	/// ((teamid, player ign), player character obj)
 	/// </summary>
-	Dictionary<(int, string), PlayerCharacter> playerObjects = new Dictionary<(int, string), PlayerCharacter>();
+	public static Dictionary<(int, string), PlayerCharacter> playerObjects = new Dictionary<(int, string), PlayerCharacter>();
 
 
 	public static Playhead playhead;
@@ -150,13 +150,15 @@ public class DemoStart : MonoBehaviour
 
 	private static int loadingThreadId;
 
-
+	public static DemoStart instance;
 
 	#endregion
 
 	private void Start()
 	{
 		// Ahh yes welcome to the code
+
+		instance = this;
 
 		// Load and serialize demo file
 #if !UNITY_WEBGL
@@ -854,7 +856,7 @@ public class DemoStart : MonoBehaviour
 				case SimpleCameraController.CameraMode.pov:
 				case SimpleCameraController.CameraMode.follow:
 				case SimpleCameraController.CameraMode.followOrbit:
-					camController.FocusPlayer(null);
+					camController.FocusPlayer();
 					break;
 			}
 		}
@@ -1228,6 +1230,18 @@ public class DemoStart : MonoBehaviour
 	public void setSoundBool()
 	{
 		isSoundOn = masterSoundToggle.isOn;
+	}
+
+	public static PlayerCharacter FindPlayerObjectByName(string name)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (playerObjects.ContainsKey((i, name)))
+			{
+				return playerObjects[(i, name)];
+			}
+		}
+		return null;
 	}
 }
 

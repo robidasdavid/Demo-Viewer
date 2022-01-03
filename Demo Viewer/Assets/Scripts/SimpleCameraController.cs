@@ -402,10 +402,15 @@ public class SimpleCameraController : MonoBehaviour
 		}
 	}
 
-	public void FocusPlayer(Transform playerHead)
+	public void FocusPlayer(Transform playerHead = null)
 	{
 		playerTarget = playerHead;
 
 		Mode = playerHead != null ? followCameraMode : CameraMode.free;
+	}
+
+	public void FocusPlayer(Player player)
+	{
+		FocusPlayer(DemoStart.FindPlayerObjectByName(player.name).transform);
 	}
 }

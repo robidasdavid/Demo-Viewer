@@ -102,6 +102,7 @@ public class DemoStart : MonoBehaviour
 	public Transform playerObjsParent;
 	public GameObject bluePlayerPrefab;
 	public GameObject orangePlayerPrefab;
+	public GameObject playerV4Prefab;
 
 	private bool isScored = false;
 
@@ -111,7 +112,9 @@ public class DemoStart : MonoBehaviour
 	/// <summary>
 	/// ((teamid, player ign), player character obj)
 	/// </summary>
+	[Obsolete("Switching to playerv4")]
 	public static Dictionary<(int, string), PlayerCharacter> playerObjects = new Dictionary<(int, string), PlayerCharacter>();
+	public static Dictionary<string, PlayerV4> playerV4Objects = new Dictionary<string, PlayerV4>();
 
 
 	public static Playhead playhead;
@@ -453,46 +456,6 @@ public class DemoStart : MonoBehaviour
 
 
 	/// <summary>
-	/// Saves a replay clip
-	/// </summary>
-	public void SaveReplayClip(string fileName, int startFrame, int endFrame)
-	{
-		if (loadedDemo == null)
-		{
-			Debug.LogError("No replay loaded. Can't clip.");
-			return;
-		}
-
-
-		// write the frames directly into a zip
-		using (MemoryStream memoryStream = new MemoryStream())
-		{
-			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-			{
-				ZipArchiveEntry zipContents = archive.CreateEntry(Path.GetFileName(fileName));
-
-				using (Stream entryStream = zipContents.Open())
-				{
-					using (StreamWriter streamWriter = new StreamWriter(entryStream))
-					{
-						for (int i = startFrame; i < endFrame; i++)
-						{
-							streamWriter.WriteLine(loadedDemo.rawFrames[i]);
-						}
-					}
-				}
-			}
-
-			using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
-			{
-				memoryStream.Seek(0, SeekOrigin.Begin);
-				memoryStream.CopyTo(fileStream);
-			}
-		}
-	}
-
-
-	/// <summary>
 	/// Loops through the whole file in the background and generates temporal data like playspace location
 	/// </summary>
 	private static void ProcessAllTemporalData(Game game, int threadLoadingId)
@@ -653,6 +616,48 @@ public class DemoStart : MonoBehaviour
 	public void ReloadFile()
 	{
 
+	}
+	
+	
+
+
+	/// <summary>
+	/// Saves a replay clip
+	/// </summary>
+	public void SaveReplayClip(string fileName, int startFrame, int endFrame)
+	{
+		if (loadedDemo == null)
+		{
+			Debug.LogError("No replay loaded. Can't clip.");
+			return;
+		}
+
+
+		// write the frames directly into a zip
+		using (MemoryStream memoryStream = new MemoryStream())
+		{
+			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+			{
+				ZipArchiveEntry zipContents = archive.CreateEntry(Path.GetFileName(fileName));
+
+				using (Stream entryStream = zipContents.Open())
+				{
+					using (StreamWriter streamWriter = new StreamWriter(entryStream))
+					{
+						for (int i = startFrame; i < endFrame; i++)
+						{
+							streamWriter.WriteLine(loadedDemo.rawFrames[i]);
+						}
+					}
+				}
+			}
+
+			using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+			{
+				memoryStream.Seek(0, SeekOrigin.Begin);
+				memoryStream.CopyTo(fileStream);
+			}
+		}
 	}
 	
 	/// <summary>
@@ -972,6 +977,41 @@ public class DemoStart : MonoBehaviour
 
 		List<PlayerCharacter> movedObjects = new List<PlayerCharacter>();
 
+		// Update the playerv4 data
+
+		List<Player> playerList = viewingFrame.GetAllPlayers(true);
+		playerList.Sort((p1, p2)=> p2.team_color.CompareTo(p1.team_color));
+		for (int i = 0; i < playerList.Count; i++)
+		{
+			Player player = playerList[i];
+			if (!playerV4Objects.ContainsKey(player.name))
+			{
+				playerV4Objects[player.name] = Instantiate(playerV4Prefab, playerObjsParent).GetComponent<PlayerV4>();
+				playerV4Objects[player.name].name = player.name;
+			}
+
+			BonePlayer bones = viewingFrame.bones.user_bones[i];
+			playerV4Objects[player.name].SetPlayerData(player.team_color, player, bones);
+		}
+
+		// for (int t = 0; t < 2; t++)
+		// {
+		// 	if (viewingFrame.teams[t].players == null) continue;
+		// 	
+		// 	List<Player> players = viewingFrame.teams[t].players;
+		// 	for (int p = 0; p < players.Count; p++)
+		// 	{
+		// 		if (!playerV4Objects.ContainsKey(players[p].name))
+		// 		{
+		// 			playerV4Objects[players[p].name] = Instantiate(playerV4Prefab, playerObjsParent).GetComponent<PlayerV4>();
+		// 		}
+		//
+		// 		BonePlayer bones = viewingFrame.bones.user_bones[players[p].playerid];
+		// 		playerV4Objects[players[p].name].SetPlayerData((Team.TeamColor)t, players[p], bones);
+		// 			
+		// 	}
+		// }
+
 		// Update the players
 		for (int t = 0; t < 2; t++)
 		{
@@ -1021,9 +1061,9 @@ public class DemoStart : MonoBehaviour
 
 	private Player FindPlayerInFrame(Frame frame, string name)
 	{
-		foreach (var team in frame.teams)
+		foreach (Team team in frame.teams)
 		{
-			foreach (var player in team.players)
+			foreach (Player player in team.players)
 			{
 				if (player.name == name)
 				{
@@ -1035,6 +1075,7 @@ public class DemoStart : MonoBehaviour
 		return null;
 	}
 
+	[Obsolete("Switching to playerv4")]
 	private void RenderPlayer(Player player, Player lastFramePlayer, int teamIndex, EchoVRAPI.VRPlayer playspace)
 	{
 		// don't show spectators

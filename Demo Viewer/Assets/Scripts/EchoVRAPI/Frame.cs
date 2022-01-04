@@ -9,7 +9,6 @@ using UnityEngine;
 using System.Numerics;
 #endif
 
-
 namespace EchoVRAPI
 {
 	// ReSharper disable InconsistentNaming
@@ -30,8 +29,15 @@ namespace EchoVRAPI
 		/// This isn't in the api, just useful for recorded data.
 		/// The time this frame was fetched from the API.
 		/// </summary>
-		[JsonIgnore]
-		public DateTime recorded_time { get; set; }
+		[JsonIgnore] public DateTime recorded_time;
+
+		/// <summary>
+		/// This data is from a different API call, but can be combined here to make organization easier
+		/// </summary>
+		[JsonIgnore] public Bones bones;
+		
+		public int err_code;
+		public string err_description;
 
 		/// <summary>
 		/// Disc object at the given instance.
@@ -115,6 +121,7 @@ namespace EchoVRAPI
 			{
 				teams[0], teams[1]
 			};
+
 		[JsonIgnore]
 		public Team ClientTeam =>
 			teams.FirstOrDefault(t => t.players.Exists(p => p.name == client_name));
@@ -256,6 +263,8 @@ namespace EchoVRAPI
 			{
 				recorded_time = t,
 
+				bones = Bones.Lerp(from.bones, to.bones, lerpValue),
+				
 				disc = Disc.Lerp(from.disc, to.disc, lerpValue),
 				sessionid = from.sessionid,
 				orange_points = from.orange_points,
@@ -305,16 +314,21 @@ namespace EchoVRAPI
 			if (!string.IsNullOrEmpty(line))
 			{
 				string[] splitJSON = line.Split('\t');
-				string onlyJSON, onlyTime;
-				if (splitJSON.Length == 2)
+				string onlyJSON, onlyTime, onlyBones=null;
+				switch (splitJSON.Length)
 				{
-					onlyJSON = splitJSON[1];
-					onlyTime = splitJSON[0];
-				}
-				else
-				{
-					Log("Row doesn't include both a time and API JSON");
-					return null;
+					case 3:
+						onlyBones = splitJSON[2];
+						onlyJSON = splitJSON[1];
+						onlyTime = splitJSON[0];
+						break;
+					case 2:
+						onlyJSON = splitJSON[1];
+						onlyTime = splitJSON[0];
+						break;
+					default:
+						Log("Row doesn't include both a time and API JSON");
+						return null;
 				}
 
 				if (onlyTime.Length == 23 && onlyTime[13] == '.')
@@ -336,7 +350,7 @@ namespace EchoVRAPI
 				// if this is actually valid arena data
 				if (onlyJSON.Length > 800)
 				{
-					return FromJSON(frameTime, onlyJSON);
+					return FromJSON(frameTime, onlyJSON, onlyBones);
 				}
 				else
 				{
@@ -354,24 +368,44 @@ namespace EchoVRAPI
 		/// <summary>
 		/// Creates a frame from json and a timestamp
 		/// </summary>
-		/// <param name="time">The time the frame was recorded</param>
-		/// <param name="json">The json for the frame</param>
+		/// <param name="timestamp">The time the frame was recorded</param>
+		/// <param name="session">The json for the frame</param>
+		/// <param name="bones">The json for the bone data or null</param>
 		/// <returns>A Frame object</returns>
-		public static Frame FromJSON(DateTime time, string json)
+		public static Frame FromJSON(DateTime timestamp, string session, string bones)
 		{
-			if (string.IsNullOrEmpty(json)) return null;
+			if (session == null) return null;
 
-			try
+			// Convert session contents into Frame class.
+			Frame f = JsonConvert.DeserializeObject<Frame>(session);
+
+			if (f == null) return null;
+
+			// add the recorded time
+			f.recorded_time = timestamp;
+
+			// prepare the raw api conversion for use
+			f.teams[0].color = Team.TeamColor.blue;
+			f.teams[1].color = Team.TeamColor.orange;
+			f.teams[2].color = Team.TeamColor.spectator;
+
+			// make sure player lists are not null
+			f.teams[0].players ??= new List<Player>();
+			f.teams[1].players ??= new List<Player>();
+			f.teams[2].players ??= new List<Player>();
+
+			if (bones !=null) f.bones = JsonConvert.DeserializeObject<Bones>(bones);
+
+			// makes loops through all players a lot easier
+			foreach (Team team in f.teams)
 			{
-				Frame frame = JsonConvert.DeserializeObject<Frame>(json);
-				frame.recorded_time = time;
-				return frame;
+				foreach (Player player in team.players)
+				{
+					player.team_color = team.color;
+				}
 			}
-			catch (JsonReaderException ex)
-			{
-				Log(ex.ToString());
-				return null;
-			}
+
+			return f;
 		}
 
 		public static void Log(string message)
@@ -599,6 +633,21 @@ public static Quaternion QuaternionLookRotation(Vector3 forward, Vector3 up)
 				vector3.Z
 #endif
 			};
+		}
+		
+		
+		public static Quaternion ToQuaternion(this float[] input)
+		{
+			if (input.Length != 4)
+			{
+				throw new Exception("Can't convert array to Vector3. There must be 3 elements.");
+			}
+
+			Quaternion q = new Quaternion(input[0], input[1], input[2], input[3]);
+#if UNITY
+			q = Quaternion.LookRotation(q.ForwardBackwards(), q.UpBackwards());
+#endif
+			return q;
 		}
 
 		public static float DistanceTo(this Vector3 v1, Vector3 v2)

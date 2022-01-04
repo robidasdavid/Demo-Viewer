@@ -174,6 +174,7 @@
      <Compile Include="Assets\Photon\Simple\Components\SyncAnimator\SyncAnimator.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
      <Compile Include="Assets\Scripts\ScoreBoardController.cs" />
+     <Compile Include="Assets\Scripts\Minimap.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\GhostWorld\Haunted.cs" />
      <Compile Include="Assets\Scripts\VRPlayer.cs" />
@@ -198,6 +199,7 @@
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\VitalsSystem\Interfaces\IOnVitalChange.cs" />
      <Compile Include="Assets\Photon\PhotonUtilities\PackObject\CodeGen\GenerateTypeExtension.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
+     <Compile Include="Assets\Scripts\MinimapPlayer.cs" />
      <Compile Include="Assets\Photon\Simple\Utilities\ContactGroups\ContactGroupMaskSelector.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\OwnedIVitals.cs" />
      <Compile Include="Assets\Scripts\ShowVersionNumTMP.cs" />
@@ -345,8 +347,9 @@
      <Compile Include="Assets\Photon\Simple\Components\Assistants\TriggerAssists.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncOculus\Assistants\OculusAssist.cs" />
      <Compile Include="Assets\Photon\Simple\Core\Interfaces\NetObjInterfaces.cs" />
-     <Compile Include="Assets\Scripts\Minimap.cs" />
-     <Compile Include="Assets\Scripts\MinimapPlayer.cs" />
+     <Compile Include="Assets\Scripts\PlayerV4.cs" />
+     <Compile Include="Assets\Scripts\RosterLists.cs" />
+     <Compile Include="Assets\Scripts\RosterRow.cs" />
      <None Include="Assets\Materials\PointClouds\DataFoldvrDisk.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

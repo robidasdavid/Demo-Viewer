@@ -26,6 +26,7 @@ namespace EchoVRAPI
 #endif
 			set => vr_position = value.ToFloatList();
 		}
+
 		[JsonIgnore] internal Quaternion? rot;
 
 		[JsonIgnore]

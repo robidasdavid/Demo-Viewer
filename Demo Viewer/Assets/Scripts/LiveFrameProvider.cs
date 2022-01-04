@@ -53,7 +53,7 @@ public class LiveFrameProvider : MonoBehaviour
 			lastFrame = frame;
 			try
 			{
-				frame = Frame.FromJSON(DateTime.Now, request.downloadHandler.text);
+				frame = Frame.FromJSON(DateTime.Now, request.downloadHandler.text, null);
 				if (lastFrame != null && DemoStart.playhead != null)
 				{
 					DemoStart.playhead.playheadLocation = lastFrame.recorded_time;

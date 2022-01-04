@@ -104,9 +104,10 @@ public class GameManager : MonoBehaviour
 
 		List<string> args = System.Environment.GetCommandLineArgs().ToList();
 
-		foreach (var arg in args)
+		// only set the file the first time the scene is loaded. This is a pretty dumb way to do this.
+		if (Time.timeAsDouble < 5)
 		{
-			if (arg.Contains(".json") || arg.Contains(".echoreplay"))
+			foreach (string arg in args.Where(arg => arg.Contains(".echoreplay") || arg.Contains(".butter")))
 			{
 				PlayerPrefs.SetString("fileDirector", arg);
 				break;
@@ -144,7 +145,13 @@ public class GameManager : MonoBehaviour
 		FileAssociations.SetAssociation(
 			".echoreplay",
 			"EchoVR.Replay.Viewer",
-			"EchoVR Replay File",
+			"Echo VR Replay File",
+			Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Replay Viewer.exe"));
+		
+		FileAssociations.SetAssociation(
+			".butter",
+			"EchoVR.Replay.Viewer",
+			"Echo VR Replay File",
 			Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Replay Viewer.exe"));
 #endif
 	}

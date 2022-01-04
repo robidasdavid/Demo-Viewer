@@ -13,7 +13,7 @@ namespace EchoVRAPI
 	/// </summary>
 	public class Player
 	{
-		[JsonIgnore] public Team team { get; set; }
+		[JsonIgnore] public Team.TeamColor team_color;
 
 		/// <summary>
 		/// Right hand position and rotation
@@ -127,9 +127,9 @@ namespace EchoVRAPI
 				invulnerable = from.invulnerable,
 				stunned = from.stunned,
 				velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatList(),
-				blocking = from.blocking
+				blocking = from.blocking,
+				team_color = from.team_color,
 			};
 		}
 	}
-
 }

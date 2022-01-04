@@ -18,7 +18,6 @@ public class GetBonesWow : MonoBehaviour
 		StartCoroutine(GetNewFrame());
 	}
 
-
 	private IEnumerator GetNewFrame()
 	{
 		

@@ -17,25 +17,22 @@ namespace ButterReplays
 {
 	public class ButterFrame
 	{
-		private Frame frame;
+		private readonly Frame frame;
 
 		/// <summary>
 		/// The previous frame shouldn't be null except for the first frame.
 		/// </summary>
-		public ButterFrame lastFrame;
+		public readonly ButterFrame lastFrame;
 
 		/// <summary>
 		/// The previous frame in this chunk. Should be null for keyframes.
 		/// </summary>
-		ButterFrame lastFrameInChunk;
+		private ButterFrame lastFrameInChunk;
 
 		private readonly int frameIndex;
 		public bool IsKeyframe => frameIndex % butterHeader.keyframeInterval == 0 || lastFrame == null;
-		private ButterHeader butterHeader;
+		private readonly ButterHeader butterHeader;
 
-
-		private byte _gameStatusByte;
-		private byte[] _pointsBytes;
 		private byte[] _pauseAndRestartsBytes;
 		private byte[] _inputBytes;
 		private byte[] _lastScoreBytes;
@@ -59,6 +56,7 @@ namespace ButterReplays
 		}
 
 		private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
 		public byte[] GetBytes()
 		{
 			using MemoryStream memoryStream = new MemoryStream();
@@ -191,6 +189,7 @@ namespace ButterReplays
 						Vector3 vel = player.velocity.ToVector3() - (lastFramePlayer?.velocity.ToVector3() ?? Vector3.Zero);
 #endif
 
+
 						List<bool> playerStateBitmask = new List<bool>()
 						{
 							player.possession,
@@ -285,6 +284,77 @@ namespace ButterReplays
 						if (playerPoseBitmask[6]) writer.Write(rHandBytes.Take(6).ToArray());
 						if (playerPoseBitmask[7]) writer.Write(rHandBytes.Skip(6).ToArray());
 					}
+				}
+			}
+
+			// add bone data
+			bool bonesIncluded = frame.bones?.user_bones != null;
+			byte boneInclusion = bonesIncluded ? (byte)1 : (byte)0;
+			if (bonesIncluded)
+			{
+				// add the number of players
+				boneInclusion |= (byte)((ushort)frame.bones.user_bones.Length << 1);
+			}
+
+			writer.Write(boneInclusion);
+			if (bonesIncluded)
+			{
+				// bones are diffed with the matching index, which may not be the same player with joins/leaves
+				// last frame
+				Bones lastBones = lastFrame?.frame.bones;
+				if (lastBones?.user_bones.Length != frame.bones.user_bones.Length)
+				{
+					lastBones = null;
+				}
+
+				// for each player
+				for (int playerIndex = 0; playerIndex < frame.bones.user_bones.Length; playerIndex++)
+				{
+					BonePlayer player = frame.bones.user_bones[playerIndex];
+					BonePlayer lastPlayer = lastBones?.user_bones[playerIndex];
+
+					List<byte> posBytes = new List<byte>();
+					List<byte> rotBytes = new List<byte>();
+					List<bool> posInclusion = new List<bool>();
+					List<bool> rotInclusion = new List<bool>();
+
+					(Vector3, Quaternion)[] poses = player.GetPoses();
+					(Vector3, Quaternion)[] lastPoses = lastPlayer?.GetPoses();
+
+					// for each bone in player
+					for (int poseIndex = 0; poseIndex < poses.Length; poseIndex++)
+					{
+						(Vector3 p, Quaternion q) = poses[poseIndex];
+						(Vector3 lastP, Quaternion lastQ) = lastPoses?[poseIndex] ?? (UniversalUnityExtensions.UniversalVector3Zero(), UniversalUnityExtensions.UniversalQuaternionIdentity());
+
+						Vector3 posDiff = p - lastP;
+						Quaternion rotDiff = q * Quaternion.Inverse(lastQ);
+
+						if (posDiff.UniversalLength() > .001f)
+						{
+							posInclusion.Add(true);
+							posBytes.AddRange(posDiff.GetHalfBytes(-2, 2, 14));
+						}
+						else
+						{
+							posInclusion.Add(false);
+						}
+
+						if (UniversalUnityExtensions.QuaternionAngle(q, lastQ) > 1f)
+						{
+							rotInclusion.Add(true);
+							rotBytes.AddRange(SmallestThree(rotDiff));
+						}
+						else
+						{
+							rotInclusion.Add(false);
+						}
+					}
+
+					writer.Write(posInclusion.GetBitmasks());
+					writer.Write(rotInclusion.GetBitmasks());
+					writer.Write(posBytes.ToArray());
+					writer.Write(rotBytes.ToArray());
 				}
 			}
 
@@ -574,6 +644,7 @@ namespace ButterReplays
 			};
 		}
 
+
 		public static byte[] PoseToBytes(Transform transform)
 		{
 			if (transform == null) return null;
@@ -583,11 +654,13 @@ namespace ButterReplays
 			);
 		}
 
+		/// <summary>
+		/// 10 bytes
+		/// </summary>
 		public static byte[] PoseToBytes(Vector3 pos, Quaternion rot)
 		{
 			List<byte> bytes = new List<byte>();
 			bytes.AddRange(pos.GetHalfBytes());
-
 			bytes.AddRange(SmallestThree(rot));
 
 			return bytes.ToArray();
@@ -639,7 +712,6 @@ namespace ButterReplays
 			{
 				if (i != maxIndex)
 				{
-					// TODO test if these rotations are correct
 					ushort val = (ushort)((components[i] * sign + 0.70710678) / 1.41421356 * 1023);
 					data |= (uint)(val << ((j++ * 10) + 2));
 				}

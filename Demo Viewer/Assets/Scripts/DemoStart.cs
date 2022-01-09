@@ -19,6 +19,7 @@ using TMPro;
 using System.Threading;
 using ButterReplays;
 using EchoVRAPI;
+using Newtonsoft.Json;
 using Spark;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -247,14 +248,19 @@ public class DemoStart : MonoBehaviour
 							}
 						}
 
-						if (nearestFrame?.last_score?.disc_speed != (previousFrame?.last_score?.disc_speed ?? -1))
+						if (nearestFrame != null)
 						{
-							GameEvents.Goal?.Invoke(nearestFrame?.last_score);
-						}
-						
-						if (nearestFrame?.last_throw?.total_speed != previousFrame?.last_throw?.total_speed)
-						{
-							GameEvents.LocalThrow?.Invoke(nearestFrame?.last_throw);
+							if (nearestFrame.last_score != null && previousFrame.last_score != null &&
+							    !nearestFrame.last_score.Equals(previousFrame?.last_score))
+							{
+								GameEvents.Goal?.Invoke(nearestFrame.last_score);
+							}
+
+							if (nearestFrame.last_throw != null && previousFrame.last_throw != null &&
+							    nearestFrame.last_throw.Equals(previousFrame.last_throw))
+							{
+								GameEvents.LocalThrow?.Invoke(nearestFrame.last_throw);
+							}
 						}
 
 						// Handle goal stat visibility
@@ -593,6 +599,9 @@ public class DemoStart : MonoBehaviour
 		//set slider values
 		playbackSlider.maxValue = playhead.FrameCount - 1;
 
+		playerObjects = new Dictionary<(int, string), PlayerCharacter>();
+		playerV4Objects = new Dictionary<string, PlayerV4>();
+
 		//HUD initialization
 		goalEventObject.SetActive(false);
 		lastGoalStats.SetActive(false);
@@ -632,32 +641,11 @@ public class DemoStart : MonoBehaviour
 			return;
 		}
 
-
-		// write the frames directly into a zip
-		using (MemoryStream memoryStream = new MemoryStream())
-		{
-			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-			{
-				ZipArchiveEntry zipContents = archive.CreateEntry(Path.GetFileName(fileName));
-
-				using (Stream entryStream = zipContents.Open())
-				{
-					using (StreamWriter streamWriter = new StreamWriter(entryStream))
-					{
-						for (int i = startFrame; i < endFrame; i++)
-						{
-							streamWriter.WriteLine(loadedDemo.rawFrames[i]);
-						}
-					}
-				}
-			}
-
-			using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
-			{
-				memoryStream.Seek(0, SeekOrigin.Begin);
-				memoryStream.CopyTo(fileStream);
-			}
-		}
+		List<Frame> frames = loadedDemo.frames.Skip(startFrame).Take(endFrame - startFrame).ToList();
+		EchoReplay.SaveReplay(fileName, frames);
+		ButterFile butterFile = new ButterFile();
+		frames.ForEach(f=>butterFile.AddFrame(f));
+		File.WriteAllBytes(fileName.Replace(".echoreplay", ".butter"), butterFile.GetBytes());
 	}
 	
 	/// <summary>
@@ -978,39 +966,22 @@ public class DemoStart : MonoBehaviour
 		List<PlayerCharacter> movedObjects = new List<PlayerCharacter>();
 
 		// Update the playerv4 data
-
-		List<Player> playerList = viewingFrame.GetAllPlayers(true);
-		playerList.Sort((p1, p2)=> p2.team_color.CompareTo(p1.team_color));
-		for (int i = 0; i < playerList.Count; i++)
-		{
-			Player player = playerList[i];
-			if (!playerV4Objects.ContainsKey(player.name))
-			{
-				playerV4Objects[player.name] = Instantiate(playerV4Prefab, playerObjsParent).GetComponent<PlayerV4>();
-				playerV4Objects[player.name].name = player.name;
-			}
-
-			BonePlayer bones = viewingFrame.bones.user_bones[i];
-			playerV4Objects[player.name].SetPlayerData(player.team_color, player, bones);
-		}
-
-		// for (int t = 0; t < 2; t++)
+		// TODO work on bones
+		// List<Player> playerList = viewingFrame.GetAllPlayers(true);
+		// playerList.Sort((p1, p2)=> p2.team_color.CompareTo(p1.team_color));
+		// for (int i = 0; i < playerList.Count; i++)
 		// {
-		// 	if (viewingFrame.teams[t].players == null) continue;
-		// 	
-		// 	List<Player> players = viewingFrame.teams[t].players;
-		// 	for (int p = 0; p < players.Count; p++)
+		// 	Player player = playerList[i];
+		// 	if (!playerV4Objects.ContainsKey(player.name))
 		// 	{
-		// 		if (!playerV4Objects.ContainsKey(players[p].name))
-		// 		{
-		// 			playerV4Objects[players[p].name] = Instantiate(playerV4Prefab, playerObjsParent).GetComponent<PlayerV4>();
-		// 		}
-		//
-		// 		BonePlayer bones = viewingFrame.bones.user_bones[players[p].playerid];
-		// 		playerV4Objects[players[p].name].SetPlayerData((Team.TeamColor)t, players[p], bones);
-		// 			
+		// 		playerV4Objects[player.name] = Instantiate(playerV4Prefab, playerObjsParent).GetComponent<PlayerV4>();
+		// 		playerV4Objects[player.name].name = player.name;
 		// 	}
+		//
+		// 	BonePlayer bones = viewingFrame.bones.user_bones[i];
+		// 	playerV4Objects[player.name].SetPlayerData(player.team_color, player, bones);
 		// }
+
 
 		// Update the players
 		for (int t = 0; t < 2; t++)
@@ -1114,8 +1085,8 @@ public class DemoStart : MonoBehaviour
 		// send hand pos/rot ✋🤚
 		playerIK.lHandPosition = player.lhand.Position;
 		playerIK.rHandPosition = player.rhand.Position;
-		playerIK.lHandRotation = Quaternion.LookRotation(-player.lhand.left.ToVector3(), player.lhand.forward.ToVector3());
-		playerIK.rHandRotation = Quaternion.LookRotation(player.rhand.left.ToVector3(), player.rhand.forward.ToVector3());
+		playerIK.lHandRotation = Quaternion.LookRotation(player.lhand.left.ToVector3(), player.lhand.forward.ToVector3());
+		playerIK.rHandRotation = Quaternion.LookRotation(-player.rhand.left.ToVector3(), player.rhand.forward.ToVector3());
 
 		// send body pos/rot 🕺
 		playerIK.bodyPosition = player.body.Position;

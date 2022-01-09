@@ -411,6 +411,6 @@ public class SimpleCameraController : MonoBehaviour
 
 	public void FocusPlayer(Player player)
 	{
-		FocusPlayer(DemoStart.FindPlayerObjectByName(player.name).transform);
+		FocusPlayer(DemoStart.FindPlayerObjectByName(player.name).ikController.head);
 	}
 }

@@ -62,6 +62,7 @@
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncShoot\SyncShootBase.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncOculus\SimpleOVRGrabber.cs" />
      <Compile Include="Assets\Photon\Simple\Components\Assistants\MountAssists.cs" />
+     <Compile Include="Assets\Scripts\RosterLists.cs" />
      <Compile Include="Assets\Scripts\DemoStart.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\MarkerNameType.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\TeleportMarker.cs" />
@@ -129,6 +130,7 @@
      <Compile Include="Assets\Photon\Simple\Example\Scripts\LowFrameRate.cs" />
      <Compile Include="Assets\Scripts\DiscController.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\ContactReactorBase.cs" />
+     <Compile Include="Assets\Scripts\PlayerV4.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncState\SyncSpawnTimer.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncShoot\Assistants\WeaponAssists.cs" />
      <Compile Include="Assets\Scripts\AdjustCopyTransformUIController.cs" />
@@ -287,6 +289,7 @@
      <Compile Include="Assets\Photon\Simple\Utilities\GUITools\ShowIfInterfaceAttribute.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncShoot\Interfaces\IProjectileCannon.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncOculus\SimpleOVRInputSync.cs" />
+     <Compile Include="Assets\Scripts\RosterRow.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\UI\VitalsUISrcBase.cs" />
      <Compile Include="Assets\Photon\Simple\Example\Scripts\SuperBasicController.cs" />
      <Compile Include="Assets\Photon\Simple\Components\ContactSystems\SyncVitals\Interfaces\IVitalsSystem.cs" />
@@ -347,9 +350,6 @@
      <Compile Include="Assets\Photon\Simple\Components\Assistants\TriggerAssists.cs" />
      <Compile Include="Assets\Photon\Simple\Components\SyncOculus\Assistants\OculusAssist.cs" />
      <Compile Include="Assets\Photon\Simple\Core\Interfaces\NetObjInterfaces.cs" />
-     <Compile Include="Assets\Scripts\PlayerV4.cs" />
-     <Compile Include="Assets\Scripts\RosterLists.cs" />
-     <Compile Include="Assets\Scripts\RosterRow.cs" />
      <None Include="Assets\Materials\PointClouds\DataFoldvrDisk.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EchoVRAPI;
 using UnityEngine;
+using Transform = UnityEngine.Transform;
 
 public class Minimap : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Minimap : MonoBehaviour
 	public Color orangeColor = Color.red;
 	public Color blueColor = Color.blue;
 	public float playerPositionScale = 4.5f;
+	public MinimapPlayer discObject;
 
 
 	// Update is called once per frame
@@ -58,6 +60,11 @@ public class Minimap : MonoBehaviour
 				Player localPlayer = team.players[p];
 				players[p + offset].button.onClick.AddListener(() => { DemoStart.instance.camController.FocusPlayer(localPlayer); });
 			}
+			
+			Vector3 discPos = f.disc.Position;
+			discObject.rect.anchoredPosition = new Vector2(-discPos.x, -discPos.z) * playerPositionScale;
+			discObject.button.onClick.RemoveAllListeners();
+			discObject.button.onClick.AddListener(() => { DemoStart.instance.camController.FocusPlayer(FindObjectOfType<DiscController>().transform); });
 
 			offset += team.players.Count;
 		}

@@ -10,7 +10,7 @@ public class Game
 	public int nframes;
 	public string filename;
 	public List<string> rawFrames;
-	public List<Frame> frames { private get; set; }
+	public List<Frame> frames { get; set; }
 	public Mesh pointCloud;
 
 	/// <summary>

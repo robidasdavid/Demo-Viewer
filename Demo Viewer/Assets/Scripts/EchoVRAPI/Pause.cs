@@ -1,5 +1,8 @@
 namespace EchoVRAPI
 {
+	/// <summary>
+	/// ⏸
+	/// </summary>
 	public class Pause
 	{
 		public string paused_state;

@@ -10,7 +10,8 @@ namespace EchoVRAPI
 {
 	
 	/// <summary>
-	/// Object describing the disc at the given instant. 
+	/// Object describing the disc at the given instant.
+	/// 💿 💿 💿 💿 
 	/// </summary>
 	public class Disc
 	{
@@ -81,6 +82,7 @@ namespace EchoVRAPI
 			{
 				position = Vector3.Lerp(from.position.ToVector3(), to.position.ToVector3(), t).ToFloatList(),
 				velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatList(),
+				rot = Quaternion.Slerp(from.Rotation, to.Rotation, t),
 				bounce_count = from.bounce_count
 			};
 		}

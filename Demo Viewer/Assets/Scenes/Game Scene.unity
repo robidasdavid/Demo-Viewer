@@ -47157,6 +47157,7 @@ MonoBehaviour:
   child: {fileID: 679221090}
   discFloating: {fileID: 0}
   discGrabbed: {fileID: 0}
+  bubbleMaterial: {fileID: 0}
   discTrailRenderer: {fileID: 0}
   pointLight: {fileID: 0}
   lightColors:
@@ -47167,6 +47168,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  bubbleColors:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1419483912
 GameObject:
   m_ObjectHideFlags: 0

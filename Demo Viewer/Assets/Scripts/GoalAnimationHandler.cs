@@ -16,6 +16,8 @@ public class GoalAnimationHandler : MonoBehaviour
     {
         GameEvents.Goal += (lastScore) =>
         {
+            if (!DemoStart.playhead.isPlaying) return;
+            
             int teamIndex = lastScore.team == "blue" ? 0 : 1;
             
             foreach (Animation a in animations)

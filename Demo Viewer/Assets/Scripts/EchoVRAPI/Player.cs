@@ -9,7 +9,8 @@ using System.Numerics;
 namespace EchoVRAPI
 {
 	/// <summary>
-	/// Object Containing basic player information and player stats 
+	/// Object Containing basic player information and player stats
+	/// 
 	/// </summary>
 	public class Player
 	{

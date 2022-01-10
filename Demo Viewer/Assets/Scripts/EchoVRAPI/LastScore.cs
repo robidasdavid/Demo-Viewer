@@ -5,6 +5,7 @@ namespace EchoVRAPI
 		
 	/// <summary>
 	/// Object Containing basic relavant information on who scored last.
+	/// 🥅 🥅 🥅 🥅 
 	/// </summary>
 	public class LastScore
 	{

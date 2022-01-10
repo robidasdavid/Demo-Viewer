@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Linq;
 using EchoVRAPI;
 using UnityEngine;
 using Transform = UnityEngine.Transform;
@@ -45,10 +46,11 @@ public class DiscController : MonoBehaviour
 	{
 		set
 		{
-			if (value != teamIndex)
+			// if (value != teamIndex)
 			{
-				pointLight.color = lightColors[(int) teamIndex];
-				discTrailRenderer.material.color = lightColors[(int) teamIndex];
+				pointLight.color = lightColors[(int)teamIndex];
+				discTrailRenderer.material.color = lightColors[(int)teamIndex];
+				bubbleMaterial.SetColor(BubbleMaterialColor, bubbleColors[(int)teamIndex]);
 			}
 
 			teamIndex = value;
@@ -56,7 +58,7 @@ public class DiscController : MonoBehaviour
 		get => teamIndex;
 	}
 
-	private Team.TeamColor teamIndex;
+	private Team.TeamColor teamIndex = Team.TeamColor.spectator;
 
 	private double grabTime;
 
@@ -64,11 +66,15 @@ public class DiscController : MonoBehaviour
 	public Transform discFloating;
 	public Transform discGrabbed;
 
+	public Material bubbleMaterial;
+
 	public Renderer discTrailRenderer;
 
 	public Light pointLight;
 	[Tooltip("blue, orange, default")] public Color[] lightColors = new Color[3];
 	[Tooltip("blue, orange, default")] public Material[] materials = new Material[3];
+	[Tooltip("blue, orange, default")] public Color[] bubbleColors = new Color[3];
+	private static readonly int BubbleMaterialColor = Shader.PropertyToID("CurrentColor");
 
 
 	// Update is called once per frame
@@ -79,32 +85,40 @@ public class DiscController : MonoBehaviour
 		if (frame == null) return;
 
 		discVelocity = frame.disc.velocity.ToVector3();
-		discPosition = frame.disc.position.ToVector3();
-		if (frame.disc.forward != null)
-		{
-			Debug.DrawRay(frame.disc.position.ToVector3(), transform.TransformVector(frame.disc.up.ToVector3()), Color.green);
-			Debug.DrawRay(frame.disc.position.ToVector3(), transform.TransformVector(frame.disc.forward.ToVector3()), Color.blue);
-			Debug.DrawRay(frame.disc.position.ToVector3(), transform.TransformVector(frame.disc.left.ToVector3()), Color.red);
-			discRotation = Quaternion.LookRotation(frame.disc.left.ToVector3(), frame.disc.forward.ToVector3());
-			// discRotation.y *= -1;
-			// discRotation.z *= -1;
-		}
+		discPosition = frame.disc.Position;
+		discRotation = frame.disc.Rotation;
 
 		// blue team possession effects
-		if (frame.teams[0] != null && frame.teams[0].possession)
-		{
-			TeamIndex = Team.TeamColor.orange;
-		}
-		// orange team possession effects
-		else if (frame.teams[1] != null && frame.teams[1].possession)
+		// Team.TeamColor teamPossession = frame.GetAllPlayers().FirstOrDefault(p => p.possession)?.team_color ?? Team.TeamColor.spectator;
+		// TeamIndex = teamPossession;
+
+		if (frame.teams[0].players?.FirstOrDefault(p => p.possession) != null)
 		{
 			TeamIndex = Team.TeamColor.blue;
 		}
-		// no team possession effects
+		else if (frame.teams[1].players?.FirstOrDefault(p => p.possession) != null)
+		{
+			TeamIndex = Team.TeamColor.orange;
+		}
 		else
 		{
 			TeamIndex = Team.TeamColor.spectator;
 		}
+
+		// if (frame.teams[0] != null && frame.teams[0].possession)
+		// {
+		// 	TeamIndex = Team.TeamColor.blue;
+		// }
+		// // orange team possession effects
+		// else if (frame.teams[1] != null && frame.teams[1].possession)
+		// {
+		// 	TeamIndex = Team.TeamColor.orange;
+		// }
+		// // no team possession effects
+		// else
+		// {
+		// 	TeamIndex = Team.TeamColor.spectator;
+		// }
 
 
 		if (isGrabbed)

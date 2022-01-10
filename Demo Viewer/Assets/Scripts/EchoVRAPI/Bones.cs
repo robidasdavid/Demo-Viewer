@@ -9,6 +9,10 @@ using System.Linq;
 
 namespace EchoVRAPI
 {
+
+	/// <summary>
+	/// 🦴🦴🦴🦴
+	/// </summary>
 	[Serializable]
 	public class Bones
 	{
@@ -28,7 +32,7 @@ namespace EchoVRAPI
 		{
 			if (from == null) return to;
 			if (to == null) return from;
-			
+
 			if (from.user_bones == null) return to;
 			if (to.user_bones == null) return from;
 			

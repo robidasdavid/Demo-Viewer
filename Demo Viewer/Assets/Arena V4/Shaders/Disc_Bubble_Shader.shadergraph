@@ -1093,7 +1093,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "X",
     "m_StageCapability": 3,
-    "m_Value": 1.0,
+    "m_Value": 2.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -1225,8 +1225,8 @@
     "m_ShaderOutputName": "InMinMax",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 1.0,
-        "y": 10.0
+        "x": 5.0,
+        "y": 15.0
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -4049,7 +4049,7 @@
     },
     "m_Name": "Color",
     "m_DefaultReferenceName": "Color_ec2d5cd3706e40728f20bb7bd83d0f0f",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "CurrentColor",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,

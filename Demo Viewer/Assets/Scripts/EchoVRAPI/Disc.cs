@@ -76,6 +76,9 @@ namespace EchoVRAPI
 		/// <returns>A mix of the two frames</returns>
 		internal static Disc Lerp(Disc from, Disc to, float t)
 		{
+			if (from == null) return to;
+			if (to == null) return from;
+			
 			t = Math2.Clamp01(t);
 
 			return new Disc()

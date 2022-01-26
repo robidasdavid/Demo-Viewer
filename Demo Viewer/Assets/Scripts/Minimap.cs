@@ -22,6 +22,13 @@ public class Minimap : MonoBehaviour
 		if (DemoStart.playhead == null) return;
 		Frame f = DemoStart.playhead.GetFrame();
 		if (f == null) return;
+
+		if (!f.InArena)
+		{
+			playerParent.gameObject.SetActive(false);
+			return;
+		}
+		
 		List<Player> framePlayers = f.GetAllPlayers();
 
 		// add new player objects (player joined)

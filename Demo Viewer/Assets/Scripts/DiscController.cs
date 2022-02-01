@@ -80,8 +80,8 @@ public class DiscController : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		if (DemoStart.playhead == null) return;
-		Frame frame = DemoStart.playhead.GetFrame();
+		if (DemoStart.instance.playhead == null) return;
+		Frame frame = DemoStart.instance.playhead.GetFrame();
 		if (frame == null) return;
 
 		discVelocity = frame.disc.velocity.ToVector3();

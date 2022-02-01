@@ -12,8 +12,8 @@ public class GameClock : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		if (DemoStart.playhead == null) return;
-		Frame frame = DemoStart.playhead.GetFrame();
+		if (DemoStart.instance.playhead == null) return;
+		Frame frame = DemoStart.instance.playhead.GetFrame();
 		if (frame == null) return;
 		
 		gameClock.text = frame.game_clock_display;

@@ -17061,9 +17061,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 468288435}
+  - component: {fileID: 468288437}
   - component: {fileID: 468288434}
   - component: {fileID: 468288436}
-  - component: {fileID: 468288437}
+  - component: {fileID: 468288438}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -17080,11 +17081,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 468288433}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a46874f9cce8174ea92184688347fdd, type: 3}
+  m_Script: {fileID: 11500000, guid: 5515094c5c544b6b8ed7fd51a86548d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatarPrefab: {fileID: 5455352993768156633, guid: 567a0d910b6eef941b1f66856382815f,
-    type: 3}
+  ownershipLocked: 0
+  networkId: 
+  sceneNetworkId: 1
+  prefabName: 
+  isSceneObject: 1
+  syncedComponents:
+  - {fileID: 468288436}
 --- !u!4 &468288435
 Transform:
   m_ObjectHideFlags: 0
@@ -17111,8 +17117,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d7e52b36c77c4a42b1458bfa374e0d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkObject: {fileID: 468288434}
+  serializationRateHz: 30
+  hybridOnChangeCompression: 1
   networkFilename: 
   gameTimeAtLastFrame: 0
+  networkNFrames: 0
   networkJsonData: 
   networkBinaryData: 
 --- !u!114 &468288437
@@ -17124,20 +17134,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 468288433}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: 233344de094f11341bdb834d564708dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  observableSearch: 2
-  Synchronization: 3
-  OwnershipTransfer: 1
-  ObservedComponents:
-  - {fileID: 468288436}
-  viewIdField: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  host: 129.159.107.234
+  port: 80
+  udpConnected: 0
+  userid: -1
+  connected: 0
+  prefabs:
+  - {fileID: 4420248241329178537, guid: c6b61edc8837d8e4eb289de7d4ad7b30, type: 3}
+  sceneObjects: []
+  deletedSceneObjects: []
+--- !u!114 &468288438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468288433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9940d11d7e992142a7072773c05cfde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 5455352993768156633, guid: c6b61edc8837d8e4eb289de7d4ad7b30,
+    type: 3}
 --- !u!1 &468940571
 GameObject:
   m_ObjectHideFlags: 0
@@ -58211,7 +58233,6 @@ MonoBehaviour:
   temporalProcessingSlider: {fileID: 2053075866}
   speedSlider: {fileID: 7593353449704137830}
   speedMultiplierText: {fileID: 1310047537}
-  fileReadProgress: 0
   controlsOverlay: {fileID: 722729578}
   settingsScreen: {fileID: 997523753}
   masterSoundToggle: {fileID: 0}
@@ -58234,12 +58255,12 @@ MonoBehaviour:
   playerV4Prefab: {fileID: 2148274762646529242, guid: bb6fc280497a1ce4fa70345469fe5803,
     type: 3}
   wasDPADXReleased: 1
-  showDebugLogs: 0
+  playhead: {fileID: 8296172667844615461}
+  replay: {fileID: 8296172667844615460}
   replayFileNameText: {fileID: 1949024105}
-  processTemporalDataInBackground: 1
-  temporalProcessingProgress: 0
   camController: {fileID: 282840812}
   pointCloudMaterial: {fileID: 2100000, guid: b314fcef78fe87147bfe44cce3ebcb53, type: 2}
+  pointCloud: {fileID: 0}
 --- !u!1001 &1881266960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67724,6 +67745,8 @@ GameObject:
   - component: {fileID: 8296172667844615458}
   - component: {fileID: 1881244714}
   - component: {fileID: 8296172667844615459}
+  - component: {fileID: 8296172667844615460}
+  - component: {fileID: 8296172667844615461}
   m_Layer: 0
   m_Name: donthatetheplayerhatetheGameController
   m_TagString: Untagged
@@ -67797,6 +67820,37 @@ MonoBehaviour:
   networkAPIURL: localhost:5005/live_replay/
   session_id: 
   updateRate: 30
+--- !u!114 &8296172667844615460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172667844615457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e3d4ca6d0ad52e4f9b9498c04b0a474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8296172667844615461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172667844615457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473e8f78b110ab04ea5c2e0d73d904dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  replay: {fileID: 8296172667844615460}
+  wasPlaying: 0
+  isPlaying: 0
+  isReverse: 0
+  wasPlayingBeforeScrub: 0
+  isScrubbing: 0
+  playbackMultiplier: 1
 --- !u!1 &8296172668318528093
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,9 +6,9 @@ using UnityEngine;
 /// <summary>
 /// Utility class for controlling playback of the game frames
 /// </summary>
-public class Playhead
+public class Playhead : MonoBehaviour
 {
-	public Game game;
+	public Replay replay;
 
 	public int CurrentFrameIndex
 	{
@@ -16,7 +16,7 @@ public class Playhead
 		set
 		{
 			currentFrameIndex = value;
-			playheadLocation = GetNearestFrame().recorded_time;
+			playheadLocation = GetNearestFrame()?.recorded_time ?? DateTime.MinValue;
 		}
 	}
 
@@ -24,31 +24,21 @@ public class Playhead
 	public int LastFrameIndex { get; set; }
 
 	public DateTime playheadLocation;
-	public DateTime startTime;
-	public DateTime endTime;
+	public DateTime StartTime => replay.GetFrame(0)?.recorded_time ?? DateTime.MinValue;
+	public DateTime EndTime => replay.GetFrame(replay.FrameCount - 1)?.recorded_time ?? DateTime.MinValue;
 
 	public DateTime lastPlayheadLocation;
 	private Frame lastFrame;
 
-	public bool wasPlaying = false;
+	public bool wasPlaying;
 	public bool isPlaying;
 	public bool isReverse;
-	public bool wasPlayingBeforeScrub = false;
-	public bool isScrubbing = false;
+	public bool wasPlayingBeforeScrub;
+	public bool isScrubbing;
 	public float playbackMultiplier = 1f;
 
-	public Playhead(Game game)
-	{
-		this.game = game;
 
-		if (game == null) return;
-
-		// set start and end times
-		startTime = game.GetFrame(0).recorded_time;
-		endTime = game.GetFrame(game.nframes - 1).recorded_time;
-	}
-
-	public int FrameCount => game?.nframes ?? 0;
+	public int FrameCount => replay.FrameCount;
 
 	public void IncrementPlayhead(float deltaTime)
 	{
@@ -66,17 +56,22 @@ public class Playhead
 			}
 			catch (ArgumentOutOfRangeException)
 			{
-				//
+				isPlaying = false;
+				return;
 			}
 
 			FindCurrentFrameLocation();
 
-			// if the current playhead and the next recorded frame time are 1 second apart, just skip to the next frame
+			// if the current and next recorded frame time are 1 second apart, just skip to the next frame
+			// this is for replay files with big gaps
 			Frame nextFrame = isReverse ? GetPreviousFrame() : GetNextFrame();
-			float diff = (float) Math.Abs((nextFrame.recorded_time - playheadLocation).TotalSeconds);
-			if (diff > 1)
+			if (nextFrame != null)
 			{
-				playheadLocation = nextFrame.recorded_time;
+				float diff = (float)Math.Abs((nextFrame.recorded_time - playheadLocation).TotalSeconds);
+				if (diff > 1)
+				{
+					playheadLocation = nextFrame.recorded_time;
+				}
 			}
 		}
 	}
@@ -103,7 +98,7 @@ public class Playhead
 		}
 
 		if (LiveFrameProvider.isLive)
-		{  
+		{
 			return Frame.Lerp(LiveFrameProvider.lastFrame, LiveFrameProvider.frame, playheadLocation);
 		}
 
@@ -113,7 +108,7 @@ public class Playhead
 		}
 
 		// send playhead info to other players ⬆
-		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(game.filename);
+		GameManager.instance.netFrameMan.networkFilename = Path.GetFileNameWithoutExtension(replay.FileName);
 		lastFrame = Frame.Lerp(GetPreviousFrame(), GetNearestFrame(), playheadLocation);
 		lastPlayheadLocation = playheadLocation;
 		return lastFrame;
@@ -121,7 +116,7 @@ public class Playhead
 
 	public Frame GetNearestFrame()
 	{
-		return game.GetFrame(Mathf.Clamp(currentFrameIndex, 0, game.nframes - 1));
+		return replay.GetFrame(Mathf.Clamp(currentFrameIndex, 0, replay.FrameCount - 1));
 	}
 
 	public Frame GetPreviousFrame()
@@ -137,21 +132,28 @@ public class Playhead
 			return LiveFrameProvider.lastFrame;
 		}
 
-		return game.GetFrame(Mathf.Clamp(currentFrameIndex - 1, 0, game.nframes - 1));
+		return replay.GetFrame(Mathf.Clamp(currentFrameIndex - 1, 0, replay.FrameCount - 1));
 	}
 
 	private Frame GetNextFrame()
 	{
-		return game.GetFrame(Mathf.Clamp(currentFrameIndex + 1, 0, game.nframes - 1));
+		return replay.GetFrame(Mathf.Clamp(currentFrameIndex + 1, 0, replay.FrameCount - 1));
 	}
 
 	private void FindCurrentFrameLocation()
 	{
 		while (true)
 		{
+			if (replay.FrameCount == 0)
+			{
+				currentFrameIndex = 0;
+				isPlaying = false;
+				return;
+			}
+
 			// check if we are done searching
-			if (playheadLocation >= GetPreviousFrame().recorded_time &&
-			    playheadLocation <= GetNearestFrame().recorded_time)
+			if (playheadLocation >= GetPreviousFrame()?.recorded_time &&
+			    playheadLocation <= GetNearestFrame()?.recorded_time)
 			{
 				return;
 			}

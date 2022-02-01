@@ -50,7 +50,6 @@ public class PlayerStats : Stats
 }
 
 
-
 public class DemoStart : MonoBehaviour
 {
 	#region Variables
@@ -63,20 +62,18 @@ public class DemoStart : MonoBehaviour
 	public Slider playbackSlider;
 	public Slider temporalProcessingSlider;
 	public Slider speedSlider;
-	public float playbackSpeed {
+
+	public float playbackSpeed
+	{
 		get => playhead.playbackMultiplier;
-		set {
+		set
+		{
 			playhead.playbackMultiplier = value;
 			UpdateSpeedSlider();
 		}
 	}
-	public Text speedMultiplierText;
-	[Range(0, 1)]
-	public float fileReadProgress;
-	public object loadedDemoLock = new object();
 
-	[NonSerialized] // This is to prevent the editor from becoming super slow
-	public Game loadedDemo;
+	public Text speedMultiplierText;
 
 	public GameObject controlsOverlay;
 	public static string lastDateTimeString;
@@ -113,25 +110,15 @@ public class DemoStart : MonoBehaviour
 	/// <summary>
 	/// ((teamid, player ign), player character obj)
 	/// </summary>
-	[Obsolete("Switching to playerv4")]
-	public static Dictionary<(int, string), PlayerCharacter> playerObjects = new Dictionary<(int, string), PlayerCharacter>();
+	[Obsolete("Switching to playerv4")] public static Dictionary<(int, string), PlayerCharacter> playerObjects = new Dictionary<(int, string), PlayerCharacter>();
+
 	public static Dictionary<string, PlayerV4> playerV4Objects = new Dictionary<string, PlayerV4>();
 
 
-	public static Playhead playhead;
-
-
-	private string jsonStr;
-	bool ready = false;
-
-	public bool showDebugLogs;
-
-	protected string IP = "http://69.30.197.26:5000";
+	public Playhead playhead;
+	public Replay replay;
 
 	public TextMeshProUGUI replayFileNameText;
-
-	public bool processTemporalDataInBackground = true;
-	public float temporalProcessingProgress = 0;
 
 	/// <summary>
 	/// 0 for none, 1 for all players, 2 for local player
@@ -140,23 +127,15 @@ public class DemoStart : MonoBehaviour
 
 	public SimpleCameraController camController;
 
-	public Material pointCloudMaterial;
-	
-	
 	private static bool loadPointCloud;
+	public Material pointCloudMaterial;
+	public Mesh pointCloud;
 
-	// for the point cloud
-	private static readonly List<Vector3> vertices = new List<Vector3>();
-	private static readonly List<Color> colors = new List<Color>();
-	private static readonly List<Vector3> normals = new List<Vector3>();
-	
-	private static bool finishedProcessingTemporalData = false;
-
-	private static int loadingThreadId;
 
 	public static DemoStart instance;
 
 	#endregion
+
 
 	private void Start()
 	{
@@ -164,38 +143,83 @@ public class DemoStart : MonoBehaviour
 
 		instance = this;
 
-		// Load and serialize demo file
-#if !UNITY_WEBGL
 		string demoFile = PlayerPrefs.GetString("fileDirector");
 		replayFileNameText.text = Path.GetFileName(demoFile);
-		SendConsoleMessage("Loading Demo: " + demoFile);
-		StartCoroutine(LoadFile(demoFile));
-#else
-		string getFileName = "";
-			int pm = Application.absoluteURL.IndexOf("=");
-			if (pm != -1)
+		replay.LoadFile(demoFile);
+
+		// no need to deregister because replayLoader gets deleted on scene loads
+		replay.FileLoaded += () =>
+		{
+			frameText.text = $"Frame 0 of {playhead.FrameCount}";
+
+			//set slider values
+			playbackSlider.maxValue = playhead.FrameCount - 1;
+
+			playerObjects = new Dictionary<(int, string), PlayerCharacter>();
+			playerV4Objects = new Dictionary<string, PlayerV4>();
+
+			//HUD initialization
+			goalEventObject.SetActive(false);
+			lastGoalStats.SetActive(false);
+
+			// load a combat map if necessary
+			// read the first frame
+			Frame middleFrame = replay.GetFrame(playhead.FrameCount / 2);
+			if (middleFrame.map_name != "mpl_arena_a")
 			{
-				getFileName = Application.absoluteURL.Split("="[0])[1];
+				// combat model
+				SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
 			}
-			sendConsoleMessage("Loading: " + getFileName);
+			else
+			{
+				// arena model
+				SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
+			}
+		};
 
-			StartCoroutine(GetText(getFileName, DoLast));
-#endif
+		replay.TemporalLoadingFinished += () =>
+		{
+			if (loadPointCloud)
+			{
+				pointCloud = new Mesh()
+				{
+					name = replay.FileName,
+					vertices = replay.vertices.ToArray(),
+					colors = replay.colors.ToArray(),
+					normals = replay.normals.ToArray(),
+					indexFormat = replay.vertices.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
+				};
 
-		
+				pointCloud.SetIndices(
+					Enumerable.Range(0, replay.vertices.Count).ToArray(),
+					MeshTopology.Points, 0
+				);
 
-		
+				pointCloud.UploadMeshData(true);
+
+				GameObject obj = new GameObject("Point Cloud");
+				MeshFilter mf = obj.AddComponent<MeshFilter>();
+				mf.sharedMesh = pointCloud;
+				MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
+				meshRenderer.sharedMaterial = GameManager.instance.demoStart.pointCloudMaterial;
+			}
+		};
+
+		replay.LoadProgress += f => { playbackSlider.value = f; };
+
+		replay.TemporalLoadProgress += f => { temporalProcessingSlider.value = f; };
+
+
 		showPlayspace = PlayerPrefs.GetInt("ShowPlayspaceVisualizers", 0);
 		loadPointCloud = PlayerPrefs.GetInt("ShowPointCloud", 0) == 1;
-		
-		float[] options = {1, 10, 30, 50};
-		GameManager.instance.vrRig.transform.parent.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale",2)];
+
+		float[] options = { 1, 10, 30, 50 };
+		GameManager.instance.vrRig.transform.parent.localScale = Vector3.one * options[PlayerPrefs.GetInt("VRArenaScale", 2)];
 	}
 
 	// Update is called once per frame
 	private void Update()
 	{
-
 		// controls help
 		if (Input.GetKeyDown(KeyCode.H))
 			controlsOverlay.SetActive(true);
@@ -203,147 +227,107 @@ public class DemoStart : MonoBehaviour
 			controlsOverlay.SetActive(false);
 
 
-		if (ready)
+		if (playhead.isPlaying && GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
-			if (playhead.isPlaying && GameManager.instance.netFrameMan.IsLocalOrServer)
+			playhead.IncrementPlayhead(Time.deltaTime);
+			// Find and declare what frame the slider is on.
+			playbackSlider.value = playhead.CurrentFrameIndex;
+		}
+
+		// process input
+		CheckKeys();
+
+		frameText.text = $"Frame {(playhead.CurrentFrameIndex + 1)} of {playhead.FrameCount}";
+		playbackFramerate.text = $"{speedSlider.value:0.#}x";
+
+		// Only render the next frame if it differs from the last (optimization)
+		if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !GameManager.instance.netFrameMan.IsLocalOrServer)
+		{
+			playhead.LastFrameIndex = playhead.CurrentFrameIndex;
+
+			// Grab frame
+			Frame viewingFrame = playhead.GetFrame();
+			Frame nearestFrame = playhead.GetNearestFrame();
+			Frame previousFrame = playhead.GetPreviousFrame();
+
+			if (viewingFrame != null && previousFrame != null)
 			{
-				playhead.IncrementPlayhead(Time.deltaTime);
-				// Find and declare what frame the slider is on.
-				playbackSlider.value = playhead.CurrentFrameIndex;
-			}
-
-			// process input
-			CheckKeys();
-
-			frameText.text = $"Frame {(playhead.CurrentFrameIndex + 1)} of {playhead.FrameCount}";
-			playbackFramerate.text = $"{speedSlider.value:0.#}x";
-
-			// Only render the next frame if it differs from the last (optimization)
-			if (playhead.CurrentFrameIndex != playhead.LastFrameIndex || playhead.isPlaying || !GameManager.instance.netFrameMan.IsLocalOrServer)
-			{
-				playhead.LastFrameIndex = playhead.CurrentFrameIndex;
-				
-				// Grab frame
-				Frame viewingFrame = playhead.GetFrame();
-				Frame nearestFrame = playhead.GetNearestFrame();
-				Frame previousFrame = playhead.GetPreviousFrame();
-
-				if (viewingFrame != null && previousFrame != null)
+				// Arena-only stuff
+				if (viewingFrame.map_name == "mpl_arena_a")
 				{
-					// Arena-only stuff
-					if (viewingFrame.map_name == "mpl_arena_a")
+					// Joust Readout
+					if (viewingFrame.disc.position.Count != 0 &&
+					    previousFrame.disc.position.Count != 0)
 					{
-						// Joust Readout
-						if (viewingFrame.disc.position.Count != 0 &&
-						    previousFrame.disc.position.Count != 0)
+						Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
+						Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
+						if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
 						{
-							Vector3 currectDiscPosition = viewingFrame.disc.position.ToVector3();
-							Vector3 lastDiscPosition = previousFrame.disc.position.ToVector3();
-							if (lastDiscPosition == Vector3.zero && currectDiscPosition != Vector3.zero && playhead.isPlaying)
-							{
-								maxGameTime = loadedDemo.GetFrame(0).game_clock; // TODO this may not be correct if the recording starts midgame
-								float currentTime = viewingFrame.game_clock;
-								joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
-								StartCoroutine(FlashInOut(joustReadout, 3));
-							}
-						}
-
-						if (nearestFrame != null)
-						{
-							if (nearestFrame.last_score != null && previousFrame.last_score != null &&
-							    !nearestFrame.last_score.Equals(previousFrame?.last_score))
-							{
-								GameEvents.Goal?.Invoke(nearestFrame.last_score);
-							}
-
-							if (nearestFrame.last_throw != null && previousFrame.last_throw != null &&
-							    nearestFrame.last_throw.Equals(previousFrame.last_throw))
-							{
-								GameEvents.LocalThrow?.Invoke(nearestFrame.last_throw);
-							}
-						}
-
-						// Handle goal stat visibility
-						if (showingGoalStats)
-						{
-							goalEventObject.SetActive(false);
-							lastGoalStats.SetActive(true);
-							RenderGoalStats(viewingFrame.last_score);
-						}
-						else if (!showingGoalStats && lastGoalStats.activeSelf)
-						{
-							lastGoalStats.SetActive(false);
-							if (viewingFrame.game_status == "score" && showGoalAnim)
-							{
-								goalEventObject.SetActive(true);
-							}
+							maxGameTime = replay.GetFrame(0).game_clock; // TODO this may not be correct if the recording starts midgame
+							float currentTime = viewingFrame.game_clock;
+							joustReadout.GetComponentInChildren<Text>().text = $"{maxGameTime - currentTime:0.##}";
+							StartCoroutine(FlashInOut(joustReadout, 3));
 						}
 					}
 
-					// Render this frame
-					RenderFrame(viewingFrame, previousFrame);
+					if (nearestFrame != null)
+					{
+						if (nearestFrame.last_score != null && previousFrame.last_score != null &&
+						    !nearestFrame.last_score.Equals(previousFrame?.last_score))
+						{
+							GameEvents.Goal?.Invoke(nearestFrame.last_score);
+						}
+
+						if (nearestFrame.last_throw != null && previousFrame.last_throw != null &&
+						    nearestFrame.last_throw.Equals(previousFrame.last_throw))
+						{
+							GameEvents.LocalThrow?.Invoke(nearestFrame.last_throw);
+						}
+					}
+
+					// Handle goal stat visibility
+					if (showingGoalStats)
+					{
+						goalEventObject.SetActive(false);
+						lastGoalStats.SetActive(true);
+						RenderGoalStats(viewingFrame.last_score);
+					}
+					else if (!showingGoalStats && lastGoalStats.activeSelf)
+					{
+						lastGoalStats.SetActive(false);
+						if (viewingFrame.game_status == "score" && showGoalAnim)
+						{
+							goalEventObject.SetActive(true);
+						}
+					}
 				}
-			}
 
-			bool leftMouseButtonDown = Input.GetMouseButtonDown(0);
-			bool rightMouseButtonDown = Input.GetMouseButtonDown(1);
-			//Debug.Log(Input.mousePosition);
-			
-			
-			
-			// hover over players to get stats
-			if (Physics.Raycast(GameManager.instance.camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000f, LayerMask.GetMask("players")))
-			{
-				PlayerStatsHover psh = hit.collider.GetComponent<PlayerStatsHover>();
-				if (!psh) return;
-
-				psh.Visible = true;
-
-				// clicked on a player - follow player
-				if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
-				{
-					camController.FocusPlayer(psh.GetComponentInParent<IKController>().head);
-				}
+				// Render this frame
+				RenderFrame(viewingFrame, previousFrame);
 			}
 		}
-		else
+
+		bool leftMouseButtonDown = Input.GetMouseButtonDown(0);
+		bool rightMouseButtonDown = Input.GetMouseButtonDown(1);
+		//Debug.Log(Input.mousePosition);
+
+
+		// hover over players to get stats
+		if (Physics.Raycast(GameManager.instance.camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 1000f, LayerMask.GetMask("players")))
 		{
-			playbackSlider.value = fileReadProgress;
-		}
+			PlayerStatsHover psh = hit.collider.GetComponent<PlayerStatsHover>();
+			if (!psh) return;
 
-		if (finishedProcessingTemporalData)
-		{
-			finishedProcessingTemporalData = false;
-			
+			psh.Visible = true;
 
-			if (loadPointCloud)
+			// clicked on a player - follow player
+			if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
 			{
-				loadedDemo.pointCloud = new Mesh()
-				{
-					name = loadedDemo.filename,
-					vertices =  vertices.ToArray(),
-					colors =  colors.ToArray(),
-					normals =  normals.ToArray(),
-					indexFormat = vertices.Count > 65535 ? IndexFormat.UInt32 : IndexFormat.UInt16
-				};
-			
-				loadedDemo.pointCloud.SetIndices(
-					Enumerable.Range(0, vertices.Count).ToArray(),
-					MeshTopology.Points, 0
-				);
-			
-				loadedDemo.pointCloud.UploadMeshData(true);
-
-				GameObject obj = new GameObject("Point Cloud");
-				MeshFilter mf = obj.AddComponent<MeshFilter>();
-				mf.sharedMesh = loadedDemo.pointCloud;
-				MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
-				meshRenderer.sharedMaterial = GameManager.instance.demoStart.pointCloudMaterial;
+				camController.FocusPlayer(psh.GetComponentInParent<IKController>().head);
 			}
 		}
-
-		temporalProcessingSlider.value = temporalProcessingProgress;
 	}
+
 	/// <summary>
 	/// This is used to see if the pointer is hovering over an UI object.
 	/// </summary>
@@ -357,297 +341,7 @@ public class DemoStart : MonoBehaviour
 		return results.Count > 0;
 	}
 
-	/// <summary>
-	/// Used in webgl mode. idk why I haven't looked. Maybe consolidate this with other webrequest file loading?
-	/// </summary>
-	private IEnumerator GetText(string fn, Action doLast)
-	{
-		UnityWebRequest req = UnityWebRequest.Get($"{IP}/file?name={fn}");
-		yield return req.SendWebRequest();
 
-		DownloadHandler dh = req.downloadHandler;
-
-		//this.jsonStr = dh.text;
-		StreamReader read = new StreamReader(new MemoryStream(dh.data));
-		ReadReplayFile(read, fn, ++loadingThreadId);
-		doLast();
-	}
-
-	public static StreamReader OpenOrExtract(StreamReader reader)
-	{
-		char[] buffer = new char[2];
-		reader.Read(buffer, 0, buffer.Length);
-		reader.DiscardBufferedData();
-		reader.BaseStream.Seek(0, SeekOrigin.Begin);
-		if (buffer[0] == 'P' && buffer[1] == 'K')
-		{
-			ZipArchive archive = new ZipArchive(reader.BaseStream);
-			StreamReader ret = new StreamReader(archive.Entries[0].Open());
-			//reader.Close();
-			return ret;
-		}
-		return reader;
-	}
-
-	/// <summary>
-	/// Actually reads the replay file into memory
-	/// This is a thread on desktop versions
-	/// </summary>
-	private void ReadReplayFile(StreamReader fileReader, string filename, int threadLoadingId)
-	{
-		if (filename.EndsWith(".butter"))
-		{
-			fileReader.Close();
-			
-			fileReadProgress = 0;
-			List<Frame> frames;
-			using (BinaryReader binaryReader = new BinaryReader(File.OpenRead(filename)))
-			{
-				frames = ButterFile.FromBytes(binaryReader, ref fileReadProgress);
-			}
-
-			fileReadProgress = 1;
-
-			//string fileData = fileReader.ReadToEnd();
-			//List<string> allLines = fileData.LowMemSplit("\n");
-
-			Game readGame = new Game
-			{
-				// rawFrames = // TODO,
-				nframes = frames.Count,
-				filename = filename,
-				frames = frames
-			};
-
-			lock (loadedDemoLock)
-			{
-				loadedDemo = readGame;
-			}
-		} 
-		else 
-		{
-			using (fileReader = OpenOrExtract(fileReader))
-			{
-				fileReadProgress = 0;
-				List<string> allLines = new List<string>();
-				do
-				{
-					allLines.Add(fileReader.ReadLine());
-					fileReadProgress += .0001f;
-					fileReadProgress %= 1;
-
-					// if we started loading a different file instead, stop this one
-					if (threadLoadingId != loadingThreadId) return;
-				} while (!fileReader.EndOfStream);
-
-				//string fileData = fileReader.ReadToEnd();
-				//List<string> allLines = fileData.LowMemSplit("\n");
-
-				Game readGame = new Game
-				{
-					rawFrames = allLines,
-					nframes = allLines.Count,
-					filename = filename,
-					frames = new List<Frame>(new Frame[allLines.Count])
-				};
-
-				lock (loadedDemoLock)
-				{
-					loadedDemo = readGame;
-				}
-			}
-		}
-
-	}
-
-
-	/// <summary>
-	/// Loops through the whole file in the background and generates temporal data like playspace location
-	/// </summary>
-	private static void ProcessAllTemporalData(Game game, int threadLoadingId)
-	{
-		GameManager.instance.demoStart.temporalProcessingProgress = 0;
-		Frame lastFrame = null;
-
-		Stopwatch sw = new Stopwatch();
-		sw.Start();
-		
-		vertices.Clear();
-		colors.Clear();
-		normals.Clear();
-		
-		for (int i = 0; i < game.nframes; i++)
-		{
-			// if we started loading a different file instead, stop this one
-			if (threadLoadingId != loadingThreadId) return;
-			
-			GameManager.instance.demoStart.temporalProcessingProgress = (float)i / game.nframes;
-			
-			// this converts the frame from raw json data to a deserialized object
-			Frame frame = game.GetFrame(i);
-			
-			if (frame == null) continue;
-
-			if (lastFrame == null) lastFrame = frame;
-
-			float deltaTime = lastFrame.game_clock - frame.game_clock;
-
-			#region Local Playspace
-
-			
-
-			#endregion
-
-			// loop through the two player teams
-			for (int t = 0; t < 2; t++)
-			{
-				Team team = frame.teams[t];
-				if (team?.players == null) continue;
-
-				// loop through all the players on the team
-				for (int p = 0; p < team.players.Count; p++)
-				{
-					Player player = team.players[p];
-					
-					if (loadPointCloud)
-					{
-						vertices.Add(player.head.Position);
-						colors.Add(t == 1 ? new Color(1, 136/255f, 0, 1) : new Color(0, 123/255f, 1, 1));
-						normals.Add(player.velocity.ToVector3());
-					}
-					
-					
-					List<Player> lastPlayers = lastFrame.teams[t]?.players;
-					if (lastPlayers == null) continue;
-					if (lastPlayers.Count <= p + 1) continue;
-					Player lastPlayer = lastPlayers[p];
-					if (lastPlayer == null) continue;
-
-					if (deltaTime == 0)
-					{
-						// just copy the playspace position from last time
-						player.playspacePosition = lastPlayer.playspacePosition;
-						continue;
-					}
-					
-					// how far the player's position moved this frame (m)
-					Vector3 posDiff = player.head.Position - lastPlayer.head.Position;
-					
-					// how far the player should have moved by velocity this frame (m)
-					Vector3 velDiff = player.velocity.ToVector3() * deltaTime;
-					
-					// -
-					Vector3 movement = posDiff - velDiff;
-
-					// move the player in the playspace
-					player.playspacePosition = lastPlayer.playspacePosition + movement;
-					
-					// add a "recentering force" to correct longterm inaccuracies
-					player.playspacePosition -= player.playspacePosition.normalized * (.05f * deltaTime);
-				}
-			}
-			
-			// combat replays don't have disc position
-			if (loadPointCloud && frame.disc != null)
-			{
-				vertices.Add(frame.disc.position.ToVector3());
-				colors.Add(new Color(1, 1, 1, 1));
-				normals.Add(frame.disc.velocity.ToVector3());
-			}
-
-			lastFrame = frame;
-		}
-
-		finishedProcessingTemporalData = true;
-		Debug.Log($"Fished processing temporal data in {sw.Elapsed.TotalSeconds:N2} seconds.");
-	}
-
-
-	/// <summary>
-	/// Part of the process for reading the file
-	/// </summary>
-	/// <param name="demoFile">The filename of the replay file</param>
-	private IEnumerator LoadFile(string demoFile = "")
-	{
-		Stopwatch sw = new Stopwatch();
-		sw.Start();
-		if (!string.IsNullOrEmpty(demoFile))
-		{
-			Debug.Log("Reading file: " + demoFile);
-			StreamReader reader = new StreamReader(demoFile);
-
-			Thread loadThread = new Thread(() => ReadReplayFile(reader, demoFile, ++loadingThreadId));
-			loadThread.Start();
-			while (loadThread.IsAlive)
-			{
-				// maybe put a progress bar here
-				yield return null;
-			}
-			
-			Debug.Log($"Fished reading file in {sw.Elapsed.TotalSeconds:N2} seconds.");
-			
-			if (processTemporalDataInBackground)
-			{
-				Thread processTemporalDataThread = new Thread(() => ProcessAllTemporalData(loadedDemo, ++loadingThreadId));
-				processTemporalDataThread.Start();		
-			}
-		}
-
-		playhead = new Playhead(loadedDemo);
-		frameText.text = $"Frame 0 of {playhead.FrameCount}";
-
-		//set slider values
-		playbackSlider.maxValue = playhead.FrameCount - 1;
-
-		playerObjects = new Dictionary<(int, string), PlayerCharacter>();
-		playerV4Objects = new Dictionary<string, PlayerV4>();
-
-		//HUD initialization
-		goalEventObject.SetActive(false);
-		lastGoalStats.SetActive(false);
-		
-		// load a combat map if necessary
-		// read the first frame
-		Frame middleFrame = loadedDemo.GetFrame(loadedDemo.nframes/2);
-		if (middleFrame.map_name != "mpl_arena_a")
-		{
-			SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
-			SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
-		}
-
-		ready = true;
-	}
-
-	/// <summary>
-	/// Loads the currently set file (set in playerprefs beforehand)
-	/// Something should be put here so files can be changed without reloading the scene
-	/// </summary>
-	public void ReloadFile()
-	{
-
-	}
-	
-	
-
-
-	/// <summary>
-	/// Saves a replay clip
-	/// </summary>
-	public void SaveReplayClip(string fileName, int startFrame, int endFrame)
-	{
-		if (loadedDemo == null)
-		{
-			Debug.LogError("No replay loaded. Can't clip.");
-			return;
-		}
-
-		List<Frame> frames = loadedDemo.frames.Skip(startFrame).Take(endFrame - startFrame).ToList();
-		EchoReplay.SaveReplay(fileName, frames);
-		ButterFile butterFile = new ButterFile();
-		frames.ForEach(f=>butterFile.AddFrame(f));
-		File.WriteAllBytes(fileName.Replace(".echoreplay", ".butter"), butterFile.GetBytes());
-	}
-	
 	/// <summary>
 	/// Does input processing for keyboard and controller
 	/// </summary>
@@ -655,8 +349,6 @@ public class DemoStart : MonoBehaviour
 	{
 		float triggerLinearity = 4;
 		float maxScrubSpeed = 1.75f;
-		SendConsoleMessage(Input.GetAxis("RightTrig").ToString());
-		SendConsoleMessage(Input.GetAxis("LeftTrig").ToString());
 		float rightTrig = Input.GetAxis("RightTrig");
 		float leftTrig = Input.GetAxis("LeftTrig");
 		float combinedTrigs = rightTrig - leftTrig;
@@ -678,6 +370,7 @@ public class DemoStart : MonoBehaviour
 			{
 				playhead.wasPlayingBeforeScrub = playhead.isPlaying;
 			}
+
 			playhead.isPlaying = true;
 			playbackSpeed = Mathf.Pow(2, -(1 - Mathf.Abs(combinedTrigs)) * triggerLinearity) * maxScrubSpeed;
 			playhead.isReverse = true;
@@ -690,6 +383,7 @@ public class DemoStart : MonoBehaviour
 			{
 				playhead.wasPlayingBeforeScrub = playhead.isPlaying;
 			}
+
 			playhead.isPlaying = true;
 			playbackSpeed = Mathf.Pow(2, -(1 - Mathf.Abs(combinedTrigs)) * triggerLinearity) * maxScrubSpeed;
 			playhead.isReverse = false;
@@ -703,6 +397,7 @@ public class DemoStart : MonoBehaviour
 			{
 				playhead.wasPlayingBeforeScrub = !playhead.wasPlayingBeforeScrub;
 			}
+
 			if (playhead.isReverse)
 			{
 				playhead.isReverse = false;
@@ -712,6 +407,7 @@ public class DemoStart : MonoBehaviour
 				playhead.SetPlaying(!playhead.isPlaying);
 			}
 		}
+
 		if (Input.GetButtonDown("XboxSelect"))
 		{
 			// showGoalAnim = !showGoalAnim;
@@ -723,10 +419,12 @@ public class DemoStart : MonoBehaviour
 		{
 			showingGoalStats = !showingGoalStats;
 		}
+
 		if (Input.GetButtonDown("XboxStart"))
 		{
 			// handled in ReplaySelectionUI
 		}
+
 		float dpadX = Input.GetAxis("XboxDpadX");
 		switch (wasDPADXReleased)
 		{
@@ -768,7 +466,6 @@ public class DemoStart : MonoBehaviour
 		}
 
 
-
 		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			playbackSpeed = Mathf.Clamp(playbackSpeed * 2, 0.03125f, 32f);
@@ -795,7 +492,7 @@ public class DemoStart : MonoBehaviour
 
 		// skip backwards one frame
 		if (Input.GetKeyDown(KeyCode.Comma) ||
-			(Input.GetAxis("XboxDpadY") == -1 && !wasDPADYPressed))
+		    (Input.GetAxis("XboxDpadY") == -1 && !wasDPADYPressed))
 		{
 			playhead.CurrentFrameIndex--;
 			wasDPADYPressed = true;
@@ -803,7 +500,7 @@ public class DemoStart : MonoBehaviour
 
 		// skip forwards one frame
 		if (Input.GetKeyDown(KeyCode.Period) ||
-			(Input.GetAxis("XboxDpadY") == 1 && !wasDPADYPressed))
+		    (Input.GetAxis("XboxDpadY") == 1 && !wasDPADYPressed))
 		{
 			playhead.CurrentFrameIndex++;
 			wasDPADYPressed = true;
@@ -813,9 +510,10 @@ public class DemoStart : MonoBehaviour
 		{
 			wasDPADYPressed = false;
 		}
-		for ( int i = 0; i < 5; ++i )
+
+		for (int i = 0; i < 5; ++i)
 		{
-			if ( Input.GetKeyDown( "" + (i+1) ) )
+			if (Input.GetKeyDown("" + (i + 1)))
 			{
 				// TODO don't find players by scene name
 				Transform playerByNumber = playerObjsParent.GetChild(i);
@@ -825,16 +523,18 @@ public class DemoStart : MonoBehaviour
 				}
 			}
 		}
-		for ( int i = 5; i < 9; ++i )
+
+		for (int i = 5; i < 9; ++i)
 		{
-			if ( Input.GetKeyDown( "" + (i+1)))
+			if (Input.GetKeyDown("" + (i + 1)))
 			{
 				int startingIndex = 0;
 				for (int j = 0; j < 5; ++j)
 				{
 					if (playerObjsParent.GetChild(j).name == "PlayerCharacter (Orange)(Clone)") startingIndex = j;
 				}
-				Transform playerByNumber = playerObjsParent.GetChild(startingIndex + (i-5));
+
+				Transform playerByNumber = playerObjsParent.GetChild(startingIndex + (i - 5));
 				if (playerByNumber)
 				{
 					camController.FocusPlayer(playerByNumber.GetComponent<IKController>().head);
@@ -853,15 +553,17 @@ public class DemoStart : MonoBehaviour
 					break;
 			}
 		}
-		
+
 		if (Input.GetKeyDown(KeyCode.C))
 		{
 			camController.Mode = SimpleCameraController.CameraMode.free;
 		}
+
 		if (Input.GetKeyDown(KeyCode.R))
 		{
 			camController.Mode = SimpleCameraController.CameraMode.recorded;
 		}
+
 		if (Input.GetKeyDown(KeyCode.T))
 		{
 			camController.Mode = SimpleCameraController.CameraMode.sideline;
@@ -945,6 +647,7 @@ public class DemoStart : MonoBehaviour
 			isScored = false;
 			goalEventObject.SetActive(false);
 		}
+
 		if (viewingFrame.game_status == "score" && !isScored && showGoalAnim)
 		{
 			goalEventObject.SetActive(true);
@@ -1012,6 +715,7 @@ public class DemoStart : MonoBehaviour
 				playersToRemove.Add(playerIndex);
 			}
 		}
+
 		playersToRemove.ForEach(p => playerObjects.Remove(p));
 	}
 
@@ -1102,6 +806,7 @@ public class DemoStart : MonoBehaviour
 			FXInstantiate(punchParticle, p.transform.position, Vector3.zero);
 			p.stunnedInitiated = true;
 		}
+
 		if (!player.stunned && p.stunnedInitiated)
 			p.stunnedInitiated = false;
 
@@ -1122,7 +827,7 @@ public class DemoStart : MonoBehaviour
 		{
 			blockingEffect.gameObject.SetActive(false);
 		}
-		
+
 		// show playspace position
 		switch (showPlayspace)
 		{
@@ -1145,6 +850,7 @@ public class DemoStart : MonoBehaviour
 				{
 					p.playspaceVisualizer.gameObject.SetActive(false);
 				}
+
 				break;
 		}
 
@@ -1178,6 +884,7 @@ public class DemoStart : MonoBehaviour
 					{
 						return (true, true, new int[2] { j, i });
 					}
+
 					if (lHandDis < 0.2f)
 					{
 						return (true, false, new int[2] { j, i });
@@ -1185,6 +892,7 @@ public class DemoStart : MonoBehaviour
 				}
 			}
 		}
+
 		return (false, false, new int[2] { -1, -1 });
 	}
 
@@ -1196,7 +904,7 @@ public class DemoStart : MonoBehaviour
 
 	public void useSlider()
 	{
-		SendConsoleMessage(playhead.isPlaying.ToString());
+		Debug.Log(playhead.isPlaying.ToString());
 		playhead.wasPlaying = playhead.isPlaying;
 		playhead.SetPlaying(false);
 	}
@@ -1210,7 +918,7 @@ public class DemoStart : MonoBehaviour
 	public void playbackValueChanged()
 	{
 		// if is scrubbing with the slider
-		if (ready && !playhead.isPlaying)
+		if (!playhead.isPlaying)
 		{
 			playhead.CurrentFrameIndex = (int)playbackSlider.value;
 		}
@@ -1225,14 +933,6 @@ public class DemoStart : MonoBehaviour
 		playhead.SetPlaying(value);
 	}
 
-	public void SendConsoleMessage(string msg)
-	{
-		if (showDebugLogs)
-		{
-			float currentRuntime = Time.time;
-			Debug.Log(string.Format("Time: {0:0.#} -- {1}", currentRuntime, msg));
-		}
-	}
 
 	public void settingController(bool value)
 	{
@@ -1253,6 +953,7 @@ public class DemoStart : MonoBehaviour
 				return playerObjects[(i, name)];
 			}
 		}
+
 		return null;
 	}
 }
@@ -1262,7 +963,6 @@ public class DemoStart : MonoBehaviour
 /// </summary>
 public static class StringExtensions
 {
-
 	// the string.Split() method from .NET tend to run out of memory on 80 Mb strings. 
 	// this has been reported several places online. 
 	// This version is fast and memory efficient and return no empty lines. 

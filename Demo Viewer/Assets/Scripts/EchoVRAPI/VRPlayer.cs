@@ -18,12 +18,7 @@ namespace EchoVRAPI
 		[JsonIgnore]
 		public Vector3 Position
 		{
-			get => vr_position?.ToVector3() ??
-#if UNITY
-			       Vector3.zero;
-#else
-			       Vector3.Zero;
-#endif
+			get => vr_position?.ToVector3() ?? UniversalUnityExtensions.UniversalVector3Zero();
 			set => vr_position = value.ToFloatList();
 		}
 
@@ -46,6 +41,39 @@ namespace EchoVRAPI
 				vr_up = value.Up().ToFloatList();
 				vr_left = value.Left().ToFloatList();
 			}
+		}
+
+		public static VRPlayer operator +(VRPlayer t1, VRPlayer t2)
+		{
+			if (t2 == null) return t1;
+			VRPlayer ret = new VRPlayer
+			{
+				Position = t1.Position + t2.Position,
+				// ret.Rotation = Quaternion.Multiply(t1.Rotation, t2.Rotation);
+				Rotation = t1.Rotation
+			};
+			return ret;
+		}
+		
+		public static VRPlayer operator -(VRPlayer t1, VRPlayer t2)
+		{
+			if (t2 == null) return t1;
+			VRPlayer ret = new VRPlayer
+			{
+				Position = t1.Position - t2.Position,
+				// ret.Rotation = Quaternion.Multiply(t1.Rotation, Quaternion.Inverse(t2.Rotation));
+				Rotation = t1.Rotation
+			};
+			return ret;
+		}
+
+		public Transform ToTransform()
+		{
+			return new Transform
+			{
+				Position = Position,
+				Rotation = Rotation
+			};
 		}
 
 		/// <summary>

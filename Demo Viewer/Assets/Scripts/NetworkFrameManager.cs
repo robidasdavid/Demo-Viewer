@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Text;
 using ButterReplays;
 using EchoVRAPI;
-using Photon.Pun;
 using UnityEngine;
+using VelNet;
 
-public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
+public class NetworkFrameManager : NetworkSerializedObjectStream
 {
 	public string networkFilename;
 	public DateTime networkFrameTime = DateTime.Now;
@@ -16,70 +14,62 @@ public class NetworkFrameManager : MonoBehaviourPunCallbacks, IPunObservable
 	private int lastFrameIndex = -1;
 
 	public DateTime CorrectedNetworkFrameTime => 
-		lastFrame?.recorded_time.AddSeconds((DemoStart.playhead.isPlaying ? 1 : 0) * 
-		                                    DemoStart.playhead.playbackMultiplier * 
+		lastFrame?.recorded_time.AddSeconds((DemoStart.instance.playhead.isPlaying ? 1 : 0) * 
+		                                    DemoStart.instance.playhead.playbackMultiplier * 
 		                                    (Time.timeAsDouble - gameTimeAtLastFrame)) 
 		?? DateTime.Now;
 
 	public double gameTimeAtLastFrame;
+	public int networkNFrames = 0;
 	public string networkJsonData;
 	public byte[] networkBinaryData;
 	public Frame lastFrame;
 	public Frame frame;
-	public bool IsLocalOrServer => !PhotonNetwork.InRoom || photonView.IsMine;
-
-
-	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-	{
-		if (stream.IsWriting)
-		{
-			Frame f = DemoStart.playhead.GetNearestFrame();
-			stream.SendNext(DemoStart.playhead.isPlaying);
-			stream.SendNext(DemoStart.playhead.playbackMultiplier);
-			stream.SendNext(DemoStart.playhead.CurrentFrameIndex);
-			stream.SendNext(DemoStart.playhead.lastPlayheadLocation.ToFileTime());
-			stream.SendNext(Path.GetFileNameWithoutExtension(DemoStart.playhead.game.filename));
-
-			ButterFile bf = new ButterFile();
-			bf.AddFrame(f);
-			networkBinaryData = bf.GetBytes();
-			List<Frame> f2 = ButterFile.FromBytes(networkBinaryData);
-			stream.SendNext(networkBinaryData);
-			// stream.SendNext(Zip(networkJsonData));
-		}
-		else if (stream.IsReading)
-		{
-			DemoStart.playhead.isPlaying = (bool)stream.ReceiveNext();
-			DemoStart.playhead.playbackMultiplier = (float)stream.ReceiveNext();
-			frameIndex = (int)stream.ReceiveNext();
-			networkFrameTime = DateTime.FromFileTime((long)stream.ReceiveNext());
-			networkFilename = (string)stream.ReceiveNext();
-			networkBinaryData = (byte[])stream.ReceiveNext();
-			// networkJsonData = ButterFile.Unzip((byte[])stream.ReceiveNext());
-
-			// zipping saves about 90% for json
-			// butter contains internal zipping
-			// Debug.Log($"Raw size: {networkBinaryData.Length:N}, Compressed size: {ButterFile.Zip(networkBinaryData).Length:N}");
-
-
-			if (frame == null || frameIndex != lastFrameIndex)
-			{
-				lastFrameIndex = frameIndex;
-				lastFrame = frame;
-				List<Frame> frames = ButterFile.FromBytes(networkBinaryData);
-				if (frames.Count < 1) Debug.LogError("Didn't get a frame", this);
-				if (frames.Count > 1) Debug.LogError("Got too many frames", this);
-				frame = frames[0];
-				gameTimeAtLastFrame = Time.timeAsDouble;
-			}
-
-			// frame is still null, make sure the last frame is too
-			if (frame == null) lastFrame = null;
-		}
-	}
+	public bool IsLocalOrServer => !VelNetManager.InRoom || IsMine;
 
 	public void BecomeHost()
 	{
-		photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+		networkObject.TakeOwnership();
+	}
+	protected override void SendState(BinaryWriter binaryWriter)
+	{
+		Frame f = DemoStart.instance.playhead.GetNearestFrame();
+		binaryWriter.Write(DemoStart.instance.playhead.isPlaying);
+		binaryWriter.Write(DemoStart.instance.replay.FrameCount);
+		binaryWriter.Write(DemoStart.instance.playhead.playbackMultiplier);
+		binaryWriter.Write(DemoStart.instance.playhead.CurrentFrameIndex);
+		binaryWriter.Write(DemoStart.instance.playhead.lastPlayheadLocation.ToFileTimeUtc());
+		binaryWriter.Write(Path.GetFileNameWithoutExtension(DemoStart.instance.replay.FileName));
+
+		ButterFile bf = new ButterFile();
+		bf.AddFrame(f);
+		networkBinaryData = bf.GetBytes();
+		binaryWriter.Write(networkBinaryData.Length);
+		binaryWriter.Write(networkBinaryData);
+	}
+
+	protected override void ReceiveState(BinaryReader binaryReader)
+	{
+		DemoStart.instance.playhead.isPlaying = binaryReader.ReadBoolean();
+		networkNFrames = binaryReader.ReadInt32();
+		DemoStart.instance.playhead.playbackMultiplier = binaryReader.ReadSingle();
+		frameIndex = binaryReader.ReadInt32();
+		networkFrameTime = DateTime.FromFileTimeUtc(binaryReader.ReadInt64());
+		networkFilename = binaryReader.ReadString();
+		networkBinaryData = binaryReader.ReadBytes(binaryReader.ReadInt32());
+
+		if (frame == null || frameIndex != lastFrameIndex)
+		{
+			lastFrameIndex = frameIndex;
+			lastFrame = frame;
+			List<Frame> frames = ButterFile.FromBytes(networkBinaryData);
+			if (frames.Count < 1) Debug.LogError("Didn't get a frame", this);
+			if (frames.Count > 1) Debug.LogError("Got too many frames", this);
+			frame = frames[0];
+			gameTimeAtLastFrame = Time.timeAsDouble;
+		}
+
+		// frame is still null, make sure the last frame is too
+		if (frame == null) lastFrame = null;
 	}
 }

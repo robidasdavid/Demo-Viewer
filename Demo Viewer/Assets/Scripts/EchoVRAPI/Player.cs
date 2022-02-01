@@ -54,6 +54,11 @@ namespace EchoVRAPI
 		public string holding_left { get; set; }
 		public string holding_right { get; set; }
 
+		public string Weapon;
+		public string Ordnance;
+		public string TacMod;
+		public string Arm;
+
 		/// <summary>
 		/// Boolean of the player's invulnerability after being stunned.
 		/// </summary>
@@ -130,6 +135,15 @@ namespace EchoVRAPI
 				velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatList(),
 				blocking = from.blocking,
 				team_color = from.team_color,
+				ping = from.ping, 
+				packetlossratio = from.packetlossratio, 
+				holding_left = from.holding_left, 
+				holding_right = from.holding_right, 
+				Weapon = from.Weapon,
+				Ordnance = from.Ordnance,
+				TacMod = from.TacMod,
+				Arm = from.Arm,
+				
 			};
 		}
 	}

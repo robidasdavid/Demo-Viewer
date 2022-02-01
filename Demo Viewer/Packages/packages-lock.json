@@ -67,7 +67,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.formats.fbx": {
-      "version": "4.1.1",
+      "version": "4.1.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -284,6 +284,13 @@
         "com.unity.inputsystem": "1.0.2"
       },
       "url": "https://packages.unity.com"
+    },
+    "edu.uga.engr.vel.velnet": {
+      "version": "https://github.com/velaboratory/VelNetUnity.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "25b0a8744c7ea86f0848b421e5e7cb58d8ee8a70"
     },
     "jp.keijiro.pcx": {
       "version": "1.0.1",

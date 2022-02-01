@@ -263,9 +263,9 @@ namespace Pcx
 			}
 		}
 
-		List<string> ReadReplayFile(StreamReader fileReader)
+		private static List<string> ReadReplayFile(StreamReader fileReader)
 		{
-			using (fileReader = DemoStart.OpenOrExtract(fileReader))
+			using (fileReader = Replay.OpenOrExtract(fileReader))
 			{
 				List<string> allLines = new List<string>();
 				do
@@ -364,28 +364,28 @@ namespace Pcx
 							int index = int.Parse(values[6]);
 							string map = values[7];
 							string game_status = values[8];
-							
+
 							// 10,11,12 - n,b,o
 							float timeSinceJoust = float.Parse(values[11]);
 							Vector3 velocity = new Vector3(float.Parse(values[3]), float.Parse(values[4]), float.Parse(values[5]));
 							if (timeSinceJoust > 5 || timeSinceJoust < 0) continue;
-							if (index == 2) continue;	// don't add spectators
-							if (velocity.z == 0) continue;	// don't add if vel is 0
-							
+							if (index == 2) continue; // don't add spectators
+							if (velocity.z == 0) continue; // don't add if vel is 0
+
 							data.vertices.Add(new Vector3(float.Parse(values[0]), float.Parse(values[1]), float.Parse(values[2])));
 							switch (index)
 							{
 								case -1:
-									data.colors.Add(new Color32(255, 255, 255, (byte)(timeSinceJoust/5*255)));
+									data.colors.Add(new Color32(255, 255, 255, (byte)(timeSinceJoust / 5 * 255)));
 									break;
 								case 0:
-									data.colors.Add(new Color32(255, 136, 0, (byte)(timeSinceJoust/5*255)));
+									data.colors.Add(new Color32(255, 136, 0, (byte)(timeSinceJoust / 5 * 255)));
 									break;
 								case 1:
-									data.colors.Add(new Color32(0, 123, 255, (byte)(timeSinceJoust/5*255)));
+									data.colors.Add(new Color32(0, 123, 255, (byte)(timeSinceJoust / 5 * 255)));
 									break;
 								case 2:
-									data.colors.Add(new Color32(255, 255, 255, (byte)(timeSinceJoust/5*255)));
+									data.colors.Add(new Color32(255, 255, 255, (byte)(timeSinceJoust / 5 * 255)));
 									break;
 							}
 

@@ -5,18 +5,15 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-#if UNITY
-using UnityEngine;
-#else
-using System.Numerics;
-#endif
 using System.Text;
 using EchoVRAPI;
 using Half = SystemHalf.Half;
 #if ZSTD
 using ZstdNet;
 #endif
+#if UNITY
 using Transform = EchoVRAPI.Transform;
+#endif
 
 namespace ButterReplays
 {
@@ -68,21 +65,6 @@ namespace ButterReplays
 			zstd_7_dict,
 		}
 
-		private enum GameStatus : byte
-		{
-			_ = 0,
-			pre_match = 1,
-			round_start = 2,
-			playing = 3,
-			score = 4,
-			round_over = 5,
-			post_match = 6,
-			pre_sudden_death = 7,
-			sudden_death = 8,
-			post_sudden_death = 9
-		}
-
-
 		public enum MapName : byte
 		{
 			uncoded = 0,
@@ -93,28 +75,6 @@ namespace ButterReplays
 			mpl_combat_dyson = 5,
 			mpl_combat_gauss = 6,
 			mpl_tutorial_arena = 7,
-		}
-
-		/// <summary>
-		/// This can be stored as 2 bits
-		/// </summary>
-		private enum PausedState : byte
-		{
-			unpaused = 0,
-			paused = 1,
-			unpausing = 2,
-			pausing = 3, // TODO is this a thing?
-		}
-
-		/// <summary>
-		/// This can be stored as 2 bits
-		/// </summary>
-		private enum TeamIndex : byte
-		{
-			Blue = 0,
-			Orange = 1,
-			Spectator = 2,
-			None = 3
 		}
 
 		public enum GoalType : byte
@@ -129,6 +89,37 @@ namespace ButterReplays
 			BUMPER_SHOT,
 			HEADBUTT,
 			// TODO contains more
+		}
+
+		// TODO reorder to match terminal appearance
+		public enum Weapon : byte
+		{
+			rocket,		// meteor
+			blaster,	// nova
+			scout,		// comet
+			assault,	// pulsar
+			// TODO check mapping
+		}
+
+		public enum Ordnance : byte
+		{
+			stun,	// stun field
+			det,	// detonator
+			burst,	// instant repair
+			arc,	// arc mine
+		}
+
+		public enum TacMod : byte
+		{
+			sensor,	// threat scanner
+			wraith,	// phase shift
+			heal,	// repair matrix
+			shield,	// energy barrier
+		}
+		
+		public enum Arm : byte {
+			Left,
+			Right,
 		}
 
 		// TODO complete this
@@ -217,7 +208,8 @@ namespace ButterReplays
 
 			if (unprocessedFrames.Count > header.keyframeInterval)
 			{
-				throw new Exception("Chunk too large.");
+				unprocessedFrames.Clear();
+				throw new Exception("Chunk too large. Discarding all frames so this doesn't repeat.");
 			}
 
 
@@ -299,8 +291,8 @@ namespace ButterReplays
 			byte formatVersion = fileInput.ReadByte();
 			return formatVersion switch
 			{
-				1 => Decompressor_v1.FromBytes(formatVersion, fileInput, ref readProgress),
-				// 2 => Decompressor_v2.FromBytes(formatVersion, fileInput, ref readProgress),
+				1 => DecompressorV1.FromBytes(formatVersion, fileInput, ref readProgress),
+				2 => DecompressorV2.FromBytes(formatVersion, fileInput, ref readProgress),
 				_ => null
 			};
 		}
@@ -362,51 +354,6 @@ namespace ButterReplays
 		{
 			return BitConverter.GetBytes(half.Value);
 		}
-	}
-
-	public static class UniversalUnityExtensions
-	{
-		public static float UniversalLength(this Vector3 v)
-		{
-#if UNITY
-			return v.magnitude;
-#else
-			return v.Length();
-#endif
-		}
-
-		public static Vector3 UniversalVector3Zero()
-		{
-#if UNITY
-			return Vector3.zero;
-#else
-			return Vector3.Zero;
-#endif
-		}
-
-		public static Quaternion UniversalQuaternionIdentity()
-		{
-#if UNITY
-			return Quaternion.identity;
-#else
-			return Quaternion.Identity;
-#endif
-		}
-
-		/// <summary>
-		///   <para>Returns the angle in degrees between two rotations</para>
-		/// </summary>
-		public static float QuaternionAngle(Quaternion a, Quaternion b)
-		{
-#if UNITY
-			return Quaternion.Angle(a, b);
-#else
-			float num = Quaternion.Dot(a, b);
-			return IsEqualUsingDot(num) ? 0.0f : (float)((double)MathF.Acos(MathF.Min(MathF.Abs(num), 1f)) * 2.0 * 57.2957801818848);
-#endif
-		}
-
-		private static bool IsEqualUsingDot(float dot) => dot > 0.999998986721039;
 	}
 
 #if UNITY

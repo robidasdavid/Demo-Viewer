@@ -4,13 +4,12 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Photon.Pun;
-using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VelNet;
 using Application = UnityEngine.Application;
 
 [Serializable]
@@ -36,7 +35,7 @@ public class ReplaysListData
 /// UI Controller for the replay browser menu
 /// Prefab defaults are set up for vr, then modified for the 2d interface
 /// </summary>
-public class ReplaySelectionUI : MonoBehaviourPunCallbacks
+public class ReplaySelectionUI : MonoBehaviour
 {
 	public bool isVR;
 	public Transform mainMenu;
@@ -108,6 +107,20 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 		showing = panel.gameObject.activeSelf;
 
 		manualInputText.text = PlayerPrefs.GetString("fileDirector");
+
+		VelNetManager.OnLeftRoom += _ =>
+		{
+			connectedInfoLabel.text = "Not Connected";
+			joinButton.gameObject.SetActive(true);
+			disconnectButton.gameObject.SetActive(false);
+		};
+
+		VelNetManager.OnJoinedRoom += room =>
+		{
+			connectedInfoLabel.text = "Connected: " + room;
+			joinButton.gameObject.SetActive(false);
+			disconnectButton.gameObject.SetActive(true);
+		};
 
 		// refresh the list
 		RefreshReplaysList();
@@ -382,9 +395,9 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	{
 		LiveFrameProvider.isLive = live;
 
-		if (DemoStart.playhead != null)
+		if (DemoStart.instance.playhead != null)
 		{
-			DemoStart.playhead.SetPlaying(live);
+			DemoStart.instance.playhead.SetPlaying(live);
 			foreach (Transform item in GameManager.instance.uiHiddenOnLive)
 			{
 				item.gameObject.SetActive(!live);
@@ -423,7 +436,7 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 	{
 		if (!string.IsNullOrEmpty(roomNameInput.text))
 		{
-			PhotonNetwork.JoinOrCreateRoom(roomNameInput.text, new RoomOptions(), TypedLobby.Default);
+			VelNetManager.Join(roomNameInput.text);
 			joinRoomDialog.gameObject.SetActive(false);
 		}
 	}
@@ -440,23 +453,6 @@ public class ReplaySelectionUI : MonoBehaviourPunCallbacks
 
 	public void LeaveRoom()
 	{
-		if (PhotonNetwork.IsConnected)
-		{
-			PhotonNetwork.LeaveRoom();
-		}
-	}
-
-	public override void OnConnectedToMaster()
-	{
-		connectedInfoLabel.text = "Not Connected";
-		joinButton.gameObject.SetActive(true);
-		disconnectButton.gameObject.SetActive(false);
-	}
-
-	public override void OnJoinedRoom()
-	{
-		connectedInfoLabel.text = "Connected: " + PhotonNetwork.CurrentRoom.Name;
-		joinButton.gameObject.SetActive(false);
-		disconnectButton.gameObject.SetActive(true);
+		VelNetManager.Leave();
 	}
 }

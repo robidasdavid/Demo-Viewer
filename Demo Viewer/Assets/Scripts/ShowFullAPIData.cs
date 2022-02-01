@@ -8,13 +8,13 @@ public class ShowFullAPIData : MonoBehaviour
 
 	private void Update()
 	{
-		if (DemoStart.playhead == null) return;
+		if (DemoStart.instance.playhead == null) return;
 		
-		string json = JsonConvert.SerializeObject(DemoStart.playhead.GetNearestFrame());
+		string json = JsonConvert.SerializeObject(DemoStart.instance.playhead.GetNearestFrame());
 
 		if (json != null)
 		{
-			inputField.text = $"{DemoStart.playhead.GetNearestFrame().recorded_time:O}\n{json}";
+			inputField.text = $"{DemoStart.instance.playhead.GetNearestFrame().recorded_time:O}\n{json}";
 		}
 	}
 }

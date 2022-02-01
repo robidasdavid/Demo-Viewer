@@ -84,15 +84,15 @@ namespace ButterReplays
 
 			List<bool> inclusionBits = new List<bool>()
 			{
-				frame.game_status != lastFrameInChunk?.frame.game_status,
-				frame.blue_points != lastFrameInChunk?.frame.blue_points ||
-				frame.orange_points != lastFrameInChunk.frame.orange_points,
+				frame.InArena && frame.game_status != lastFrameInChunk?.frame.game_status,
+				frame.InArena && frame.blue_points != lastFrameInChunk?.frame.blue_points ||
+				frame.InArena && frame.orange_points != lastFrameInChunk?.frame.orange_points,
 				!PauseAndRestartsBytes.SameAs(lastFrameInChunk?.PauseAndRestartsBytes),
 				!InputBytes.SameAs(lastFrameInChunk?.InputBytes),
-				!LastScoreBytes.SameAs(lastFrameInChunk?.LastScoreBytes),
+				frame.InArena && !LastScoreBytes.SameAs(lastFrameInChunk?.LastScoreBytes),
 				!LastThrowBytes.SameAs(lastFrameInChunk?.LastThrowBytes),
 				!VrPlayerBytes.SameAs(lastFrameInChunk?.VrPlayerBytes),
-				!DiscBytes.SameAs(lastFrameInChunk?.DiscBytes)
+				frame.InArena && !DiscBytes.SameAs(lastFrameInChunk?.DiscBytes)
 			};
 			writer.Write(inclusionBits.GetBitmasks()[0]);
 
@@ -147,27 +147,24 @@ namespace ButterReplays
 			List<bool> teamDataBools = new List<bool>
 			{
 				frame.teams[0].possession,
-				frame.teams[1].possession
+				frame.teams[1].possession,
+				
+				// TODO check team stats diff
+				// Team stats included
+				frame.teams[0]?.stats != null && !StatsBytes(frame.teams[0].stats)
+					.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[0].stats)),
+				frame.teams[1]?.stats != null && !StatsBytes(frame.teams[1].stats)
+					.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[1].stats)),
+				frame.teams[2]?.stats != null && !StatsBytes(frame.teams[2].stats)
+					.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[2].stats)),
 			};
-			// TODO check team stats diff
-			// Team stats included
-			bool[] teamStatsIncluded = new bool[3];
-			teamStatsIncluded[0] = frame.teams[0]?.stats != null && !StatsBytes(frame.teams[0].stats)
-				.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[0].stats));
-			teamStatsIncluded[1] = frame.teams[1]?.stats != null && !StatsBytes(frame.teams[1].stats)
-				.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[1].stats));
-			teamStatsIncluded[2] = frame.teams[2]?.stats != null && !StatsBytes(frame.teams[2].stats)
-				.SameAs(StatsBytes(lastFrameInChunk?.frame.teams[2].stats));
-			teamDataBools.Add(teamStatsIncluded[0]);
-			teamDataBools.Add(teamStatsIncluded[1]);
-			teamDataBools.Add(teamStatsIncluded[2]);
 			writer.Write(teamDataBools.GetBitmasks()[0]);
 
 
 			// add team data
 			for (int i = 0; i < 3; i++)
 			{
-				if (teamStatsIncluded[i])
+				if (teamDataBools[i+2])
 				{
 					writer.Write(StatsBytes(frame.teams[i].stats, lastFrameInChunk?.frame.teams[i].stats));
 				}
@@ -211,23 +208,30 @@ namespace ButterReplays
 						writer.Write(playerStateBitmask.GetBitmasks()[0]);
 
 
+						// player stats
 						if (playerStateBitmask[4])
 						{
 							writer.Write(StatsBytes(player.stats, lastFramePlayer?.stats));
 						}
 
+						// ping/packetloss
 						if (playerStateBitmask[5])
 						{
 							writer.Write((ushort)(player.ping - (lastFramePlayer?.ping ?? 0)));
 							writer.WriteHalf((Half)(player.packetlossratio - (lastFramePlayer?.packetlossratio ?? 0)));
 						}
 
+						// holding
 						if (playerStateBitmask[6])
 						{
-							writer.Write(butterHeader.HoldingToByte(player.holding_left));
-							writer.Write(butterHeader.HoldingToByte(player.holding_right));
+							if (!frame.InCombat)
+							{
+								writer.Write(butterHeader.HoldingToByte(player.holding_left));
+								writer.Write(butterHeader.HoldingToByte(player.holding_right));
+							}
 						}
 
+						// velocity
 						if (playerStateBitmask[7])
 						{
 							writer.Write(vel.GetHalfBytes());
@@ -283,6 +287,16 @@ namespace ButterReplays
 						// rhand
 						if (playerPoseBitmask[6]) writer.Write(rHandBytes.Take(6).ToArray());
 						if (playerPoseBitmask[7]) writer.Write(rHandBytes.Skip(6).ToArray());
+						
+						// Combat loadout
+						if (frame.InCombat)
+						{
+							byte loadoutByte = (byte)Enum.Parse(typeof(ButterFile.Weapon), player.Weapon);
+							loadoutByte |= (byte)((byte) Enum.Parse(typeof(ButterFile.Ordnance), player.Ordnance) << 2);
+							loadoutByte |= (byte)((byte) Enum.Parse(typeof(ButterFile.TacMod), player.TacMod) << 4);
+							loadoutByte |= (byte)((byte) Enum.Parse(typeof(ButterFile.Arm), player.Arm) << 6);
+							writer.Write(loadoutByte);
+						}
 					}
 				}
 			}
@@ -364,7 +378,7 @@ namespace ButterReplays
 
 		private static byte[] StatsBytes(Stats stats, Stats lastStats = null)
 		{
-			if (stats == null) return null;
+			if (stats == null) return Array.Empty<byte>();
 			List<byte> bytes = new List<byte>();
 
 			if (stats.stuns > ushort.MaxValue) throw new Exception("Too many stuns to fit.");
@@ -393,6 +407,7 @@ namespace ButterReplays
 		{
 			get
 			{
+				if (frame.InCombat) return Array.Empty<byte>();
 				if (_discBytes == null)
 				{
 					List<byte> bytes = new List<byte>();
@@ -429,14 +444,7 @@ namespace ButterReplays
 				{
 					List<byte> bytes = new List<byte>();
 
-					bytes.AddRange(PoseToBytes(
-#if UNITY
-						frame.player.Position - (lastFrameInChunk?.frame.player.Position ?? Vector3.zero),
-#else
-						frame.player.Position - (lastFrameInChunk?.frame.player.Position ?? Vector3.Zero),
-#endif
-						frame.player.Rotation
-					));
+					bytes.AddRange(PoseToBytes((frame.player - lastFrameInChunk?.frame.player).ToTransform()));
 
 					_vrPlayerBytes = bytes.ToArray();
 				}
@@ -476,6 +484,7 @@ namespace ButterReplays
 		{
 			get
 			{
+				if (frame.InCombat) return Array.Empty<byte>();
 				if (_lastScoreBytes == null)
 				{
 					List<byte> bytes = new List<byte>();
@@ -643,7 +652,6 @@ namespace ButterReplays
 				_ => "NOT FOUND"
 			};
 		}
-
 
 		public static byte[] PoseToBytes(Transform transform)
 		{

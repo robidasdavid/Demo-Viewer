@@ -12,14 +12,14 @@ using EchoVRAPI;
 
 namespace ButterReplays
 {
-	public static class DecompressorV1
+	public static class DecompressorV2
 	{
 		public static List<Frame> FromBytes(byte formatVersion, BinaryReader fileInput, ref float readProgress)
 		{
 			List<Frame> l = new List<Frame>();
 
 			ushort keyframeInterval = fileInput.ReadUInt16();
-			ButterFile.CompressionFormat compressionFormat = (ButterFile.CompressionFormat)fileInput.ReadByte();
+			ButterFile.CompressionFormat compressionFormat = (ButterFile.CompressionFormat) fileInput.ReadByte();
 
 			ButterFile b = new ButterFile(keyframeInterval, compressionFormat);
 			b.header.formatVersion = formatVersion;
@@ -61,7 +61,7 @@ namespace ButterReplays
 
 			byte mapByte = fileInput.ReadByte();
 			firstFrame.private_match = (mapByte & 1) == 1;
-			firstFrame.map_name = ((ButterFile.MapName)(mapByte >> 1)).ToString();
+			firstFrame.map_name = ((ButterFile.MapName) (mapByte >> 1)).ToString();
 			firstFrame.match_type = ButterFile.MatchType(firstFrame.map_name, firstFrame.private_match);
 
 
@@ -88,7 +88,7 @@ namespace ButterReplays
 			{
 				// if the last chunk is empty - nframes was divisible by chunk size
 				if (chunkSizes[chunkIndex] == 0 && chunkSizes.Length - 2 <= chunkIndex) break;
-				byte[] compressedChunk = fileInput.ReadBytes((int)chunkSizes[chunkIndex]);
+				byte[] compressedChunk = fileInput.ReadBytes((int) chunkSizes[chunkIndex]);
 				byte[] uncompressedChunk;
 				switch (b.header.compression)
 				{
@@ -160,7 +160,7 @@ namespace ButterReplays
 
 					f.game_status = inclusionBitmask[0]
 						? ButterFrame.ByteToGameStatus(input.ReadByte())
-						: lastFrame.game_status;
+						: lastFrame?.game_status; // lastFrame could be null if this is Combat
 
 					if (inclusionBitmask[1])
 					{
@@ -169,8 +169,8 @@ namespace ButterReplays
 					}
 					else
 					{
-						f.blue_points = lastFrame.blue_points;
-						f.orange_points = lastFrame.orange_points;
+						f.blue_points = lastFrame?.blue_points ?? 0;
+						f.orange_points = lastFrame?.orange_points ?? 0;
 					}
 
 					// Pause and restarts
@@ -181,9 +181,9 @@ namespace ButterReplays
 						f.orange_team_restart_request = (pauses & 0b10) > 0;
 						f.pause = new Pause
 						{
-							paused_requested_team = ButterFrame.TeamIndexToTeam((byte)((pauses & 0b1100) >> 2)),
-							unpaused_team = ButterFrame.TeamIndexToTeam((byte)((pauses & 0b110000) >> 4)),
-							paused_state = ButterFrame.ByteToPausedState((byte)((pauses & 0b11000000) >> 6)),
+							paused_requested_team = ButterFrame.TeamIndexToTeam((byte) ((pauses & 0b1100) >> 2)),
+							unpaused_team = ButterFrame.TeamIndexToTeam((byte) ((pauses & 0b110000) >> 4)),
+							paused_state = ButterFrame.ByteToPausedState((byte) ((pauses & 0b11000000) >> 6)),
 							paused_timer = input.ReadSystemHalf(),
 							unpaused_timer = input.ReadSystemHalf(),
 						};
@@ -217,9 +217,9 @@ namespace ButterReplays
 						byte lastScoreByte = input.ReadByte();
 						f.last_score = new LastScore
 						{
-							team = ButterFrame.TeamIndexToTeam((byte)(lastScoreByte & 0b11)),
+							team = ButterFrame.TeamIndexToTeam((byte) (lastScoreByte & 0b11)),
 							point_amount = (lastScoreByte & 0b100) > 0 ? 3 : 2,
-							goal_type = ((ButterFile.GoalType)((lastScoreByte & 0b11111000) >> 3)).ToString()
+							goal_type = ((ButterFile.GoalType) ((lastScoreByte & 0b11111000) >> 3)).ToString()
 								.Replace("_", " "),
 							person_scored = b.header.GetPlayerName(input.ReadByte()),
 							assist_scored = b.header.GetPlayerName(input.ReadByte()),
@@ -229,7 +229,7 @@ namespace ButterReplays
 					}
 					else
 					{
-						f.last_score = lastFrame.last_score;
+						f.last_score = lastFrame?.last_score;
 					}
 
 					// Last Throw
@@ -304,7 +304,7 @@ namespace ButterReplays
 					}
 					else
 					{
-						f.disc = lastFrame.disc;
+						f.disc = lastFrame?.disc;
 					}
 
 					byte teamDataBitmask = input.ReadByte();
@@ -318,16 +318,10 @@ namespace ButterReplays
 					f.teams[0].possession = teamDataBools[0];
 					f.teams[1].possession = teamDataBools[1];
 
-					// Team stats included
-					bool[] teamStatsIncluded = new bool[3];
-					teamStatsIncluded[0] = teamDataBools[2];
-					teamStatsIncluded[1] = teamDataBools[3];
-					teamStatsIncluded[2] = teamDataBools[4];
-
 					// add team data
 					for (int i = 0; i < 3; i++)
 					{
-						if (teamStatsIncluded[i])
+						if (teamDataBools[i + 2])
 						{
 							f.teams[i].stats = input.ReadStats();
 							// TODO diff
@@ -373,7 +367,7 @@ namespace ButterReplays
 							}
 							else
 							{
-								p.stats = lastFrame.GetPlayer(p.userid).stats;
+								p.stats = lastFrame?.GetPlayer(p.userid)?.stats;
 							}
 
 							if (playerStateBitmask[5])
@@ -390,26 +384,31 @@ namespace ButterReplays
 
 							if (playerStateBitmask[6])
 							{
-								p.holding_left = b.header.ByteToHolding(input.ReadByte());
-								p.holding_right = b.header.ByteToHolding(input.ReadByte());
+								if (!f.InCombat)
+								{
+									p.holding_left = b.header.ByteToHolding(input.ReadByte());
+									p.holding_right = b.header.ByteToHolding(input.ReadByte());
+								}
 							}
 							else
 							{
-								p.holding_left = lastFrame.GetPlayer(p.userid).holding_left;
-								p.holding_right = lastFrame.GetPlayer(p.userid).holding_right;
+								if (!f.InCombat)
+								{
+									p.holding_left = lastFrame.GetPlayer(p.userid).holding_left;
+									p.holding_right = lastFrame.GetPlayer(p.userid).holding_right;
+								}
 							}
 
 							if (playerStateBitmask[7])
 							{
-#if UNITY
-								p.velocity = (input.ReadVector3Half() + (lastFrame?.GetPlayer(p.userid)?.velocity?.ToVector3() ?? Vector3.zero)).ToFloatArray().ToList();
-#else
-								p.velocity = (input.ReadVector3Half() + (lastFrame?.GetPlayer(p.userid)?.velocity?.ToVector3() ?? Vector3.Zero)).ToFloatArray().ToList();
-#endif
+								p.velocity =
+									(input.ReadVector3Half() + (lastFrame?.GetPlayer(p.userid)?.velocity?.ToVector3() ??
+									                            UniversalUnityExtensions.UniversalVector3Zero()))
+									.ToFloatArray().ToList();
 							}
 							else
 							{
-								p.velocity = lastFrame?.GetPlayer(p.userid)?.velocity ?? new List<float>() { 0, 0, 0 };
+								p.velocity = lastFrame?.GetPlayer(p.userid)?.velocity ?? new List<float>() {0, 0, 0};
 							}
 
 							List<bool> playerPoseBitmask = input.ReadByte().GetBitmaskValues();
@@ -422,12 +421,9 @@ namespace ButterReplays
 							if (playerPoseBitmask[0])
 							{
 								p.head.position =
-									(input.ReadVector3Half() +
-#if UNITY
-									 (lastFrame?.GetPlayer(p.userid)?.head.Position ?? Vector3.zero)).ToFloatList();
-#else
-									 (lastFrame?.GetPlayer(p.userid)?.head.Position ?? Vector3.Zero)).ToFloatList();
-#endif
+									(input.ReadVector3Half() + (lastFrame?.GetPlayer(p.userid)?.head.Position ??
+									                            UniversalUnityExtensions.UniversalVector3Zero()))
+									.ToFloatList(); // welcome to weird formatting land
 							}
 							else
 							{
@@ -436,66 +432,75 @@ namespace ButterReplays
 
 							p.head.Rotation = playerPoseBitmask[1]
 								? input.ReadSmallestThree()
-								: lastFrame?.GetPlayer(p.userid).head.Rotation ?? UniversalUnityExtensions.UniversalQuaternionIdentity();
+								: lastFrame?.GetPlayer(p.userid).head.Rotation ??
+								  UniversalUnityExtensions.UniversalQuaternionIdentity();
 
 							if (playerPoseBitmask[2])
 							{
 								p.body.position =
 									(input.ReadVector3Half() +
-#if UNITY
-									 (lastFrame?.GetPlayer(p.userid)?.body.Position ?? Vector3.zero)).ToFloatList();
-#else
-									 (lastFrame?.GetPlayer(p.userid)?.body.Position ?? Vector3.Zero)).ToFloatList();
-#endif
+									 (lastFrame?.GetPlayer(p.userid)?.body.Position ??
+									  UniversalUnityExtensions.UniversalVector3Zero())).ToFloatList();
 							}
 							else
 							{
-								p.body.position = lastFrame.GetPlayer(p.userid).body.position;
+								p.body.position = lastFrame?.GetPlayer(p.userid).body.position
+								                  ?? UniversalUnityExtensions.UniversalVector3Zero().ToFloatList();
 							}
 
 
 							p.body.Rotation = playerPoseBitmask[3]
 								? input.ReadSmallestThree()
-								: lastFrame.GetPlayer(p.userid).body.Rotation;
+								: lastFrame?.GetPlayer(p.userid).body.Rotation ??
+								  UniversalUnityExtensions.UniversalQuaternionIdentity();
 
 
 							if (playerPoseBitmask[4])
 							{
 								p.lhand.pos =
 									(input.ReadVector3Half() +
-#if UNITY
-									 (lastFrame?.GetPlayer(p.userid)?.lhand.Position ?? Vector3.zero)).ToFloatList();
-#else
-									 (lastFrame?.GetPlayer(p.userid)?.lhand.Position ?? Vector3.Zero)).ToFloatList();
-#endif
+									 (lastFrame?.GetPlayer(p.userid)?.lhand.Position
+									  ?? UniversalUnityExtensions.UniversalVector3Zero())).ToFloatList();
 							}
 							else
 							{
-								p.lhand.pos = lastFrame.GetPlayer(p.userid).lhand.pos;
+								p.lhand.pos = lastFrame?.GetPlayer(p.userid).lhand.pos
+								              ?? UniversalUnityExtensions.UniversalVector3Zero().ToFloatList();
 							}
 
 							p.lhand.Rotation = playerPoseBitmask[5]
 								? input.ReadSmallestThree()
-								: lastFrame.GetPlayer(p.userid).lhand.Rotation;
+								: lastFrame?.GetPlayer(p.userid).lhand.Rotation ??
+								  UniversalUnityExtensions.UniversalQuaternionIdentity();
 
 							if (playerPoseBitmask[6])
 							{
 								p.rhand.pos =
 									(input.ReadVector3Half() +
-#if UNITY
-									 (lastFrame?.GetPlayer(p.userid)?.rhand.Position ?? Vector3.zero)).ToFloatList();
-#else
-									 (lastFrame?.GetPlayer(p.userid)?.rhand.Position ?? Vector3.Zero)).ToFloatList();
-#endif
+									 (lastFrame?.GetPlayer(p.userid)?.rhand.Position ??
+									  UniversalUnityExtensions.UniversalVector3Zero())).ToFloatList();
 							}
 							else
 							{
-								p.rhand.pos = lastFrame.GetPlayer(p.userid).rhand.pos;
+								p.rhand.pos = lastFrame?.GetPlayer(p.userid).rhand.pos
+								              ?? UniversalUnityExtensions.UniversalVector3Zero().ToFloatList();
 							}
 
 							p.rhand.Rotation = playerPoseBitmask[7]
 								? input.ReadSmallestThree()
-								: lastFrame.GetPlayer(p.userid).rhand.Rotation;
+								: lastFrame?.GetPlayer(p.userid).rhand.Rotation ??
+								  UniversalUnityExtensions.UniversalQuaternionIdentity();
+
+
+							// Combat loadout
+							if (f.InCombat)
+							{
+								byte loadoutByte = input.ReadByte();
+								p.Weapon = ((ButterFile.Weapon) ((loadoutByte & (0b11 << 0)) >> 0)).ToString();
+								p.Ordnance = ((ButterFile.Ordnance) ((loadoutByte & (0b11 << 2)) >> 2)).ToString();
+								p.TacMod = ((ButterFile.TacMod) ((loadoutByte & (0b11 << 4)) >> 4)).ToString();
+								p.Arm = ((ButterFile.Arm) ((loadoutByte & (0b1 << 6)) >> 6)).ToString();
+							}
 
 							f.teams[i].players.Add(p);
 						}
@@ -504,7 +509,7 @@ namespace ButterReplays
 					// bone data
 					byte boneHeaderByte = input.ReadByte();
 					bool bonesIncluded = (boneHeaderByte | 1) == 1;
-					ushort numBonePlayers = (ushort)(boneHeaderByte >> 1);
+					ushort numBonePlayers = (ushort) (boneHeaderByte >> 1);
 					if (bonesIncluded)
 					{
 						f.bones = new Bones();
@@ -532,7 +537,8 @@ namespace ButterReplays
 
 								if (posInclusion[j])
 								{
-									f.bones.user_bones[i].SetPosition(j, lastPos + input.ReadVector3FixedPrecision(-2, 2, 14));
+									f.bones.user_bones[i].SetPosition(j,
+										lastPos + input.ReadVector3FixedPrecision(-2, 2, 14));
 								}
 								else
 								{
@@ -566,7 +572,7 @@ namespace ButterReplays
 					l.Add(f);
 				}
 
-				readProgress = (float)chunkIndex / numChunks;
+				readProgress = (float) chunkIndex / numChunks;
 			}
 
 			return l;

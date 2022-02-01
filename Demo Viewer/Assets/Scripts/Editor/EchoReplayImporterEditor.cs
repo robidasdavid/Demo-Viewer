@@ -263,9 +263,9 @@ namespace Pcx
 			}
 		}
 
-		List<string> ReadReplayFile(StreamReader fileReader)
+		private static List<string> ReadReplayFile(StreamReader fileReader)
 		{
-			using (fileReader = DemoStart.OpenOrExtract(fileReader))
+			using (fileReader = Replay.OpenOrExtract(fileReader))
 			{
 				List<string> allLines = new List<string>();
 				do

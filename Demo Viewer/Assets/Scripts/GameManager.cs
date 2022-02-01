@@ -12,6 +12,7 @@ using unityutilities;
 public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
+
 	public NetworkFrameManager netFrameMan;
 	public Transform[] vrOnlyThings;
 	public Transform[] flatOnlyThingsDesktop;
@@ -136,8 +137,6 @@ public class GameManager : MonoBehaviour
 		RefreshVRObjectsVisibility(enableVR);
 		
 		
-		// arena model
-		SceneManager.LoadSceneAsync(arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
 
 
 		// add file handling to registry for .echoreplay files

@@ -385,14 +385,18 @@ namespace EchoVRAPI
 			f.recorded_time = timestamp;
 
 			// prepare the raw api conversion for use
-			f.teams[0].color = Team.TeamColor.blue;
-			f.teams[1].color = Team.TeamColor.orange;
-			f.teams[2].color = Team.TeamColor.spectator;
+			if (f.teams != null)
+			{
+				// label the team classes
+				f.teams[0].color = Team.TeamColor.blue;
+				f.teams[1].color = Team.TeamColor.orange;
+				f.teams[2].color = Team.TeamColor.spectator;
 
-			// make sure player lists are not null
-			f.teams[0].players ??= new List<Player>();
-			f.teams[1].players ??= new List<Player>();
-			f.teams[2].players ??= new List<Player>();
+				// make sure player lists are not null
+				f.teams[0].players ??= new List<Player>();
+				f.teams[1].players ??= new List<Player>();
+				f.teams[2].players ??= new List<Player>();
+			}
 
 			if (bones !=null) f.bones = JsonConvert.DeserializeObject<Bones>(bones);
 

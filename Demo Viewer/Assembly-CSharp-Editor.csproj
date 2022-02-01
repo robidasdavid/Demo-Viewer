@@ -52,13 +52,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Photon\Simple\Components\Editor\SyncAnimatorEditor.cs" />
-     <Compile Include="Assets\Photon\Simple\Utilities\GUITools\Editor\GUIColorBoxes.cs" />
-     <Compile Include="Assets\Photon\Simple\Components\Editor\SyncTransformEditor.cs" />
      <Compile Include="Assets\Scripts\Editor\EchoCSVImporterEditor.cs" />
      <Compile Include="Assets\Scripts\Editor\EchoReplayImporterEditor.cs" />
-     <Compile Include="Assets\Photon\Simple\Example\Assistants\Editor\TutorialAssists.cs" />
-     <Compile Include="Assets\Photon\Simple\Components\Editor\SyncVitalsEditor.cs" />
  <Reference Include="UnityEngine">
  <HintPath>F:/Program Files/Unity Editors/2020.3.23f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
@@ -290,32 +285,11 @@
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>F:/Program Files/Unity Editors/2020.3.23f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
- <Reference Include="Photon3Unity3D">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
- </Reference>
- <Reference Include="log4netPlastic">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.15.7/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
- </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.2/Runtime/Newtonsoft.Json.dll</HintPath>
- </Reference>
- <Reference Include="HalFloat">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/HalFloat.dll</HintPath>
- </Reference>
- <Reference Include="QuatCompress">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/QuatCompress.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Plastic.Newtonsoft.Json">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.15.7/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll</HintPath>
  </Reference>
- <Reference Include="ByteConverter">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/Compression/plugins/ByteConverter.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Plastic.Antlr3.Runtime">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.15.7/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="websocket-sharp">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
  </Reference>
  <Reference Include="unityplastic">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.15.7/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
@@ -323,14 +297,17 @@
  <Reference Include="Unity.Burst.Unsafe">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.4.11/Unity.Burst.Unsafe.dll</HintPath>
  </Reference>
- <Reference Include="FloatCrusher">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Assets/Photon/PhotonUtilities/TransformCrusher/plugins/FloatCrusher.dll</HintPath>
+ <Reference Include="log4netPlastic">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.collab-proxy@1.15.7/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.franzco.unityutilities@eee4cdf1c4/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.NRefactory">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.render-pipelines.core@10.7.0/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
+ </Reference>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.2/Runtime/Newtonsoft.Json.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -711,10 +688,6 @@
       <Project>{950439dc-8378-5e09-e0c8-dac2c8476c34}</Project>
       <Name>UnityEngine.TestRunner</Name>
     </ProjectReference>
-    <ProjectReference Include="PhotonChat.csproj">
-      <Project>{2dd7a171-d47b-30a7-17b4-f18564f2db28}</Project>
-      <Name>PhotonChat</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.VSCode.Editor.csproj">
       <Project>{d7dad80a-2a2e-ba5d-0c78-2a0f420d539f}</Project>
       <Name>Unity.VSCode.Editor</Name>
@@ -731,6 +704,10 @@
       <Project>{60abd5fc-1ec6-f023-34ce-86cd8a115cbf}</Project>
       <Name>Unity.TextMeshPro.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="VelNet.csproj">
+      <Project>{a65c3ffd-6f60-9d46-171d-5f1312540019}</Project>
+      <Name>VelNet</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Formats.Fbx.Editor.csproj">
       <Project>{626c4f00-434a-67f7-36f3-1c12717a8f6e}</Project>
       <Name>Unity.Formats.Fbx.Editor</Name>
@@ -738,14 +715,6 @@
     <ProjectReference Include="Unity.Searcher.Editor.csproj">
       <Project>{e8fa3af4-da5a-d6f9-cade-5fb5c8ff8a21}</Project>
       <Name>Unity.Searcher.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Editor.csproj">
-      <Project>{67910ffc-6003-4a21-9c56-193a4d88289f}</Project>
-      <Name>PhotonUnityNetworking.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.csproj">
-      <Project>{6dc7a04d-3089-642a-08dc-53980ef9f335}</Project>
-      <Name>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{1f11dcc7-2371-0779-258d-cd9d338d4787}</Project>
@@ -767,9 +736,9 @@
       <Project>{9d5b7d62-3df4-207d-bac7-0224a15f0d31}</Project>
       <Name>com.unity.quicksearch.runtime</Name>
     </ProjectReference>
-    <ProjectReference Include="EmoCompressUtilsASMDEF.csproj">
-      <Project>{ddd7f5f8-7daa-27f7-b918-7b351b735d9b}</Project>
-      <Name>EmoCompressUtilsASMDEF</Name>
+    <ProjectReference Include="UnityEngine.UI.csproj">
+      <Project>{c82bca3a-7678-253e-160b-6333c267cc4d}</Project>
+      <Name>UnityEngine.UI</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.RenderPipelines.Core.ShaderLibrary.csproj">
       <Project>{6bbab12e-d47c-a946-ca67-013f425a59c5}</Project>
@@ -783,21 +752,9 @@
       <Project>{fa0ffc8c-2e97-4c45-1ec2-e27ae2b66b5b}</Project>
       <Name>Autodesk.Fbx</Name>
     </ProjectReference>
-    <ProjectReference Include="PunDemos.DemoHubEditor.csproj">
-      <Project>{d89b06b6-082e-48f8-61bf-124fbb32c440}</Project>
-      <Name>PunDemos.DemoHubEditor</Name>
-    </ProjectReference>
     <ProjectReference Include="MenuTablet.csproj">
       <Project>{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}</Project>
       <Name>MenuTablet</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{c82bca3a-7678-253e-160b-6333c267cc4d}</Project>
-      <Name>UnityEngine.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.csproj">
-      <Project>{fea437d2-2626-d5e5-56cf-cde09bf05c23}</Project>
-      <Name>PhotonUnityNetworking</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
       <Project>{829de81f-bcf5-6021-9aa9-7a20f8c70c28}</Project>
@@ -827,21 +784,9 @@
       <Project>{63f1773b-78b7-919b-7e4d-a26fd459cc7d}</Project>
       <Name>Unity.Mathematics.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="HalfFloatASMDEF.csproj">
-      <Project>{44d2240c-a346-0db3-1e1a-6d00afb9bdcf}</Project>
-      <Name>HalfFloatASMDEF</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Animation.Rigging.Editor.csproj">
       <Project>{10669bf8-72ec-20a0-3fb6-8fb3fe8eb779}</Project>
       <Name>Unity.Animation.Rigging.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="PunDemos.DemoSlotcarEditor.csproj">
-      <Project>{16c79727-3ade-0978-6abd-537aa35c4f58}</Project>
-      <Name>PunDemos.DemoSlotcarEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Utilities.Culling.Editor.csproj">
-      <Project>{6422457e-f317-baeb-a8f1-f54f625b5786}</Project>
-      <Name>PhotonUnityNetworking.Utilities.Culling.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualEffectGraph.Editor.csproj">
       <Project>{705623ac-220d-a439-9187-14892b498caa}</Project>
@@ -854,6 +799,10 @@
     <ProjectReference Include="EchoVRAPI.csproj">
       <Project>{26800ecf-2abc-fd48-a10e-70fa682c8fd9}</Project>
       <Name>EchoVRAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="VelNet.Editor.csproj">
+      <Project>{eed74a0b-daf1-025b-dac4-d0ea7d3c6a65}</Project>
+      <Name>VelNet.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
       <Project>{da594d5f-29fd-5a51-2d4e-eb213d9e4190}</Project>
@@ -915,17 +864,9 @@
       <Project>{e0cd3812-8e15-6171-a942-76dc7484f640}</Project>
       <Name>Unity.PlasticSCM.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="PhotonRealtime.csproj">
-      <Project>{ac2ff5ad-20ec-2cc8-eb24-fbb82b7956b4}</Project>
-      <Name>PhotonRealtime</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.XR.OpenXR.Features.OculusQuestSupport.csproj">
       <Project>{f6ca9721-000f-3d6b-343c-a9a2a7e030e9}</Project>
       <Name>Unity.XR.OpenXR.Features.OculusQuestSupport</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Utilities.csproj">
-      <Project>{846d8d3f-07a4-3d02-a966-e5293c36d6d2}</Project>
-      <Name>PhotonUnityNetworking.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Animation.Rigging.csproj">
       <Project>{10e18954-928a-3252-3257-ca4ba3da5772}</Project>
@@ -959,10 +900,6 @@
       <Project>{2f273882-7d09-31d9-670b-82640e55dbc0}</Project>
       <Name>UnityEngine.XR.LegacyInputHelpers</Name>
     </ProjectReference>
-    <ProjectReference Include="BitpackersASMDEF.csproj">
-      <Project>{a55452c7-1a19-61c5-1f06-065c0a0f7276}</Project>
-      <Name>BitpackersASMDEF</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.XR.OpenXR.Editor.csproj">
       <Project>{7df2253b-0506-5489-391c-e6e415b0be0e}</Project>
       <Name>Unity.XR.OpenXR.Editor</Name>
@@ -974,10 +911,6 @@
     <ProjectReference Include="FranzCo.unityutilities.csproj">
       <Project>{09a4c859-d5af-0721-a34e-46a6495f7bba}</Project>
       <Name>FranzCo.unityutilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonUnityNetworking.Demos.csproj">
-      <Project>{7e9391f7-d3aa-1c2a-9d1d-2201bccabb07}</Project>
-      <Name>PhotonUnityNetworking.Demos</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.XR.LegacyInputHelpers.csproj">
       <Project>{f19fedc0-dd87-403d-d996-971d51d9f188}</Project>

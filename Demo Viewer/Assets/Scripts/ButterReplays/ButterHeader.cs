@@ -9,7 +9,7 @@ namespace ButterReplays
 {
 		public class ButterHeader
 		{
-			public byte formatVersion = 1;
+			public byte formatVersion = 2;
 			public readonly ushort keyframeInterval;
 
 			public readonly ButterFile.CompressionFormat compression;

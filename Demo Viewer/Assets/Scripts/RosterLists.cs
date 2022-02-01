@@ -16,8 +16,8 @@ public class RosterLists : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		if (DemoStart.playhead == null) return;
-		Frame f = DemoStart.playhead.GetFrame();
+		if (DemoStart.instance.playhead == null) return;
+		Frame f = DemoStart.instance.playhead.GetFrame();
 		if (f == null) return;
 
 		for (int t = 0; t < 2; t++)

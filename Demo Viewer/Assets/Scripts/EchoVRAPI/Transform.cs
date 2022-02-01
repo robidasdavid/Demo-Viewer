@@ -74,6 +74,8 @@ namespace EchoVRAPI
 		public static Transform operator +(Transform t1, Transform t2)
 		{
 			if (t2 == null) return t1;
+			if (t1 == null) return t2;
+
 			Transform ret = new Transform
 			{
 				Position = t1.Position + t2.Position,
@@ -86,6 +88,8 @@ namespace EchoVRAPI
 		public static Transform operator -(Transform t1, Transform t2)
 		{
 			if (t2 == null) return t1;
+			if (t1 == null) return t2;
+			
 			Transform ret = new Transform
 			{
 				Position = t1.Position - t2.Position,

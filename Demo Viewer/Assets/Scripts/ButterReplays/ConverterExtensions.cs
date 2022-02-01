@@ -50,14 +50,13 @@ namespace ButterReplays
 
 			return mem.ToArray();
 		}
-
+		
 		private static double Clamp(double value, double min, double max)
 		{
 			if (value < min) return min;
 			if (value > max) return max;
 			return value;
 		}
-
 
 		// /// <summary>
 		// /// Converts a list of floats to fixed precision integer numbers of length numBytes and then to bytes

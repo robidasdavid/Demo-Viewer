@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,10 +53,9 @@ public class ClippingController : MonoBehaviour
 
 	public void SaveClip()
 	{
-		
-		int nFrames = GameManager.instance.demoStart.loadedDemo.nframes;
-		int startFrame = (int) (startPoint.value * nFrames);
-		int endFrame = (int) (endPoint.value * nFrames);
+		int nFrames = GameManager.instance.demoStart.replay.FrameCount;
+		int startFrame = (int)(startPoint.value * nFrames);
+		int endFrame = (int)(endPoint.value * nFrames);
 
 		if (startFrame > endFrame)
 		{
@@ -85,7 +82,7 @@ public class ClippingController : MonoBehaviour
 		}
 
 		string fileName = clipNameField.text;
-		
+
 		if (string.IsNullOrEmpty(fileName))
 		{
 			Debug.LogError("Please give the clip a name. Can't clip.");
@@ -93,8 +90,8 @@ public class ClippingController : MonoBehaviour
 			errorBox.gameObject.SetActive(true);
 			return;
 		}
-		
-		
+
+
 		// add the current directory if it isn't specified in the file name
 		if (!fileName.Contains(Path.DirectorySeparatorChar))
 		{
@@ -124,7 +121,7 @@ public class ClippingController : MonoBehaviour
 		{
 			fileName += ".echoreplay";
 		}
-		
+
 		if (File.Exists(fileName))
 		{
 			Debug.LogError("File name already exists. Can't clip.");
@@ -138,16 +135,16 @@ public class ClippingController : MonoBehaviour
 
 	private IEnumerator SaveClipCo(string fileName, int startFrame, int endFrame)
 	{
-		
 		savingClipMessage.gameObject.SetActive(true);
 		errorBox.gameObject.SetActive(false);
-		
-		Thread saveThread = new Thread(() =>GameManager.instance.demoStart.SaveReplayClip(fileName, startFrame, endFrame));
+
+		Thread saveThread = new Thread(() => GameManager.instance.demoStart.replay.SaveReplayClip(fileName, startFrame, endFrame));
 		saveThread.Start();
 		while (saveThread.IsAlive)
 		{
 			yield return null;
 		}
+
 		savingClipMessage.gameObject.SetActive(false);
 	}
 }

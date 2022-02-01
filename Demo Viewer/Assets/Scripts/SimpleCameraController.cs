@@ -307,8 +307,8 @@ public class SimpleCameraController : MonoBehaviour
 
 	private void RecordedCameraMovement()
 	{
-		if (DemoStart.playhead == null) return;
-		Frame frame = DemoStart.playhead.GetFrame();
+		if (DemoStart.instance.playhead == null) return;
+		Frame frame = DemoStart.instance.playhead.GetFrame();
 		if (frame == null) return;
 		targetCameraState.SetPosition(frame.player.Position);
 		targetCameraState.SetRotation(frame.player.Rotation);
@@ -316,8 +316,8 @@ public class SimpleCameraController : MonoBehaviour
 
 	private void SidelineMovement()
 	{
-		if (DemoStart.playhead == null) return;
-		Frame frame = DemoStart.playhead.GetFrame();
+		if (DemoStart.instance.playhead == null) return;
+		Frame frame = DemoStart.instance.playhead.GetFrame();
 		if (frame == null) return;
 
 		smoothedDiscPos = Vector3.Lerp(smoothedDiscPos, frame.disc.Position, Time.deltaTime * discPositionSmoothness);

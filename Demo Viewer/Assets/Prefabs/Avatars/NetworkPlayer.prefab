@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 5455352992658852325}
   - component: {fileID: 5455352992658852320}
   - component: {fileID: 5455352992658852323}
-  - component: {fileID: 5455352992658852322}
   m_Layer: 0
   m_Name: eye
   m_TagString: Untagged
@@ -116,19 +115,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5455352992658852322
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5455352992658852324}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5455352993115207342
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +221,6 @@ GameObject:
   - component: {fileID: 5455352993339198426}
   - component: {fileID: 5455352993339198425}
   - component: {fileID: 5455352993339198424}
-  - component: {fileID: 5455352993339198427}
   m_Layer: 0
   m_Name: eye
   m_TagString: Untagged
@@ -306,19 +291,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5455352993339198427
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5455352993339198429}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5455352993768156633
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5515094c5c544b6b8ed7fd51a86548d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ownershipLocked: 0
+  ownershipLocked: 1
   networkId: 
   sceneNetworkId: 0
   prefabName: 
@@ -400,7 +372,6 @@ GameObject:
   - component: {fileID: 6092237193420534631}
   - component: {fileID: 6230195869510620369}
   - component: {fileID: 7530715301832782870}
-  - component: {fileID: 6410101951887099}
   m_Layer: 0
   m_Name: mouth
   m_TagString: Untagged
@@ -471,16 +442,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6410101951887099
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7522948635520783987}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

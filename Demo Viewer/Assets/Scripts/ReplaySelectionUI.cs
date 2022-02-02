@@ -117,7 +117,7 @@ public class ReplaySelectionUI : MonoBehaviour
 
 		VelNetManager.OnJoinedRoom += room =>
 		{
-			connectedInfoLabel.text = "Connected: " + room;
+			connectedInfoLabel.text = "Connected\nRoom: " + room;
 			joinButton.gameObject.SetActive(false);
 			disconnectButton.gameObject.SetActive(true);
 		};

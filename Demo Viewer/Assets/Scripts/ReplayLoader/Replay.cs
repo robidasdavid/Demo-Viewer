@@ -90,6 +90,7 @@ public class Replay : MonoBehaviour
 			TemporalLoadProgress?.Invoke((float)processingProgress / game.nFrames);
 			yield return null;
 		}
+		TemporalLoadProgress?.Invoke(1);
 
 		TemporalLoadingFinished?.Invoke();
 	}

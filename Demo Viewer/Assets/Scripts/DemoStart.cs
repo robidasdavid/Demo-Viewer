@@ -10,16 +10,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-using UnityEngine.Networking;
-using System.IO.Compression;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using TMPro;
-using System.Threading;
-using ButterReplays;
 using EchoVRAPI;
-using Newtonsoft.Json;
 using Spark;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -27,27 +21,6 @@ using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 using Transform = UnityEngine.Transform;
 
-//Serializable classes for JSON serializing from the API output.
-
-
-public class PlayerStats : Stats
-{
-	public PlayerStats(int pt, int points, int goals, int saves, int stuns, int interceptions, int blocks, int passes, int catches, int steals, int assists, int shots_taken)
-	{
-		possession_time = pt;
-		this.points = points;
-		this.goals = goals;
-		this.saves = saves;
-		this.stuns = stuns;
-		this.interceptions = interceptions;
-		this.blocks = blocks;
-		this.passes = passes;
-		this.catches = catches;
-		this.steals = steals;
-		this.assists = assists;
-		this.shots_taken = shots_taken;
-	}
-}
 
 
 public class DemoStart : MonoBehaviour
@@ -165,15 +138,15 @@ public class DemoStart : MonoBehaviour
 			// load a combat map if necessary
 			// read the first frame
 			Frame middleFrame = replay.GetFrame(playhead.FrameCount / 2);
-			if (middleFrame.map_name != "mpl_arena_a")
-			{
-				// combat model
-				SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
-			}
-			else
+			if (middleFrame.map_name == "mpl_arena_a")
 			{
 				// arena model
 				SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
+			}
+			else
+			{
+				// combat model
+				SceneManager.LoadSceneAsync(GameManager.combatMapScenes[middleFrame.map_name], LoadSceneMode.Additive);
 			}
 		};
 

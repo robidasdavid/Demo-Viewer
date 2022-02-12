@@ -38,7 +38,14 @@ public class NetworkFrameManager : NetworkSerializedObjectStream
 		binaryWriter.Write(DemoStart.instance.replay.FrameCount);
 		binaryWriter.Write(DemoStart.instance.playhead.playbackMultiplier);
 		binaryWriter.Write(DemoStart.instance.playhead.CurrentFrameIndex);
-		binaryWriter.Write(DemoStart.instance.playhead.lastPlayheadLocation.ToFileTimeUtc());
+		if (DemoStart.instance.playhead.lastPlayheadLocation > DateTime.MinValue)
+		{
+			binaryWriter.Write(DemoStart.instance.playhead.lastPlayheadLocation.ToFileTimeUtc());
+		}
+		else
+		{
+			binaryWriter.Write((long)0);
+		}
 		binaryWriter.Write(Path.GetFileNameWithoutExtension(DemoStart.instance.replay.FileName));
 
 		ButterFile bf = new ButterFile();

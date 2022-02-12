@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 5455352993768156582}
   - component: {fileID: 4420248241329178537}
   - component: {fileID: 7483616477654398534}
+  - component: {fileID: 3261197888607294591}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Untagged
@@ -361,6 +362,38 @@ MonoBehaviour:
   useLocalTransform: 0
   teleportDistance: 0
   teleportAngle: 0
+--- !u!114 &3261197888607294591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5455352993768156633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32489d17682c03d4782af414f066bac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  followPosition: 1
+  positionFollowType: 0
+  positionForceMult: 1000
+  useFixedUpdatePos: 0
+  positionOffset: {x: 0, y: 0, z: 0}
+  positionOffsetCoordinateSystem: 1
+  snapIfDistanceGreaterThan: 0
+  followRotation: 1
+  rotationFollowType: 0
+  rotationForceMult: 1
+  useFixedUpdateRot: 0
+  rotationOffset: {x: 0, y: 0, z: 0, w: 1}
+  rotationOffsetVector3: {x: 0, y: 0, z: 0}
+  useVector3RotationOffset: 0
+  rotationOffsetCoordinateSystem: 1
+  singleAxisRotation: 0
+  singleAxisRotationAxis: 0
+  snapIfAngleGreaterThan: 0
+  smoothness: 0
 --- !u!1 &7522948635520783987
 GameObject:
   m_ObjectHideFlags: 0

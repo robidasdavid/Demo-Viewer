@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 #else
 using System.Numerics;
+using System.Diagnostics;
 #endif
 
 namespace EchoVRAPI
@@ -35,7 +36,7 @@ namespace EchoVRAPI
 		/// This data is from a different API call, but can be combined here to make organization easier
 		/// </summary>
 		[JsonIgnore] public Bones bones;
-		
+
 		public int err_code;
 		public string err_description;
 
@@ -264,7 +265,7 @@ namespace EchoVRAPI
 				recorded_time = t,
 
 				bones = Bones.Lerp(from.bones, to.bones, lerpValue),
-				
+
 				disc = Disc.Lerp(from.disc, to.disc, lerpValue),
 				sessionid = from.sessionid,
 				orange_points = from.orange_points,
@@ -314,7 +315,7 @@ namespace EchoVRAPI
 			if (!string.IsNullOrEmpty(line))
 			{
 				string[] splitJSON = line.Split('\t');
-				string onlyJSON, onlyTime, onlyBones=null;
+				string onlyJSON, onlyTime, onlyBones = null;
 				switch (splitJSON.Length)
 				{
 					case 3:
@@ -396,18 +397,18 @@ namespace EchoVRAPI
 				f.teams[0].players ??= new List<Player>();
 				f.teams[1].players ??= new List<Player>();
 				f.teams[2].players ??= new List<Player>();
-			}
 
-			if (bones !=null) f.bones = JsonConvert.DeserializeObject<Bones>(bones);
-
-			// makes loops through all players a lot easier
-			foreach (Team team in f.teams)
-			{
-				foreach (Player player in team.players)
+				// makes loops through all players a lot easier
+				foreach (Team team in f.teams)
 				{
-					player.team_color = team.color;
+					foreach (Player player in team.players)
+					{
+						player.team_color = team.color;
+					}
 				}
 			}
+
+			if (bones != null) f.bones = JsonConvert.DeserializeObject<Bones>(bones);
 
 			return f;
 		}
@@ -417,7 +418,7 @@ namespace EchoVRAPI
 #if UNITY
 			Debug.Log(message);
 #else
-			Console.WriteLine(message);
+			Debug.WriteLine(message);
 #endif
 		}
 	}
@@ -638,8 +639,8 @@ public static Quaternion QuaternionLookRotation(Vector3 forward, Vector3 up)
 #endif
 			};
 		}
-		
-		
+
+
 		public static Quaternion ToQuaternion(this float[] input)
 		{
 			if (input.Length != 4)

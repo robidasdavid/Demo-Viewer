@@ -82,7 +82,7 @@ public class DiscController : MonoBehaviour
 	{
 		if (DemoStart.instance.playhead == null) return;
 		Frame frame = DemoStart.instance.playhead.GetFrame();
-		if (frame == null) return;
+		if (frame?.disc == null) return;
 
 		discVelocity = frame.disc.velocity.ToVector3();
 		discPosition = frame.disc.Position;

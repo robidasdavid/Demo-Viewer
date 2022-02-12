@@ -372,7 +372,7 @@ namespace ButterReplays
 
 							if (playerStateBitmask[5])
 							{
-								p.ping = input.ReadUInt16() + (lastFrame?.GetPlayer(p.userid)?.ping ?? 0);
+								p.ping = input.ReadInt16() + (lastFrame?.GetPlayer(p.userid)?.ping ?? 0);
 								p.packetlossratio = input.ReadSystemHalf() +
 								                    (lastFrame?.GetPlayer(p.userid)?.packetlossratio ?? 0);
 							}

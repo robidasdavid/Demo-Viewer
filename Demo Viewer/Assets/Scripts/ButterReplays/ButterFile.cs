@@ -92,7 +92,7 @@ namespace ButterReplays
 		}
 
 		// TODO reorder to match terminal appearance
-		public enum Weapon : byte
+		public enum Weapon
 		{
 			rocket,		// meteor
 			blaster,	// nova
@@ -101,7 +101,7 @@ namespace ButterReplays
 			// TODO check mapping
 		}
 
-		public enum Ordnance : byte
+		public enum Ordnance
 		{
 			stun,	// stun field
 			det,	// detonator
@@ -109,7 +109,7 @@ namespace ButterReplays
 			arc,	// arc mine
 		}
 
-		public enum TacMod : byte
+		public enum TacMod
 		{
 			sensor,	// threat scanner
 			wraith,	// phase shift
@@ -117,7 +117,7 @@ namespace ButterReplays
 			shield,	// energy barrier
 		}
 		
-		public enum Arm : byte {
+		public enum Arm {
 			Left,
 			Right,
 		}

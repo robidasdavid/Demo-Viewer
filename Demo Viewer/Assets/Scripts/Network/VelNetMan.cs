@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using unityutilities;
 using VelNet;
 
 public class VelNetMan : MonoBehaviour
@@ -13,7 +14,7 @@ public class VelNetMan : MonoBehaviour
 	// Start is called before the first frame update
 	private void Start()
 	{
-		VelNetManager.OnConnectedToServer += () => { VelNetManager.Login(SystemInfo.deviceUniqueIdentifier, "nopass"); };
+		VelNetManager.OnConnectedToServer += () => { VelNetManager.Login("Replay Viewer", Hash128.Compute(SystemInfo.deviceUniqueIdentifier).ToString()); };
 		VelNetManager.OnLoggedIn += () =>
 		{
 			// VelNetManager.Join("default");
@@ -22,7 +23,10 @@ public class VelNetMan : MonoBehaviour
 		VelNetManager.OnJoinedRoom += roomId =>
 		{
 			Debug.Log("Joined VelNet Room: " + roomId);
-			playerPrefabReference = VelNetManager.InstantiateNetworkObject(playerPrefab.name);
+			playerPrefabReference = VelNetManager.NetworkInstantiate(playerPrefab.name);
+			
+			playerPrefabReference.GetComponent<CopyTransform>().SetTarget(Camera.main.transform, false);
+			playerPrefabReference.transform.GetChild(0).gameObject.SetActive(false);
 
 
 			StartCoroutine(WaitOneFrame(() =>

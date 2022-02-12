@@ -217,7 +217,7 @@ namespace ButterReplays
 						// ping/packetloss
 						if (playerStateBitmask[5])
 						{
-							writer.Write((ushort)(player.ping - (lastFramePlayer?.ping ?? 0)));
+							writer.Write((short)(player.ping - (lastFramePlayer?.ping ?? 0)));
 							writer.WriteHalf((Half)(player.packetlossratio - (lastFramePlayer?.packetlossratio ?? 0)));
 						}
 

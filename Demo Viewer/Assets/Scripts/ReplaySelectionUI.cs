@@ -107,23 +107,35 @@ public class ReplaySelectionUI : MonoBehaviour
 		showing = panel.gameObject.activeSelf;
 
 		manualInputText.text = PlayerPrefs.GetString("fileDirector");
-
-		VelNetManager.OnLeftRoom += _ =>
-		{
-			connectedInfoLabel.text = "Not Connected";
-			joinButton.gameObject.SetActive(true);
-			disconnectButton.gameObject.SetActive(false);
-		};
-
-		VelNetManager.OnJoinedRoom += room =>
-		{
-			connectedInfoLabel.text = "Connected\nRoom: " + room;
-			joinButton.gameObject.SetActive(false);
-			disconnectButton.gameObject.SetActive(true);
-		};
-
+		
 		// refresh the list
 		RefreshReplaysList();
+	}
+
+	private void OnEnable()
+	{
+		VelNetManager.OnLeftRoom += OnLeftRoom;
+		VelNetManager.OnJoinedRoom += OnJoinedRoom;
+	}
+
+	private void OnDisable()
+	{
+		VelNetManager.OnLeftRoom -= OnLeftRoom;
+		VelNetManager.OnJoinedRoom -= OnJoinedRoom;
+	}
+
+	private void OnJoinedRoom(string room)
+	{
+		connectedInfoLabel.text = "Connected\nRoom: " + room;
+		joinButton.gameObject.SetActive(false);
+		disconnectButton.gameObject.SetActive(true);
+	}
+
+	private void OnLeftRoom(string _)
+	{
+		connectedInfoLabel.text = "Not Connected";
+		joinButton.gameObject.SetActive(true);
+		disconnectButton.gameObject.SetActive(false);
 	}
 
 	private void Update()

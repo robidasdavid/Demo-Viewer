@@ -111,6 +111,7 @@
      <Compile Include="Assets\Scripts\ViewReplayUIController.cs" />
      <Compile Include="Assets\Scripts\GetBonesWow.cs" />
      <Compile Include="Assets\Scripts\SetCameraPositionLive.cs" />
+     <Compile Include="Assets\Scripts\SliderPositionIndicator.cs" />
      <None Include="Assets\Materials\PointClouds\DataFoldvrDisk.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -359,7 +360,7 @@
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.4.11/Unity.Burst.Unsafe.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.franzco.unityutilities@eee4cdf1c4/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>S:/git_repo/unityutilities/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="Newtonsoft.Json">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.2/Runtime/Newtonsoft.Json.dll</HintPath>

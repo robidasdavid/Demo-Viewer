@@ -8,14 +8,13 @@
       "url": "https://packages.unity.com"
     },
     "com.franzco.unityutilities": {
-      "version": "https://AntonFranzluebbers@bitbucket.org/AntonFranzluebbers/unityutilities.git",
+      "version": "file:S:/git_repo/unityutilities",
       "depth": 0,
-      "source": "git",
+      "source": "local",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "2.0.0-preview",
         "com.unity.xr.legacyinputhelpers": "2.1.7"
-      },
-      "hash": "eee4cdf1c47686e2aa8a2a7fde32e8dfb09be986"
+      }
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

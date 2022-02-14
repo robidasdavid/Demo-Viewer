@@ -15,6 +15,10 @@ public class GoalAnimationHandler : MonoBehaviour
 		GameEvents.Goal += (lastScore) =>
 		{
 			if (!DemoStart.instance.playhead.isPlaying) return;
+			
+			// TODO allow goal animations on remote.
+			// This doesn't fix the root issue
+			if (!GameManager.instance.netFrameMan.IsLocalOrServer) return;
 
 			int teamIndex = lastScore.team == "blue" ? 0 : 1;
 

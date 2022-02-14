@@ -194,13 +194,13 @@ public class Replay : MonoBehaviour
 		colors.Clear();
 		normals.Clear();
 
-		Parallel.For(0, game.nFrames,
-			new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount - 1 },
-			i =>
-			{
-				GetFrame(i);
-				Interlocked.Increment(ref processingProgress);
-			});
+		// Parallel.For(0, game.nFrames,
+		// 	// new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount - 1 },
+		// 	i =>
+		// 	{
+		// 		GetFrame(i);
+		// 		Interlocked.Increment(ref processingProgress);
+		// 	});
 
 		for (int i = 0; i < game.nFrames; i++)
 		{

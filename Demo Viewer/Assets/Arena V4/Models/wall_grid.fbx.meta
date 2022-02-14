@@ -17,6 +17,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: wall_stripey_light
+    second: {fileID: 2100000, guid: 59080a2fab5c36d4b8403e83a9ca2be6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: window
     second: {fileID: 2100000, guid: cf7360cee5344b543945124f2ee07869, type: 2}
   materials:

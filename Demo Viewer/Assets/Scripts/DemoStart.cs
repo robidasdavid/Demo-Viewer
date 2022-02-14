@@ -14,7 +14,6 @@ using System;
 using System.Linq;
 using TMPro;
 using EchoVRAPI;
-using Spark;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -32,7 +31,7 @@ public class DemoStart : MonoBehaviour
 
 	public Text frameText;
 	public Text gameTimeText;
-	public Slider playbackSlider;
+	public List<Slider> playbackSliders;
 	public Slider temporalProcessingSlider;
 	public Slider speedSlider;
 
@@ -77,6 +76,7 @@ public class DemoStart : MonoBehaviour
 
 	private bool isScored = false;
 
+	public bool inSnapUI;
 	public bool wasDPADXReleased = true;
 	private bool wasDPADYPressed = false;
 
@@ -126,7 +126,7 @@ public class DemoStart : MonoBehaviour
 			frameText.text = $"Frame 0 of {playhead.FrameCount}";
 
 			//set slider values
-			playbackSlider.maxValue = playhead.FrameCount - 1;
+			playbackSliders.ForEach(s => s.maxValue = playhead.FrameCount - 1);
 
 			playerObjects = new Dictionary<(int, string), PlayerCharacter>();
 			playerV4Objects = new Dictionary<string, PlayerV4>();
@@ -178,7 +178,10 @@ public class DemoStart : MonoBehaviour
 			}
 		};
 
-		replay.LoadProgress += f => { playbackSlider.value = f; };
+		replay.LoadProgress += f =>
+		{
+			playbackSliders.ForEach(s => s.SetValueWithoutNotify(f));
+		};
 
 		replay.TemporalLoadProgress += f => { temporalProcessingSlider.value = f; };
 
@@ -204,7 +207,7 @@ public class DemoStart : MonoBehaviour
 		{
 			playhead.IncrementPlayhead(Time.deltaTime);
 			// Find and declare what frame the slider is on.
-			playbackSlider.value = playhead.CurrentFrameIndex;
+			playbackSliders.ForEach(p => p.SetValueWithoutNotify(playhead.CurrentFrameIndex));
 		}
 
 		// process input
@@ -322,8 +325,8 @@ public class DemoStart : MonoBehaviour
 	{
 		float triggerLinearity = 4;
 		float maxScrubSpeed = 1.75f;
-		float rightTrig = Input.GetAxis("RightTrig");
-		float leftTrig = Input.GetAxis("LeftTrig");
+		float rightTrig = Input.GetAxis("RightTrig") * (inSnapUI ? 0 : 1);
+		float leftTrig = Input.GetAxis("LeftTrig") * (inSnapUI ? 0 : 1);
 		float combinedTrigs = rightTrig - leftTrig;
 		if (combinedTrigs == 0)
 		{
@@ -453,14 +456,14 @@ public class DemoStart : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
 			playhead.IncrementPlayhead(-1);
-			playbackSlider.value = playhead.CurrentFrameIndex;
+			playbackSliders.ForEach(p => p.SetValueWithoutNotify(playhead.CurrentFrameIndex));
 		}
 
 		// skip forwards 1 second
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
 			playhead.IncrementPlayhead(1);
-			playbackSlider.value = playhead.CurrentFrameIndex;
+			playbackSliders.ForEach(p => p.SetValueWithoutNotify(playhead.CurrentFrameIndex));
 		}
 
 		// skip backwards one frame
@@ -888,12 +891,12 @@ public class DemoStart : MonoBehaviour
 		playhead.SetPlaying(playhead.wasPlaying);
 	}
 
-	public void playbackValueChanged()
+	public void PlaybackValueChanged(float value)
 	{
 		// if is scrubbing with the slider
 		if (!playhead.isPlaying)
 		{
-			playhead.CurrentFrameIndex = (int)playbackSlider.value;
+			playhead.CurrentFrameIndex = (int)value;
 		}
 	}
 

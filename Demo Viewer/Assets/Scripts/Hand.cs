@@ -6,14 +6,21 @@ public class Hand : MonoBehaviour
 	public GameObject normalHand;
 	public SnapUICursorAlignment snapUICursor;
 	
-	private void Start()
+	private void OnEnable()
 	{
 		// make sure the tool is switched back when the tablet is hidden
-		MenuTabletMover.OnHide += (_) =>
-		{
-			normalHand.gameObject.SetActive(true);
-			snapUICursor.gameObject.SetActive(false);
-		};
+		MenuTabletMover.OnHide += HideMenuTablet;
+	}
+
+	private void OnDisable()
+	{
+		// make sure the tool is switched back when the tablet is hidden
+		MenuTabletMover.OnHide -= HideMenuTablet;
+	}
+
+	private void HideMenuTablet(MenuTabletMover _)
+	{
+		SnapExit();
 	}
 
 	// Update is called once per frame
@@ -28,6 +35,7 @@ public class Hand : MonoBehaviour
 			normalHand.gameObject.SetActive(false);
 			snapUICursor.gameObject.SetActive(true);
 			snapUICursor.col = other;
+			DemoStart.instance.inSnapUI = true;
 		}
 	}
 
@@ -35,8 +43,14 @@ public class Hand : MonoBehaviour
 	{
 		if (other.CompareTag("SnapUI"))
 		{
-			normalHand.gameObject.SetActive(true);
-			snapUICursor.gameObject.SetActive(false);
+			SnapExit();
 		}
+	}
+
+	private void SnapExit()
+	{
+		normalHand.gameObject.SetActive(true);
+		snapUICursor.gameObject.SetActive(false);
+		DemoStart.instance.inSnapUI = false;
 	}
 }

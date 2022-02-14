@@ -93,8 +93,16 @@ public class Playhead : MonoBehaviour
 		if (!GameManager.instance.netFrameMan.IsLocalOrServer)
 		{
 			// if (GameManager.instance.netFrameMan.frame == null) GameManager.instance.netFrameMan.lastFrame = null;
-			return Frame.Lerp(GameManager.instance.netFrameMan.lastFrame, GameManager.instance.netFrameMan.frame,
-				GameManager.instance.netFrameMan.CorrectedNetworkFrameTime);
+			Frame lastNetFrame = GameManager.instance.netFrameMan.lastFrame;
+			Frame nextNetFrame = GameManager.instance.netFrameMan.frame;
+			if (lastNetFrame.recorded_time > nextNetFrame.recorded_time)
+			{
+				return Frame.Lerp(nextNetFrame, lastNetFrame, GameManager.instance.netFrameMan.CorrectedNetworkFrameTime);
+			}
+			else
+			{
+				return Frame.Lerp(lastNetFrame, nextNetFrame, GameManager.instance.netFrameMan.CorrectedNetworkFrameTime);
+			}
 		}
 
 		if (LiveFrameProvider.isLive)

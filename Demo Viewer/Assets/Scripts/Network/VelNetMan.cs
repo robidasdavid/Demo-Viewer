@@ -12,40 +12,60 @@ public class VelNetMan : MonoBehaviour
 	public static Action<NetworkObject> OnPlayerPrefabInstantiated;
 
 	// Start is called before the first frame update
-	private void Start()
+	private void OnEnable()
 	{
-		VelNetManager.OnConnectedToServer += () => { VelNetManager.Login("Replay Viewer", Hash128.Compute(SystemInfo.deviceUniqueIdentifier).ToString()); };
-		VelNetManager.OnLoggedIn += () =>
+		VelNetManager.OnConnectedToServer += Login;
+		VelNetManager.OnJoinedRoom += OnJoinedRoom;
+		VelNetManager.OnLeftRoom += OnLeftRoom;
+	}
+
+	private void OnDisable()
+	{
+		VelNetManager.OnConnectedToServer -= Login;
+		VelNetManager.OnJoinedRoom -= OnJoinedRoom;
+		VelNetManager.OnLeftRoom -= OnLeftRoom;
+	}
+
+	private void OnLeftRoom(string roomId)
+	{
+		Debug.Log("Left VelNet Room: " + roomId);
+		if (playerPrefabReference != null) VelNetManager.NetworkDestroy(playerPrefabReference);
+	}
+
+	private void OnJoinedRoom(string roomId)
+	{
+		Debug.Log("Joined VelNet Room: " + roomId);
+		playerPrefabReference = VelNetManager.NetworkInstantiate(playerPrefab.name);
+
+		playerPrefabReference.GetComponent<CopyTransform>().SetTarget(Camera.main.transform, false);
+		if (GameManager.instance.usingVR)
 		{
-			// VelNetManager.Join("default");
-		};
+			playerPrefabReference.transform.GetChild(1).GetComponent<CopyTransform>().SetTarget(GameManager.instance.vrRig.leftHand, false);
+			playerPrefabReference.transform.GetChild(2).GetComponent<CopyTransform>().SetTarget(GameManager.instance.vrRig.rightHand, false);
+		}
 
-		VelNetManager.OnJoinedRoom += roomId =>
+		// hide renderers locally. This is a dumb way of doing this
+		playerPrefabReference.transform.GetChild(0).gameObject.SetActive(false);
+		playerPrefabReference.transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+		playerPrefabReference.transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
+
+
+		StartCoroutine(WaitOneFrame(() =>
 		{
-			Debug.Log("Joined VelNet Room: " + roomId);
-			playerPrefabReference = VelNetManager.NetworkInstantiate(playerPrefab.name);
-			
-			playerPrefabReference.GetComponent<CopyTransform>().SetTarget(Camera.main.transform, false);
-			playerPrefabReference.transform.GetChild(0).gameObject.SetActive(false);
-
-
-			StartCoroutine(WaitOneFrame(() =>
+			try
 			{
-				try
-				{
-					OnPlayerPrefabInstantiated?.Invoke(playerPrefabReference);
-				}
-				catch (Exception e)
-				{
-					Debug.LogError(e);
-				}
-			}));
-		};
-		VelNetManager.OnLeftRoom += roomId =>
-		{
-			Debug.Log("Left VelNet Room: " + roomId);
-			if (playerPrefabReference != null) VelNetManager.NetworkDestroy(playerPrefabReference);
-		};
+				OnPlayerPrefabInstantiated?.Invoke(playerPrefabReference);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError(e);
+			}
+		}));
+	}
+
+	private static void Login()
+	{
+		VelNetManager.Login("Replay Viewer", Hash128.Compute(SystemInfo.deviceUniqueIdentifier).ToString());
 	}
 
 	private IEnumerator WaitOneFrame(Action action)

@@ -3649,6 +3649,11 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fcaec641e2dfca94db5124683f89a094,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cb430d9e117e1749a604e66cbf491d9, type: 2}
     - target: {fileID: 919132149155446097, guid: fcaec641e2dfca94db5124683f89a094,
         type: 3}
       propertyPath: m_Name
@@ -21807,7 +21812,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.652, g: 0.8351579, b: 1, a: 1}
-  m_Intensity: 50
+  m_Intensity: 30
   m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -27467,7 +27472,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.7991724, b: 0.68799996, a: 1}
-  m_Intensity: 50
+  m_Intensity: 30
   m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -40206,7 +40211,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3e9339be6c0537b4d8fcd3e11365d32c, type: 3}
-  m_Color: {r: 0.25882354, g: 0.098039225, b: 0.13333334, a: 1}
+  m_Color: {r: 0.262, g: 0.14209434, b: 0.11711401, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -41762,6 +41767,16 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8847272777284736095, guid: ce3d7f5e88a1d4946bdf497e8d53d3f6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: d66729f527f647440adb4749a55f2b13, type: 2}
+    - target: {fileID: -8847272777284736095, guid: ce3d7f5e88a1d4946bdf497e8d53d3f6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: 68857d537f9966541a0e90b313edb84c, type: 2}
     - target: {fileID: -8682091859659776908, guid: ce3d7f5e88a1d4946bdf497e8d53d3f6,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -41832,6 +41847,11 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -1438396933301794329, guid: ce3d7f5e88a1d4946bdf497e8d53d3f6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c73d240691941e4f99c4d86ad533aa5, type: 2}
     - target: {fileID: 919132149155446097, guid: ce3d7f5e88a1d4946bdf497e8d53d3f6,
         type: 3}
       propertyPath: m_Name

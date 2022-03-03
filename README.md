@@ -1,5 +1,5 @@
 
-<img alt="Replay Viewer Logo" width="80px" src="Demo Viewer/Assets/Images/replaylogo.png" align="left" />
+<img alt="Replay Viewer Logo" width="80px" src="Demo Viewer/Assets/Images/Icons/replaylogo.png" align="left" />
 
 ## DESCRIPTION
 The EchoVR Replay Viewer is able to play back data from an EchoVR Arena game that was saved through the public API into a replay file by presenting it in a 3D replaying software. The Replay Viewer can read files saved in the `.echoreplay` format. A description of how to create files in this format is [below](##-echoreplay-File-Format).

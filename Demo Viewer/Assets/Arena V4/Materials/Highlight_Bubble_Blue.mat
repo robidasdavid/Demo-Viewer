@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlueBlockingEffect
-  m_Shader: {fileID: -6465566751694194690, guid: b2db521cf28372f449f68c3f499e68f6,
+  m_Name: Highlight_Bubble_Blue
+  m_Shader: {fileID: -6465566751694194690, guid: 8f2eddb166d146e42a7d1fa161c86aa8,
     type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 2
-  m_EnableInstancingVariants: 1
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -20,8 +20,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_4632FB26:
-        m_Texture: {fileID: 2800000, guid: 0f9edd7d0087ff44ab560a30b4ae0a68, type: 3}
+    - _BaseMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -48,10 +48,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Maintexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -64,11 +60,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Secondarytexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
+    - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -85,62 +77,61 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_629F8F22: 1.5
-    - Vector1_D50379C7: 0
-    - Vector1_D7DDBAAF: 1
-    - Vector1_beb0003f1c8a4f11828252eea4f768de: 1
-    - _Bias: 0
+    - Vector1_05269a64983f4c00b1c96aac53ba3146: 0.01
+    - Vector1_2ed07298d7804e3d857454d02b4b7ccd: 0.5
+    - Vector1_5120acf598ec46c3b5ee6f5ef53d4fa4: 0.07
+    - Vector1_6e020f662c104382bb3331691fcc59fe: 70
+    - _AlphaClip: 0
+    - _Blend: 0
     - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
     - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Distortionscale: 1
-    - _Distortionspeed: 1
     - _DstBlend: 0
-    - _Enabledistortion: 0
-    - _Enablenoise: 0
-    - _Enablepulsation: 0
-    - _Extraroughness: 0
-    - _Globalopacity: 1
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Innerfresnelintensity: 0.289
-    - _Invertmaintexture: 0
-    - _Invertsecondarytexture: 0
-    - _Maintextureintensity: 1
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
     - _Metallic: 0
-    - _Mode: 0
-    - _Noisescale: 50
     - _OcclusionStrength: 1
-    - _Outerfresnelintensity: 1
-    - _Parallax: 0.02
-    - _Power: 2
-    - _Pulseamplitude: 1
-    - _Pulsefrequency: 3
-    - _Pulseoffset: 0
-    - _Pulsephase: 0
-    - _Scale: 1
-    - _Secondarytextureintensity: 1
-    - _Sharpennoise: 0
+    - _Parallax: 0.005
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TessMax: 25
-    - _TessMin: 10
-    - _TessPhongStrength: 0.5
-    - _TessValue: 1
-    - _UVSec: 0
+    - _Surface: 0
+    - _WorkflowMode: 1
     - _ZWrite: 1
-    - __dirty: 1
     m_Colors:
-    - Color_605CC4B0: {r: 0.54599994, g: 0.73788345, b: 1, a: 1}
-    - Vector2_83FF7A6C: {r: 1.24, g: 1, b: 0, a: 0}
+    - Color_1fc12f1a1392481294605915336f9dfe: {r: 1, g: 0.6686893, b: 0.47500002,
+        a: 1}
+    - Color_bf44af08acab4e9290f1d9e939efbb6c: {r: 0.31764707, g: 0.6862745, b: 1,
+        a: 1}
+    - Color_d4c7e87c0a624c8bbe87723de07564da: {r: 0.6627451, g: 0.60784316, b: 0.67058825,
+        a: 1}
+    - Color_ec2d5cd3706e40728f20bb7bd83d0f0f: {r: 0.31764707, g: 0.6862745, b: 1,
+        a: 1}
+    - CurrentColor: {r: 0.31764707, g: 0.6862745, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Edgecolor: {r: 0, g: 0.6330502, b: 1, a: 0.666}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Maincolor: {r: 0, g: 0.47127342, b: 1, a: 0.666}
-    - _Mainpanningspeed: {r: 0, g: 0, b: 0, a: 0}
-    - _Noisespeed: {r: 0, g: 0, b: 0, a: 0}
-    - _Secondarycolor: {r: 0, g: 0, b: 0, a: 0}
-    - _Secondarypanningspeed: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &2523532740583621641
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 4

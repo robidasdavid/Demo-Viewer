@@ -80,6 +80,7 @@
      <Compile Include="Assets\Scripts\Hand.cs" />
      <Compile Include="Assets\Scripts\ToggleObjectsOnKeypress.cs" />
      <Compile Include="Assets\Scripts\GoalAnimationHandler.cs" />
+     <Compile Include="Assets\Scripts\SliderPositionIndicator.cs" />
      <Compile Include="Assets\Scripts\FileAssociations.cs" />
      <Compile Include="Assets\Scripts\BezierCurve.cs" />
      <Compile Include="Assets\Scripts\LiveFrameProvider.cs" />
@@ -94,6 +95,7 @@
      <Compile Include="Assets\Scripts\OrbitMouseInput.cs" />
      <Compile Include="Assets\Scripts\CameraSplineManager.cs" />
      <Compile Include="Assets\Scripts\NetworkFrameManager.cs" />
+     <Compile Include="Assets\Scripts\LinkViewer.cs" />
      <Compile Include="Assets\Scripts\MenuScript.cs" />
      <Compile Include="Assets\Scripts\LoadSetting.cs" />
      <Compile Include="Assets\Scripts\IKController.cs" />
@@ -111,7 +113,6 @@
      <Compile Include="Assets\Scripts\ViewReplayUIController.cs" />
      <Compile Include="Assets\Scripts\GetBonesWow.cs" />
      <Compile Include="Assets\Scripts\SetCameraPositionLive.cs" />
-     <Compile Include="Assets\Scripts\SliderPositionIndicator.cs" />
      <None Include="Assets\Materials\PointClouds\DataFoldvrDisk.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -360,7 +361,7 @@
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.burst@1.4.11/Unity.Burst.Unsafe.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>S:/git_repo/unityutilities/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.franzco.unityutilities@330ff73d80/Runtime/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="Newtonsoft.Json">
  <HintPath>S:/git_repo/Demo-Viewer/Demo Viewer/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.2/Runtime/Newtonsoft.Json.dll</HintPath>

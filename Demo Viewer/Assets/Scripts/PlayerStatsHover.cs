@@ -27,6 +27,13 @@ public class PlayerStatsHover : MonoBehaviour
 		}
 	}
 
+	public GameObject highlightOutline;
+
+	public void ToggleHighlight()
+	{
+		highlightOutline.SetActive(!highlightOutline.activeSelf);
+	}
+
 	// Update is called once per frame
 	private void Update()
 	{

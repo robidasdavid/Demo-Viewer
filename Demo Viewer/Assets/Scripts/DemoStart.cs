@@ -296,11 +296,18 @@ public class DemoStart : MonoBehaviour
 
 			psh.Visible = true;
 
-			// clicked on a player - follow player
-			if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
+			// clicked on a player
+			// highlight player
+			if (leftMouseButtonDown && Input.GetKey(KeyCode.LeftShift))
+			{
+				psh.ToggleHighlight();
+			}
+			// follow player
+			else if (leftMouseButtonDown && !GameManager.instance.DrawingMode)
 			{
 				camController.FocusPlayer(psh.GetComponentInParent<IKController>().head);
 			}
+			
 		}
 	}
 
@@ -880,7 +887,6 @@ public class DemoStart : MonoBehaviour
 
 	public void useSlider()
 	{
-		Debug.Log(playhead.isPlaying.ToString());
 		playhead.wasPlaying = playhead.isPlaying;
 		playhead.SetPlaying(false);
 	}

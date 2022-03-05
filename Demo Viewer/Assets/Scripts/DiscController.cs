@@ -66,7 +66,8 @@ public class DiscController : MonoBehaviour
 	public Transform discFloating;
 	public Transform discGrabbed;
 
-	public Material bubbleMaterial;
+	public Renderer discBubbleRend;
+	private Material bubbleMaterial;
 
 	public Renderer discTrailRenderer;
 
@@ -76,6 +77,10 @@ public class DiscController : MonoBehaviour
 	[Tooltip("blue, orange, default")] public Color[] bubbleColors = new Color[3];
 	private static readonly int BubbleMaterialColor = Shader.PropertyToID("CurrentColor");
 
+	private void Start()
+	{
+		bubbleMaterial = discBubbleRend.material;
+	}
 
 	// Update is called once per frame
 	private void Update()

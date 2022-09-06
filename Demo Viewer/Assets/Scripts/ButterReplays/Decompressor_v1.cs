@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 #if UNITY
@@ -14,8 +15,15 @@ namespace ButterReplays
 {
 	public static class DecompressorV1
 	{
+		private const byte version = 1;
 		public static List<Frame> FromBytes(byte formatVersion, BinaryReader fileInput, ref float readProgress)
 		{
+			if (formatVersion != version)
+			{
+				// Debug.WriteLine("Wrong version.");
+				return null;
+			}
+			
 			List<Frame> l = new List<Frame>();
 
 			ushort keyframeInterval = fileInput.ReadUInt16();

@@ -215,6 +215,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -225,10 +227,10 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -246,9 +248,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1680,6 +1685,71 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      outerring_spritesheet_emission_29: 6165890908517963406
+      outerring_spritesheet_emission_4: -5549395780267125773
+      outerring_spritesheet_emission_22: -1851192374758597492
+      outerring_spritesheet_emission_31: 3422327765041303273
+      outerring_spritesheet_emission_17: -4048593460780584101
+      outerring_spritesheet_emission_60: 4173411904918295451
+      outerring_spritesheet_emission_6: -236122639461205026
+      outerring_spritesheet_emission_54: 4528988861189983641
+      outerring_spritesheet_emission_59: -7499151730108275082
+      outerring_spritesheet_emission_15: 3811878466008209906
+      outerring_spritesheet_emission_41: 9165608682628058287
+      outerring_spritesheet_emission_56: -3010763077440532282
+      outerring_spritesheet_emission_24: 8287899722186462554
+      outerring_spritesheet_emission_61: 4537472980725771306
+      outerring_spritesheet_emission_27: 7128183772857955918
+      outerring_spritesheet_emission_50: -6759266517179042911
+      outerring_spritesheet_emission_21: 1054951553171935783
+      outerring_spritesheet_emission_35: 805534925180824879
+      outerring_spritesheet_emission_34: -2877219039402628361
+      outerring_spritesheet_emission_10: -3729489731056640081
+      outerring_spritesheet_emission_14: -4668393399135465784
+      outerring_spritesheet_emission_49: -1857497851650343987
+      outerring_spritesheet_emission_44: -8793944951745905218
+      outerring_spritesheet_emission_23: 8802391490484819141
+      outerring_spritesheet_emission_62: -5094532395013283249
+      outerring_spritesheet_emission_11: -343569776112393509
+      outerring_spritesheet_emission_12: 4023648051668254219
+      outerring_spritesheet_emission_36: -8756150676124734749
+      outerring_spritesheet_emission_30: -2871984311487083554
+      outerring_spritesheet_emission_53: -7700215852439663743
+      outerring_spritesheet_emission_9: -5779092041007595490
+      outerring_spritesheet_emission_18: 7087407354690710685
+      outerring_spritesheet_emission_57: 6038099299314362227
+      outerring_spritesheet_emission_8: -621574149439594423
+      outerring_spritesheet_emission_58: 1032477383552756138
+      outerring_spritesheet_emission_20: 7991153260739492614
+      outerring_spritesheet_emission_63: -3113190400996959966
+      outerring_spritesheet_emission_1: -1546407293669226746
+      outerring_spritesheet_emission_3: 8788716094548111794
+      outerring_spritesheet_emission_5: -3181660484971461234
+      outerring_spritesheet_emission_16: 7902906675711453051
+      outerring_spritesheet_emission_48: -3048736565194987319
+      outerring_spritesheet_emission_33: -5263911911254650959
+      outerring_spritesheet_emission_2: -3840916260972477155
+      outerring_spritesheet_emission_38: -2340015344429421568
+      outerring_spritesheet_emission_26: 9056645765228013882
+      outerring_spritesheet_emission_52: 8695445240376477964
+      outerring_spritesheet_emission_13: -1213155794595330617
+      outerring_spritesheet_emission_7: 2208197868234173878
+      outerring_spritesheet_emission_40: 869515492725090980
+      outerring_spritesheet_emission_0: -3507784821096888589
+      outerring_spritesheet_emission_25: 3981786386866244257
+      outerring_spritesheet_emission_43: 1246069119079819280
+      outerring_spritesheet_emission_42: 6796006150198713010
+      outerring_spritesheet_emission_45: -5842491243376106953
+      outerring_spritesheet_emission_46: -6734802137430794696
+      outerring_spritesheet_emission_51: 2835082457047566976
+      outerring_spritesheet_emission_47: -6711948010237275263
+      outerring_spritesheet_emission_28: 3572714818860418030
+      outerring_spritesheet_emission_39: 1423034854273208423
+      outerring_spritesheet_emission_32: 732791276874430564
+      outerring_spritesheet_emission_37: -1439292996755883263
+      outerring_spritesheet_emission_19: 8657831399609310886
+      outerring_spritesheet_emission_55: 3151688378235087041
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

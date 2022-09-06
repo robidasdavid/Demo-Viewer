@@ -17,6 +17,8 @@ public class IKController : MonoBehaviour
 	public Vector3 headUp;
 	public Vector3 headForward;
 	public Vector3 playerVelocity;
+	
+	public Transform apiBody;
 
 	public Vector3 bodyPosition;
 	public Quaternion bodyRotation;
@@ -25,6 +27,7 @@ public class IKController : MonoBehaviour
 
 	public Transform neckTarget;
 	public Transform bodyTarget;
+
 	
 	public Transform lHandTarget;
 	public Transform rHandTarget;
@@ -164,6 +167,9 @@ public class IKController : MonoBehaviour
 			transform.position = headPos;
 			// set the body rotation
 			//transform.rotation = bodyRotation;
+
+			apiBody.position = bodyPosition;
+			apiBody.rotation = bodyRotation;
 		
 			// set the headRotation
 			

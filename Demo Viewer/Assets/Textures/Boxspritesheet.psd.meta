@@ -257,6 +257,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -265,12 +267,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 1
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -288,9 +290,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -2016,6 +2021,85 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Boxspritesheet_73: 6994635675344456761
+      Boxspritesheet_62: -8082032442162973188
+      Boxspritesheet_77: 2648582472452338020
+      Boxspritesheet_76: 6559545233650328347
+      Boxspritesheet_7: 6077837163492434016
+      Boxspritesheet_15: 6194037839633538684
+      Boxspritesheet_59: -5329248948530971682
+      Boxspritesheet_8: 1583945672248568416
+      Boxspritesheet_25: -6469140680347236494
+      Boxspritesheet_12: -5740287460994403036
+      Boxspritesheet_11: -6686958371443914304
+      Boxspritesheet_13: 4162297396467096922
+      Boxspritesheet_10: -175283108542525303
+      Boxspritesheet_19: 6761975672552638629
+      Boxspritesheet_20: 7840828864369146583
+      Boxspritesheet_32: 7411448082801695849
+      Boxspritesheet_42: -1545593107998524848
+      Boxspritesheet_61: 8037941238537202858
+      Boxspritesheet_60: -5862289205228003739
+      Boxspritesheet_34: -4247564896259603371
+      Boxspritesheet_63: -4449019407133949860
+      Boxspritesheet_70: -460304956237556905
+      Boxspritesheet_30: 6881732777888383915
+      Boxspritesheet_22: 1588688094818939268
+      Boxspritesheet_48: 7764187121879477697
+      Boxspritesheet_67: 1591381048164208329
+      Boxspritesheet_50: -86835907694792996
+      Boxspritesheet_16: -949461637740281143
+      Boxspritesheet_6: -836364776950863117
+      Boxspritesheet_56: 5154153730508684387
+      Boxspritesheet_9: 5944507968151827950
+      Boxspritesheet_51: 7321199275276755686
+      Boxspritesheet_40: 8807145673006462349
+      Boxspritesheet_52: -6455091081623021747
+      Boxspritesheet_69: -6995816670520331024
+      Boxspritesheet_29: -8538921442425336883
+      Boxspritesheet_4: 5219929307653483037
+      Boxspritesheet_53: -6669056379037467203
+      Boxspritesheet_21: -1245213704535587752
+      Boxspritesheet_18: 5355761587659991715
+      Boxspritesheet_28: 8893544743547565487
+      Boxspritesheet_33: -4231165146028132464
+      Boxspritesheet_49: 6647267754304786882
+      Boxspritesheet_23: 3123742602340728382
+      Boxspritesheet_26: 8398172295394939243
+      Boxspritesheet_75: -4292357466578674022
+      Boxspritesheet_0: -2981286539025848046
+      Boxspritesheet_5: 7981647572675745075
+      Boxspritesheet_24: -8604206163696182061
+      Boxspritesheet_57: 2314174879685428485
+      Boxspritesheet_17: 2010985085957115151
+      Boxspritesheet_36: -917330403623369923
+      Boxspritesheet_35: -2371673650006847131
+      Boxspritesheet_64: -9172027418143970128
+      Boxspritesheet_45: -3718169770878242463
+      Boxspritesheet_41: -7872449549690677589
+      Boxspritesheet_46: -1175344381902208722
+      Boxspritesheet_68: 5862067464429660307
+      Boxspritesheet_38: -8923845917124306371
+      Boxspritesheet_44: 4860767836145111032
+      Boxspritesheet_47: -5889143471582284460
+      Boxspritesheet_3: -467146138755410859
+      Boxspritesheet_43: 1708485294287370010
+      Boxspritesheet_31: -8669406536636096628
+      Boxspritesheet_65: 2592753573697123823
+      Boxspritesheet_1: -5852923251889102679
+      Boxspritesheet_27: 3447348979977079346
+      Boxspritesheet_74: -7263634354747548083
+      Boxspritesheet_58: 213392755492412227
+      Boxspritesheet_66: 3772338190264677042
+      Boxspritesheet_14: -5432446674865819945
+      Boxspritesheet_72: -7507450488913136524
+      Boxspritesheet_2: -6970568148056225345
+      Boxspritesheet_55: -5240904332395925817
+      Boxspritesheet_71: 8966632136985592858
+      Boxspritesheet_39: 5760348995318699982
+      Boxspritesheet_37: 6632498393868556569
+      Boxspritesheet_54: 8455694163123018737
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1

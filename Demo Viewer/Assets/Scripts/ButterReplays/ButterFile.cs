@@ -92,7 +92,7 @@ namespace ButterReplays
 		}
 
 		// TODO reorder to match terminal appearance
-		public enum Weapon
+		public enum Weapon: byte
 		{
 			rocket,		// meteor
 			blaster,	// nova
@@ -101,7 +101,7 @@ namespace ButterReplays
 			// TODO check mapping
 		}
 
-		public enum Ordnance
+		public enum Ordnance: byte
 		{
 			stun,	// stun field
 			det,	// detonator
@@ -109,7 +109,7 @@ namespace ButterReplays
 			arc,	// arc mine
 		}
 
-		public enum TacMod
+		public enum TacMod: byte
 		{
 			sensor,	// threat scanner
 			wraith,	// phase shift
@@ -117,7 +117,7 @@ namespace ButterReplays
 			shield,	// energy barrier
 		}
 		
-		public enum Arm {
+		public enum Arm: byte {
 			Left,
 			Right,
 		}
@@ -249,7 +249,7 @@ namespace ButterReplays
 			{
 				fullFileBytes.AddRange(BitConverter.GetBytes((uint)chunk.Length));
 			}
-
+			
 			byte[] tailChunk = ChunkUnprocessedFrames();
 			fullFileBytes.AddRange(BitConverter.GetBytes((uint)tailChunk.Length));
 
@@ -288,11 +288,17 @@ namespace ButterReplays
 
 		public static List<Frame> FromBytes(BinaryReader fileInput, ref float readProgress)
 		{
+			if (fileInput.EOF())
+			{
+				return new List<Frame>();
+			}
+			
 			byte formatVersion = fileInput.ReadByte();
 			return formatVersion switch
 			{
 				1 => DecompressorV1.FromBytes(formatVersion, fileInput, ref readProgress),
 				2 => DecompressorV2.FromBytes(formatVersion, fileInput, ref readProgress),
+				3 => DecompressorV3.FromBytes(formatVersion, fileInput, ref readProgress),
 				_ => null
 			};
 		}

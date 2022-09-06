@@ -117,6 +117,13 @@ public class DemoStart : MonoBehaviour
 		instance = this;
 
 		string demoFile = PlayerPrefs.GetString("fileDirector");
+		
+		// load arena model so it isn't empty if there is no file selected
+		if (string.IsNullOrEmpty(demoFile))
+		{
+			SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
+		}
+		
 		replayFileNameText.text = Path.GetFileName(demoFile);
 		replay.LoadFile(demoFile);
 

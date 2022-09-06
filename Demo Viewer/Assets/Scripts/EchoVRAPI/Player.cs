@@ -17,60 +17,70 @@ namespace EchoVRAPI
 		[JsonIgnore] public Team.TeamColor team_color;
 
 		/// <summary>
-		/// Right hand position and rotation
-		/// </summary>
-		public Transform rhand { get; set; }
-
-		/// <summary>
-		/// Index of the player in the match, so [0-6] for 3v3 & [0-7] for 4v4
-		/// </summary>
-		public int playerid { get; set; }
-
-		/// <summary>
-		/// Display Name
-		/// </summary>
-		public string name { get; set; }
-
-		/// <summary>
 		/// Application-scoped Oculus userid
 		/// </summary>
 		public long userid { get; set; }
 
 		/// <summary>
-		/// Object describing a player's aggregated statistics throughout the match.
+		/// Display Name
 		/// </summary>
-		public Stats stats { get; set; }
+		public string name { get; set; }
+		
+		/// <summary>
+		/// Index of the player in the match, so [0-6] for 3v3 & [0-7] for 4v4
+		/// </summary>
+		public int playerid { get; set; }
 
 		public int number { get; set; }
 		public int level { get; set; }
-
-		/// <summary>
-		/// Boolean of player's stunned status.
-		/// </summary>
-		public bool stunned { get; set; }
-
 		public int ping { get; set; }
 		public float packetlossratio { get; set; }
-		public string holding_left { get; set; }
-		public string holding_right { get; set; }
-
-		public string Weapon;
-		public string Ordnance;
-		public string TacMod;
-		public string Arm;
 
 		/// <summary>
-		/// Boolean of the player's invulnerability after being stunned.
+		/// Is the player currently stunned (can't move)?
+		/// </summary>
+		public bool stunned { get; set; }
+		/// <summary>
+		/// Is the player still invincible after being stunned?
 		/// </summary>
 		public bool invulnerable { get; set; }
 
-		public Transform head;
+		public string holding_left { get; set; }
+		public string holding_right { get; set; }
 
 		/// <summary>
-		/// Boolean determining whether or not this player has or had possession of the disc.
-		/// possession will remain true until someone else grabs the disc or for 7 seconds (maybe?)
+		/// Is the player currently blocking
+		/// </summary>
+		public bool blocking { get; set; }
+		
+		public bool is_emote_playing { get; set; }
+		
+		/// <summary>
+		/// Does this player have possession of the disc?
+		/// Possession will remain true until someone else grabs the disc or for 7 seconds (maybe?)
 		/// </summary>
 		public bool possession { get; set; }
+
+		/// <summary>
+		/// rocket, 
+		/// </summary>
+		public string Weapon;
+		/// <summary>
+		/// det, 
+		/// </summary>
+		public string Ordnance;
+		/// <summary>
+		/// heal, 
+		/// </summary>
+		public string TacMod;
+		/// <summary>
+		/// Left, Right
+		/// </summary>
+		public string Arm;
+
+
+		public Transform head;
+
 
 		public Transform body;
 
@@ -78,14 +88,21 @@ namespace EchoVRAPI
 		/// Left hand position and rotation
 		/// </summary>
 		public Transform lhand { get; set; }
-
-		public bool blocking { get; set; }
+		/// <summary>
+		/// Right hand position and rotation
+		/// </summary>
+		public Transform rhand { get; set; }
 
 		/// <summary>
 		/// A 3 element list of floats representing the player's velocity.
-		/// < X, Y, Z >
+		/// [ X, Y, Z ]
 		/// </summary>
 		public List<float> velocity { get; set; }
+		
+		/// <summary>
+		/// Object describing a player's aggregated statistics throughout the match.
+		/// </summary>
+		public Stats stats { get; set; }
 
 		/// <summary>
 		/// This is not from the api, but set afterwards in the temporal processing step
@@ -134,6 +151,7 @@ namespace EchoVRAPI
 				stunned = from.stunned,
 				velocity = Vector3.Lerp(from.velocity.ToVector3(), to.velocity.ToVector3(), t).ToFloatList(),
 				blocking = from.blocking,
+				is_emote_playing = from.is_emote_playing,
 				team_color = from.team_color,
 				ping = from.ping, 
 				packetlossratio = from.packetlossratio, 
@@ -144,6 +162,51 @@ namespace EchoVRAPI
 				TacMod = from.TacMod,
 				Arm = from.Arm,
 				
+			};
+		}
+		
+		/// <summary>
+		/// Creates a completely empty player, but initializes stats and stuff to avoid null checking
+		/// </summary>
+		/// <returns>A Player object</returns>
+		public static Player CreateEmpty()
+		{
+			return new Player
+			{
+				head = new Transform
+				{
+					pos = new List<float>{0,0,0},
+					position = new List<float>{0,0,0},
+					forward = new List<float>{0,0,0},
+					left = new List<float>{0,0,0},
+					up = new List<float>{0,0,0},
+				},
+				body = new Transform
+				{
+					pos = new List<float>{0,0,0},
+					position = new List<float>{0,0,0},
+					forward = new List<float>{0,0,0},
+					left = new List<float>{0,0,0},
+					up = new List<float>{0,0,0},
+				},
+				lhand = new Transform
+				{
+					pos = new List<float>{0,0,0},
+					position = new List<float>{0,0,0},
+					forward = new List<float>{0,0,0},
+					left = new List<float>{0,0,0},
+					up = new List<float>{0,0,0},
+				},
+				rhand = new Transform
+				{
+					pos = new List<float>{0,0,0},
+					position = new List<float>{0,0,0},
+					forward = new List<float>{0,0,0},
+					left = new List<float>{0,0,0},
+					up = new List<float>{0,0,0},
+				},
+				velocity = new List<float> {0,0,0},
+				stats = new Stats(),
 			};
 		}
 	}

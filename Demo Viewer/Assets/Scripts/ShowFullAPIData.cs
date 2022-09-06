@@ -10,11 +10,8 @@ public class ShowFullAPIData : MonoBehaviour
 	{
 		if (DemoStart.instance.playhead == null) return;
 		
-		string json = JsonConvert.SerializeObject(DemoStart.instance.playhead.GetNearestFrame());
+		string json = JsonConvert.SerializeObject(DemoStart.instance.playhead.GetFrame(), Formatting.Indented);
 
-		if (json != null)
-		{
-			inputField.text = $"{DemoStart.instance.playhead.GetNearestFrame().recorded_time:O}\n{json}";
-		}
+		inputField.text = $"{DemoStart.instance.playhead.GetFrame().recorded_time:O}\n{json}";
 	}
 }

@@ -26,9 +26,9 @@ namespace EchoVRAPI
 		/// </summary>
 		public List<float> position { get; set; }
 
-		public List<float> forward;
-		public List<float> left;
-		public List<float> up;
+		public List<float> forward { get; set; }
+		public List<float> left { get; set; }
+		public List<float> up { get; set; }
 		
 		
 		[JsonIgnore]

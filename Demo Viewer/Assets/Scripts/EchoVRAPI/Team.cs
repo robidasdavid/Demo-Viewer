@@ -92,6 +92,20 @@ namespace EchoVRAPI
 
 			return newTeam;
 		}
+
+		/// <summary>
+		/// Creates a completely empty team, but initializes arrays and stuff to avoid null checking
+		/// </summary>
+		/// <returns>A Team object</returns>
+		public static Team CreateEmpty(TeamColor teamColor = TeamColor.spectator)
+		{
+			return new Team
+			{
+				color = teamColor,
+				players = new List<Player>(),
+				stats = new Stats()
+			};
+		}
 	}
 	
 	

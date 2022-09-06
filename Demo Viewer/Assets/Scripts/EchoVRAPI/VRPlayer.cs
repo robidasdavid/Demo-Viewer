@@ -54,7 +54,7 @@ namespace EchoVRAPI
 			};
 			return ret;
 		}
-		
+
 		public static VRPlayer operator -(VRPlayer t1, VRPlayer t2)
 		{
 			if (t2 == null) return t1;
@@ -100,6 +100,21 @@ namespace EchoVRAPI
 			newTransform.Rotation = Quaternion.Lerp(from.Rotation, to.Rotation, t);
 
 			return newTransform;
+		}
+
+		/// <summary>
+		/// Creates a completely empty player, but initializes arrays and stuff to avoid null checking
+		/// </summary>
+		/// <returns>A VRPlayer object</returns>
+		public static VRPlayer CreateEmpty()
+		{
+			return new VRPlayer
+			{
+				vr_position = new List<float> { 0, 0, 0 },
+				vr_left = new List<float> { 0, 0, 0 },
+				vr_forward = new List<float> { 0, 0, 0 },
+				vr_up = new List<float> { 0, 0, 0 },
+			};
 		}
 	}
 }

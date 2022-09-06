@@ -1,8 +1,5 @@
-using System;
-
 namespace EchoVRAPI
 {
-		
 	/// <summary>
 	/// Object Containing basic relavant information on who scored last.
 	/// 🥅 🥅 🥅 🥅 
@@ -25,30 +22,43 @@ namespace EchoVRAPI
 		/// </summary>
 		public string assist_scored { get; set; }
 
-		public override bool Equals(object o)
+
+		#region Equality comparison
+
+		protected bool Equals(LastScore other)
 		{
-			LastScore s = (LastScore) o;
-			return
-				//Math.Abs(s.disc_speed - disc_speed) < .01f &&
-				s.team == team &&
-				s.goal_type == goal_type &&
-				s.point_amount == point_amount &&
-				Math.Abs(s.distance_thrown - distance_thrown) < .01f &&
-				s.person_scored == person_scored &&
-				s.assist_scored == assist_scored;
+			return disc_speed.Equals(other.disc_speed) &&
+			       team == other.team &&
+			       goal_type == other.goal_type &&
+			       point_amount == other.point_amount &&
+			       distance_thrown.Equals(other.distance_thrown) &&
+			       person_scored == other.person_scored &&
+			       assist_scored == other.assist_scored;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != GetType()) return false;
+			return Equals((LastScore)obj);
 		}
 
 		public override int GetHashCode()
 		{
-			int hash = 17;
-			hash = hash * 23 + disc_speed.GetHashCode();
-			hash = hash * 29 + goal_type.GetHashCode();
-			hash = hash * 31 + point_amount.GetHashCode();
-			hash = hash * 37 + distance_thrown.GetHashCode();
-			hash = hash * 41 + person_scored.GetHashCode();
-			hash = hash * 43 + assist_scored.GetHashCode();
-			return hash;
+			unchecked
+			{
+				int hashCode = disc_speed.GetHashCode();
+				hashCode = (hashCode * 397) ^ (team != null ? team.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ (goal_type != null ? goal_type.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ point_amount;
+				hashCode = (hashCode * 397) ^ distance_thrown.GetHashCode();
+				hashCode = (hashCode * 397) ^ (person_scored != null ? person_scored.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ (assist_scored != null ? assist_scored.GetHashCode() : 0);
+				return hashCode;
+			}
 		}
-	}
 
+		#endregion
+	}
 }

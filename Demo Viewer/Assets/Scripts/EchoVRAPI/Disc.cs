@@ -89,6 +89,24 @@ namespace EchoVRAPI
 				bounce_count = from.bounce_count
 			};
 		}
+		
+		
+
+		/// <summary>
+		/// Creates a completely empty disc, but initializes arrays and stuff to avoid null checking
+		/// </summary>
+		/// <returns>A Disc object</returns>
+		public static Disc CreateEmpty()
+		{
+			return new Disc
+			{
+				position = new List<float> { 0, 0, 0 },
+				left = new List<float> { 0, 0, 0 },
+				forward = new List<float> { 0, 0, 0 },
+				up = new List<float> { 0, 0, 0 },
+				velocity = new List<float> { 0, 0, 0 },
+			};
+		}
 	}
 
 }

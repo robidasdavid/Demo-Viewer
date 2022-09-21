@@ -124,6 +124,11 @@ public class Playhead : MonoBehaviour
 
 	public Frame GetNearestFrame()
 	{
+		if (LiveFrameProvider.isLive)
+		{
+			return LiveFrameProvider.frame;
+		}
+
 		return replay.GetFrame(Mathf.Clamp(currentFrameIndex, 0, replay.FrameCount - 1));
 	}
 

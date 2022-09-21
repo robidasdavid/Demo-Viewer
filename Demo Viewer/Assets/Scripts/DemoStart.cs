@@ -233,7 +233,7 @@ public class DemoStart : MonoBehaviour
 			Frame nearestFrame = playhead.GetNearestFrame();
 			Frame previousFrame = playhead.GetPreviousFrame();
 
-			if (viewingFrame != null && previousFrame != null)
+			if (viewingFrame != null && previousFrame != null && viewingFrame!=previousFrame)
 			{
 				// Arena-only stuff
 				if (viewingFrame.map_name == "mpl_arena_a")

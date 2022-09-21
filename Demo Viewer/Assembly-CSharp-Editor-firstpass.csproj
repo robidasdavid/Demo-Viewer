@@ -948,206 +948,267 @@
      <Reference Include="System.IO.Compression.FileSystem">
      <HintPath>F:\Program Files\Unity Editors\2021.3.1f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.IO.Compression.FileSystem.dll</HintPath>
      </Reference>
-     <Reference Include="UnityEditor.TestRunner">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEngine.TestRunner">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VSCode.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TextMeshPro.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="VelNet">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\VelNet.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Formats.Fbx.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Formats.Fbx.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Searcher.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEditor.UI">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.InputSystem">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
-     </Reference>
-     <Reference Include="Pcx">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Pcx.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Rider.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEngine.UI">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEngine.SpatialTracking">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
-     </Reference>
-     <Reference Include="Autodesk.Fbx">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Autodesk.Fbx.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.ShaderGraph.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Cinemachine">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Cinemachine.dll</HintPath>
-     </Reference>
-     <Reference Include="com.unity.cinemachine.editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Formats.Fbx.Runtime">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Formats.Fbx.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.Management">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.Management.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Mathematics.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Animation.Rigging.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualEffectGraph.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.VisualEffectGraph.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="PPv2URPConverters">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
-     </Reference>
-     <Reference Include="VelNet.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\VelNet.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualStudio.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Autodesk.Fbx.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Autodesk.Fbx.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualEffectGraph.Runtime">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.VisualEffectGraph.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.Management.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.Management.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Timeline">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TextMeshPro">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Burst.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.Sprite.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.Core.Runtime">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Subsystem.Registration">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Subsystem.Registration.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Postprocessing.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Postprocessing.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Pcx.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Pcx.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.PlasticSCM.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Animation.Rigging">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Mathematics">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-     </Reference>
-     <Reference Include="FranzCo.unityutilities.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\FranzCo.unityutilities.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Burst">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Postprocessing.Runtime">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Postprocessing.Runtime.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.Universal.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.OpenXR.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.OpenXR.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.Timeline.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="FranzCo.unityutilities">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\FranzCo.unityutilities.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.OpenXR">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.OpenXR.dll</HintPath>
-     </Reference>
-     <Reference Include="UnityEditor.SpatialTracking">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\UnityEditor.SpatialTracking.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.OpenXR.Features.ConformanceAutomation">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.RenderPipelines.Core.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.XR.OpenXR.Features.RuntimeDebugger.Editor">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\Unity.XR.OpenXR.Features.RuntimeDebugger.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="FranzCo.unityutilities.VRInteraction">
-     <HintPath>S:\git_repo\Demo-Viewer\Demo Viewer\Library\ScriptAssemblies\FranzCo.unityutilities.VRInteraction.dll</HintPath>
-     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{fbabf9cb-3fda-7612-bac2-d479b5b9a9bf}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
+    <ProjectReference Include="UnityEditor.TestRunner.csproj">
+      <Project>{8608a7a8-ece3-c109-4f05-c622cf1cfcd5}</Project>
+      <Name>UnityEditor.TestRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.TestRunner.csproj">
+      <Project>{950439dc-8378-5e09-e0c8-dac2c8476c34}</Project>
+      <Name>UnityEngine.TestRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VSCode.Editor.csproj">
+      <Project>{d7dad80a-2a2e-ba5d-0c78-2a0f420d539f}</Project>
+      <Name>Unity.VSCode.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Universal.Shaders.csproj">
+      <Project>{8f5e43b0-a923-e412-027e-dfe936b6bfce}</Project>
+      <Name>Unity.RenderPipelines.Universal.Shaders</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
+      <Project>{60abd5fc-1ec6-f023-34ce-86cd8a115cbf}</Project>
+      <Name>Unity.TextMeshPro.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="VelNet.csproj">
+      <Project>{a65c3ffd-6f60-9d46-171d-5f1312540019}</Project>
+      <Name>VelNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Formats.Fbx.Editor.csproj">
+      <Project>{626c4f00-434a-67f7-36f3-1c12717a8f6e}</Project>
+      <Name>Unity.Formats.Fbx.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Searcher.Editor.csproj">
+      <Project>{e8fa3af4-da5a-d6f9-cade-5fb5c8ff8a21}</Project>
+      <Name>Unity.Searcher.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEditor.UI.csproj">
+      <Project>{1f11dcc7-2371-0779-258d-cd9d338d4787}</Project>
+      <Name>UnityEditor.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.InputSystem.csproj">
+      <Project>{063fa87b-9a0c-f4ed-1dc3-3eb722ce6b58}</Project>
+      <Name>Unity.InputSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="Pcx.csproj">
+      <Project>{e6cf0009-54e6-7e0f-3021-fedd5ffb4ec7}</Project>
+      <Name>Pcx</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Rider.Editor.csproj">
+      <Project>{b3f41c20-67a6-4a91-2014-aa79676c8421}</Project>
+      <Name>Unity.Rider.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Core.ShaderLibrary.csproj">
+      <Project>{6bbab12e-d47c-a946-ca67-013f425a59c5}</Project>
+      <Name>Unity.RenderPipelines.Core.ShaderLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.UI.csproj">
+      <Project>{c82bca3a-7678-253e-160b-6333c267cc4d}</Project>
+      <Name>UnityEngine.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.SpatialTracking.csproj">
+      <Project>{197ff217-bd20-43c1-6426-2c9320f31743}</Project>
+      <Name>UnityEngine.SpatialTracking</Name>
+    </ProjectReference>
+    <ProjectReference Include="Autodesk.Fbx.csproj">
+      <Project>{fa0ffc8c-2e97-4c45-1ec2-e27ae2b66b5b}</Project>
+      <Name>Autodesk.Fbx</Name>
+    </ProjectReference>
     <ProjectReference Include="MenuTablet.csproj">
       <Project>{5a725e49-dcbb-ea9c-50e4-97c43f445d3d}</Project>
       <Name>MenuTablet</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
+      <Project>{829de81f-bcf5-6021-9aa9-7a20f8c70c28}</Project>
+      <Name>Unity.ShaderGraph.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Cinemachine.csproj">
+      <Project>{1f642ffd-6ad8-3471-0c95-74181fd2c5de}</Project>
+      <Name>Cinemachine</Name>
+    </ProjectReference>
+    <ProjectReference Include="com.unity.cinemachine.editor.csproj">
+      <Project>{077beedc-7f92-90f6-16f6-5eb07ba00fe5}</Project>
+      <Name>com.unity.cinemachine.editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Formats.Fbx.Runtime.csproj">
+      <Project>{586a87b0-7b17-3be9-ab2f-54d2ab779a2e}</Project>
+      <Name>Unity.Formats.Fbx.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipeline.Universal.ShaderLibrary.csproj">
+      <Project>{862c60fe-1faf-df6b-edc1-01955c6d5329}</Project>
+      <Name>Unity.RenderPipeline.Universal.ShaderLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.Management.csproj">
+      <Project>{eed9121a-36e3-a446-779b-85b42bfd013f}</Project>
+      <Name>Unity.XR.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Mathematics.Editor.csproj">
+      <Project>{63f1773b-78b7-919b-7e4d-a26fd459cc7d}</Project>
+      <Name>Unity.Mathematics.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Animation.Rigging.Editor.csproj">
+      <Project>{10669bf8-72ec-20a0-3fb6-8fb3fe8eb779}</Project>
+      <Name>Unity.Animation.Rigging.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VisualEffectGraph.Editor.csproj">
+      <Project>{705623ac-220d-a439-9187-14892b498caa}</Project>
+      <Name>Unity.VisualEffectGraph.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Universal.Runtime.csproj">
+      <Project>{c289065f-6916-9223-6d59-629875ada945}</Project>
+      <Name>Unity.RenderPipelines.Universal.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="PPv2URPConverters.csproj">
+      <Project>{b0ea668b-61ae-b99b-2260-3a9b7c4eecfc}</Project>
+      <Name>PPv2URPConverters</Name>
     </ProjectReference>
     <ProjectReference Include="EchoVRAPI.csproj">
       <Project>{26800ecf-2abc-fd48-a10e-70fa682c8fd9}</Project>
       <Name>EchoVRAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="VelNet.Editor.csproj">
+      <Project>{eed74a0b-daf1-025b-dac4-d0ea7d3c6a65}</Project>
+      <Name>VelNet.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
+      <Project>{da594d5f-29fd-5a51-2d4e-eb213d9e4190}</Project>
+      <Name>Unity.VisualStudio.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.OpenXR.Features.OculusQuestSupport.Editor.csproj">
+      <Project>{31a5a0a4-ba15-7d25-d69c-6c4541823473}</Project>
+      <Name>Unity.XR.OpenXR.Features.OculusQuestSupport.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Autodesk.Fbx.Editor.csproj">
+      <Project>{b8796208-a5d7-32fa-ee01-807062de6fad}</Project>
+      <Name>Autodesk.Fbx.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VisualEffectGraph.Runtime.csproj">
+      <Project>{cf93b30b-31f8-9c89-01ac-2475b1d6d0cc}</Project>
+      <Name>Unity.VisualEffectGraph.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.Management.Editor.csproj">
+      <Project>{74a037e3-d832-c45e-7468-33103cdad08a}</Project>
+      <Name>Unity.XR.Management.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="ButterReplays.csproj">
       <Project>{13d1a138-1371-bd74-246c-911f29b08bad}</Project>
       <Name>ButterReplays</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Timeline.csproj">
+      <Project>{a073b2c2-0ec4-18dc-d3b7-66b797e24278}</Project>
+      <Name>Unity.Timeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.csproj">
+      <Project>{5d57e9df-1e61-1a43-035b-ea4b81012b49}</Project>
+      <Name>Unity.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Burst.Editor.csproj">
+      <Project>{6adc4113-561d-95e7-481a-3d463f0783ff}</Project>
+      <Name>Unity.Burst.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.2D.Sprite.Editor.csproj">
+      <Project>{6668a792-4647-473d-33d2-62f37f7dffe7}</Project>
+      <Name>Unity.2D.Sprite.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj">
+      <Project>{44a0cf97-6216-3c1d-a818-450aa43af752}</Project>
+      <Name>Unity.RenderPipelines.Core.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Subsystem.Registration.csproj">
+      <Project>{bfd9c44a-5ead-5054-1a55-c22e7099c591}</Project>
+      <Name>Unity.Subsystem.Registration</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Postprocessing.Editor.csproj">
+      <Project>{3f2056d4-3658-7548-1b6e-dd60926912d4}</Project>
+      <Name>Unity.Postprocessing.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Pcx.Editor.csproj">
+      <Project>{5fda93e7-faa1-b94d-a503-323650b743c4}</Project>
+      <Name>Pcx.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
+      <Project>{e0cd3812-8e15-6171-a942-76dc7484f640}</Project>
+      <Name>Unity.PlasticSCM.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.OpenXR.Features.OculusQuestSupport.csproj">
+      <Project>{f6ca9721-000f-3d6b-343c-a9a2a7e030e9}</Project>
+      <Name>Unity.XR.OpenXR.Features.OculusQuestSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Animation.Rigging.csproj">
+      <Project>{10e18954-928a-3252-3257-ca4ba3da5772}</Project>
+      <Name>Unity.Animation.Rigging</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Mathematics.csproj">
+      <Project>{bfccb04f-ceaf-f9bb-a505-2947edce4c07}</Project>
+      <Name>Unity.Mathematics</Name>
+    </ProjectReference>
+    <ProjectReference Include="FranzCo.unityutilities.Editor.csproj">
+      <Project>{c5594bd6-7d31-d6ac-1ff4-e49ecd15c467}</Project>
+      <Name>FranzCo.unityutilities.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Burst.csproj">
+      <Project>{33bb4dcb-c678-62c9-af10-8d1c4401581e}</Project>
+      <Name>Unity.Burst</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Postprocessing.Runtime.csproj">
+      <Project>{31b0e0cd-7c92-edbc-3eb5-9b96ddc23ef4}</Project>
+      <Name>Unity.Postprocessing.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Universal.Editor.csproj">
+      <Project>{59fe2055-9d7f-eedf-5e76-e5547e5c2749}</Project>
+      <Name>Unity.RenderPipelines.Universal.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.XR.LegacyInputHelpers.csproj">
+      <Project>{2f273882-7d09-31d9-670b-82640e55dbc0}</Project>
+      <Name>UnityEngine.XR.LegacyInputHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.OpenXR.Editor.csproj">
+      <Project>{7df2253b-0506-5489-391c-e6e415b0be0e}</Project>
+      <Name>Unity.XR.OpenXR.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Timeline.Editor.csproj">
+      <Project>{14c1db1f-7035-901d-d3b7-42a0826aef93}</Project>
+      <Name>Unity.Timeline.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="FranzCo.unityutilities.csproj">
+      <Project>{09a4c859-d5af-0721-a34e-46a6495f7bba}</Project>
+      <Name>FranzCo.unityutilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEditor.XR.LegacyInputHelpers.csproj">
+      <Project>{f19fedc0-dd87-403d-d996-971d51d9f188}</Project>
+      <Name>UnityEditor.XR.LegacyInputHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.OpenXR.csproj">
+      <Project>{028510d0-e058-1f31-18fc-034292e05075}</Project>
+      <Name>Unity.XR.OpenXR</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEditor.SpatialTracking.csproj">
+      <Project>{ba9cb37a-97d9-49e0-c4f2-157f5a4ba168}</Project>
+      <Name>UnityEditor.SpatialTracking</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.OpenXR.Features.ConformanceAutomation.csproj">
+      <Project>{51251f60-8dd5-a1bd-d000-ffdd327b8185}</Project>
+      <Name>Unity.XR.OpenXR.Features.ConformanceAutomation</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.csproj">
+      <Project>{03358220-ca0d-e804-e964-5c2844a8855d}</Project>
+      <Name>Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Core.Editor.csproj">
+      <Project>{c533f4bb-07e5-ad8f-2768-22c5ae70a466}</Project>
+      <Name>Unity.RenderPipelines.Core.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.OpenXR.Features.RuntimeDebugger.Editor.csproj">
+      <Project>{28248194-5ad4-827f-196b-b8658c154b52}</Project>
+      <Name>Unity.XR.OpenXR.Features.RuntimeDebugger.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="FranzCo.unityutilities.VRInteraction.csproj">
+      <Project>{74865e88-2797-ceb5-fce2-2ec58b36ef3c}</Project>
+      <Name>FranzCo.unityutilities.VRInteraction</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

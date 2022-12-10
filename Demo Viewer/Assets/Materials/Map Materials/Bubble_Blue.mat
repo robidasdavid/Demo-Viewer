@@ -8,11 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Bubble_Blue
-  m_Shader: {fileID: -6465566751694194690, guid: 2c2c3429ce24ec5428724d49901db9d8,
+  m_Shader: {fileID: -6465566751694194690, guid: e6e9122078730214388a82eae9fdd2e1,
     type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _RECEIVE_SHADOWS_OFF
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -116,7 +115,7 @@ Material:
     - Color_ec2d5cd3706e40728f20bb7bd83d0f0f: {r: 0.23907202, g: 0.59868383, b: 0.964,
         a: 1}
     - _BaseColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 0.011764706}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.23474543, g: 0.59148806, b: 0.7924528, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999993, g: 0.19999993, b: 0.19999993, a: 0.265}
   m_BuildTextureStacks: []

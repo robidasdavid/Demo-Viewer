@@ -56,6 +56,7 @@ MonoBehaviour:
   discFloating: {fileID: 8514321353763106903}
   discGrabbed: {fileID: 8514321353763106903}
   discBubbleRend: {fileID: 4037116565277197482}
+  discRend: {fileID: 7377985761608289080}
   discTrailRenderer: {fileID: 2896228465058511205}
   pointLight: {fileID: 1623936445720837009}
   lightColors:
@@ -67,9 +68,22 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 88caa06d353ba8149a5f43f9c1e24ce1, type: 2}
   - {fileID: 2100000, guid: 7192b4f90cafff541929e23e08c0d882, type: 2}
   bubbleColors:
-  - {r: 0.31764707, g: 0.6862745, b: 1, a: 1}
-  - {r: 1, g: 0.67058825, b: 0.4745098, a: 1}
-  - {r: 0.6627451, g: 0.60784316, b: 0.67058825, a: 1}
+  - {r: 0.23921569, g: 0.6862745, b: 1, a: 1}
+  - {r: 1, g: 0.68235296, b: 0.3647059, a: 1}
+  - {r: 0.70294595, g: 0.6046992, b: 0.7169812, a: 1}
+  discBaseColors:
+  - {r: 0.3372549, g: 0.3764706, b: 0.4509804, a: 1}
+  - {r: 0.49019608, g: 0.39215687, b: 0.32941177, a: 1}
+  - {r: 0.36862746, g: 0.3254902, b: 0.3764706, a: 1}
+  discEmissionColors:
+  - {r: 0.2392157, g: 0.6862745, b: 1, a: 1}
+  - {r: 1, g: 0.68235296, b: 0.3647059, a: 1}
+  - {r: 0.7019608, g: 0.6039216, b: 0.7176471, a: 1}
+  trailColors:
+  - {r: 0.11764705, g: 0.50767225, b: 0.8666667, a: 0}
+  - {r: 0.8666667, g: 0.3764706, b: 0.11764706, a: 0}
+  - {r: 0.5921569, g: 0.33333334, b: 0.59607846, a: 0}
+  emissionColorIntensity: 1.7
 --- !u!1 &1623936445720837011
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +252,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8940ba79bbcac674da7f8fa87a142a83, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -267,22 +281,22 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.1999939
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0.085706875
-        inSlope: 0
-        outSlope: 0
+        time: 0.0038968623
+        value: 0.5127317
+        inSlope: -1.0959483
+        outSlope: -1.0959483
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
+        outWeight: 0.1726206
+      - serializedVersion: 3
+        time: 1
+        value: 0.04998605
+        inSlope: -0.067519896
+        outSlope: -0.067519896
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.14889057
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -316,8 +330,8 @@ TrailRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
+    numCornerVertices: 3
+    numCapVertices: 3
     alignment: 0
     textureMode: 0
     shadowBias: 0.5
@@ -601,6 +615,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6fa57a44d0cd6e49810a02690913729, type: 3}
+--- !u!23 &7377985761608289080 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: a6fa57a44d0cd6e49810a02690913729,
+    type: 3}
+  m_PrefabInstance: {fileID: 8188189898477393852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8514321353763106903 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6fa57a44d0cd6e49810a02690913729,

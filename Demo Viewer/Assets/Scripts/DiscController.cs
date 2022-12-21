@@ -49,8 +49,10 @@ public class DiscController : MonoBehaviour
 			// if (value != teamIndex)
 			{
 				pointLight.color = lightColors[(int)teamIndex];
-				discTrailRenderer.material.color = lightColors[(int)teamIndex];
-				bubbleMaterial.SetColor(BubbleMaterialColor, bubbleColors[(int)teamIndex]);
+				discTrailRenderer.material.color = trailColors[(int)teamIndex] * emissionColorIntensity;
+				bubbleMaterial.SetColor(BubbleMaterialColor, bubbleColors[(int)teamIndex] * emissionColorIntensity);
+				discMaterial.SetColor("_BaseColor", discBaseColors[(int)TeamIndex]);
+				discMaterial.SetColor("_EmissionColor", discEmissionColors[(int)TeamIndex] * emissionColorIntensity);
 			}
 
 			teamIndex = value;
@@ -69,17 +71,26 @@ public class DiscController : MonoBehaviour
 	public Renderer discBubbleRend;
 	private Material bubbleMaterial;
 
+	public Renderer discRend;
+	private Material discMaterial;
+
 	public Renderer discTrailRenderer;
 
 	public Light pointLight;
 	[Tooltip("blue, orange, default")] public Color[] lightColors = new Color[3];
 	[Tooltip("blue, orange, default")] public Material[] materials = new Material[3];
 	[Tooltip("blue, orange, default")] public Color[] bubbleColors = new Color[3];
+	[Tooltip("blue, orange, default")] public Color[] discBaseColors = new Color[3];
+	[Tooltip("blue, orange, default")] public Color[] discEmissionColors = new Color[3];
+	[Tooltip("blue, orange, default")] public Color[] trailColors = new Color[3];
+	public float emissionColorIntensity = 1;
+
 	private static readonly int BubbleMaterialColor = Shader.PropertyToID("CurrentColor");
 
 	private void Start()
 	{
 		bubbleMaterial = discBubbleRend.material;
+		discMaterial = discRend.material;
 	}
 
 	// Update is called once per frame

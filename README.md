@@ -1,24 +1,24 @@
 
-<img alt="Replay Viewer Logo" width="80px" src="Demo Viewer/Assets/Images/Icons/replaylogo.png" align="left" />
+<img alt="Replay Viewer Logo" width="80px" src="Demo Viewer/Assets/Images/Icons/ReplayLogoMostTransparent.png" align="left" />
 
 ## DESCRIPTION
 The EchoVR Replay Viewer is able to play back data from an EchoVR Arena game that was saved through the public API into a replay file by presenting it in a 3D replaying software. The Replay Viewer can read files saved in the `.echoreplay` format. A description of how to create files in this format is [below](##-echoreplay-File-Format).
 
 ## INSTALLATION
 
-### Oculus Store Version (preferred)
+### ~~Oculus Store Version~~ (CURRENTLY NOT AN OPTION FOR NEW DOWNLOADS)
 
-The Oculus Store version will get automatic updates. Install via the Oculus Store page:
+~~The Oculus Store version will get automatic updates. Install via the Oculus Store page:~~
 
-https://www.oculus.com/experiences/rift/3228453177179864 
+~~https://www.oculus.com/experiences/rift/3228453177179864~~ 
 
 <img alt="How to launch in 2D mode Oculus Store" width="200px" src="Demo Viewer/Assets/Images/OculusStore2D.png" />
  
 ### GitHub Release
 
-We will try to keep the latest GitHub release up-to-date for people that may not have access to the Oculus desktop app (Quest users). To install, extract the zip to a folder and run the `.exe` file. To run in VR mode, run the `.exe` with the `-useVR` command-line argument.
+To install, extract the zip to a folder and run the `.exe` file. To run in VR mode, run the `.exe` with the `-useVR` command-line argument.
 
-### Capturer (legacy)
+### Capturer (legacy, now [Spark](https://www.ignitevr.gg/spark))
 
  1. Download the Game-Capturer.zip in builds/ to your computer and unzip to a folder.
  2. Edit file path and file name as well as execution arguments. Click start and stop capture to start and stop capture respectively.
@@ -29,7 +29,7 @@ We will try to keep the latest GitHub release up-to-date for people that may not
 
 To load a file, click on the menu icon on the right side of the screen (shortcut: tilde). This menu contains a list of `.echoreplay` files in the folder that Spark saves files to by default (`C:\Users\[USERNAME]\Documents\Spark\replays\`). At the top of this menu, there is an input field, where any file path can be entered if the replay is stored somewhere else on your computer.
 
-To save your own replays, download [Spark](https://www.ignitevr.gg/Spark)!
+To save your own replays, download [Spark](https://www.ignitevr.gg/spark)!
 
 ### File Association:
 
@@ -61,7 +61,7 @@ If you do not do this and you want to open files downloaded from the internet, y
 
 ## `.echoreplay` File Format
 
-To record `.echoreplay` files without writing your own software, you can use Spark ([download](https://www.ignitevr.gg/Spark))
+To record `.echoreplay` files without writing your own software, you can use Spark ([download](https://www.ignitevr.gg/spark))
 
 The `.echoreplay` file format is a complete storage format for time-series EchoVR API request data. There are two versions of this format - compressed and uncompressed, both with the same file extension. The compressed version is simple the uncompressed file in a renamed `.zip` file.
 
@@ -74,5 +74,5 @@ Due to the high efficiency of zip compression, binary formats such as `.milk` (o
 
 ## QUESTIONS
 
-If you have questions, DM **sneakyevil#1967** on discord, or join the discord server for this project at https://discord.gg/srWMCnD
+If you have questions, join the discord server for this project at https://discord.gg/srWMCnD
  

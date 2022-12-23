@@ -66,6 +66,7 @@ public class SimpleCameraController : MonoBehaviour
 		auto,
 		sideline,
 		recorded,
+		followFreecam, // Incomplete functionality
 	}
 
 	[SerializeField] private CameraMode mode;
@@ -103,6 +104,9 @@ public class SimpleCameraController : MonoBehaviour
 				case CameraMode.recorded:
 					cam.fieldOfView = defaultFov;
 					break;
+				case CameraMode.followFreecam:
+					cam.fieldOfView = defaultFov;
+					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(value), value, null);
 			}
@@ -128,6 +132,7 @@ public class SimpleCameraController : MonoBehaviour
 	private readonly CameraState directCameraState = new CameraState();
 
 	public Transform playerTarget;
+	public Transform cameraTarget;
 
 	public Vector3 povOffset = new Vector3(0, .6f, .3f);
 	public Vector3 followCamOffset = new Vector3(0, .5f, -2f);

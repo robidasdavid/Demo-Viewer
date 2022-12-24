@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.3254902, g: 0.011764706, b: 0.5176471, a: 1}
+  m_FogColor: {r: 0.21568628, g: 0.14117648, b: 0.3019608, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.0055
+  m_FogDensity: 0.015
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
@@ -8416,6 +8416,7 @@ Transform:
   - {fileID: 2070390100}
   - {fileID: 1833555322}
   - {fileID: 446337076}
+  - {fileID: 990832370}
   m_Father: {fileID: 1473632099}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10780,7 +10781,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.56037736, g: 0.87227184, b: 1, a: 1}
+  m_Color: {r: 0.46521893, g: 0.6829085, b: 0.8301887, a: 1}
   m_Intensity: 10
   m_Range: 20
   m_SpotAngle: 30
@@ -19963,7 +19964,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.56037736, g: 0.87227184, b: 1, a: 1}
+  m_Color: {r: 0.46521893, g: 0.6829085, b: 0.8301887, a: 1}
   m_Intensity: 13
   m_Range: 20
   m_SpotAngle: 30
@@ -21348,7 +21349,7 @@ Transform:
   - {fileID: 1057651708}
   - {fileID: 1711193964}
   m_Father: {fileID: 1473632099}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &577199179
 PrefabInstance:
@@ -34202,8 +34203,8 @@ Transform:
   - {fileID: 2060706622}
   - {fileID: 881256087}
   - {fileID: 1311105427}
-  m_Father: {fileID: 1473632099}
-  m_RootOrder: 3
+  m_Father: {fileID: 244131530}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &991413741
 GameObject:
@@ -38800,7 +38801,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.56037736, g: 0.87227184, b: 1, a: 1}
+  m_Color: {r: 0.46521893, g: 0.6829085, b: 0.8301887, a: 1}
   m_Intensity: 10
   m_Range: 20
   m_SpotAngle: 30
@@ -41855,7 +41856,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.56037736, g: 0.87227184, b: 1, a: 1}
+  m_Color: {r: 0.46521893, g: 0.6829085, b: 0.8301887, a: 1}
   m_Intensity: 10
   m_Range: 20
   m_SpotAngle: 30
@@ -55356,7 +55357,6 @@ Transform:
   - {fileID: 1652721136}
   - {fileID: 1106059889}
   - {fileID: 244131530}
-  - {fileID: 990832370}
   - {fileID: 576839262}
   m_Father: {fileID: 1862362927}
   m_RootOrder: 0
@@ -62173,7 +62173,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.56037736, g: 0.87227184, b: 1, a: 1}
+  m_Color: {r: 0.46521893, g: 0.6829085, b: 0.8301887, a: 1}
   m_Intensity: 13
   m_Range: 20
   m_SpotAngle: 30
@@ -82003,7 +82003,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.56037736, g: 0.87227184, b: 1, a: 1}
+  m_Color: {r: 0.46521893, g: 0.6829085, b: 0.8301887, a: 1}
   m_Intensity: 10
   m_Range: 20
   m_SpotAngle: 30

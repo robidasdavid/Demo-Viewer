@@ -73,6 +73,7 @@ public class DemoStart : MonoBehaviour
 	public GameObject bluePlayerPrefab;
 	public GameObject orangePlayerPrefab;
 	public GameObject playerV4Prefab;
+	public GameObject junoCamera;
 
 	private bool isScored = false;
 
@@ -707,6 +708,22 @@ public class DemoStart : MonoBehaviour
 		}
 
 		playersToRemove.ForEach(p => playerObjects.Remove(p));
+
+		// A juno robot that takes the place of the spectator camera
+		// Check if the client is spectating
+		foreach (Player player in viewingFrame.teams[2].players)
+        {
+			if(player.name == viewingFrame.client_name) // Client is spectating
+            {
+				junoCamera.SetActive(true);
+				junoCamera.transform.position = viewingFrame.player.vr_position.ToVector3();
+				junoCamera.transform.rotation = Quaternion.LookRotation(viewingFrame.player.vr_forward.ToVector3(), viewingFrame.player.vr_up.ToVector3());
+				break;
+            } else // Client is not spectating
+			{
+				junoCamera.SetActive(false);
+			}
+		} 
 	}
 
 	private Player FindPlayerOnTeam(Team team, string name)

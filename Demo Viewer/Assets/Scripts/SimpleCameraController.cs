@@ -66,7 +66,7 @@ public class SimpleCameraController : MonoBehaviour
 		auto,
 		sideline,
 		recorded,
-		followFreecam, // Incomplete functionality
+		followSpectator,
 	}
 
 	[SerializeField] private CameraMode mode;
@@ -104,7 +104,9 @@ public class SimpleCameraController : MonoBehaviour
 				case CameraMode.recorded:
 					cam.fieldOfView = defaultFov;
 					break;
-				case CameraMode.followFreecam:
+				case CameraMode.followSpectator:
+					//targetCameraState.SetPosition(spectatorCameraTarget.transform.position);
+					//targetCameraState.SetRotation(spectatorCameraTarget.transform.rotation);
 					cam.fieldOfView = defaultFov;
 					break;
 				default:
@@ -132,7 +134,7 @@ public class SimpleCameraController : MonoBehaviour
 	private readonly CameraState directCameraState = new CameraState();
 
 	public Transform playerTarget;
-	public Transform cameraTarget;
+	public GameObject spectatorCameraTarget;
 
 	public Vector3 povOffset = new Vector3(0, .6f, .3f);
 	public Vector3 followCamOffset = new Vector3(0, .5f, -2f);
@@ -192,6 +194,9 @@ public class SimpleCameraController : MonoBehaviour
 			case CameraMode.recorded:
 				RecordedCameraMovement();
 				break;
+			case CameraMode.followSpectator:
+				if (spectatorCameraTarget.activeSelf == false) Mode = CameraMode.free;
+				break;
 		}
 
 		// Framerate-independent interpolation
@@ -221,6 +226,11 @@ public class SimpleCameraController : MonoBehaviour
 			case CameraMode.sideline:
 			case CameraMode.recorded:
 				interpolatingCameraState.UpdateTransform(transform, Vector3.zero);
+				break;
+			case CameraMode.followSpectator:
+				targetCameraState.SetPosition(spectatorCameraTarget.transform.position);
+				targetCameraState.SetRotation(spectatorCameraTarget.transform.rotation);
+				targetCameraState.UpdateTransform(transform, Vector3.zero);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
@@ -398,10 +408,11 @@ public class SimpleCameraController : MonoBehaviour
 			0 => CameraMode.followOrbit,
 			1 => CameraMode.follow,
 			2 => CameraMode.pov,
+			3 => CameraMode.followSpectator,
 			_ => Mode
 		};
 
-		if (playerTarget != null)
+		if (playerTarget != null || followCameraMode == CameraMode.followSpectator)
 		{
 			Mode = followCameraMode;
 		}
@@ -411,7 +422,10 @@ public class SimpleCameraController : MonoBehaviour
 	{
 		playerTarget = playerHead;
 
-		Mode = playerHead != null ? followCameraMode : CameraMode.free;
+		if (followCameraMode == CameraMode.followSpectator)
+			Mode = CameraMode.followOrbit;
+		else
+			Mode = playerHead != null ? followCameraMode : CameraMode.free;
 	}
 
 	public void FocusPlayer(Player player)

@@ -204,6 +204,12 @@ public class Replay : MonoBehaviour
 
 		for (int i = 0; i < game.nFrames; i++)
 		{
+			if (GameManager.quitting)
+			{
+				Debug.Log("Stopped temporal processing because of quit.");
+				return;
+			}
+			
 			// if we started loading a different file instead, stop this one
 			if (threadLoadingId != loadingThreadId) return;
 

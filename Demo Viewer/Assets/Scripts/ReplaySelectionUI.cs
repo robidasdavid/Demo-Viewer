@@ -467,4 +467,10 @@ public class ReplaySelectionUI : MonoBehaviour
 	{
 		VelNetManager.Leave();
 	}
+
+	public void ResetReplayPath()
+	{
+		manualInputText.text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Spark", "replays");
+		RefreshReplaysList();
+	}
 }

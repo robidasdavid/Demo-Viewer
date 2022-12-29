@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -12,6 +13,8 @@ using unityutilities;
 public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
+
+	public static bool quitting;
 
 	public NetworkFrameManager netFrameMan;
 	public Transform[] vrOnlyThings;
@@ -239,5 +242,10 @@ public class GameManager : MonoBehaviour
 #endif
 			}
 		}
+	}
+
+	private void OnApplicationQuit()
+	{
+		quitting = true;
 	}
 }

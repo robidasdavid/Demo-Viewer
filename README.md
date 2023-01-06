@@ -67,7 +67,7 @@ The `.echoreplay` file format is a complete storage format for time-series EchoV
 
 The format for the uncompressed file is as follows:
 * One line per API request.
-* Each line contains the a timestamp, the `tab` character, and the full JSON data from the game's API
+* Each line contains the timestamp, the `tab` character, and the full JSON data from the game's API
 
 Due to the high efficiency of zip compression, binary formats such as `.milk` (once modified to include all the data necessary for replays) provide only marginal or no benefits over the compressed `.echoreplay`. These formats also require modification for every API change from the game, unlike `.echoreplay`.
 

@@ -102,7 +102,24 @@ public class DiscController : MonoBehaviour
 
 		discVelocity = frame.disc.velocity.ToVector3();
 		discPosition = frame.disc.Position;
-		discRotation = frame.disc.Rotation;
+
+		float[] discFwdRaw = frame.disc.Rotation.Forward().ToFloatArray();
+		float[] discUpRaw = frame.disc.Rotation.Up().ToFloatArray();
+		//float[] discLeftRaw = frame.disc.Rotation.Left().ToFloatArray();
+
+		Vector3 discFwd = new Vector3(discFwdRaw[0], discFwdRaw[1], discFwdRaw[2]);
+		Vector3 discUp = new Vector3(discUpRaw[0], discUpRaw[1], discUpRaw[2]);
+		//Vector3 discLeft = new Vector3(discLeftRaw[0], discLeftRaw[1], discLeftRaw[2]);
+
+		Quaternion finalDiscRot = Quaternion.LookRotation(discFwd, discUp);
+
+		discRotation = /*Quaternion.LookRotation(Vector3.left, Vector3.up) */ (finalDiscRot);
+
+		Debug.DrawRay(discPosition, discFwd/*discRotation * Vector3.forward*/, Color.red);
+		//Debug.DrawRay(discPosition, discLeft/*discRotation * Vector3.forward*/, Color.red);
+		Debug.DrawRay(discPosition, discUp/*discRotation * Vector3.up*/, Color.green);
+
+
 
 		// blue team possession effects
 		// Team.TeamColor teamPossession = frame.GetAllPlayers().FirstOrDefault(p => p.possession)?.team_color ?? Team.TeamColor.spectator;
@@ -144,13 +161,13 @@ public class DiscController : MonoBehaviour
 		{
 			if (discRotation != null)
 			{
-				child.localRotation = discRotation;
+				transform.rotation = discRotation;
 			}
 			else
 			{
 				//Make it the right rotation (Mostly subjective)
 				Vector3 upVector = new Vector3(19 - discVelocity.magnitude, discVelocity.magnitude, 0).normalized;
-				transform.LookAt(discVelocity.normalized + transform.position, upVector);
+				//transform.LookAt(discVelocity.normalized + transform.position, upVector);
 			}
 
 			// //Make it spin based on speed

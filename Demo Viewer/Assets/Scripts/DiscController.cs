@@ -105,20 +105,24 @@ public class DiscController : MonoBehaviour
 
 		float[] discFwdRaw = frame.disc.Rotation.Forward().ToFloatArray();
 		float[] discUpRaw = frame.disc.Rotation.Up().ToFloatArray();
-		//float[] discLeftRaw = frame.disc.Rotation.Left().ToFloatArray();
+		float[] discLeftRaw = frame.disc.Rotation.Left().ToFloatArray();
 
 		Vector3 discFwd = new Vector3(discFwdRaw[0], discFwdRaw[1], discFwdRaw[2]);
 		Vector3 discUp = new Vector3(discUpRaw[0], discUpRaw[1], discUpRaw[2]);
-		//Vector3 discLeft = new Vector3(discLeftRaw[0], discLeftRaw[1], discLeftRaw[2]);
+		Vector3 discLeft = new Vector3(discLeftRaw[0], discLeftRaw[1], discLeftRaw[2]);
 
 		Quaternion finalDiscRot = Quaternion.LookRotation(discFwd, discUp);
 
+		Quaternion upToUp = new Quaternion();
+		//upToUp.SetFromToRotation(discUp, Vector3.up);
+		Quaternion upRel = Quaternion.LookRotation(Vector3.forward, discUp);
+		//finalDiscRot = Quaternion.Inverse(upRel) * finalDiscRot;
+
 		discRotation = /*Quaternion.LookRotation(Vector3.left, Vector3.up) */ (finalDiscRot);
 
-		Debug.DrawRay(discPosition, discFwd/*discRotation * Vector3.forward*/, Color.red);
-		//Debug.DrawRay(discPosition, discLeft/*discRotation * Vector3.forward*/, Color.red);
-		Debug.DrawRay(discPosition, discUp/*discRotation * Vector3.up*/, Color.green);
-
+		Debug.DrawRay(discPosition, discRotation * Vector3.forward, Color.red);
+		Debug.DrawRay(discPosition, discRotation * Vector3.left, Color.gray);
+		Debug.DrawRay(discPosition, discRotation * Vector3.up, Color.green);
 
 
 		// blue team possession effects

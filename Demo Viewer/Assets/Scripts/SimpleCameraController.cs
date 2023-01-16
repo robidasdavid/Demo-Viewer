@@ -263,8 +263,8 @@ public class SimpleCameraController : MonoBehaviour
 		}
 
 		Vector2 controllerRightStick = new Vector2(Input.GetAxis("RightX"), Input.GetAxis("RightY"));
-		targetCameraState.yaw += controllerRightStick.x * 1.25f;
-		targetCameraState.pitch += controllerRightStick.y * 1.25f;
+		targetCameraState.yaw += controllerRightStick.x * 1f;
+		targetCameraState.pitch += controllerRightStick.y * 1f;
 
 		// Translation
 		Vector3 translation = GetInputTranslationDirection() * Time.deltaTime;
@@ -275,8 +275,12 @@ public class SimpleCameraController : MonoBehaviour
 			translation *= 10.0f;
 		}
 
-		// Modify movement by a boost factor (defined in Inspector and modified in play mode through the mouse scroll wheel)
-		// boost += Input.mouseScrollDelta.y * 0.2f;
+		// Modify movement by a boost factor (defined in Inspector and modified in play mode through the mouse scroll wheel or xbox dpad [not documented anywhere atm])
+		float dpadY = Input.GetAxis("XboxDpadY");
+		boost += Input.mouseScrollDelta.y * 0.2f;
+		boost += dpadY * .02f;
+		boost = Mathf.Clamp(boost, 0, 6);
+
 		translation *= Mathf.Pow(2.0f, boost);
 
 		targetCameraState.Translate(translation);
@@ -396,8 +400,8 @@ public class SimpleCameraController : MonoBehaviour
 			direction += Vector3.up;
 		}
 
-		direction.x += Input.GetAxis("LeftX") * 2.5f;
-		direction.z += Input.GetAxis("LeftY") * -2.5f;
+		direction.x += Input.GetAxis("LeftX") * 1f;
+		direction.z += Input.GetAxis("LeftY") * -1f;
 		return direction;
 	}
 

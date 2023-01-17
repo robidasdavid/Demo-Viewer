@@ -111,12 +111,24 @@ public class DiscController : MonoBehaviour
 		Vector3 discUp = new Vector3(discUpRaw[0], discUpRaw[1], discUpRaw[2]);
 		Vector3 discLeft = new Vector3(discLeftRaw[0], discLeftRaw[1], discLeftRaw[2]);
 
-		Quaternion finalDiscRot = Quaternion.LookRotation(discFwd, discUp);
-
 		Quaternion upToUp = new Quaternion();
-		//upToUp.SetFromToRotation(discUp, Vector3.up);
-		Quaternion upRel = Quaternion.LookRotation(Vector3.forward, discUp);
-		//finalDiscRot = Quaternion.Inverse(upRel) * finalDiscRot;
+		upToUp.SetFromToRotation(discUp, Vector3.up);
+		Quaternion upRel = Quaternion.LookRotation(discUp, Vector3.right) * Quaternion.Euler(90, 0,0);
+		
+		Quaternion finalDiscYaw = Quaternion.Inverse(upRel) * Quaternion.LookRotation(discFwd, discUp) * Quaternion.Euler(0,-90,0); // Gives rotation about up vector
+
+		Quaternion other = new Quaternion();
+		other.SetFromToRotation(Vector3.left, discUp);
+		Vector3 otherUp = other * Vector3.up;
+		
+
+		Vector3 betterUp = Quaternion.Euler(0, 90, 0) * new Vector3(discUp.x, discUp.y, -discUp.z);
+		Quaternion finalDiscRot = Quaternion.LookRotation(finalDiscYaw * betterUp, finalDiscYaw * Vector3.forward * -1) * Quaternion.Euler(90, 0, 0);
+
+		Debug.DrawRay(discPosition, finalDiscYaw * betterUp, Color.magenta);
+
+
+
 
 		discRotation = /*Quaternion.LookRotation(Vector3.left, Vector3.up) */ (finalDiscRot);
 

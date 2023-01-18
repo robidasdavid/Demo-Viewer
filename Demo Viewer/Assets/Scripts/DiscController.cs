@@ -120,21 +120,25 @@ public class DiscController : MonoBehaviour
 		Quaternion other = new Quaternion();
 		other.SetFromToRotation(Vector3.left, discUp);
 		Vector3 otherUp = other * Vector3.up;
-		
 
-		Vector3 betterUp = Quaternion.Euler(0, 90, 0) * new Vector3(discUp.x, discUp.y, -discUp.z);
+		float worseUpX = discUp.x;
+		if (Vector3.Dot(discUp, Vector3.up) < 0) // The only place is doesnt behave well is when oriented with the up vector close to the x-z plane
+			worseUpX = -discUp.x;
+		Vector3 betterUp = Quaternion.Euler(0, 90, 0) * new Vector3(worseUpX, discUp.y, -discUp.z);
 		Quaternion finalDiscRot = Quaternion.LookRotation(finalDiscYaw * betterUp, finalDiscYaw * Vector3.forward * -1) * Quaternion.Euler(90, 0, 0);
 
 		Debug.DrawRay(discPosition, finalDiscYaw * betterUp, Color.magenta);
-
+		//Debug.DrawRay(discPosition, discUp, Color.green);
+		//Debug.DrawRay(discPosition, new Vector3(discUp.x, discUp.y, -discUp.z), Color.yellow);
+		Debug.DrawRay(discPosition, finalDiscYaw * Vector3.forward, Color.white);
 
 
 
 		discRotation = /*Quaternion.LookRotation(Vector3.left, Vector3.up) */ (finalDiscRot);
 
-		Debug.DrawRay(discPosition, discRotation * Vector3.forward, Color.red);
-		Debug.DrawRay(discPosition, discRotation * Vector3.left, Color.gray);
-		Debug.DrawRay(discPosition, discRotation * Vector3.up, Color.green);
+		//Debug.DrawRay(discPosition, discRotation * Vector3.forward, Color.red);
+		//Debug.DrawRay(discPosition, discRotation * Vector3.left, Color.gray);
+		//Debug.DrawRay(discPosition, discRotation * Vector3.up, Color.green);
 
 
 		// blue team possession effects

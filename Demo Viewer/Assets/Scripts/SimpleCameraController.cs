@@ -267,7 +267,9 @@ public class SimpleCameraController : MonoBehaviour
 		targetCameraState.pitch += controllerRightStick.y * 1f;
 
 		// Translation
-		Vector3 translation = GetInputTranslationDirection() * Time.deltaTime;
+		Quaternion rotation = Quaternion.Euler(-transform.eulerAngles.x, 180, 0);
+		Vector3 dir = GetInputTranslationDirection();
+		Vector3 translation = rotation * new Vector3(-dir.x, dir.y, -dir.z) * Time.deltaTime;
 
 		// Speed up movement when shift key held
 		if (Input.GetKey(KeyCode.LeftShift))
@@ -392,12 +394,12 @@ public class SimpleCameraController : MonoBehaviour
 
 		if (Input.GetButton("LeftBumper"))
 		{
-			direction += Vector3.down;
+			direction += Vector3.down * .5f;
 		}
 
 		if (Input.GetButton("RightBumper"))
 		{
-			direction += Vector3.up;
+			direction += Vector3.up * .5f;
 		}
 
 		direction.x += Input.GetAxis("LeftX") * 1f;

@@ -24,6 +24,10 @@ public class GoalAnimationHandler : MonoBehaviour
 
 			foreach (Animation a in animations)
 			{
+				foreach (AnimationState state in a) // Without using Animators instead of Animations, this is the best this is going to get
+                {
+					state.speed = DemoStart.instance.playhead.playbackMultiplier;
+                }
 				foreach (LineRenderer line in a.GetComponentsInChildren<LineRenderer>())
 				{
 					line.material.SetColor(EmissionColor, colors[teamIndex]);
@@ -34,4 +38,15 @@ public class GoalAnimationHandler : MonoBehaviour
 			}
 		};
 	}
+	private void Update()
+    {
+		// Deactivate the animation when regular playback stops. Necessary because goal animations use Animations instead of Animators.
+		if (DemoStart.instance.playhead.isScrubbing || !DemoStart.instance.playhead.isPlaying)
+		{
+			foreach (Animation a in animations)
+			{
+				a.gameObject.SetActive(false);
+			}
+		}
+    }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using unityutilities;
 
 public class VRPlayer : MonoBehaviour
@@ -16,22 +14,29 @@ public class VRPlayer : MonoBehaviour
 	private float lastDrag;
 	private Vector3 lastScale;
 	private bool goalieTrainingMode;
-	public bool GoalieTrainingMode {
+
+	public bool GoalieTrainingMode
+	{
 		get => goalieTrainingMode;
-		set {
+		set
+		{
 			if (value)
 			{
 				SaveLastValues();
 
-				m.grabAir = false;
-				m.grabWalls = true;
+				m.grabAirLeft = false;
+				m.grabAirRight = false;
+				m.grabWallsLeft = true;
+				m.grabWallsRight = true;
 				rb.drag = 0;
 				transform.localScale = Vector3.one;
 			}
 			else
 			{
-				m.grabAir = lastGrabAir;
-				m.grabWalls = lastGrabWalls;
+				m.grabAirLeft = lastGrabAir;
+				m.grabAirRight = lastGrabAir;
+				m.grabWallsLeft = lastGrabWalls;
+				m.grabWallsRight = lastGrabWalls;
 				rb.drag = lastDrag;
 				transform.localScale = lastScale;
 			}
@@ -49,15 +54,9 @@ public class VRPlayer : MonoBehaviour
 	private void SaveLastValues()
 	{
 		// initialize the last values
-		lastGrabAir = m.grabAir;
-		lastGrabWalls = m.grabWalls;
+		lastGrabAir = m.grabAirLeft;
+		lastGrabWalls = m.grabWallsLeft;
 		lastDrag = rb.drag;
 		lastScale = transform.localScale;
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
 	}
 }

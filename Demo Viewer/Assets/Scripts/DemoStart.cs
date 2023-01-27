@@ -122,7 +122,7 @@ public class DemoStart : MonoBehaviour
 		// load arena model so it isn't empty if there is no file selected
 		if (string.IsNullOrEmpty(demoFile))
 		{
-			SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
+			SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModelIndex", 0)], LoadSceneMode.Additive);
 		}
 		
 		replayFileNameText.text = Path.GetFileName(demoFile);
@@ -149,7 +149,7 @@ public class DemoStart : MonoBehaviour
 			if (middleFrame.map_name == "mpl_arena_a")
 			{
 				// arena model
-				SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)], LoadSceneMode.Additive);
+				SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModelIndex", 0)], LoadSceneMode.Additive);
 			}
 			else
 			{

@@ -426,9 +426,9 @@ public class ReplaySelectionUI : MonoBehaviour
 
 	public void ArenaModelChanged(int selection)
 	{
-		SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModel", 0)]);
+		SceneManager.UnloadSceneAsync(GameManager.instance.arenaModelScenes[PlayerPrefs.GetInt("ArenaModelIndex", 0)]);
 		SceneManager.LoadSceneAsync(GameManager.instance.arenaModelScenes[selection], LoadSceneMode.Additive);
-		PlayerPrefs.SetInt("ArenaModel", selection);
+		PlayerPrefs.SetInt("ArenaModelIndex", selection);
 	}
 
 	public void ShowPlayspaceChanged(int selection)
@@ -448,7 +448,7 @@ public class ReplaySelectionUI : MonoBehaviour
 	{
 		if (!string.IsNullOrEmpty(roomNameInput.text))
 		{
-			VelNetManager.Join(roomNameInput.text);
+			VelNetManager.JoinRoom(roomNameInput.text);
 			joinRoomDialog.gameObject.SetActive(false);
 		}
 	}
@@ -465,7 +465,7 @@ public class ReplaySelectionUI : MonoBehaviour
 
 	public void LeaveRoom()
 	{
-		VelNetManager.Leave();
+		VelNetManager.LeaveRoom();
 	}
 
 	public void ResetReplayPath()

@@ -14,14 +14,12 @@ public class VelNetMan : MonoBehaviour
 	// Start is called before the first frame update
 	private void OnEnable()
 	{
-		VelNetManager.OnConnectedToServer += Login;
 		VelNetManager.OnJoinedRoom += OnJoinedRoom;
 		VelNetManager.OnLeftRoom += OnLeftRoom;
 	}
 
 	private void OnDisable()
 	{
-		VelNetManager.OnConnectedToServer -= Login;
 		VelNetManager.OnJoinedRoom -= OnJoinedRoom;
 		VelNetManager.OnLeftRoom -= OnLeftRoom;
 	}
@@ -61,11 +59,6 @@ public class VelNetMan : MonoBehaviour
 				Debug.LogError(e);
 			}
 		}));
-	}
-
-	private static void Login()
-	{
-		VelNetManager.Login("Replay Viewer", Hash128.Compute(SystemInfo.deviceUniqueIdentifier).ToString());
 	}
 
 	private IEnumerator WaitOneFrame(Action action)

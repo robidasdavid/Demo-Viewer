@@ -11662,7 +11662,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Arena V4
+    - m_Text: Default
       m_Image: {fileID: 0}
     - m_Text: Old boring model
       m_Image: {fileID: 0}
@@ -11701,7 +11701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 461009131062255396}
-  key: ArenaModel
+  key: ArenaModelIndex
 --- !u!1 &5604936253580021101
 GameObject:
   m_ObjectHideFlags: 0
@@ -15392,7 +15392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: -1
+  m_MinWidth: 50
   m_MinHeight: -1
   m_PreferredWidth: 100
   m_PreferredHeight: -1
@@ -16532,9 +16532,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: -1
+  m_MinWidth: 200
   m_MinHeight: -1
-  m_PreferredWidth: -1
+  m_PreferredWidth: 203.73
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1

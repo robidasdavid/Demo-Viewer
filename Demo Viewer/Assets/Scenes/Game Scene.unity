@@ -9528,6 +9528,10 @@ MonoBehaviour:
   useVelocityFollow: 1
   setKinematic: 1
   releaseVelocitySmoothing: 1
+  useFixedPositionOffset: 0
+  fixedPositionOffset: {x: 0, y: 0, z: 0}
+  useFixedRotationOffset: 0
+  fixedRotationOffset: {x: 0, y: 0, z: 0, w: 1}
 --- !u!65 &213997919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17905,7 +17909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownershipLocked: 0
   networkId: 
-  sceneNetworkId: 1
+  sceneNetworkId: 100
   prefabName: 
   isSceneObject: 1
   syncedComponents:
@@ -17957,10 +17961,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233344de094f11341bdb834d564708dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: velnet-lts.ugavel.com
+  host: vn.ugavel.com
   port: 5000
   udpConnected: 0
   userid: -1
+  debugMessages: 0
+  autoLogin: 1
+  onlyConnectToSameVersion: 1
   connected: 0
   prefabs:
   - {fileID: 4420248241329178537, guid: c6b61edc8837d8e4eb289de7d4ad7b30, type: 3}
@@ -43839,6 +43846,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 4620193705478769076, guid: 9708fa1cb107b8f479f5195bee99f51a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 9.100098
+      objectReference: {fileID: 0}
     - target: {fileID: 5091394670623139100, guid: 9708fa1cb107b8f479f5195bee99f51a,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -50967,7 +50979,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -66.4, y: 225.4}
+  m_AnchoredPosition: {x: -66.3999, y: 225.40002}
   m_SizeDelta: {x: 601.5101, y: 121.9605}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1419483914
@@ -53378,7 +53390,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.75
+  m_Intensity: 0.5
   m_Range: 7
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -56309,7 +56321,10 @@ MonoBehaviour:
   side: 0
   canGrab: 1
   grabInput: 0
+  distanceGrabInput: 1
   vibrateOnGrab: 0
+  autograb: 1
+  autograbTimeout: 0
   enableRemoteGrabbing: 0
   remoteGrabbingDistance: 5
   layerMask:
@@ -56318,6 +56333,7 @@ MonoBehaviour:
   grabbedVRGrabbable: {fileID: 0}
   selectedVRGrabbable: {fileID: 0}
   touchedObjs: []
+  remoteTouchedObjs: []
   raycastedObjs: []
 --- !u!135 &1615861303
 SphereCollider:
@@ -60271,10 +60287,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487d0dc74ed701849a7da00bd1cd83ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayDistance: 0
-  worldRayDistance: 0
-  minDistance: 0
-  maxDistance: Infinity
+  raycastLength: 10
+  currentRayLength: 0
+  UILayer:
+    serializedVersion: 2
+    m_Bits: 0
+  autoEnable: 1
+  ClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  ClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  HoverStart:
+    m_PersistentCalls:
+      m_Calls: []
+  HoverStop:
+    m_PersistentCalls:
+      m_Calls: []
   input: 1
   side: 1
   useLaser: 1
@@ -60296,10 +60326,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487d0dc74ed701849a7da00bd1cd83ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayDistance: 0
-  worldRayDistance: 0
-  minDistance: 0
-  maxDistance: Infinity
+  raycastLength: 10
+  currentRayLength: 0
+  UILayer:
+    serializedVersion: 2
+    m_Bits: 0
+  autoEnable: 1
+  ClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  ClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  HoverStart:
+    m_PersistentCalls:
+      m_Calls: []
+  HoverStop:
+    m_PersistentCalls:
+      m_Calls: []
   input: 1
   side: 0
   useLaser: 1
